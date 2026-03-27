@@ -1,0 +1,35 @@
+aid: druva
+name: Druva
+description: >-
+  Druva is a cloud data protection and management platform providing SaaS backup, disaster recovery, and data governance for endpoints, data centers, and SaaS applications.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - SaaS Backup
+  - Data Protection
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/druva/refs/heads/main/apis.yml
+created: '2026-03-27'
+modified: '2026-03-27'
+specificationVersion: '0.19'
+apis:
+  - aid: druva:druva
+    name: Druva
+    description: >-
+      Druva is a cloud data protection and management platform providing SaaS backup, disaster recovery, and data governance for endpoints, data centers, and SaaS applications.
+    humanURL: https://www.druva.com
+    tags:
+      - SaaS Backup
+    properties:
+      - type: Documentation
+        url: https://docs.druva.com/
+common:
+  - type: Website
+    url: https://www.druva.com
+  - type: Documentation
+    url: https://docs.druva.com/
+  - type: GitHub Organization
+    url: https://github.com/druva
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
