@@ -116,6 +116,13 @@ common:
     url: https://support.druva.com
   - type: GitHub
     url: https://github.com/druvainc
+  - type: Integrations
+    url: https://www.druva.com/partners/ecosystem/technology-alliance-program
+integrations:
+  - name: Alliances
+  - name: Ecosystem
+  - name: Value Added Resellers
+  - name: Managed Service Providers
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
