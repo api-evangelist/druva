@@ -104,6 +104,8 @@ apis:
       - Compliance
       - eDiscovery
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/druva
   - type: Website
     url: https://www.druva.com
   - type: Documentation
