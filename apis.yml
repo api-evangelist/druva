@@ -120,6 +120,8 @@ common:
     url: https://github.com/druvainc
   - type: Integrations
     url: https://www.druva.com/partners/ecosystem/technology-alliance-program
+  - type: LLMsTxt
+    url: https://developer.druva.com/llms.txt
 integrations:
   - name: Alliances
   - name: Ecosystem
