@@ -1,0 +1,510 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Druva REST API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange API credentials for a bearer access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                },
+                {
+                  "name": "scope",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Exchange API credentials for a bearer access token"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List accounts within an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List accounts within an organization"
+        },
+        {
+          "info": {
+            "name": "Create an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create an account"
+        },
+        {
+          "info": {
+            "name": "Get an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get an account"
+        },
+        {
+          "info": {
+            "name": "Update an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Update an account"
+        },
+        {
+          "info": {
+            "name": "Delete an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Backups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List backups for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/backups",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List backups for an account"
+        },
+        {
+          "info": {
+            "name": "Trigger a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/backups",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Trigger a backup"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List protected servers for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/servers",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List protected servers for an account"
+        },
+        {
+          "info": {
+            "name": "Register a server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/servers",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Register a server"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List backup schedules for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/schedules",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List backup schedules for an account"
+        },
+        {
+          "info": {
+            "name": "Create a backup schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/accounts/:account_id/schedules",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create a backup schedule"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List protection policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List protection policies"
+        },
+        {
+          "info": {
+            "name": "Create a protection policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create a protection policy"
+        },
+        {
+          "info": {
+            "name": "Get a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a policy"
+        },
+        {
+          "info": {
+            "name": "Update a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Update a policy"
+        },
+        {
+          "info": {
+            "name": "Delete a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a policy"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/reports",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List reports"
+        },
+        {
+          "info": {
+            "name": "Generate a report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/reports",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Generate a report"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cyber Resilience",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List anomaly / ransomware scans (v1)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/ransomwarerecovery/v1/scans"
+          },
+          "docs": "List anomaly / ransomware scans (v1)"
+        },
+        {
+          "info": {
+            "name": "List anomaly / ransomware scans (v2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/ransomwarerecovery/v2/scans"
+          },
+          "docs": "List anomaly / ransomware scans (v2)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
