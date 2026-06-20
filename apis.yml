@@ -7,7 +7,7 @@ description: >-
   Endpoint Data Governance, Enterprise Workloads, CloudRanger, MSP, and Legal
   Hold products, using token-based authentication and JSON over HTTPS.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Backup
   - Cyber Resilience
