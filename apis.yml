@@ -104,6 +104,12 @@ apis:
       - Compliance
       - eDiscovery
 common:
+  - type: TrustCenter
+    url: security/druva-trust-center.yml
+  - type: DomainSecurity
+    url: security/druva-domain-security.yml
+  - type: Authentication
+    url: authentication/druva-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/druva
   - type: Website
@@ -122,6 +128,8 @@ common:
     url: https://www.druva.com/partners/ecosystem/technology-alliance-program
   - type: LlmsText
     url: https://developer.druva.com/llms.txt
+  - type: Blog
+    url: https://www.druva.com/blog
 integrations:
   - name: Alliances
   - name: Ecosystem
