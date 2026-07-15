@@ -104,6 +104,8 @@ apis:
       - Compliance
       - eDiscovery
 common:
+  - type: AgenticAccess
+    url: agentic-access/druva-agentic-access.yml
   - type: TrustCenter
     url: security/druva-trust-center.yml
   - type: DomainSecurity
