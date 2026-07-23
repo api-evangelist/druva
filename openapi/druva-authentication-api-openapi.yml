@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: Druva REST Accounts Authentication API
+  version: 1.0.0
+  description: Best-effort OpenAPI for Druva's cloud data protection REST API. Endpoints cover token authorization plus the organization-scoped resources for accounts, backups, servers, schedules, policies, and reports, and the Cyber Resilience / Ransomware Recovery namespace.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://developer.druva.com
+servers:
+- url: https://apis.druva.com
+  description: Druva Cloud Platform APIs
+security:
+- bearerAuth: []
+tags:
+- name: Authentication
+paths:
+  /token:
+    post:
+      tags:
+      - Authentication
+      summary: Exchange API credentials for a bearer access token
+      operationId: getAccessToken
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  default: client_credentials
+                scope:
+                  type: string
+      responses:
+        '200':
+          description: Access token returned
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer access token obtained from /token using API credentials
