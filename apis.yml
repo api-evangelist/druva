@@ -7,7 +7,20 @@ description: >-
   Endpoint Data Governance, Enterprise Workloads, CloudRanger, MSP, and Legal
   Hold products, using token-based authentication and JSON over HTTPS.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/druva.png
 tags:
   - Backup
   - Cyber Resilience
@@ -20,89 +33,165 @@ created: '2026-03-27'
 modified: '2026-04-28'
 specificationVersion: '0.19'
 apis:
-  - aid: druva:cyber-resilience
-    name: Druva Cyber Resilience API
-    description: >-
-      The Druva Cyber Resilience REST API provides programmatic access to
-      reports and events across the Druva Data Resiliency Cloud, supporting
-      ransomware recovery, anomaly detection, and security posture monitoring.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - Cyber Resilience
-      - Reports
-      - Events
-      - REST
-    properties:
-      - type: Documentation
-        url: https://developer.druva.com
-      - type: Authentication
-        url: https://developer.druva.com
-  - aid: druva:endpoints-data-governance
-    name: Druva Endpoints and Data Governance API
-    description: >-
-      The Druva Endpoints and Data Governance API exposes Reports and Events
-      endpoints for visibility into endpoint backups, user activity, and
-      governance posture across managed devices and SaaS workloads.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - Endpoints
-      - Data Governance
-      - Reports
-      - Events
-    properties:
-      - type: Documentation
-        url: https://developer.druva.com
-  - aid: druva:enterprise-workloads
-    name: Druva Enterprise Workloads API
-    description: >-
-      The Druva Enterprise Workloads Events API provides programmatic access to
-      events generated across protected enterprise workloads such as servers,
-      virtual machines, and databases inside the Druva Data Resiliency Cloud.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - Enterprise Workloads
-      - Events
-      - Backup
-  - aid: druva:cloudranger
-    name: Druva CloudRanger Native Workloads API
-    description: >-
-      The Druva CloudRanger Native Workloads API provides automated backup,
-      disaster recovery, and lifecycle management for AWS-native workloads
-      including EC2, EBS, RDS, Redshift, and DynamoDB.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - CloudRanger
-      - AWS
-      - Native Workloads
-      - Backup
-  - aid: druva:msp
-    name: Druva MSP API
-    description: >-
-      The Druva MSP API enables managed service providers to programmatically
-      manage tenants, customers, and reporting across the Druva platform from
-      a single MSP console integration.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - MSP
-      - Managed Service Providers
-      - Multi-Tenant
-  - aid: druva:legal-hold
-    name: Druva Legal Hold Targeted Download API
-    description: >-
-      The Druva Legal Hold Targeted Download API supports legal and compliance
-      teams in initiating targeted downloads of preserved data from devices
-      placed under legal hold within Druva.
-    humanURL: https://developer.druva.com
-    baseURL: https://apis.druva.com
-    tags:
-      - Legal Hold
-      - Compliance
-      - eDiscovery
+- aid: druva:cyber-resilience
+  name: Druva Cyber Resilience API
+  description: >-
+    The Druva Cyber Resilience REST API provides programmatic access to reports and events across the
+    Druva Data Resiliency Cloud, supporting ransomware recovery, anomaly detection, and security posture
+    monitoring.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Cyber Resilience
+  - Reports
+  - Events
+  - REST
+  properties:
+  - type: Documentation
+    url: https://developer.druva.com
+  - type: Authentication
+    url: https://developer.druva.com
+- aid: druva:endpoints-data-governance
+  name: Druva Endpoints and Data Governance API
+  description: >-
+    The Druva Endpoints and Data Governance API exposes Reports and Events endpoints for visibility into
+    endpoint backups, user activity, and governance posture across managed devices and SaaS workloads.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Endpoints
+  - Data Governance
+  - Reports
+  - Events
+  properties:
+  - type: Documentation
+    url: https://developer.druva.com
+- aid: druva:enterprise-workloads
+  name: Druva Enterprise Workloads API
+  description: >-
+    The Druva Enterprise Workloads Events API provides programmatic access to events generated across
+    protected enterprise workloads such as servers, virtual machines, and databases inside the Druva Data
+    Resiliency Cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Enterprise Workloads
+  - Events
+  - Backup
+- aid: druva:cloudranger
+  name: Druva CloudRanger Native Workloads API
+  description: >-
+    The Druva CloudRanger Native Workloads API provides automated backup, disaster recovery, and lifecycle
+    management for AWS-native workloads including EC2, EBS, RDS, Redshift, and DynamoDB.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - CloudRanger
+  - AWS
+  - Native Workloads
+  - Backup
+- aid: druva:msp
+  name: Druva MSP API
+  description: >-
+    The Druva MSP API enables managed service providers to programmatically manage tenants, customers,
+    and reporting across the Druva platform from a single MSP console integration.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - MSP
+  - Managed Service Providers
+  - Multi-Tenant
+- aid: druva:legal-hold
+  name: Druva Legal Hold Targeted Download API
+  description: >-
+    The Druva Legal Hold Targeted Download API supports legal and compliance teams in initiating targeted
+    downloads of preserved data from devices placed under legal hold within Druva.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Legal Hold
+  - Compliance
+  - eDiscovery
+- aid: druva:druva-accounts-api
+  name: Druva Accounts API
+  description: The Accounts API from Druva — 2 operation(s) for accounts.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-accounts-api-openapi.yml
+- aid: druva:druva-authentication-api
+  name: Druva Authentication API
+  description: The Authentication API from Druva — 1 operation(s) for authentication.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-authentication-api-openapi.yml
+- aid: druva:druva-backups-api
+  name: Druva Backups API
+  description: The Backups API from Druva — 1 operation(s) for backups.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Backups
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-backups-api-openapi.yml
+- aid: druva:druva-cyber-resilience-api
+  name: Druva Cyber Resilience API
+  description: The Cyber Resilience API from Druva — 2 operation(s) for cyber resilience.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Cyber Resilience
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cyber-resilience-api-openapi.yml
+- aid: druva:druva-policies-api
+  name: Druva Policies API
+  description: The Policies API from Druva — 2 operation(s) for policies.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-policies-api-openapi.yml
+- aid: druva:druva-reports-api
+  name: Druva Reports API
+  description: The Reports API from Druva — 1 operation(s) for reports.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-reports-api-openapi.yml
+- aid: druva:druva-schedules-api
+  name: Druva Schedules API
+  description: The Schedules API from Druva — 1 operation(s) for schedules.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Schedules
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-schedules-api-openapi.yml
+- aid: druva:druva-servers-api
+  name: Druva Servers API
+  description: The Servers API from Druva — 1 operation(s) for servers.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Servers
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-servers-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/druva-agentic-access.yml
