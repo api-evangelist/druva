@@ -1,0 +1,28 @@
+{
+  "provider": "druva",
+  "sources": [
+    "druva-accounts-api-openapi.yml",
+    "druva-authentication-api-openapi.yml",
+    "druva-backups-api-openapi.yml",
+    "druva-cyber-resilience-api-openapi.yml",
+    "druva-policies-api-openapi.yml",
+    "druva-reports-api-openapi.yml",
+    "druva-schedules-api-openapi.yml",
+    "druva-servers-api-openapi.yml"
+  ],
+  "outputs": [
+    "druva-accounts-api-openapi.yml",
+    "druva-authentication-api-openapi.yml",
+    "druva-backups-api-openapi.yml",
+    "druva-cyber-resilience-api-openapi.yml",
+    "druva-policies-api-openapi.yml",
+    "druva-reports-api-openapi.yml",
+    "druva-schedules-api-openapi.yml",
+    "druva-servers-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

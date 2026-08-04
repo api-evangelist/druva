@@ -1,0 +1,215 @@
+openapi: 3.1.0
+info:
+  title: Druva REST API
+  version: "1.0.0"
+  description: >-
+    Best-effort OpenAPI for Druva's cloud data protection REST API. Endpoints
+    cover token authorization plus the organization-scoped resources for
+    accounts, backups, servers, schedules, policies, and reports, and the
+    Cyber Resilience / Ransomware Recovery namespace.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://developer.druva.com
+servers:
+  - url: https://apis.druva.com
+    description: Druva Cloud Platform APIs
+security:
+  - bearerAuth: []
+tags:
+  - name: Authentication
+  - name: Accounts
+  - name: Backups
+  - name: Servers
+  - name: Schedules
+  - name: Policies
+  - name: Reports
+  - name: Cyber Resilience
+paths:
+  /token:
+    post:
+      tags: [Authentication]
+      summary: Exchange API credentials for a bearer access token
+      operationId: getAccessToken
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type: { type: string, default: client_credentials }
+                scope: { type: string }
+      responses:
+        "200": { description: Access token returned }
+  /organizations/{organization_id}/accounts:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+    get:
+      tags: [Accounts]
+      summary: List accounts within an organization
+      operationId: listAccounts
+      responses:
+        "200": { description: A page of accounts }
+    post:
+      tags: [Accounts]
+      summary: Create an account
+      operationId: createAccount
+      responses:
+        "201": { description: Account created }
+  /organizations/{organization_id}/accounts/{account_id}:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+      - $ref: "#/components/parameters/AccountId"
+    get:
+      tags: [Accounts]
+      summary: Get an account
+      operationId: getAccount
+      responses:
+        "200": { description: Account details }
+    put:
+      tags: [Accounts]
+      summary: Update an account
+      operationId: updateAccount
+      responses:
+        "200": { description: Account updated }
+    delete:
+      tags: [Accounts]
+      summary: Delete an account
+      operationId: deleteAccount
+      responses:
+        "204": { description: Account deleted }
+  /organizations/{organization_id}/accounts/{account_id}/backups:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+      - $ref: "#/components/parameters/AccountId"
+    get:
+      tags: [Backups]
+      summary: List backups for an account
+      operationId: listBackups
+      responses:
+        "200": { description: A page of backups }
+    post:
+      tags: [Backups]
+      summary: Trigger a backup
+      operationId: createBackup
+      responses:
+        "202": { description: Backup queued }
+  /organizations/{organization_id}/accounts/{account_id}/servers:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+      - $ref: "#/components/parameters/AccountId"
+    get:
+      tags: [Servers]
+      summary: List protected servers for an account
+      operationId: listServers
+      responses:
+        "200": { description: A page of servers }
+    post:
+      tags: [Servers]
+      summary: Register a server
+      operationId: createServer
+      responses:
+        "201": { description: Server registered }
+  /organizations/{organization_id}/accounts/{account_id}/schedules:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+      - $ref: "#/components/parameters/AccountId"
+    get:
+      tags: [Schedules]
+      summary: List backup schedules for an account
+      operationId: listSchedules
+      responses:
+        "200": { description: A page of schedules }
+    post:
+      tags: [Schedules]
+      summary: Create a backup schedule
+      operationId: createSchedule
+      responses:
+        "201": { description: Schedule created }
+  /organizations/{organization_id}/policies:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+    get:
+      tags: [Policies]
+      summary: List protection policies
+      operationId: listPolicies
+      responses:
+        "200": { description: A page of policies }
+    post:
+      tags: [Policies]
+      summary: Create a protection policy
+      operationId: createPolicy
+      responses:
+        "201": { description: Policy created }
+  /organizations/{organization_id}/policies/{policy_id}:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+      - name: policy_id
+        in: path
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Policies]
+      summary: Get a policy
+      operationId: getPolicy
+      responses:
+        "200": { description: Policy details }
+    put:
+      tags: [Policies]
+      summary: Update a policy
+      operationId: updatePolicy
+      responses:
+        "200": { description: Policy updated }
+    delete:
+      tags: [Policies]
+      summary: Delete a policy
+      operationId: deletePolicy
+      responses:
+        "204": { description: Policy deleted }
+  /organizations/{organization_id}/reports:
+    parameters:
+      - $ref: "#/components/parameters/OrgId"
+    get:
+      tags: [Reports]
+      summary: List reports
+      operationId: listReports
+      responses:
+        "200": { description: A page of reports }
+    post:
+      tags: [Reports]
+      summary: Generate a report
+      operationId: createReport
+      responses:
+        "202": { description: Report generation queued }
+  /ransomwarerecovery/v1/scans:
+    get:
+      tags: [Cyber Resilience]
+      summary: List anomaly / ransomware scans (v1)
+      operationId: listScansV1
+      responses:
+        "200": { description: A page of scans }
+  /ransomwarerecovery/v2/scans:
+    get:
+      tags: [Cyber Resilience]
+      summary: List anomaly / ransomware scans (v2)
+      operationId: listScansV2
+      responses:
+        "200": { description: A page of scans }
+components:
+  parameters:
+    OrgId:
+      name: organization_id
+      in: path
+      required: true
+      schema: { type: string }
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      schema: { type: string }
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer access token obtained from /token using API credentials
