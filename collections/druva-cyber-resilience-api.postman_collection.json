@@ -1,0 +1,179 @@
+{
+  "item": [
+    {
+      "id": "227c7693-bbfc-442a-8b6b-ac4ff34cfba8",
+      "name": "Cyber Resilience",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5ae4f450-b220-46fd-81f9-580c0e65d2f5",
+          "name": "List anomaly / ransomware scans (v1)",
+          "request": {
+            "name": "List anomaly / ransomware scans (v1)",
+            "description": {},
+            "url": {
+              "path": [
+                "ransomwarerecovery",
+                "v1",
+                "scans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e4cc5041-e4eb-4417-9079-b12aed9c8360",
+              "name": "A page of scans",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ransomwarerecovery",
+                    "v1",
+                    "scans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf90d4ca-3274-4593-9ab6-0ce72845ff0a",
+          "name": "List anomaly / ransomware scans (v2)",
+          "request": {
+            "name": "List anomaly / ransomware scans (v2)",
+            "description": {},
+            "url": {
+              "path": [
+                "ransomwarerecovery",
+                "v2",
+                "scans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "44ef3ffe-33ea-4d5e-b72a-4b909764fef8",
+              "name": "A page of scans",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ransomwarerecovery",
+                    "v2",
+                    "scans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://apis.druva.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5dfe5640-f895-4a72-83b7-c99ebecc7dc6",
+    "name": "Druva REST Accounts Cyber Resilience API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Best-effort OpenAPI for Druva's cloud data protection REST API. Endpoints cover token authorization plus the organization-scoped resources for accounts, backups, servers, schedules, policies, and reports, and the Cyber Resilience / Ransomware Recovery namespace.\n\nContact Support:\n Name: API Evangelist\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}

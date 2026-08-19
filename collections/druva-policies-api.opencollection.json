@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Druva REST Accounts Policies API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List protection policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List protection policies"
+        },
+        {
+          "info": {
+            "name": "Create a protection policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create a protection policy"
+        },
+        {
+          "info": {
+            "name": "Get a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a policy"
+        },
+        {
+          "info": {
+            "name": "Update a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Update a policy"
+        },
+        {
+          "info": {
+            "name": "Delete a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://apis.druva.com/organizations/:organization_id/policies/:policy_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a policy"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

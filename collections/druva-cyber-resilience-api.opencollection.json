@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Druva REST Accounts Cyber Resilience API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cyber Resilience",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List anomaly / ransomware scans (v1)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/ransomwarerecovery/v1/scans"
+          },
+          "docs": "List anomaly / ransomware scans (v1)"
+        },
+        {
+          "info": {
+            "name": "List anomaly / ransomware scans (v2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/ransomwarerecovery/v2/scans"
+          },
+          "docs": "List anomaly / ransomware scans (v2)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

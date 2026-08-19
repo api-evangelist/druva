@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Druva REST Accounts Reports API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apis.druva.com/organizations/:organization_id/reports",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List reports"
+        },
+        {
+          "info": {
+            "name": "Generate a report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apis.druva.com/organizations/:organization_id/reports",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Generate a report"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
