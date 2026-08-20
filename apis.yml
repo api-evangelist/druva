@@ -44,6 +44,11 @@ apis:
   tags:
   - Cyber Resilience
   - Reports
+  - Event
+  - REST
+  tags_raw:
+  - Cyber Resilience
+  - Reports
   - Events
   - REST
   properties:
@@ -59,6 +64,10 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Data Governance
+  - Reports
+  - Event
+  tags_raw:
   - Endpoints
   - Data Governance
   - Reports
@@ -75,6 +84,10 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Enterprise Workloads
+  - Event
+  - Backup
+  tags_raw:
   - Enterprise Workloads
   - Events
   - Backup
@@ -118,6 +131,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
