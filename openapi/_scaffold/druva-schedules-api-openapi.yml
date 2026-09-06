@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: Druva REST Accounts Schedules API
+  version: 1.0.0
+  description: Best-effort OpenAPI for Druva's cloud data protection REST API. Endpoints cover token authorization plus the organization-scoped resources for accounts, backups, servers, schedules, policies, and reports, and the Cyber Resilience / Ransomware Recovery namespace.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://developer.druva.com
+servers:
+- url: https://apis.druva.com
+  description: Druva Cloud Platform APIs
+security:
+- bearerAuth: []
+tags:
+- name: Schedules
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/schedules:
+    parameters:
+    - $ref: '#/components/parameters/OrgId'
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      tags:
+      - Schedules
+      summary: List backup schedules for an account
+      operationId: listSchedules
+      responses:
+        '200':
+          description: A page of schedules
+    post:
+      tags:
+      - Schedules
+      summary: Create a backup schedule
+      operationId: createSchedule
+      responses:
+        '201':
+          description: Schedule created
+components:
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    OrgId:
+      name: organization_id
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer access token obtained from /token using API credentials

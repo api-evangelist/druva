@@ -1,11 +1,14 @@
 aid: druva
 name: Druva
-description: >-
-  Druva is a cloud data protection and management platform providing SaaS backup,
-  disaster recovery, and data governance for endpoints, data centers, and SaaS
-  applications. Druva exposes a public REST API across its Cyber Resilience,
-  Endpoint Data Governance, Enterprise Workloads, CloudRanger, MSP, and Legal
-  Hold products, using token-based authentication and JSON over HTTPS.
+description: Druva is a cloud data protection and management company running the Druva Resilience Cloud, a fully
+  managed SaaS platform for backup, disaster recovery, cyber resilience and data governance across endpoints, data
+  centres, AWS and Azure workloads, and SaaS applications including Microsoft 365, Google Workspace, Salesforce,
+  Dynamics 365, Entra ID and Okta. Druva publishes 19 first-party OpenAPI and Swagger definitions covering roughly
+  970 operations from its developer portal, advertised in an RFC 9727 API catalog document, spanning Endpoints and
+  Data Governance, Enterprise Workloads, Cyber Resilience, AWS Native Workloads and CloudRanger, MSP tenant management,
+  Platform administration and job management - each with a separate GovCloud contract where one exists. Authentication
+  is OAuth 2.0 client credentials against a per-cloud token endpoint, and Druva also runs a first-party hosted MCP
+  server at mcp.druva.com for AI agents.
 type: Index
 deliveryModel:
   model: unknown
@@ -34,225 +37,491 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/druva.png
 tags:
-  - Backup
-  - Cyber Resilience
-  - Data Protection
-  - Disaster Recovery
-  - SaaS Backup
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/druva/refs/heads/main/apis.yml
+- Backup
+- Cyber Resilience
+- Data Protection
+- Disaster Recovery
+- SaaS Backup
+- Ransomware Recovery
+- Data Governance
+- Enterprise Workloads
+- MSP
+- Legal Hold
+- Endpoints
+- GovCloud
+- MCP
+url: https://raw.githubusercontent.com/api-evangelist/druva/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-04-28'
+modified: '2026-09-06'
 specificationVersion: '0.23'
 apis:
-- aid: druva:cyber-resilience
-  name: Druva Cyber Resilience API
-  description: >-
-    The Druva Cyber Resilience REST API provides programmatic access to reports and events across the
-    Druva Data Resiliency Cloud, supporting ransomware recovery, anomaly detection, and security posture
-    monitoring.
+- aid: druva:authentication
+  name: Druva Authentication API
+  description: Token endpoint for the Druva Cloud Platform. Exchanges a base64-encoded Client ID and Secret Key
+    for an OAuth 2.0 client-credentials bearer token used by every other Druva product API on the public cloud.
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
-  - Cyber Resilience
-  - Reports
-  - Event
-  - REST
-  tags_raw:
-  - Cyber Resilience
-  - Reports
-  - Events
-  - REST
+  - Authentication
+  - OAuth
+  - Token
   properties:
+  - type: OpenAPI
+    url: openapi/druva-authentication-openapi.json
   - type: Documentation
-    url: https://developer.druva.com
+    url: https://developer.druva.com/reference
   - type: Authentication
-    url: https://developer.druva.com
+    url: https://developer.druva.com/docs/authentication
+- aid: druva:msp-authentication
+  name: Druva MSP Authentication API
+  description: Token endpoint for the Druva Managed Service Provider surface. MSP integrations authenticate here
+    rather than at the common Druva token endpoint.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/msp
+  tags:
+  - Authentication
+  - MSP
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-msp-authentication-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:govcloud-authentication
+  name: Druva GovCloud Authentication API
+  description: Token endpoint for Druva Endpoints and Data Governance GovCloud. Tokens minted here are valid for
+    15 minutes and cannot be used against any other Druva cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://govcloudapis.druva.com
+  tags:
+  - Authentication
+  - GovCloud
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-govcloud-authentication-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:hybrid-workload-govcloud-authentication
+  name: Druva Hybrid Workloads GovCloud Authentication API
+  description: Token endpoint for Druva Hybrid / Enterprise Workloads GovCloud. Separate from the Endpoints GovCloud
+    token endpoint; tokens are not interchangeable between Druva clouds.
+  humanURL: https://developer.druva.com
+  baseURL: https://govapis.druva.com
+  tags:
+  - Authentication
+  - GovCloud
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-hybrid-workload-govcloud-authentication-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
 - aid: druva:endpoints-data-governance
   name: Druva Endpoints and Data Governance API
-  description: >-
-    The Druva Endpoints and Data Governance API exposes Reports and Events endpoints for visibility into
-    endpoint backups, user activity, and governance posture across managed devices and SaaS workloads.
+  description: The inSync Cloud API for Druva Endpoints and Data Governance. Covers device and user management,
+    backup and restore of endpoint data, profiles, AD/LDAP synchronisation, federated search, legal hold, sensitive
+    data governance, audit trail and the Events API used to export inSync events to a SIEM in JSON, CEF or Syslog
+    form.
   humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+  baseURL: https://apis.druva.com/insync
   tags:
-  - Data Governance
-  - Reports
-  - Event
-  tags_raw:
   - Endpoints
   - Data Governance
-  - Reports
-  - Events
+  - Legal Hold
+  - Event
+  - Sensitive Data Governance
+  - Backup
   properties:
+  - type: OpenAPI
+    url: openapi/druva-insync-cloud-openapi.json
   - type: Documentation
-    url: https://developer.druva.com
+    url: https://developer.druva.com/reference
+- aid: druva:insync-govcloud
+  name: Druva Endpoints and Data Governance GovCloud API
+  description: The inSync GovCloud API - the FedRAMP-boundary equivalent of the Endpoints and Data Governance surface,
+    served from govcloudapis.druva.com with its own token endpoint and a 15-minute access token.
+  humanURL: https://developer.druva.com
+  baseURL: https://govcloudapis.druva.com/insync
+  tags:
+  - Endpoints
+  - Data Governance
+  - GovCloud
+  - Legal Hold
+  - Event
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-insync-govcloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
 - aid: druva:enterprise-workloads
   name: Druva Enterprise Workloads API
-  description: >-
-    The Druva Enterprise Workloads Events API provides programmatic access to events generated across
-    protected enterprise workloads such as servers, virtual machines, and databases inside the Druva Data
-    Resiliency Cloud.
+  description: The Phoenix API for Druva Enterprise Workloads. Job management, on-demand backup, restore to original
+    or alternate location, snapshots, backup policies and reporting across File Server, NAS, VMware, Hyper-V, Nutanix
+    AHV, SQL Server, Oracle SBT, Azure, PBS and DRaaS workloads, plus alerts, audit trail and cloud cache.
   humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+  baseURL: https://apis.druva.com/phoenix
   tags:
   - Enterprise Workloads
-  - Event
   - Backup
-  tags_raw:
+  - Restore
+  - VMware
+  - SQL Server
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-enterprise-workloads-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:enterprise-workloads-govcloud
+  name: Druva Enterprise Workloads GovCloud API
+  description: The Enterprise Workloads API inside the Druva GovCloud boundary, served from govapis.druva.com. Same
+    workload coverage as the public-cloud contract with the Azure family omitted.
+  humanURL: https://developer.druva.com
+  baseURL: https://govapis.druva.com/phoenix
+  tags:
   - Enterprise Workloads
-  - Events
+  - GovCloud
   - Backup
+  - Restore
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-enterprise-workloads-govcloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:cyber-resilience
+  name: Druva Cyber Resilience API
+  description: The Realize API for Druva Cyber Resilience. Accelerated Ransomware Recovery quarantine ranges and
+    snapshots, curated snapshot jobs, threat hunting, threat intel IOC sets and lookup, threat watch, unusual data
+    activity anomaly detection, restore scans and the Realize event stream.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/realize
+  tags:
+  - Cyber Resilience
+  - Ransomware Recovery
+  - Threat Hunting
+  - Threat Intel
+  - Curated Snapshots
+  - Event
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cyber-resilience-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:cyber-resilience-govcloud
+  name: Druva Cyber Resilience GovCloud API
+  description: The Cyber Resilience surface inside the Druva GovCloud boundary. Ransomware recovery, curated snapshots,
+    threat hunting, threat intel, data anomalies and restore scans, served from govapis.druva.com/realize.
+  humanURL: https://developer.druva.com
+  baseURL: https://govapis.druva.com/realize
+  tags:
+  - Cyber Resilience
+  - GovCloud
+  - Ransomware Recovery
+  - Threat Hunting
+  - Threat Intel
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cyber-resilience-govcloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:cyber-resilience-govcloud-authorization
+  name: Druva GovCloud Cyber Resilience Authorization API
+  description: Authorization endpoints for the Druva GovCloud Cyber Resilience surface, published as a separate
+    contract from the Cyber Resilience API itself.
+  humanURL: https://developer.druva.com
+  baseURL: https://govapis.druva.com
+  tags:
+  - Authentication
+  - GovCloud
+  - Cyber Resilience
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cyber-resilience-govcloud-authorization-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
 - aid: druva:cloudranger
   name: Druva CloudRanger Native Workloads API
-  description: >-
-    The Druva CloudRanger Native Workloads API provides automated backup, disaster recovery, and lifecycle
-    management for AWS-native workloads including EC2, EBS, RDS, Redshift, and DynamoDB.
+  description: The CloudRanger API for Druva Native Workloads on AWS. Backup, disaster recovery and lifecycle management
+    for EC2, EBS, RDS, Redshift, DynamoDB, S3 buckets and auto-scaling groups, with policies, schedules, DR plans
+    and file-level restore. Served from api.cloudranger.com, the domain Druva acquired with CloudRanger in 2018
+    and still documents as the Native Workloads base URL.
   humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+  baseURL: https://api.cloudranger.com/202004
   tags:
   - CloudRanger
   - AWS
   - Native Workloads
   - Backup
+  - Disaster Recovery
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cloudranger-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+- aid: druva:aws-native
+  name: Druva AWS Native Workloads API
+  description: The AWS Native Workloads API served from the common Druva gateway at apis.druva.com/awsnative. The
+    CloudRanger capability set - accounts, backups, restores, policies, schedules, environments and DR plans - reached
+    through Druva Cloud Platform credentials rather than CloudRanger keys.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/awsnative
+  tags:
+  - AWS
+  - Native Workloads
+  - Backup
+  - Disaster Recovery
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-aws-native-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
 - aid: druva:msp
   name: Druva MSP API
-  description: >-
-    The Druva MSP API enables managed service providers to programmatically manage tenants, customers,
-    and reporting across the Druva platform from a single MSP console integration.
+  description: The Managed Service Provider API. Customer and tenant provisioning, suspension and patching, per-customer
+    API token generation, asynchronous task tracking, quota configuration and consumption metering, customer events,
+    and the chargeback, telemetry and service-monitoring report family used to bill managed customers.
   humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+  baseURL: https://apis.druva.com/msp
   tags:
   - MSP
   - Managed Service Providers
   - Multi-Tenant
-- aid: druva:legal-hold
-  name: Druva Legal Hold Targeted Download API
-  description: >-
-    The Druva Legal Hold Targeted Download API supports legal and compliance teams in initiating targeted
-    downloads of preserved data from devices placed under legal hold within Druva.
+  - Reports
+  - Quota
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-msp-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:platform
+  name: Druva Platform API
+  description: The Druva Cloud Platform administration API. Administrators, administrator roles, platform-level
+    reports and the platform event stream shared across Druva products.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/platform
+  tags:
+  - Platform
+  - Administration
+  - Reports
+  - Event
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-platform-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:microsoft-365
+  name: Druva Microsoft 365 API
+  description: App management and restore operations for Druva-protected Microsoft 365 data - OneDrive and Exchange
+    Online restores, and SharePoint Online restores.
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
+  tags:
+  - Microsoft 365
+  - SaaS Backup
+  - Restore
+  - SharePoint
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-microsoft-365-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:google-workspace
+  name: Druva Google Workspace API
+  description: App management for Druva-protected Google Workspace data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Google Workspace
+  - SaaS Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-google-workspace-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:job-management-cloud
+  name: Druva Job Management API for Cloud Workloads
+  description: The Unity job-management surface for cloud workloads - create and cancel backup and restore jobs
+    for Azure SQL and NAS from a single contract.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/unity
+  tags:
+  - Jobs
+  - Azure SQL
+  - NAS
+  - Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-job-management-cloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:job-management-govcloud
+  name: Druva Job Management API for GovCloud Workloads
+  description: The Unity job-management surface inside the Druva GovCloud boundary, covering NAS backup and restore
+    jobs.
+  humanURL: https://developer.druva.com
+  baseURL: https://govapis.druva.com/unity
+  tags:
+  - Jobs
+  - GovCloud
+  - NAS
+  - Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-job-management-govcloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:legal-hold
+  name: Druva Legal Hold Targeted Download API
+  description: Legal hold and targeted download operations for legal and compliance teams preserving and extracting
+    data from devices under hold. Druva publishes these operations inside the Endpoints and Data Governance (inSync)
+    contract under the Legal Hold tag rather than as a standalone specification.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com/insync
   tags:
   - Legal Hold
   - Compliance
   - eDiscovery
-- aid: druva:druva-accounts-api
-  name: Druva Accounts API
-  description: The Accounts API from Druva — 2 operation(s) for accounts.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Account
-  tags_raw:
-  - Accounts
   properties:
   - type: OpenAPI
-    url: openapi/druva-accounts-api-openapi.yml
-- aid: druva:druva-authentication-api
-  name: Druva Authentication API
-  description: The Authentication API from Druva — 1 operation(s) for authentication.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+    url: openapi/druva-insync-cloud-openapi.json
+  - type: Documentation
+    url: https://developer.druva.com/reference
+- aid: druva:mcp
+  name: Druva MCP Server
+  description: Druva's first-party hosted Model Context Protocol server. MCP-compatible AI clients connect to a
+    single global endpoint over streamable HTTP, authenticate with 3-legged OAuth 2.1 and PKCE, and reach the Druva
+    Resilience Cloud through five tools that discover and execute cloud-delivered skills across endpoint health,
+    SaaS apps, cyber resilience and data governance. Destructive deletes are blocked server-side and every call
+    is bounded by the caller's Druva RBAC.
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
   tags:
-  - Authentication
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-authentication-api-openapi.yml
-- aid: druva:druva-backups-api
-  name: Druva Backups API
-  description: The Backups API from Druva — 1 operation(s) for backups.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Backups
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-backups-api-openapi.yml
-- aid: druva:druva-cyber-resilience-api
-  name: Druva Cyber Resilience API
-  description: The Cyber Resilience API from Druva — 2 operation(s) for cyber resilience.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
+  - MCP
+  - Agents
+  - AI
   - Cyber Resilience
   properties:
-  - type: OpenAPI
-    url: openapi/druva-cyber-resilience-api-openapi.yml
-- aid: druva:druva-policies-api
-  name: Druva Policies API
-  description: The Policies API from Druva — 2 operation(s) for policies.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Policies
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-policies-api-openapi.yml
-- aid: druva:druva-reports-api
-  name: Druva Reports API
-  description: The Reports API from Druva — 1 operation(s) for reports.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Reports
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-reports-api-openapi.yml
-- aid: druva:druva-schedules-api
-  name: Druva Schedules API
-  description: The Schedules API from Druva — 1 operation(s) for schedules.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Schedules
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-schedules-api-openapi.yml
-- aid: druva:druva-servers-api
-  name: Druva Servers API
-  description: The Servers API from Druva — 1 operation(s) for servers.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Servers
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-servers-api-openapi.yml
-common:
-  - type: AgenticAccess
-    url: agentic-access/druva-agentic-access.yml
-  - type: TrustCenter
-    url: security/druva-trust-center.yml
-  - type: DomainSecurity
-    url: security/druva-domain-security.yml
-  - type: Authentication
-    url: authentication/druva-authentication.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/druva
-  - type: Website
-    url: https://www.druva.com
+  - type: MCPServer
+    url: mcp/druva-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/druva-tool-crosswalk.yml
   - type: Documentation
-    url: https://docs.druva.com/
-  - type: DeveloperPortal
-    url: https://developer.druva.com
-  - type: APIReference
-    url: https://developer.druva.com/reference
-  - type: Support
-    url: https://support.druva.com
-  - type: GitHub
-    url: https://github.com/druvainc
-  - type: Integrations
-    url: https://www.druva.com/partners/ecosystem/technology-alliance-program
-  - type: LlmsText
-    url: https://developer.druva.com/llms.txt
-  - type: Blog
-    url: https://www.druva.com/blog
+    url: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+common:
+- type: OAuthScopes
+  url: scopes/druva-scopes.yml
+- type: AgenticAccess
+  url: agentic-access/druva-agentic-access.yml
+- type: TrustCenter
+  url: security/druva-trust-center.yml
+- type: DomainSecurity
+  url: security/druva-domain-security.yml
+- type: Authentication
+  url: authentication/druva-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/druva
+- type: Website
+  url: https://www.druva.com
+- type: Documentation
+  url: https://docs.druva.com/
+- type: DeveloperPortal
+  url: https://developer.druva.com
+- type: APIReference
+  url: https://developer.druva.com/reference
+- type: Support
+  url: https://support.druva.com
+- type: GitHub
+  url: https://github.com/druvainc
+- type: Integrations
+  url: https://www.druva.com/partners/ecosystem/technology-alliance-program
+- type: LlmsText
+  url: https://developer.druva.com/llms.txt
+- type: Blog
+  url: https://www.druva.com/blog
+- type: WellKnown
+  url: well-known/druva-well-known.yml
+- type: APICatalog
+  url: well-known/druva-api-catalog.json
+- type: MCPServer
+  url: mcp/druva-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/druva-tool-crosswalk.yml
+- type: Packages
+  url: packages/druva-packages.yml
+- type: LLMsTxt
+  url: llms/druva-llms.txt
+- type: Conformance
+  url: conformance/druva-conformance.yml
+- type: Compliance
+  url: security/druva-trust-center.yml
+- type: ErrorCatalog
+  url: errors/druva-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/druva-lifecycle.yml
+- type: StatusPage
+  url: https://support.druva.com/s/druvacloudstatus
+- type: Deprecation
+  url: https://developer.druva.com/docs/migration-process
+- type: ChangeLog
+  url: changelog/druva-changelog.yml
+- type: Conventions
+  url: conventions/druva-conventions.yml
+- type: DataModel
+  url: data-model/druva-data-model.yml
+- type: Plans
+  url: plans/druva-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/druva-rate-limits.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: FinOps
+  url: finops/druva-finops.yml
+- type: Pricing
+  url: https://www.druva.com/pricing
+- type: SignUp
+  url: https://login.druva.com/
+- type: TermsOfService
+  url: https://www.druva.com/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.druva.com/privacy-policy
+- type: GettingStarted
+  url: https://developer.druva.com/docs/introduction
+- type: GitHubOrganization
+  url: https://github.com/druvainc
+- type: Overlay
+  url: overlays/druva-aws-native-overlay.yaml
+- type: Overlay
+  url: overlays/druva-cloudranger-overlay.yaml
+- type: Overlay
+  url: overlays/druva-cyber-resilience-govcloud-overlay.yaml
+- type: Overlay
+  url: overlays/druva-cyber-resilience-overlay.yaml
+- type: Overlay
+  url: overlays/druva-insync-cloud-overlay.yaml
+- type: Overlay
+  url: overlays/druva-insync-govcloud-overlay.yaml
+- type: Overlay
+  url: overlays/druva-microsoft-365-overlay.yaml
+- type: SDKs
+  url: packages/druva-packages.yml
+- type: Console
+  url: https://login.druva.com/
 integrations:
-  - name: Alliances
-  - name: Ecosystem
-  - name: Value Added Resellers
-  - name: Managed Service Providers
+- name: Alliances
+- name: Ecosystem
+- name: Value Added Resellers
+- name: Managed Service Providers
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-06'
+  status: enriched
+  artifacts_added: 68
+  pass: local-v3

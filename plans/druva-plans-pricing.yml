@@ -3,164 +3,78 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Druva
 providerId: druva
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Backup
-  - Cyber Resilience
-  - Data Protection
-  - Disaster Recovery
-  - SaaS Backup
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
-plans:
-  - id: druva-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Druva API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Druva Cyber Resilience API
-      - name: Druva Endpoints and Data Governance API
-      - name: Druva Enterprise Workloads API
-      - name: Druva CloudRanger Native Workloads API
-      - name: Druva MSP API
-      - name: Druva Legal Hold Targeted Download API
-  - id: druva-pro
-    name: Professional
-    type: paid
-    description: Production tier for Druva. Provides higher quotas, priority support, and access to the
-      broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://apis.druva.com
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Druva Cyber Resilience API
-      - name: Druva Endpoints and Data Governance API
-      - name: Druva Enterprise Workloads API
-      - name: Druva CloudRanger Native Workloads API
-      - name: Druva MSP API
-      - name: Druva Legal Hold Targeted Download API
-  - id: druva-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Druva. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://apis.druva.com
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Druva Cyber Resilience API
-      - name: Druva Endpoints and Data Governance API
-      - name: Druva Enterprise Workloads API
-      - name: Druva CloudRanger Native Workloads API
-      - name: Druva MSP API
-      - name: Druva Legal Hold Targeted Download API
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+generated: '2026-09-06'
+method: searched
+source: https://www.druva.com/pricing
+sources:
+- https://www.druva.com/pricing
+- https://www.druva.com/products/resilience-cloud/pricing-plans
+- https://www.druva.com/products/resilience-cloud/pricing-plans/enterprise-data-plans
+- https://www.druva.com/products/resilience-cloud/pricing-plans/productivity-data-plans
+- https://www.druva.com/products/resilience-cloud/pricing-plans/saas-universal-license
+- https://www.druva.com/products/resilience-cloud/pricing-plans/essentials-pack
+- https://www.druva.com/products/resilience-cloud/pricing-plans/crm-data-plans
+- https://www.druva.com/products/resilience-cloud/pricing-plans/identity-resilience-plans
+replaces: >-
+  This file previously held the 2026-05-04 API Evangelist scaffold - invented Free /
+  Professional / Enterprise tiers with a 1,000-request monthly quota and a 10 rpm rate limit,
+  none of which Druva has ever published. That content was fabricated and has been removed.
+plan_count: 0
+priced_plan_count: 0
+note: >-
+  Druva publishes NAMED editions but no numbers. Every tier page renders a "$" placeholder
+  and a "Contact sales" or "Get a quote" path; no per-user, per-TB or per-month figure
+  appears anywhere in the public pricing tree, and no currency is stated. Pricing is also
+  product-metered (TB/month after deduplication, or per user), not API-metered: there is no
+  API call quota, no per-request price and no API-specific plan of any kind. API access is
+  included with a Druva subscription and gated by the Cloud Administrator role rather than
+  sold separately, so plan_count is recorded as 0 - Druva publishes no purchasable plan with
+  a price attached.
+api_access_model:
+  sold_separately: false
+  metered_by_api_calls: false
+  gate: >-
+    API credentials (Client ID + Secret Key) are created from the Druva Cloud Platform
+    Console by a Cloud Administrator; a granular Cloud Admin Read Only role is also
+    available. Access follows the product subscription.
+  docs: https://help.druva.com/en/articles/8580838-create-and-manage-api-credentials
+published_editions:
+- family: Enterprise Data (Data Center, Public Cloud on AWS and Azure)
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/enterprise-data-plans
+  tiers: [Business, Enterprise, Elite]
+  unit: TB/month after deduplication
+  price: not published
+  currency: not stated
+  note: Enterprise is marked "Most Popular". No numeric price is shown on the page.
+- family: Productivity Data (Microsoft 365, Google Workspace, Endpoints, Power BI)
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/productivity-data-plans
+  price: not published
+- family: Digital Identity Data (Entra ID, Active Directory, Okta)
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/identity-resilience-plans
+  price: not published
+- family: CRM Data (Salesforce, Dynamics 365)
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/crm-data-plans
+  price: not published
+- family: SaaS Universal License
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/saas-universal-license
+  price: not published
+  note: Unified per-user licence with dynamic pooled storage.
+- family: Essentials Pack (SMB)
+  url: https://www.druva.com/products/resilience-cloud/pricing-plans/essentials-pack
+  price: not published
+consumption_metrics_published:
+  docs: https://developer.druva.com/docs/quota-management-consumption-parameters
+  note: >-
+    Druva DOES publish the machine-readable metering vocabulary its MSP Quota Management APIs
+    use, even though it publishes no prices. These are the units a bill is computed from.
+  enterprise_workloads:
+  - {parameter: Archive Data Cloud Storage, unit: TB}
+  - {parameter: Archive Early Deletion Data, unit: TB}
+  - {parameter: Backend Cloud Storage, unit: TB}
+  - {parameter: Backend Source + Change Storage, unit: TB}
+  - {parameter: Frontend Source Storage, unit: TB}
+  - {parameter: LTR Data Cloud Storage, unit: TB}
+  - {parameter: LTR Early Deletion Data, unit: TB}
+  - {parameter: Total Active Devices or Backup sets, unit: Count}
+  - {parameter: Warm Tier Cloud Storage, unit: TB}
+plans: []

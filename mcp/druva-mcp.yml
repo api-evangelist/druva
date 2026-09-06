@@ -1,0 +1,92 @@
+generated: '2026-09-06'
+method: searched
+status: published
+source: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+sources:
+- https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+- https://www.druva.com/use-cases/ai-resilience/ai/druva-mcp
+- https://www.druva.com/blog/mcp-brings-backup-intelligence-ai
+- https://mcp.druva.com/.well-known/oauth-authorization-server
+- https://mcp.druva.com/.well-known/oauth-protected-resource/mcp
+name: Druva MCP Server
+description: >-
+  Druva publishes a first-party hosted MCP server that connects MCP-compatible AI clients
+  (Claude Desktop, Cursor, VS Code, Microsoft Copilot) to the Druva Resilience Cloud under
+  the caller's own Druva RBAC. Rather than exposing one tool per REST operation, Druva ships
+  a "Code Mode" skills architecture: five generic tools that discover, retrieve and execute
+  cloud-delivered skills, so new capability is added server-side without a client update.
+deployment:
+  mode: remote
+  endpoint: https://mcp.druva.com/mcp
+  transport: streamable-http
+  auth: oauth
+  verified: probed
+  probe:
+    method: POST
+    url: https://mcp.druva.com/mcp
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    response: '{"error": "invalid_token", "error_description": "Authentication required"}'
+    www_authenticate: >-
+      Bearer error="invalid_token", error_description="Authentication required",
+      resource_metadata="https://mcp.druva.com/.well-known/oauth-protected-resource/mcp"
+    server: uvicorn
+    date: '2026-09-06'
+    note: >-
+      The endpoint is live and speaks MCP over HTTP, but tools/list is OAuth-gated, so the
+      live inputSchema for each tool could not be introspected anonymously. The tool names
+      and semantics below are taken verbatim from Druva's own published documentation, NOT
+      from an authenticated introspection. Schemas require an authenticated tools/list.
+oauth:
+  authorization_server: https://mcp.druva.com
+  authorization_endpoint: https://login.druva.com/login
+  token_endpoint: https://mcp.druva.com/token
+  registration_endpoint: https://mcp.druva.com/register
+  grant_types: [authorization_code, refresh_token]
+  code_challenge_methods: [S256]
+  token_endpoint_auth_methods: [none]
+  scopes: [mcp:tools, mcp:resources]
+  protected_resource: https://mcp.druva.com/mcp
+  flow_documented_as: 3-legged OAuth 2.1 with implicit role-based access control
+  discovery_documents:
+  - well-known/druva-mcp-oauth-authorization-server.json
+  - well-known/druva-mcp-oauth-protected-resource.json
+client_config: |
+  {
+    "mcpServers": {
+      "druva": {
+        "type": "http",
+        "url": "https://mcp.druva.com/mcp"
+      }
+    }
+  }
+tools:
+- name: druva___list_skills
+  description: List the Druva skills available to the authenticated caller.
+  schema: auth-gated
+- name: druva___recommend_skill
+  description: Recommend the Druva skill that best matches a natural-language request.
+  schema: auth-gated
+- name: druva___retrieve_skill
+  description: Retrieve the definition of a named Druva skill.
+  schema: auth-gated
+- name: druva___run_read_script
+  description: Execute a read-only script against the Druva Resilience Cloud on the caller's behalf.
+  schema: auth-gated
+- name: druva___run_write_script
+  description: >-
+    Execute a configuration-modifying script. Druva documents that this cannot delete Druva
+    Cloud configurations or backup data - destructive delete operations are blocked server-side.
+  schema: auth-gated
+tool_count: 5
+skill_domains:
+- endpoint health
+- SaaS apps
+- cyber resilience
+- data governance
+safety:
+  destructive_operations: blocked
+  note: >-
+    Druva documents that the MCP server has permission to read and modify configuration
+    settings but cannot delete Druva Cloud configurations or backup data, and that every
+    interaction is constrained by the caller's existing Druva RBAC.

@@ -1,0 +1,87 @@
+generated: '2026-09-06'
+method: searched
+source: openapi/druva-aws-native-openapi.json, openapi/druva-cyber-resilience-govcloud-openapi.json, openapi/druva-cyber-resilience-openapi.json,
+  openapi/druva-enterprise-workloads-govcloud-openapi.json, openapi/druva-enterprise-workloads-openapi.json,
+  openapi/druva-insync-cloud-openapi.json, openapi/druva-insync-govcloud-openapi.json, openapi/druva-job-management-cloud-openapi.json,
+  openapi/druva-job-management-govcloud-openapi.json, openapi/druva-msp-openapi.json, openapi/druva-platform-openapi.json
+schemes:
+- name: OAuth2
+  source: openapi/druva-aws-native-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-cyber-resilience-govcloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://govapis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-cyber-resilience-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-enterprise-workloads-govcloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-enterprise-workloads-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-insync-cloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-insync-govcloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-job-management-cloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-job-management-govcloud-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+- name: OAuth2
+  source: openapi/druva-msp-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/msp/auth/v1/token
+- name: BearerAuth
+  source: openapi/druva-platform-openapi.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+scopes:
+- name: read
+  description: Grants read access. The only scope declared in any Druva specification.
+  source: securitySchemes.OAuth2.flows.clientCredentials.scopes in 11 of 19 specs
+docs: https://developer.druva.com/docs/authentication
+note: 'Druva declares exactly ONE OAuth scope across its whole 970-operation estate: ''read'', on the
+  client-credentials flow, in 11 of 19 specifications. The documentation is explicit that this is not
+  an oversight but the design - ''The Client Credentials have access to all the OAuth Scopes by default''
+  - so scope is not the authorization boundary. The real boundary is the Druva console role attached to
+  the API credential (Cloud Administrator, or the newer Cloud Admin Read Only role for the inSync Cloud
+  and Platform APIs), which is not expressed in any contract. An agent therefore cannot request least
+  privilege at the token endpoint; least privilege has to be provisioned by a human when the credential
+  is minted. The separate MCP server at mcp.druva.com does scope properly - mcp:tools and mcp:resources
+  - and is the only Druva surface where scope carries meaning.'
+mcp_scopes:
+- name: mcp:tools
+  source: https://mcp.druva.com/.well-known/oauth-authorization-server
+- name: mcp:resources
+  source: https://mcp.druva.com/.well-known/oauth-authorization-server
+authorization_model:
+  style: role-based, provisioned out of band
+  roles:
+  - Cloud Administrator
+  - Cloud Admin Read Only
+  docs: https://help.druva.com/en/articles/8580838-create-and-manage-api-credentials

@@ -1,13 +1,70 @@
-generated: '2026-07-11'
+generated: '2026-09-06'
 method: derived
-source: openapi/druva-openapi.yml
+source: openapi/druva-authentication-openapi.json, openapi/druva-aws-native-openapi.json, openapi/druva-cloudranger-openapi.json,
+  openapi/druva-cyber-resilience-govcloud-authorization-openapi.json, openapi/druva-cyber-resilience-govcloud-openapi.json,
+  openapi/druva-cyber-resilience-openapi.json, openapi/druva-enterprise-workloads-govcloud-openapi.json,
+  openapi/druva-enterprise-workloads-openapi.json, openapi/druva-google-workspace-openapi.json,
+  openapi/druva-govcloud-authentication-openapi.json, openapi/druva-hybrid-workload-govcloud-authentication-openapi.json,
+  openapi/druva-insync-cloud-openapi.json ...
 summary:
   types:
+  - apiKey
   - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - clientCredentials
 schemes:
-- name: bearerAuth
+- name: sec0
   type: http
-  scheme: bearer
-  description: Bearer access token obtained from /token using API credentials
+  scheme: basic
   sources:
-  - openapi/druva-openapi.yml
+  - openapi/druva-authentication-openapi.json
+  - openapi/druva-cyber-resilience-govcloud-authorization-openapi.json
+  - openapi/druva-govcloud-authentication-openapi.json
+  - openapi/druva-hybrid-workload-govcloud-authentication-openapi.json
+  - openapi/druva-msp-authentication-openapi.json
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://apis.druva.com/token
+    scopes: 1
+  sources:
+  - openapi/druva-aws-native-openapi.json
+  - openapi/druva-cyber-resilience-govcloud-openapi.json
+  - openapi/druva-cyber-resilience-openapi.json
+  - openapi/druva-enterprise-workloads-govcloud-openapi.json
+  - openapi/druva-enterprise-workloads-openapi.json
+  - openapi/druva-insync-cloud-openapi.json
+  - openapi/druva-insync-govcloud-openapi.json
+  - openapi/druva-job-management-cloud-openapi.json
+  - openapi/druva-job-management-govcloud-openapi.json
+  - openapi/druva-msp-openapi.json
+  - openapi/druva-platform-openapi.json
+- name: Bearer
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/druva-aws-native-openapi.json
+  - openapi/druva-cloudranger-openapi.json
+  - openapi/druva-cyber-resilience-govcloud-openapi.json
+  - openapi/druva-cyber-resilience-openapi.json
+  - openapi/druva-enterprise-workloads-govcloud-openapi.json
+  - openapi/druva-enterprise-workloads-openapi.json
+  - openapi/druva-google-workspace-openapi.json
+  - openapi/druva-insync-cloud-openapi.json
+  - openapi/druva-insync-govcloud-openapi.json
+  - openapi/druva-job-management-cloud-openapi.json
+  - openapi/druva-job-management-govcloud-openapi.json
+  - openapi/druva-microsoft-365-openapi.json
+  - openapi/druva-msp-openapi.json
+  - openapi/druva-platform-openapi.json
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  sources:
+  - openapi/druva-cloudranger-openapi.json

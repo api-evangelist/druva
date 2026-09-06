@@ -1,0 +1,73 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://developer.druva.com/docs/migration-process, https://developer.druva.com/docs/faqs,
+  https://help.druva.com/en/articles/10206884-druva-release-notes-index,
+  https://help.druva.com/en/articles/10345977-release-notes-cloud-platform, and the 19
+  first-party specifications in openapi/.
+versioning:
+  scheme: path-segment, per resource family
+  detail: >-
+    Version numbers live inside the product path (/insync/endpoints/v1/devices,
+    /insync/eventmanagement/v2/events, /ransomwarerecovery/v1 and /v2, /fileserver/v2). There
+    is no estate-wide API version, no version header, and no version in the media type. v1
+    and v2 of the same family are published side by side in the same specification.
+  documented_policy: false
+  note: >-
+    Druva publishes no written versioning policy - no statement of how long a version is
+    supported, what constitutes a breaking change, or how a new version is announced.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: 0
+  detail: >-
+    Not one of the 970 published operations carries `deprecated: true`, and no response in
+    any specification declares a Sunset or Deprecation header. Druva does retire APIs - the
+    migration guide below documents a whole gateway generation being replaced - but it
+    announces that in prose on a documentation page, not in the contract, so a client cannot
+    detect a retirement programmatically.
+  historical_retirement:
+    name: Legacy inSync API gateway
+    docs: https://developer.druva.com/docs/migration-process
+    retired_endpoints:
+    - https://insyncapi-cloud.druva.com/api/reports (Reports API v1, v2, v3)
+    - https://insyncapi-cloud.druva.com/api/legalhold (Legal Hold API v1, v2)
+    - https://insyncapi-cloud.druva.com/api/events (Events API v1)
+    replaced_by: https://apis.druva.com with OAuth 2.0 client-credentials at https://apis.druva.com/token
+    note: >-
+      The migration is documented as a per-endpoint mapping table with new authentication,
+      but with no dated sunset and no Sunset header on the old surface.
+  recent_product_deprecation:
+    item: Active Directory Connector on Linux CentOS
+    date: '2026-01-30'
+    source: https://help.druva.com/en/articles/10345977-release-notes-cloud-platform
+    note: >-
+      Product-level, not API-level. Existing installations keep working but receive no
+      support, security updates or bug fixes.
+status_page:
+  published: true
+  url: https://support.druva.com/s/druvacloudstatus
+  alias: https://status.druva.com
+  note: >-
+    status.druva.com resolves to an S3 website that redirects to the Druva Community status
+    page at https://support.druva.com/s/druvacloudstatus (HTTP 200). It is a Salesforce
+    Experience Cloud page, not a Statuspage/Atlassian component feed, so there is no
+    machine-readable status JSON and no status RSS to subscribe to.
+  machine_readable: false
+sla:
+  published: false
+  detail: >-
+    No API availability SLA is published on the developer portal or the pricing pages.
+    Contractual availability terms are negotiated per subscription.
+release_notes:
+  published: true
+  index: https://help.druva.com/en/articles/10206884-druva-release-notes-index
+  cadence: dated entries, roughly monthly, split per product
+  see: changelog/druva-changelog.yml
+support:
+  developer: https://developer.druva.com
+  community: https://support.druva.com
+  docs: https://docs.druva.com/
+  credentials: https://help.druva.com/en/articles/8580838-create-and-manage-api-credentials

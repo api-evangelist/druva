@@ -1,0 +1,75 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  mcp/druva-mcp.yml (tool names published by Druva) bound against the 19 first-party
+  OpenAPI/Swagger definitions in openapi/, harvested from
+  https://developer.druva.com/.well-known/api-catalog
+note: >-
+  Druva's MCP server does NOT expose one tool per REST operation. It ships a Code Mode
+  skills architecture: three discovery tools plus two generic script executors. There is
+  therefore no 1:1 tool-to-operationId binding to draw, and asserting one would be
+  fabrication. What CAN be stated honestly is the containment relationship - the two
+  executor tools reach the same product surface the REST API covers, bounded by the caller's
+  RBAC, with deletes blocked. The live tools/list is OAuth-gated (HTTP 401), so no tool
+  inputSchema was read; the confidence values below reflect that.
+surfaces:
+  openapi:
+    count: 19
+    operations: 970
+    catalog: https://developer.druva.com/.well-known/api-catalog
+    gated: false
+    note: Definitions are anonymously downloadable; calling the operations requires OAuth 2.0 client credentials.
+  mcp:
+    url: https://mcp.druva.com/mcp
+    gated: true
+    note: tools/list returns 401 invalid_token; schemas require an authenticated introspection.
+  graphql:
+    present: false
+crosswalk:
+- tool: druva___run_read_script
+  category: execution
+  rest: []
+  binding: containment
+  confidence: low
+  note: >-
+    Generic read executor. Reaches the read side of the Druva product surface that the
+    GET operations across openapi/ describe, but Druva publishes no mapping from a skill
+    script to an operationId and the tool schema is auth-gated, so no operationIds are
+    asserted here.
+- tool: druva___run_write_script
+  category: execution
+  rest: []
+  binding: containment
+  confidence: low
+  note: >-
+    Generic write executor covering the POST/PUT/PATCH surface, with delete of Druva Cloud
+    configuration and backup data blocked server-side. Same caveat as the read executor.
+mcp_only:
+- tool: druva___list_skills
+  reason: Skill catalogue discovery. No REST equivalent - skills are an MCP-layer construct delivered from Druva's cloud.
+- tool: druva___recommend_skill
+  reason: Natural-language skill selection. No REST equivalent.
+- tool: druva___retrieve_skill
+  reason: Skill definition retrieval. No REST equivalent.
+rest_only:
+  count: 970
+  note: >-
+    Every published REST operation is rest_only under a strict name binding, because no MCP
+    tool names an operationId. Listing 970 rows would assert a precision this crosswalk does
+    not have; the product families are named instead.
+  families:
+  - Endpoints and Data Governance (inSync Cloud / GovCloud)
+  - Enterprise Workloads (Cloud / GovCloud)
+  - Cyber Resilience / Realize (Cloud / GovCloud)
+  - AWS Native Workloads and CloudRanger
+  - MSP tenant, customer and quota management
+  - Microsoft 365 and Google Workspace reporting
+  - Platform and Job Management
+coverage:
+  mcp_tools: 5
+  tools_bound_to_rest: 0
+  tools_bound_by_containment: 2
+  mcp_only: 3
+  rest_operations: 970
+  rest_operations_with_a_named_tool: 0
+  binding_quality: none-by-design

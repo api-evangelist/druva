@@ -1,0 +1,56 @@
+generated: '2026-09-06'
+method: searched
+source: https://help.druva.com/en/articles/10345977-release-notes-cloud-platform
+sources:
+- https://help.druva.com/en/articles/10206884-druva-release-notes-index
+- https://help.druva.com/en/articles/10345977-release-notes-cloud-platform
+- https://help.druva.com/en/articles/13284231-archived-release-notes-and-fixed-issues-2025
+scheme: dated release notes, per product, no version numbers
+current_version: null
+note: >-
+  Druva publishes dated release notes on help.druva.com, split per product (Cloud Platform,
+  Enterprise Workloads, Endpoints, Microsoft 365, Google Workspace, Managed Services Center),
+  with an index page linking them. There is NO changelog on the developer portal itself -
+  https://developer.druva.com/changelog returns 404 - so API consumers have to read product
+  release notes to find API changes, and there is no feed, no version number and no
+  machine-readable form. Only the API-affecting entries are recorded below; this is a recent
+  window, not the full history.
+entries:
+- date: '2026-08-27'
+  product: Cloud Platform
+  title: Configure Druva MCP Server with a unified URL
+  type: enhancement
+  breaking: false
+  highlights:
+  - A single global MCP URL replaces the previous region-specific URLs.
+  - Existing region-specific URLs redirect automatically to the new global URL.
+  note: This is why the MCP endpoint recorded in mcp/druva-mcp.yml is a single global https://mcp.druva.com/mcp.
+- date: '2026-02-26'
+  product: Cloud Platform
+  title: Update administrator roles and details via API
+  type: addition
+  breaking: false
+  highlights:
+  - Administrator name, timezone and assigned roles can now be modified through the API.
+  - Requires the "Access Administrator Management APIs" setting to be enabled in the console first.
+- date: '2026-01-30'
+  product: Cloud Platform
+  title: Deprecation of Active Directory Connector on Linux CentOS
+  type: deprecation
+  breaking: false
+  highlights:
+  - Existing CentOS installations keep working but receive no support, security updates or bug fixes.
+  note: Product-level deprecation, not an API contract change.
+- date: '2025-12-18'
+  product: Cloud Platform
+  title: pageToken parameter added to List All Administrators
+  type: addition
+  breaking: false
+  highlights:
+  - Cursor pagination extended to the administrator listing for large environments.
+undated_api_changes_noted_in_release_notes:
+- Granular role-based access control (RBAC) for API credentials.
+- Cloud Admin Read Only role selectable when creating API credentials for the inSync Cloud and Platform APIs.
+- Job management APIs for Azure SQL (create and cancel backup and restore jobs).
+- sendPasswordByEmail field on Create New User, to suppress the activation notification.
+- Managed Services Center support for converting customers from MSC Provisioned to Druva Provisioned.

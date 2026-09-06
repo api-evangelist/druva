@@ -1,0 +1,330 @@
+generated: '2026-09-06'
+method: derived
+source: Derived from the 4xx/5xx responses of the 19 first-party Druva OpenAPI/Swagger definitions in openapi/,
+  enriched from https://developer.druva.com/docs/faqs and https://developer.druva.com/docs/authentication
+format: vendor-json
+rfc9457: false
+note: Druva does NOT use RFC 9457 application/problem+json anywhere in its 970 published operations - zero responses
+  declare that media type. Errors are returned as application/json with a vendor envelope. Two envelope shapes are
+  in use across the estate, which is itself a finding for a client that has to handle all of them.
+envelopes:
+- name: APIError
+  media_type: application/json
+  fields:
+  - name: code
+    type: string
+    note: Product-prefixed application error code, e.g. RealizeUda-1001
+  - name: message
+    type: string
+  - name: data
+    type: object
+    note: Free-form context; not present in every product
+  - name: retryable
+    type: boolean
+    note: Machine-readable retry hint - the most agent-useful field Druva publishes in an error
+  used_by: Enterprise Workloads, Cyber Resilience, MSP, inSync
+- name: ServiceError
+  media_type: application/json
+  fields:
+  - name: code
+    type: integer
+    format: int64
+  - name: message
+    type: string
+  used_by: Enterprise Workloads (godevkit errortype)
+status_codes:
+- status: 400
+  title: Bad Request
+  occurrences: 552
+  meaning: Invalid or missing arguments; invalid API syntax.
+- status: 401
+  title: Unauthorized
+  occurrences: 787
+  meaning: No authentication token supplied, or the token supplied was expired.
+  remediation: Re-run the client-credentials exchange against <base>/token. Access tokens live 30 minutes on public
+    cloud and Hybrid Workloads GovCloud, 15 minutes on Endpoints and Data Governance GovCloud, and cannot be extended.
+- status: 403
+  title: Forbidden
+  occurrences: 597
+  meaning: Insufficient permissions, or the token was minted on a different Druva cloud than the one being called.
+  remediation: 'Druva documents the message "User is not authorized to access this resource with an explicit deny"
+    for two causes: the caller lacks the Cloud Administrator role, or the token was generated for a different cloud
+    (mainline vs GovCloud). Druva also documents 403 as the response to an EXPIRED access token, so a client must
+    treat 401 and 403 as the same refresh trigger.'
+- status: 404
+  title: Not Found
+  occurrences: 876
+  meaning: The requested resource was not found.
+- status: 422
+  title: Unprocessable Entity
+  occurrences: 54
+  meaning: The request was well-formed but not processed due to semantic errors.
+- status: 429
+  title: Too Many Requests
+  occurrences: 2
+  meaning: Rate limited.
+  note: Declared on only 2 of 970 operations, and Druva documents no rate-limit response headers. See rate-limits/druva-rate-limits.yml.
+- status: 500
+  title: Internal Server Error
+  occurrences: 540
+  meaning: The request was not processed due to an internal error in the Druva Cloud.
+- status: 501
+  title: Not Implemented
+  occurrences: 75
+  meaning: The requested HTTP method is not implemented for this path.
+- status: 503
+  title: Service Unavailable
+  occurrences: 3
+  meaning: The service is not available.
+code_families:
+- prefix: SPO
+  product: Security Posture and Observability
+  codes: 29
+- prefix: MDS
+  product: Managed Data Services / MSP
+  codes: 19
+- prefix: MS
+  product: Managed Services Center
+  codes: 9
+- prefix: inSyncLegalholds
+  product: Endpoints and Data Governance - Legal Hold
+  codes: 7
+- prefix: RansomwareRR
+  product: Accelerated Ransomware Recovery
+  codes: 6
+- prefix: RWCMaster
+  product: Ransomware / Curated Snapshots
+  codes: 5
+- prefix: RealizeUda
+  product: Cyber Resilience - Unusual Data Activity
+  codes: 4
+- prefix: ransomware
+  product: Cyber Resilience - Ransomware
+  codes: 4
+- prefix: THMaster
+  product: Threat Hunting
+  codes: 3
+- prefix: TIMaster
+  product: Threat Intel
+  codes: 3
+- prefix: realizecommon
+  product: Cyber Resilience - common
+  codes: 3
+- prefix: InsyncSdg
+  product: inSync Sensitive Data Governance
+  codes: 1
+- prefix: sdg
+  product: Sensitive Data Governance
+  codes: 1
+code_count: 56
+codes:
+- code: InsyncSdg-1027
+  family: InsyncSdg
+  messages:
+  - You do not have permissions for the action.
+- code: MDS-1000
+  family: MDS
+  messages: null
+- code: MDS-1001
+  family: MDS
+  messages: null
+- code: MDS-1002
+  family: MDS
+  messages: null
+- code: MDS-1003
+  family: MDS
+  messages: null
+- code: MDS-1004
+  family: MDS
+  messages: null
+- code: MDS-1005
+  family: MDS
+  messages: null
+- code: MDS-1006
+  family: MDS
+  messages: null
+- code: MDS-1007
+  family: MDS
+  messages: null
+- code: MDS-1008
+  family: MDS
+  messages: null
+- code: MDS-1009
+  family: MDS
+  messages: null
+- code: MDS-1010
+  family: MDS
+  messages: null
+- code: MDS-1011
+  family: MDS
+  messages: null
+- code: MDS-1012
+  family: MDS
+  messages: null
+- code: MDS-1201
+  family: MDS
+  messages: null
+- code: MDS-1202
+  family: MDS
+  messages: null
+- code: MDS-1203
+  family: MDS
+  messages: null
+- code: MDS-1204
+  family: MDS
+  messages: null
+- code: MDS-1205
+  family: MDS
+  messages: null
+- code: MDS-1206
+  family: MDS
+  messages: null
+- code: RWCMaster-1000
+  family: RWCMaster
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: RWCMaster-1002
+  family: RWCMaster
+  messages:
+  - Invalid API Syntax
+  - Invalid Resource Type
+- code: RWCMaster-1003
+  family: RWCMaster
+  messages:
+  - The requested resource was not found.
+- code: RWCMaster-1006
+  family: RWCMaster
+  messages:
+  - Invalid API Syntax
+- code: RWCMaster-1102
+  family: RWCMaster
+  messages:
+  - Invalid API Syntax
+  - Invalid Resource Type
+- code: RansomwareRR-1000
+  family: RansomwareRR
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: RansomwareRR-1003
+  family: RansomwareRR
+  messages:
+  - The requested quarantine range was not found.
+  - The requested resource ID was invalid.
+  - The requested resource was not found.
+- code: RansomwareRR-1101
+  family: RansomwareRR
+  messages:
+  - The requested quarantine range was not found.
+  - The requested resource ID was invalid.
+  - The requested resource was not found.
+- code: RansomwareRR-1102
+  family: RansomwareRR
+  messages:
+  - Invalid API Syntax
+  - Invalid Resource Type
+- code: RansomwareRR-1111
+  family: RansomwareRR
+  messages:
+  - Invalid API Syntax
+  - Invalid Resource Type
+- code: RansomwareRR-1122
+  family: RansomwareRR
+  messages:
+  - The requested quarantine range was not found.
+  - The requested resource ID was invalid.
+  - The requested resource was not found.
+- code: RealizeUda-1001
+  family: RealizeUda
+  messages:
+  - Invalid API Syntax
+- code: RealizeUda-1002
+  family: RealizeUda
+  messages:
+  - The requested resource was not found.
+- code: RealizeUda-1003
+  family: RealizeUda
+  messages:
+  - Unprocessable entity
+- code: RealizeUda-1004
+  family: RealizeUda
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: THMaster-1002
+  family: THMaster
+  messages:
+  - Invalid API Syntax
+- code: THMaster-1003
+  family: THMaster
+  messages:
+  - The requested resource was not found.
+- code: THMaster-1006
+  family: THMaster
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: TIMaster-1000
+  family: TIMaster
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: TIMaster-1002
+  family: TIMaster
+  messages:
+  - Invalid API Syntax
+- code: TIMaster-1003
+  family: TIMaster
+  messages:
+  - The requested resource was not found.
+- code: inSyncLegalholds-2003
+  family: inSyncLegalholds
+  messages: null
+- code: inSyncLegalholds-4294967391
+  family: inSyncLegalholds
+  messages: null
+- code: inSyncLegalholds-4294967423
+  family: inSyncLegalholds
+  messages: null
+- code: inSyncLegalholds-4294967438
+  family: inSyncLegalholds
+  messages:
+  - Legalhold policy not found.
+- code: inSyncLegalholds-4294967489
+  family: inSyncLegalholds
+  messages:
+  - Invalid API Syntax
+- code: inSyncLegalholds-4294967490
+  family: inSyncLegalholds
+  messages:
+  - You do not have permissions for the action.
+- code: inSyncLegalholds-4294967557
+  family: inSyncLegalholds
+  messages: null
+- code: ransomware-1001
+  family: ransomware
+  messages:
+  - Invalid API Syntax
+- code: ransomware-1002
+  family: ransomware
+  messages:
+  - The requested resource was not found.
+- code: ransomware-1003
+  family: ransomware
+  messages:
+  - Unprocessable entity
+- code: ransomware-1004
+  family: ransomware
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: realizecommon-1000
+  family: realizecommon
+  messages:
+  - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+- code: realizecommon-1002
+  family: realizecommon
+  messages:
+  - Invalid API Syntax
+- code: realizecommon-1003
+  family: realizecommon
+  messages:
+  - The requested resource was not found.
+- code: sdg-1001
+  family: sdg
+  messages: null

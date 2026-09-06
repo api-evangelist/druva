@@ -1,0 +1,182 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  Direct HTTPS probes of /.well-known/* on every host this record knows: the registrable
+  domain and www, every apis.yml baseURL host, every OpenAPI servers[] host, the docs,
+  developer, support, console and MCP hosts, and login.druva.com because the MCP
+  authorization-server metadata names it in authorization_endpoint.
+note: >-
+  Three real documents were served. developer.druva.com publishes a genuine RFC 9727
+  api-catalog linkset that enumerates all 19 of Druva's OpenAPI/Swagger definitions with
+  service-desc and service-doc links - this is how the specs in openapi/ were located.
+  mcp.druva.com publishes RFC 8414 authorization-server metadata plus RFC 9728
+  protected-resource metadata for the hosted Druva MCP server. support.druva.com serves a
+  real OpenID Provider configuration, but it is the Salesforce Experience Cloud identity
+  provider behind the Druva Community, not the authorization server for the Druva product
+  APIs - its scopes_supported are Salesforce platform scopes. docs.druva.com answers 200
+  with the same 94KB Next.js SPA shell on every /.well-known/ path, which is a soft-404 and
+  is recorded as a miss. support.druva.com does the same for every path except
+  openid-configuration. apis.druva.com / govapis.druva.com / govcloudapis.druva.com are AWS
+  API Gateway hosts that answer 403 "Missing Authentication Token" to any unrouted path.
+hosts:
+- host: druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: www.druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: developer.druva.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    file: druva-api-catalog.json
+    content_type: application/json
+    note: >-
+      RFC 9727 linkset. 19 anchors, each with a service-desc href of
+      https://developer.druva.com/openapi/<filename>.json and media type
+      application/vnd.oai.openapi+json.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: mcp.druva.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: druva-mcp-oauth-authorization-server.json
+    content_type: application/json
+    note: >-
+      RFC 8414. issuer https://mcp.druva.com, authorization_endpoint
+      https://login.druva.com/login, dynamic client registration at /register, PKCE S256,
+      scopes mcp:tools and mcp:resources.
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: druva-mcp-openid-configuration.json
+    content_type: application/json
+    note: Byte-identical payload to the oauth-authorization-server document.
+  - path: /.well-known/oauth-protected-resource/mcp
+    status: 200
+    file: druva-mcp-oauth-protected-resource.json
+    content_type: application/json
+    note: >-
+      RFC 9728. Named by the WWW-Authenticate resource_metadata parameter on the 401 from
+      POST https://mcp.druva.com/mcp. resource https://mcp.druva.com/mcp.
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: The document lives at the resource-suffixed path /.well-known/oauth-protected-resource/mcp.
+- host: support.druva.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: druva-support-openid-configuration.json
+    content_type: application/json
+    note: >-
+      Real OIDC discovery document, but it belongs to the Salesforce Experience Cloud
+      community that runs the Druva support portal (issuer https://support.druva.com,
+      Salesforce platform scopes such as cdp_api, pardot_api, wave_api). It is NOT the
+      authorization server for the Druva product APIs, which use OAuth 2.0 client
+      credentials against https://apis.druva.com/token.
+  - path: /.well-known/security.txt
+    status: 200
+    note: SOFT-404 - returns the Salesforce community HTML shell, not a security.txt document.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: SOFT-404 - HTML shell.
+  - path: /.well-known/api-catalog
+    status: 200
+    note: SOFT-404 - HTML shell.
+  - path: /.well-known/agent-card.json
+    status: 200
+    note: SOFT-404 - HTML shell, not an AgentCard object.
+- host: docs.druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: SOFT-404 - identical 94KB Next.js SPA shell returned for every path on this host.
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: SOFT-404 - SPA shell.
+  - path: /.well-known/api-catalog
+    status: 200
+    note: SOFT-404 - SPA shell.
+  - path: /.well-known/agent-card.json
+    status: 200
+    note: SOFT-404 - SPA shell, not an AgentCard object.
+- host: login.druva.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: SOFT-404 - React SPA shell. Probed because mcp.druva.com names this host as its authorization_endpoint.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: SOFT-404 - React SPA shell.
+- host: apis.druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+- host: govapis.druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+- host: govcloudapis.druva.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+- host: api.cloudranger.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403

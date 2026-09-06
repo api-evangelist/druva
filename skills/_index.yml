@@ -1,0 +1,44 @@
+generated: '2026-09-06'
+method: generated
+source: >-
+  Packaged Agent Skills authored by API Evangelist from Druva's own published contracts and
+  documentation. Druva publishes no skills/ directory or AGENTS.md of its own; searched
+  developer.druva.com, docs.druva.com, help.druva.com and github.com/druvainc and found none.
+  Every operationId referenced in every skill is present in the corresponding first-party
+  specification in openapi/ - none were invented.
+grounded_in:
+- openapi/druva-authentication-openapi.json
+- openapi/druva-enterprise-workloads-openapi.json
+- openapi/druva-msp-openapi.json
+- openapi/druva-cyber-resilience-openapi.json
+cross_references:
+- conventions/druva-conventions.yml
+- errors/druva-problem-types.yml
+- lifecycle/druva-lifecycle.yml
+- mcp/druva-mcp.yml
+skills:
+- name: druva-authenticate
+  file: druva-authenticate.md
+  api: Druva Authentication API
+  operations: 1
+  summary: Client-credentials token exchange on the correct Druva cloud, plus the 15/30-minute refresh rule and the 403-means-expired trap.
+- name: druva-on-demand-backup
+  file: druva-on-demand-backup.md
+  api: Druva Enterprise Workloads API
+  operations: 12
+  summary: Trigger a per-workload on-demand backup, poll the job reports, and cancel.
+- name: druva-restore-workload
+  file: druva-restore-workload.md
+  api: Druva Enterprise Workloads API
+  operations: 16
+  summary: Snapshot selection and original-vs-alternate restore, with the irreversibility called out.
+- name: druva-msp-provision-tenant
+  file: druva-msp-provision-tenant.md
+  api: Druva MSP API
+  operations: 12
+  summary: Async customer and tenant provisioning with taskID polling, the published tenant constraints, and suspend/unsuspend.
+- name: druva-threat-intel-ioc
+  file: druva-threat-intel-ioc.md
+  api: Druva Cyber Resilience API
+  operations: 8
+  summary: IOC set lifecycle, with lookup-before-write standing in for the missing idempotency key.

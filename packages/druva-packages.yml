@@ -1,0 +1,107 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  Registry metadata endpoints (registry.npmjs.org, pypi.org/pypi/<pkg>/json,
+  rubygems.org, proxy.golang.org) plus the druvainc GitHub organisation
+  (https://github.com/druvainc) and the Druva developer portal SDK/script pages.
+note: >-
+  Druva publishes NO first-party client library on npm, PyPI, RubyGems, Packagist,
+  crates.io, NuGet or Maven Central - every name probed returned 404. Its official Python
+  SDK is distributed only as a git subdirectory install from the druvainc/Platform repo,
+  which means consumers cannot pin it from a registry, cannot see a published release date,
+  and get whatever is on the default branch. The Go helper library is resolvable through
+  the Go module proxy and is the only Druva code with a real published version and date.
+  For a 970-operation API surface that is a thin distribution story, and it is the finding
+  here rather than a gap in this probe.
+registries_probed:
+- registry: pypi
+  names: [druvareportsdk, druva, druva-sdk, druva-nativeworkloads-ldk, druva-ldk, nativeworkloads-ldk]
+  result: all 404
+- registry: npm
+  names: [druva, '@druva/sdk']
+  result: 404; a keyword search for "druva" returns only third-party packages
+- registry: rubygems
+  names: [druva]
+  result: 404
+- registry: golang-proxy
+  names: [github.com/druvainc/gorestlib]
+  result: v1.0.0 resolved
+packages:
+- name: druvareportsdk
+  language: python
+  official: true
+  registry: git
+  version: 1.0.1
+  published: '2026-08-05'
+  published_basis: >-
+    Not a registry release date - no PyPI record exists. This is the date of the most recent
+    commit touching reporting-api/pysdk in github.com/druvainc/Platform
+    (2026-08-05T12:23:18Z). The version string is read from that setup.py.
+  install: pip3 install "git+https://github.com/druvainc/Platform.git#egg=druvareportsdk&subdirectory=reporting-api/pysdk"
+  repository: https://github.com/druvainc/Platform/tree/main/reporting-api/pysdk
+  docs: https://developer.druva.com/docs/getting-started-with-reports-api
+  covers: Druva Reports API (authentication + report list/fetch)
+  maintainer: Team DCP <support@druva.com>
+  license: Druva (proprietary, declared in setup.py)
+  note: >-
+    Officially first-party (druvainc org, support@druva.com, referenced from Druva's own
+    Reports API guide) but absent from PyPI, so there is no immutable version to pin and no
+    registry-published date.
+- name: github.com/druvainc/gorestlib
+  language: go
+  official: true
+  registry: golang-proxy
+  version: v1.0.0
+  published: '2023-06-27'
+  install: go get github.com/druvainc/gorestlib@v1.0.0
+  repository: https://github.com/druvainc/gorestlib
+  covers: Generic HTTP request helper for Druva Cloud Platform APIs
+  note: >-
+    Resolves through proxy.golang.org at tag v1.0.0. Last published 2023-06-27 - more than
+    three years behind the current API surface, and the only Druva package with a real
+    registry-published version and date.
+- name: druva-nativeworkloads-ldk
+  language: python
+  official: true
+  registry: null
+  version: null
+  published: null
+  repository: https://github.com/druvainc/druva-nativeworkloads-ldk
+  covers: LangChain tools for the Druva Native Workloads API
+  note: >-
+    Checked, nothing to record. A first-party LangChain toolkit authored by Druva engineers
+    (david.gildea@druva.com, tom.nijs@druva.com) that was never released: pyproject.toml
+    still declares name "druva_native_ldk_TODO", version 0.0.1, and the pypa sampleproject
+    URL as its homepage. Absent from PyPI (404). Last pushed 2024-03-28.
+- name: n8n-nodes-druva-msp
+  language: javascript
+  official: false
+  registry: npm
+  version: 1.8.0
+  published: '2026-07-09'
+  install: npm install n8n-nodes-druva-msp
+  repository: https://github.com/msoukhomlinov/n8n-nodes-druva-msp
+  covers: Druva MSP API as an n8n workflow node
+  note: >-
+    Community-maintained by msoukhomlinov, not Druva. Recorded because it is the most
+    actively released Druva API client in any public registry - more current than either
+    first-party library.
+sample_code:
+- repository: https://github.com/druvainc/inSync
+  language: python
+  note: Code snippets for consuming inSync (Endpoints and Data Governance) APIs. Last pushed 2020-03-20.
+- repository: https://github.com/druvainc/Phoenix
+  language: python
+  note: Code snippets for the Phoenix (Enterprise Workloads) APIs. Last pushed 2020-04-01.
+- repository: https://github.com/druvainc/Data-Governance
+  language: python
+  note: Data Governance API samples. Last pushed 2023-11-02.
+- repository: https://github.com/druvainc/msp
+  language: python
+  note: MSP API samples. Last pushed 2023-12-15.
+- repository: https://github.com/druvainc/DruvaSplunk
+  note: Druva apps for Splunkbase. Last pushed 2022-01-17.
+- repository: https://github.com/druvainc/ct-druva-cloudnative
+  language: javascript
+  note: AWS Control Tower integration for CloudRanger / CloudNative data protection. Last pushed 2021-11-24.
+official_count: 2

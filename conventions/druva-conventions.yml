@@ -1,0 +1,205 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://developer.druva.com/docs/request-and-response-structure,
+  https://developer.druva.com/docs/authentication, https://developer.druva.com/docs/faqs,
+  https://developer.druva.com/docs/event-apis, https://developer.druva.com/docs/migration-process,
+  cross-checked against the 19 first-party specifications in openapi/.
+summary: >-
+  Druva runs one API gateway per cloud with a product path prefix per product, OAuth 2.0
+  client credentials for every product API, cursor pagination on a shared nextPageToken /
+  pageToken pair, a vendor JSON error envelope carrying a machine-readable retryable flag,
+  and asynchronous writes that return a taskID. There is no idempotency mechanism anywhere in
+  the estate and no published rate-limit signalling.
+auth:
+  style: oauth2-client-credentials
+  token_endpoint:
+    cloud: https://apis.druva.com/token
+    endpoints_govcloud: https://govcloudapis.druva.com/token
+    enterprise_workloads_govcloud: https://govapis.druva.com/token
+    msp: https://apis.druva.com/msp/auth/v1/token
+  credential: Client ID and Secret Key created in the Druva Cloud Platform Console, base64-encoded as HTTP Basic on the token request
+  request_header: 'Authorization: Bearer <access_token>'
+  token_ttl:
+  - scope: Endpoints and Data Governance, Hybrid Workloads (public cloud)
+    minutes: 30
+  - scope: Hybrid Workloads GovCloud
+    minutes: 30
+  - scope: Endpoints and Data Governance GovCloud
+    minutes: 15
+  token_refresh: Not extendable. Re-run the client-credentials exchange.
+  expired_token_status: 403
+  cross_cloud_rule: >-
+    A token minted on one Druva cloud cannot call another. Calling the wrong cloud returns
+    "User is not authorized to access this resource with an explicit deny".
+  exception:
+    product: Native Workloads / CloudRanger
+    style: api-key-then-bearer
+    detail: >-
+      x-api-key from the CloudRanger user-settings page is exchanged at
+      GET https://api.cloudranger.com/202004/authorize for a bearer token; both headers are
+      then sent on every call.
+  docs: https://developer.druva.com/docs/authentication
+base_urls:
+- host: https://apis.druva.com
+  scope: Enterprise Workloads, Endpoints and Data Governance, Cyber Resilience, MSP, Platform (public cloud)
+- host: https://govcloudapis.druva.com
+  scope: Endpoints and Data Governance GovCloud
+- host: https://govapis.druva.com
+  scope: Enterprise Workloads GovCloud, Cyber Resilience GovCloud
+- host: https://api.cloudranger.com/202004
+  scope: Native Workloads / CloudRanger
+product_prefixes:
+  '/insync': Endpoints and Data Governance
+  '/phoenix': Enterprise Workloads
+  '/realize': Cyber Resilience
+  '/msp': Managed Service Provider
+  '/platform': Platform
+  '/unity': Job Management
+  '/awsnative': AWS Native Workloads
+pagination:
+  style: cursor
+  request_param: pageToken
+  response_field: nextPageToken
+  page_size_param: pageSize
+  max_records_per_response: 4097
+  detail: >-
+    A response larger than 4,097 records returns nextPageToken; replay it as pageToken on the
+    next request. MSP quota endpoints additionally document pageSize between 1 and 100
+    (default 50) and state that pageToken cannot be combined with pageSize or customerIds.
+  events_exception:
+    surface: Events API
+    max_records_per_response: 500
+    cursor: tracker
+    detail: >-
+      The inSync Events API returns at most 500 events and carries a Tracker identifier
+      instead of nextPageToken.
+  docs: https://developer.druva.com/docs/faqs
+content_negotiation:
+  request_body: application/json only
+  response: application/json
+  events_alternate_formats: [CEF, Syslog]
+versioning:
+  style: path
+  detail: >-
+    Version segments sit inside the product path, per resource family rather than per API -
+    /insync/endpoints/v1/devices, /insync/eventmanagement/v2/events,
+    /phoenix/audittrail/v1/..., /ransomwarerecovery/v1 and /v2 side by side. There is no
+    global API version, no version header and no media-type versioning.
+  media_type_versioning: false
+  header_versioning: false
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shapes:
+  - name: APIError
+    fields: [code, message, data, retryable]
+  - name: ServiceError
+    fields: [code, message]
+  retry_hint_field: retryable
+  detail: See errors/druva-problem-types.yml.
+request_id:
+  published: false
+  detail: >-
+    No correlation/request-id header is documented for the product APIs, and no 4xx/5xx
+    response in the 19 specifications declares one. The MCP endpoint returns an x-request-id
+    header, but that is the MCP gateway, not the REST estate.
+rate_limit_signalling:
+  published: false
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header is declared on any response in any of
+    the 970 published operations, and no limits are documented. 429 is declared on 2
+    operations. See rate-limits/druva-rate-limits.yml.
+asynchrony:
+  style: task-polling
+  detail: >-
+    MSP customer/tenant writes and Enterprise Workloads backup/restore writes are
+    asynchronous: the write returns a taskID or jobID, and progress is read back from a Get
+    Task Details / job endpoint. This is progress tracking, not replay protection.
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  detail: >-
+    Checked across all 19 published specifications and the full developer documentation set:
+    no Idempotency-Key header, no idempotency-key parameter, no client-supplied request
+    identifier, and no statement anywhere that a repeated write is safe. Of 970 operations,
+    roughly 385 are creates. A retried POST to a Druva create endpoint has no documented
+    replay protection, and the taskID pattern gives a caller a way to WATCH a duplicate
+    complete, not a way to prevent one.
+  evidence:
+  - https://developer.druva.com/docs/request-and-response-structure
+  - openapi/ (19 specifications, no idempotency parameter or header declared)
+reversibility:
+  grade: documented
+  applicable: true
+  detail: >-
+    Druva publishes real reversal paths for its long-running and stateful operations, but
+    states no time window for any of them in the API documentation, so this grades as
+    documented rather than verified. Backup and recovery is also an unusual case: the
+    product's whole purpose is restoring prior state, so the RESTORE operations below are a
+    forward action, not an undo of an API call - they are listed because an agent driving
+    this API needs to know which is which.
+  reversals:
+  - surface: Enterprise Workloads jobs (File Server, VMware, SQL Server, Oracle, NAS, Hyper-V)
+    action: backup or restore job creation
+    reversal: cancel
+    operation_ids: [FSCancelJobRequest, CancelJobRequest, SQLCancelJobRequest, AllJobCancelJob]
+    window: not stated
+    window_note: >-
+      Documented only as "Cancel a job" - Druva does not publish a point after which a job
+      can no longer be cancelled.
+    spec: openapi/druva-enterprise-workloads-openapi.json
+  - surface: Cyber Resilience - Curated Snapshots
+    action: create curated snapshot job
+    reversal: cancel
+    path: PUT /curatedsnapshot/v1/jobs/cancel
+    window: not stated
+    spec: openapi/druva-cyber-resilience-openapi.json
+  - surface: Cyber Resilience - Threat Hunting
+    action: start threat hunt
+    reversal: cancel
+    path: PUT /threathunting/v1/threathunts/{threatHuntID}/cancel
+    window: not stated
+    spec: openapi/druva-cyber-resilience-openapi.json
+  - surface: MSP tenant lifecycle
+    action: suspend a customer tenant
+    reversal: unsuspend
+    operation_ids: [suspendtenant, unsuspendtenant]
+    window: not stated
+    window_note: >-
+      Both are asynchronous and return a taskID. Druva warns that a suspended tenant's
+      console is inaccessible but publishes no window after which unsuspend stops working.
+    spec: openapi/druva-msp-openapi.json
+  irreversible:
+  - surface: Curated Snapshots
+    action: DELETE /curatedsnapshot/v1/snapshots
+    note: No restore-from-deleted path is published.
+  - surface: Threat Intel IOC sets
+    action: DeleteIocSetRequest, DeleteIocsRequest
+    note: No undelete path is published.
+  - surface: MSP and CloudRanger accounts, policies, environments and DR plans
+    action: DELETE
+    note: No undelete path is published for any of them.
+  mcp_note: >-
+    The Druva MCP server narrows this problem for agents specifically: Druva documents that
+    it can read and modify configuration but cannot delete Druva Cloud configuration or
+    backup data, so the irreversible operations above are not reachable through the agent
+    surface at all.
+dry_run_mode:
+  supported: false
+  detail: No preview, validate-only, simulate or dry-run parameter is declared on any published operation.
+expansion:
+  supported: false
+metadata_fields:
+  supported: false
+  detail: No customer-defined metadata bag is published on Druva resources.
+cross_links:
+  errors: errors/druva-problem-types.yml
+  lifecycle: lifecycle/druva-lifecycle.yml
+  authentication: authentication/druva-authentication.yml
+  scopes: scopes/druva-scopes.yml
+  rate_limits: rate-limits/druva-rate-limits.yml
+  data_model: data-model/druva-data-model.yml

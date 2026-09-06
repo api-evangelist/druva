@@ -1,0 +1,133 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  The 19 first-party Druva OpenAPI/Swagger definitions in openapi/ (harvested from
+  https://developer.druva.com/.well-known/api-catalog), the probed /.well-known documents in
+  well-known/, and Druva's published developer documentation at https://developer.druva.com/docs/.
+note: >-
+  Reward-only. Data protection and backup has no ratified cross-vendor API standard for its
+  own domain - there is no FHIR or PSD2 equivalent for backup catalogues - so the
+  domain-standard slot is genuinely empty rather than unmet, and nothing is invented to fill
+  it. What Druva does conform to is the generic web-API and OAuth layer, plus RFC 9727 API
+  discovery, which very few providers in this catalogue publish.
+conformance:
+- id: openapi
+  conforms: true
+  evidence: >-
+    19 machine-readable definitions published by Druva at
+    https://developer.druva.com/openapi/<name>.json - 12 OpenAPI 3.0.x/3.1.0 and 7 documents
+    converted from Swagger, 970 operations in total. All fetched HTTP 200 anonymously.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    OAuth 2.0 client-credentials grant declared as a securityScheme in 11 of the 19 specs with
+    tokenUrl https://apis.druva.com/token (https://govapis.druva.com/token for GovCloud
+    Cyber Resilience, https://apis.druva.com/msp/auth/v1/token for MSP), and documented at
+    https://developer.druva.com/docs/authentication.
+- id: oauth2-1
+  conforms: true
+  evidence: >-
+    The hosted MCP server at https://mcp.druva.com/mcp advertises a 3-legged OAuth 2.1 flow
+    with PKCE S256 required and no client secret
+    (well-known/druva-mcp-oauth-authorization-server.json).
+- id: rfc8414
+  conforms: true
+  evidence: >-
+    OAuth 2.0 Authorization Server Metadata served at
+    https://mcp.druva.com/.well-known/oauth-authorization-server (HTTP 200).
+- id: rfc9728
+  conforms: true
+  evidence: >-
+    OAuth 2.0 Protected Resource Metadata served at
+    https://mcp.druva.com/.well-known/oauth-protected-resource/mcp (HTTP 200), correctly
+    advertised in the WWW-Authenticate resource_metadata parameter of the 401 from the MCP
+    endpoint.
+- id: rfc7591
+  conforms: true
+  evidence: >-
+    Dynamic client registration endpoint https://mcp.druva.com/register declared in the
+    authorization-server metadata.
+- id: rfc9727
+  conforms: true
+  evidence: >-
+    RFC 9727 API catalog linkset served at
+    https://developer.druva.com/.well-known/api-catalog (HTTP 200, application/json), with a
+    service-desc href and application/vnd.oai.openapi+json media type for each of the 19
+    definitions. Saved verbatim at well-known/druva-api-catalog.json.
+- id: mcp
+  conforms: true
+  evidence: >-
+    First-party hosted MCP server at https://mcp.druva.com/mcp, documented at
+    https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server.
+    Probed 2026-09-06: HTTP 401 invalid_token with a compliant WWW-Authenticate challenge.
+- id: llmstxt
+  conforms: true
+  evidence: >-
+    https://developer.druva.com/llms.txt (HTTP 200), 1,005 indexed pages, plus per-page
+    markdown at any docs URL with .md appended.
+- id: pagination
+  conforms: true
+  evidence: >-
+    Cursor pagination documented at https://developer.druva.com/docs/faqs - a response
+    carries nextPageToken when it exceeds 4,097 records, which the caller replays as
+    pageToken. Present as a parameter across the published specs.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Zero of 970 published operations declare application/problem+json. Errors use a vendor
+    envelope (code / message / data / retryable). See errors/druva-problem-types.yml.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header, no idempotency parameter and no replay-safety statement
+    appears in any of the 19 specifications or in the developer documentation. Long-running
+    MSP writes return a taskID instead, which is progress tracking rather than replay
+    protection.
+- id: openid-connect
+  conforms: false
+  evidence: >-
+    No OIDC discovery document is served for the product APIs. The OIDC document at
+    https://support.druva.com/.well-known/openid-configuration belongs to the Salesforce
+    Experience Cloud community behind the support portal, not to the Druva API estate.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    Druva ships an Events API that is polled (GET /insync/eventmanagement/v2/events, with a
+    Tracker cursor and CEF/Syslog output formats) rather than pushed. No AsyncAPI document,
+    no webhook callbacks and no OpenAPI callbacks/webhooks blocks exist in any of the 19
+    specifications.
+- id: graphql
+  conforms: false
+  evidence: No /graphql surface is documented or advertised on any Druva host.
+- id: grpc
+  conforms: false
+  evidence: No .proto is published in the druvainc GitHub organisation, on buf.build, or in the docs.
+- id: soap-wsdl
+  conforms: false
+  evidence: >-
+    No ?wsdl or ?singleWsdl surface exists. apis.druva.com, govapis.druva.com and
+    govcloudapis.druva.com are AWS API Gateway hosts that answer 403 to any unrouted path.
+domain_standard:
+  present: false
+  market: cloud data protection / backup and recovery
+  note: >-
+    No cross-vendor contract standard exists for backup and recovery catalogues, so this
+    slot is empty by market, not by omission. The nearest adjacent standards Druva touches
+    are consumption formats rather than API contracts: the Events API can emit CEF and
+    Syslog for SIEM ingestion, which is a real interoperability signal but is an output
+    encoding, not a declared API standard.
+  adjacent_signals:
+  - id: cef
+    evidence: >-
+      https://developer.druva.com/docs/event-apis documents CEF and Syslog response formats
+      for the Events API for third-party SIEM integration.
+compliance_programs:
+  source: https://security.druva.com/
+  note: See security/druva-trust-center.yml for the verified certification list.
+  certifications: [SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP, GDPR, CSA STAR, FIPS 140]
+  regulated_deployments:
+  - name: Druva GovCloud
+    evidence: >-
+      Separate GovCloud contracts and hosts published as first-party specs -
+      govapis.druva.com and govcloudapis.druva.com - covering Endpoints and Data Governance,
+      Enterprise Workloads and Cyber Resilience.

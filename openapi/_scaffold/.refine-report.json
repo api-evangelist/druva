@@ -1,0 +1,38 @@
+{
+  "provider": "druva",
+  "sources": [
+    "druva-accounts-api-openapi.yml",
+    "druva-authentication-api-openapi.yml",
+    "druva-backups-api-openapi.yml",
+    "druva-cyber-resilience-api-openapi.yml",
+    "druva-policies-api-openapi.yml",
+    "druva-reports-api-openapi.yml",
+    "druva-schedules-api-openapi.yml",
+    "druva-servers-api-openapi.yml"
+  ],
+  "outputs": [
+    "druva-accounts-api-openapi.yml",
+    "druva-authentication-api-openapi.yml",
+    "druva-backups-api-openapi.yml",
+    "druva-cyber-resilience-api-openapi.yml",
+    "druva-policies-api-openapi.yml",
+    "druva-reports-api-openapi.yml",
+    "druva-schedules-api-openapi.yml",
+    "druva-servers-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "druva-accounts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-authentication-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-backups-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-cyber-resilience-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-policies-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-reports-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-schedules-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "druva-servers-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}
