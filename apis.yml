@@ -47,6 +47,19 @@ tags:
 - Enterprise Workloads
 - MSP
 - Legal Hold
+- GovCloud
+- MCP
+tags_raw:
+- Backup
+- Cyber Resilience
+- Data Protection
+- Disaster Recovery
+- SaaS Backup
+- Ransomware Recovery
+- Data Governance
+- Enterprise Workloads
+- MSP
+- Legal Hold
 - Endpoints
 - GovCloud
 - MCP
@@ -55,353 +68,22 @@ created: '2026-03-27'
 modified: '2026-09-06'
 specificationVersion: '0.23'
 apis:
-- aid: druva:authentication
-  name: Druva Authentication API
-  description: Token endpoint for the Druva Cloud Platform. Exchanges a base64-encoded Client ID and Secret Key
-    for an OAuth 2.0 client-credentials bearer token used by every other Druva product API on the public cloud.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Authentication
-  - OAuth
-  - Token
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-authentication-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: Authentication
-    url: https://developer.druva.com/docs/authentication
-- aid: druva:msp-authentication
-  name: Druva MSP Authentication API
-  description: Token endpoint for the Druva Managed Service Provider surface. MSP integrations authenticate here
-    rather than at the common Druva token endpoint.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/msp
-  tags:
-  - Authentication
-  - MSP
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-msp-authentication-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:govcloud-authentication
-  name: Druva GovCloud Authentication API
-  description: Token endpoint for Druva Endpoints and Data Governance GovCloud. Tokens minted here are valid for
-    15 minutes and cannot be used against any other Druva cloud.
-  humanURL: https://developer.druva.com
-  baseURL: https://govcloudapis.druva.com
-  tags:
-  - Authentication
-  - GovCloud
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-govcloud-authentication-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:hybrid-workload-govcloud-authentication
-  name: Druva Hybrid Workloads GovCloud Authentication API
-  description: Token endpoint for Druva Hybrid / Enterprise Workloads GovCloud. Separate from the Endpoints GovCloud
-    token endpoint; tokens are not interchangeable between Druva clouds.
-  humanURL: https://developer.druva.com
-  baseURL: https://govapis.druva.com
-  tags:
-  - Authentication
-  - GovCloud
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-hybrid-workload-govcloud-authentication-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:endpoints-data-governance
-  name: Druva Endpoints and Data Governance API
-  description: The inSync Cloud API for Druva Endpoints and Data Governance. Covers device and user management,
-    backup and restore of endpoint data, profiles, AD/LDAP synchronisation, federated search, legal hold, sensitive
-    data governance, audit trail and the Events API used to export inSync events to a SIEM in JSON, CEF or Syslog
-    form.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/insync
-  tags:
-  - Endpoints
-  - Data Governance
-  - Legal Hold
-  - Event
-  - Sensitive Data Governance
-  - Backup
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-insync-cloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:insync-govcloud
-  name: Druva Endpoints and Data Governance GovCloud API
-  description: The inSync GovCloud API - the FedRAMP-boundary equivalent of the Endpoints and Data Governance surface,
-    served from govcloudapis.druva.com with its own token endpoint and a 15-minute access token.
-  humanURL: https://developer.druva.com
-  baseURL: https://govcloudapis.druva.com/insync
-  tags:
-  - Endpoints
-  - Data Governance
-  - GovCloud
-  - Legal Hold
-  - Event
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-insync-govcloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:enterprise-workloads
-  name: Druva Enterprise Workloads API
-  description: The Phoenix API for Druva Enterprise Workloads. Job management, on-demand backup, restore to original
-    or alternate location, snapshots, backup policies and reporting across File Server, NAS, VMware, Hyper-V, Nutanix
-    AHV, SQL Server, Oracle SBT, Azure, PBS and DRaaS workloads, plus alerts, audit trail and cloud cache.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/phoenix
-  tags:
-  - Enterprise Workloads
-  - Backup
-  - Restore
-  - VMware
-  - SQL Server
-  - Jobs
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-enterprise-workloads-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:enterprise-workloads-govcloud
-  name: Druva Enterprise Workloads GovCloud API
-  description: The Enterprise Workloads API inside the Druva GovCloud boundary, served from govapis.druva.com. Same
-    workload coverage as the public-cloud contract with the Azure family omitted.
-  humanURL: https://developer.druva.com
-  baseURL: https://govapis.druva.com/phoenix
-  tags:
-  - Enterprise Workloads
-  - GovCloud
-  - Backup
-  - Restore
-  - Jobs
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-enterprise-workloads-govcloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:cyber-resilience
-  name: Druva Cyber Resilience API
-  description: The Realize API for Druva Cyber Resilience. Accelerated Ransomware Recovery quarantine ranges and
-    snapshots, curated snapshot jobs, threat hunting, threat intel IOC sets and lookup, threat watch, unusual data
-    activity anomaly detection, restore scans and the Realize event stream.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/realize
-  tags:
-  - Cyber Resilience
-  - Ransomware Recovery
-  - Threat Hunting
-  - Threat Intel
-  - Curated Snapshots
-  - Event
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-cyber-resilience-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:cyber-resilience-govcloud
-  name: Druva Cyber Resilience GovCloud API
-  description: The Cyber Resilience surface inside the Druva GovCloud boundary. Ransomware recovery, curated snapshots,
-    threat hunting, threat intel, data anomalies and restore scans, served from govapis.druva.com/realize.
-  humanURL: https://developer.druva.com
-  baseURL: https://govapis.druva.com/realize
-  tags:
-  - Cyber Resilience
-  - GovCloud
-  - Ransomware Recovery
-  - Threat Hunting
-  - Threat Intel
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-cyber-resilience-govcloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:cyber-resilience-govcloud-authorization
-  name: Druva GovCloud Cyber Resilience Authorization API
-  description: Authorization endpoints for the Druva GovCloud Cyber Resilience surface, published as a separate
-    contract from the Cyber Resilience API itself.
-  humanURL: https://developer.druva.com
-  baseURL: https://govapis.druva.com
-  tags:
-  - Authentication
-  - GovCloud
-  - Cyber Resilience
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-cyber-resilience-govcloud-authorization-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:cloudranger
-  name: Druva CloudRanger Native Workloads API
-  description: The CloudRanger API for Druva Native Workloads on AWS. Backup, disaster recovery and lifecycle management
-    for EC2, EBS, RDS, Redshift, DynamoDB, S3 buckets and auto-scaling groups, with policies, schedules, DR plans
-    and file-level restore. Served from api.cloudranger.com, the domain Druva acquired with CloudRanger in 2018
-    and still documents as the Native Workloads base URL.
-  humanURL: https://developer.druva.com
-  baseURL: https://api.cloudranger.com/202004
-  tags:
-  - CloudRanger
-  - AWS
-  - Native Workloads
-  - Backup
-  - Disaster Recovery
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-cloudranger-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
-- aid: druva:aws-native
-  name: Druva AWS Native Workloads API
-  description: The AWS Native Workloads API served from the common Druva gateway at apis.druva.com/awsnative. The
-    CloudRanger capability set - accounts, backups, restores, policies, schedules, environments and DR plans - reached
-    through Druva Cloud Platform credentials rather than CloudRanger keys.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/awsnative
-  tags:
-  - AWS
-  - Native Workloads
-  - Backup
-  - Disaster Recovery
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-aws-native-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:msp
-  name: Druva MSP API
-  description: The Managed Service Provider API. Customer and tenant provisioning, suspension and patching, per-customer
-    API token generation, asynchronous task tracking, quota configuration and consumption metering, customer events,
-    and the chargeback, telemetry and service-monitoring report family used to bill managed customers.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/msp
-  tags:
-  - MSP
-  - Managed Service Providers
-  - Multi-Tenant
-  - Reports
-  - Quota
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-msp-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
-- aid: druva:platform
-  name: Druva Platform API
-  description: The Druva Cloud Platform administration API. Administrators, administrator roles, platform-level
-    reports and the platform event stream shared across Druva products.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/platform
-  tags:
-  - Platform
-  - Administration
-  - Reports
-  - Event
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-platform-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:microsoft-365
-  name: Druva Microsoft 365 API
-  description: App management and restore operations for Druva-protected Microsoft 365 data - OneDrive and Exchange
-    Online restores, and SharePoint Online restores.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Microsoft 365
-  - SaaS Backup
-  - Restore
-  - SharePoint
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-microsoft-365-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:google-workspace
-  name: Druva Google Workspace API
-  description: App management for Druva-protected Google Workspace data.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - Google Workspace
-  - SaaS Backup
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-google-workspace-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:job-management-cloud
-  name: Druva Job Management API for Cloud Workloads
-  description: The Unity job-management surface for cloud workloads - create and cancel backup and restore jobs
-    for Azure SQL and NAS from a single contract.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/unity
-  tags:
-  - Jobs
-  - Azure SQL
-  - NAS
-  - Backup
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-job-management-cloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:job-management-govcloud
-  name: Druva Job Management API for GovCloud Workloads
-  description: The Unity job-management surface inside the Druva GovCloud boundary, covering NAS backup and restore
-    jobs.
-  humanURL: https://developer.druva.com
-  baseURL: https://govapis.druva.com/unity
-  tags:
-  - Jobs
-  - GovCloud
-  - NAS
-  - Backup
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-job-management-govcloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
-- aid: druva:legal-hold
-  name: Druva Legal Hold Targeted Download API
-  description: Legal hold and targeted download operations for legal and compliance teams preserving and extracting
-    data from devices under hold. Druva publishes these operations inside the Endpoints and Data Governance (inSync)
-    contract under the Legal Hold tag rather than as a standalone specification.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com/insync
-  tags:
-  - Legal Hold
-  - Compliance
-  - eDiscovery
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-insync-cloud-openapi.json
-  - type: Documentation
-    url: https://developer.druva.com/reference
 - aid: druva:mcp
   name: Druva MCP Server
-  description: Druva's first-party hosted Model Context Protocol server. MCP-compatible AI clients connect to a
-    single global endpoint over streamable HTTP, authenticate with 3-legged OAuth 2.1 and PKCE, and reach the Druva
-    Resilience Cloud through five tools that discover and execute cloud-delivered skills across endpoint health,
-    SaaS apps, cyber resilience and data governance. Destructive deletes are blocked server-side and every call
-    is bounded by the caller's Druva RBAC.
+  description: >-
+    Druva's first-party hosted Model Context Protocol server. MCP-compatible AI clients connect to a single
+    global endpoint over streamable HTTP, authenticate with 3-legged OAuth 2.1 and PKCE, and reach the
+    Druva Resilience Cloud through five tools that discover and execute cloud-delivered skills across
+    endpoint health, SaaS apps, cyber resilience and data governance. Destructive deletes are blocked
+    server-side and every call is bounded by the caller's Druva RBAC.
   humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
   baseURL: https://mcp.druva.com/mcp
   tags:
+  - MCP
+  - Agents
+  - Artificial Intelligence
+  - Cyber Resilience
+  tags_raw:
   - MCP
   - Agents
   - AI
@@ -413,6 +95,1556 @@ apis:
     url: mcp/druva-tool-crosswalk.yml
   - type: Documentation
     url: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+- aid: druva:druva-accounts-api
+  name: Druva Accounts API
+  description: Accounts in your CloudRanger Organization
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-ad-ldap-management-api
+  name: Druva AD/LDAP Management API
+  description: >-
+    Lists the APIs to get information about the AD/LDAP Connectors configured for Endpoints & SaaS Apps.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - AD/LDAP Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-ad-ldap-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-admin-roles-api
+  name: Druva Admin Roles API
+  description: The Admin Roles API from Druva — 1 operation(s) for admin roles.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Admin Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-admin-roles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-administration-api
+  name: Druva Administration API
+  description: The Administration API from Druva — 1 operation(s) for administration.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Administration
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-administration-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-administrators-api
+  name: Druva Administrators API
+  description: The Administrators API from Druva — 4 operation(s) for administrators.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Administrators
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-administrators-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-admins-api
+  name: Druva Admins API
+  description: Lists the APIs to get information about admins managed.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Admins
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-admins-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-ahv-api
+  name: Druva AHV API
+  description: The AHV API from Druva — 7 operation(s) for ahv.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - AHV
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-ahv-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-alerts-api
+  name: Druva Alerts API
+  description: The Alerts API from Druva — 3 operation(s) for alerts.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Alerts
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-alerts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-app-management-api
+  name: Druva App Management API
+  description: >-
+    Lists the APIs to get information and perform operations on M365 Apps managed in Druva SaaS Apps.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - App Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-app-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-audit-api
+  name: Druva Audit API
+  description: Audit specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Audit
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-audit-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-audit-trail-api
+  name: Druva Audit Trail API
+  description: The Audit Trail API from Druva — 1 operation(s) for audit trail.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Audit Trail
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-audit-trail-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-audit-trail-management-api
+  name: Druva Audit Trail Management API
+  description: Lists the APIs to get information about the Audit Trails generated in the Druva Console.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Audit Trail Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-audit-trail-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-auth-api
+  name: Druva Auth API
+  description: The Auth API from Druva — 1 operation(s) for auth.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-auth-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-autoscalinggroups-api
+  name: Druva Auto Scaling Groups API
+  description: AutoScalingGroups specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - AutoScalingGroups
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-autoscalinggroups-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-aws-api
+  name: Druva Aws API
+  description: AWS Account specific functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Aws
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-aws-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-azure-api
+  name: Druva Azure API
+  description: The Azure API from Druva — 3 operation(s) for azure.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Azure
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-azure-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-azure-sql-api
+  name: Druva Azure SQL API
+  description: The Azure SQL API from Druva — 4 operation(s) for azure sql.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Azure SQL
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-azure-sql-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-backuppolicies-api
+  name: Druva Backup Policies API
+  description: Backup Policies specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - BackupPolicies
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-backuppolicies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-backups-api
+  name: Druva Backups API
+  description: Backups in your CloudRanger Account
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Backups
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-backups-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-buckets-api
+  name: Druva Buckets API
+  description: The Buckets API from Druva — 1 operation(s) for buckets.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Buckets
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-buckets-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-chargeback-and-telemetry-reports-api
+  name: Druva Chargeback and Telemetry Reports API
+  description: Lists the APIs to get reports for Chargeback and Telemetry.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Chargeback and Telemetry Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-chargeback-and-telemetry-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-cloudcache-api
+  name: Druva Cloud Cache API
+  description: The CloudCache API from Druva — 1 operation(s) for cloudcache.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - CloudCache
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cloudcache-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-credential-api
+  name: Druva Credential API
+  description: The Credential API from Druva — 1 operation(s) for credential.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Credential
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-credential-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-curated-snapshots-api
+  name: Druva Curated Snapshots API
+  description: >-
+    List of APIs to get information of and manage the Curated Snapshots for the resources managed in Druva
+    Cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Curated Snapshots
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-curated-snapshots-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-customers-api
+  name: Druva Customers API
+  description: Lists the APIs to get information and perform operations on customers managed.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-cyber-resilience-reports-api
+  name: Druva Cyber Resilience Reports API
+  description: Lists the APIs to get MSP Cyber Resilience reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Cyber Resilience Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-cyber-resilience-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-data-anomalies-api
+  name: Druva Data Anomalies API
+  description: View a list of the resources managed in Druva Cloud detected with Data Anomalies.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Data Anomalies
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-data-anomalies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-data-protection-api
+  name: Druva Data Protection API
+  description: The Data Protection API from Druva — 8 operation(s) for data protection.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Data Protection
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-data-protection-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-disasterrecoveryplans-api
+  name: Druva Disaster Recovery Plans API
+  description: Disaster Recovery Plan specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - DisasterRecoveryPlans
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-disasterrecoveryplans-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-draas-api
+  name: Druva D Raa S API
+  description: The DRaaS API from Druva — 2 operation(s) for draas.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - DRaaS
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-draas-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-endpoints-api
+  name: Druva Endpoints API
+  description: Lists the APIs to get information about devices managed in Druva inSync.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-endpoints-reports-api
+  name: Druva Endpoints Reports API
+  description: Lists the APIs to get MSP Endpoints reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Endpoints Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-endpoints-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-enterprise-workloads-reports-api
+  name: Druva Enterprise Workloads Reports API
+  description: Lists the APIs to get MSP Enterprise Workload reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Enterprise Workloads Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-enterprise-workloads-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-environments-api
+  name: Druva Environments API
+  description: Environments specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-environments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-event-management-api
+  name: Druva Event Management API
+  description: Lists the APIs to get information about the events generated in Druva inSync.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Event Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-event-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-events-api
+  name: Druva Events API
+  description: Lists the APIs to get events for MSP and Customer.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-events-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-federated-search-api
+  name: Druva Federated Search API
+  description: Quickly find backed-up files and emails of end-users using metadata attributes.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Federated Search
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-federated-search-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-file-server-api
+  name: Druva File Server API
+  description: The File Server API from Druva — 13 operation(s) for file server.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - File Server
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-file-server-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-filelevelsearch-api
+  name: Druva File Level Search API
+  description: File Level Search specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - FileLevelSearch
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-filelevelsearch-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-google-workspace-reports-api
+  name: Druva Google Workspace Reports API
+  description: Lists the APIs to get MSP Google Workspace reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Google Workspace Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-google-workspace-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-hyper-v-api
+  name: Druva Hyper V API
+  description: The Hyper-V API from Druva — 8 operation(s) for hyper-v.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Hyper-V
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-hyper-v-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-jobs-api
+  name: Druva Jobs API
+  description: Jobs in your CloudRanger Account
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-legal-hold-api
+  name: Druva Legal Hold API
+  description: >-
+    Lists the APIs to get information about the legal hold policies, manage users on legal hold and new
+    APIs for eDiscovery Download Client.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Legal Hold
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-legal-hold-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-microsoft-365-reports-api
+  name: Druva Microsoft 365 Reports API
+  description: Lists the APIs to get MSP Microsoft 365 reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Microsoft 365 Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-microsoft-365-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-nas-api
+  name: Druva NAS API
+  description: The NAS API from Druva — 18 operation(s) for nas.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - NAS
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-nas-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-new-endpoint-api
+  name: Druva New Endpoint API
+  description: The New Endpoint API from Druva — 1 operation(s) for new endpoint.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - New Endpoint
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-new-endpoint-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-notificationsettings-api
+  name: Druva Notification Settings API
+  description: The NotificationSettings API from Druva — 1 operation(s) for notificationsettings.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - NotificationSettings
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-notificationsettings-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-onboarding-api
+  name: Druva Onboarding API
+  description: The Onboarding API from Druva — 2 operation(s) for onboarding.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Onboarding
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-onboarding-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-oracledtc-api
+  name: Druva Oracle DTC API
+  description: The OracleDTC API from Druva — 12 operation(s) for oracledtc.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - OracleDTC
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-oracledtc-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-organization-api
+  name: Druva Organization API
+  description: Your CloudRanger Organization and how to authenticate API Calls
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Organization
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-organization-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-pbs-api
+  name: Druva PBS API
+  description: The PBS API from Druva — 6 operation(s) for pbs.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - PBS
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-pbs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-profile-management-api
+  name: Druva Profile Management API
+  description: Lists the APIs to get information about the profiles configured in Druva inSync.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Profile Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-profile-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-quota-api
+  name: Druva Quota API
+  description: Lists the APIs to get and manage quota configurations and warning thresholds.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Quota
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-quota-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-ransomware-recovery-api
+  name: Druva Ransomware Recovery API
+  description: >-
+    List of APIs to get information and perform operations on ransomware affected resources managed in
+    Druva Cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Ransomware Recovery
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-ransomware-recovery-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-realize-events-api
+  name: Druva Realize Events API
+  description: List of APIs to get information of Events of Realize product in Druva Cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Realize Events
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-realize-events-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-reports-api
+  name: Druva Reports API
+  description: The Reports API from Druva — 12 operation(s) for reports.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-reportsubscriptions-api
+  name: Druva Report Subscriptions API
+  description: The ReportSubscriptions API from Druva — 4 operation(s) for reportsubscriptions.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - ReportSubscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-reportsubscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-reporttemplates-api
+  name: Druva Report Templates API
+  description: The ReportTemplates API from Druva — 2 operation(s) for reporttemplates.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - ReportTemplates
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-reporttemplates-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-resources-api
+  name: Druva Resources API
+  description: Resource specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-resources-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-restore-onedrive-exchange-online-data-api
+  name: Druva Restore OneDrive/Exchange Online data API
+  description: >-
+    The Restore OneDrive/Exchange Online data API from Druva — 4 operation(s) for restore onedrive/exchange
+    online data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Restore OneDrive/Exchange Online data
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-restore-onedrive-exchange-online-data-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-restore-scans-api
+  name: Druva Restore scans API
+  description: >-
+    List of APIs to get information and perform operations of Restore scans on the resources managed in
+    Druva Cloud.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Restore scans
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-restore-scans-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-restore-sharepoint-online-data-api
+  name: Druva Restore SharePoint Online data API
+  description: >-
+    The Restore SharePoint Online data API from Druva — 3 operation(s) for restore sharepoint online data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Restore SharePoint Online data
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-restore-sharepoint-online-data-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-restores-api
+  name: Druva Restores API
+  description: Restores in your CloudRanger Account
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Restores
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-restores-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-salesforce-reports-api
+  name: Druva Salesforce Reports API
+  description: Lists the APIs to get MSP Salesforce reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Salesforce Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-salesforce-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-schedules-api
+  name: Druva Schedules API
+  description: Schedules in your CloudRanger Account
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Schedules
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-schedules-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-scripts-api
+  name: Druva Scripts API
+  description: The Scripts API from Druva — 7 operation(s) for scripts.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Scripts
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-scripts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-sensitive-data-governance-api
+  name: Druva Sensitive Data Governance API
+  description: Lists of APIs to get information and perform operations on Sensitive Data Governance.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Sensitive Data Governance
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-sensitive-data-governance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-servers-api
+  name: Druva Servers API
+  description: Servers in your CloudRanger Account
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Servers
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-servers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-service-monitoring-reports-api
+  name: Druva Service Monitoring Reports API
+  description: Lists the APIs to get MSP Service Monitoring reports data.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Service Monitoring Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-service-monitoring-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-service-plans-api
+  name: Druva Service Plans API
+  description: Lists the APIs to get information about service plans managed.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Service Plans
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-service-plans-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-sqlserver-api
+  name: Druva SQL Server API
+  description: The SQLServer API from Druva — 15 operation(s) for sqlserver.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - SQLServer
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-sqlserver-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-storage-api
+  name: Druva Storage API
+  description: The Storage API from Druva — 1 operation(s) for storage.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-storage-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-storage-management-api
+  name: Druva Storage Management API
+  description: >-
+    Lists the APIs to get information about the storages and inSync CloudCache Servers configured in Druva
+    inSync.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Storage Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-storage-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-storage-regions-api
+  name: Druva Storage Regions API
+  description: Lists the APIs to get information about Storage Regions.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Storage Regions
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-storage-regions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-tasks-api
+  name: Druva Tasks API
+  description: Task specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-tasks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-tenants-api
+  name: Druva Tenants API
+  description: Lists the APIs to get information and perform operations on tenants managed.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Tenants
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-tenants-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-threat-hunting-api
+  name: Druva Threat Hunting API
+  description: >-
+    List of APIs to get information and perform operations on the resources managed in Druva Cloud for
+    threat hunt.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Threat Hunting
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-threat-hunting-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-threat-intel-api
+  name: Druva Threat Intel API
+  description: List of APIs to view details and manage IOC Sets in the IOC library.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Threat Intel
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-threat-intel-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-threat-watch-api
+  name: Druva Threat Watch API
+  description: >-
+    List of APIs that helps to retrieve information and perform operations on Threat Watch. Threat Watch
+    is an automated continuous monitoring feature that scans resources for threats every 8 hours.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Threat Watch
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-threat-watch-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-token-api
+  name: Druva Token API
+  description: The Token API from Druva — 1 operation(s) for token.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Token
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-token-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-user-api
+  name: Druva User API
+  description: User specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-user-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-user-management-api
+  name: Druva User Management API
+  description: >-
+    Lists the APIs to get information and perform operations on users managed in Druva inSync.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - User Management
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-user-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-vmware-api
+  name: Druva V Mware API
+  description: The VMware API from Druva — 11 operation(s) for vmware.
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - VMware
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-vmware-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-volumes-api
+  name: Druva Volumes API
+  description: AWS Volume specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - Volumes
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-volumes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-vpcs-api
+  name: Druva VP Cs API
+  description: VPC specific API functions
+  humanURL: https://developer.druva.com
+  baseURL: https://apis.druva.com
+  tags:
+  - VPCs
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-vpcs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
 common:
 - type: OAuthScopes
   url: scopes/druva-scopes.yml
