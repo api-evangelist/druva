@@ -403,24 +403,6 @@ apis:
     url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
   - type: GettingStarted
     url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
-- aid: druva:druva-backuppolicies-api
-  name: Druva Backup Policies API
-  description: Backup Policies specific API functions
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - BackupPolicies
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-backuppolicies-api-openapi.yml
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: Authentication
-    url: https://developer.druva.com/docs/authentication
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
 - aid: druva:druva-backups-api
   name: Druva Backups API
   description: Backups in your CloudRanger Account
@@ -929,24 +911,6 @@ apis:
     url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
   - type: GettingStarted
     url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
-- aid: druva:druva-notificationsettings-api
-  name: Druva Notification Settings API
-  description: The NotificationSettings API from Druva — 1 operation(s) for notificationsettings.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - NotificationSettings
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-notificationsettings-api-openapi.yml
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: Authentication
-    url: https://developer.druva.com/docs/authentication
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
 - aid: druva:druva-onboarding-api
   name: Druva Onboarding API
   description: The Onboarding API from Druva — 2 operation(s) for onboarding.
@@ -1103,42 +1067,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/druva-reports-api-openapi.yml
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: Authentication
-    url: https://developer.druva.com/docs/authentication
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
-- aid: druva:druva-reportsubscriptions-api
-  name: Druva Report Subscriptions API
-  description: The ReportSubscriptions API from Druva — 4 operation(s) for reportsubscriptions.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - ReportSubscriptions
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-reportsubscriptions-api-openapi.yml
-  - type: Documentation
-    url: https://developer.druva.com/reference
-  - type: Authentication
-    url: https://developer.druva.com/docs/authentication
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
-  - type: GettingStarted
-    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
-- aid: druva:druva-reporttemplates-api
-  name: Druva Report Templates API
-  description: The ReportTemplates API from Druva — 2 operation(s) for reporttemplates.
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
-  tags:
-  - ReportTemplates
-  properties:
-  - type: OpenAPI
-    url: openapi/druva-reporttemplates-api-openapi.yml
   - type: Documentation
     url: https://developer.druva.com/reference
   - type: Authentication
@@ -1630,13 +1558,85 @@ apis:
 - aid: druva:druva-vpcs-api
   name: Druva VP Cs API
   description: VPC specific API functions
-  humanURL: https://developer.druva.com
-  baseURL: https://apis.druva.com
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
   tags:
   - VPCs
   properties:
   - type: OpenAPI
     url: openapi/druva-vpcs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-backup-policies-api
+  name: Druva Backup Policies API
+  description: Backup Policies specific API functions
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
+  tags:
+  - Backup Policies
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-backup-policies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-notification-settings-api
+  name: Druva Notification Settings API
+  description: The Notification Settings API from Druva — 1 operation(s) for notification settings.
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
+  tags:
+  - Notification Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-notification-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-report-subscriptions-api
+  name: Druva Report Subscriptions API
+  description: The Report Subscriptions API from Druva — 4 operation(s) for report subscriptions.
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
+  tags:
+  - Report Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-report-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.druva.com/reference
+  - type: Authentication
+    url: https://developer.druva.com/docs/authentication
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial
+  - type: GettingStarted
+    url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
+- aid: druva:druva-report-templates-api
+  name: Druva Report Templates API
+  description: The Report Templates API from Druva — 2 operation(s) for report templates.
+  humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
+  baseURL: https://mcp.druva.com/mcp
+  tags:
+  - Report Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/druva-report-templates-api-openapi.yml
   - type: Documentation
     url: https://developer.druva.com/reference
   - type: Authentication
