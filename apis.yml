@@ -101,6 +101,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -319,6 +321,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -355,6 +359,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - AWS
+  tags_raw:
   - Aws
   properties:
   - type: OpenAPI
@@ -626,7 +632,8 @@ apis:
   description: Lists the APIs to get information about devices managed in Druva inSync.
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
-  tags:
+  tags: []
+  tags_raw:
   - Endpoints
   properties:
   - type: OpenAPI
@@ -681,6 +688,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Environment
+  tags_raw:
   - Environments
   properties:
   - type: OpenAPI
@@ -717,6 +726,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -825,6 +836,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
@@ -1194,6 +1207,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Schedule
+  tags_raw:
   - Schedules
   properties:
   - type: OpenAPI
@@ -1302,6 +1317,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - SQL Server
+  tags_raw:
   - SQLServer
   properties:
   - type: OpenAPI
@@ -1376,6 +1393,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
@@ -1470,6 +1489,8 @@ apis:
   humanURL: https://developer.druva.com
   baseURL: https://apis.druva.com
   tags:
+  - Tokens
+  tags_raw:
   - Token
   properties:
   - type: OpenAPI
@@ -1561,6 +1582,8 @@ apis:
   humanURL: https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server
   baseURL: https://mcp.druva.com/mcp
   tags:
+  - VPC
+  tags_raw:
   - VPCs
   properties:
   - type: OpenAPI
