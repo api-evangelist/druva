@@ -1,0 +1,827 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud User Management API
+  description: Lists the APIs to get information and perform operations on users managed in Druva inSync.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: User Management
+  description: Lists the APIs to get information and perform operations on users managed in Druva inSync.
+paths:
+  /usermanagement/v1/users:
+    get:
+      tags:
+      - User Management
+      summary: List all users
+      description: Returns the list of users in Druva inSync with their details.
+      security:
+      - Bearer: []
+      parameters:
+      - name: profileID
+        in: query
+        description: Specify the profile ID to filter and get the list of users associated with a profile. Get the ID of a profile using the 'List all profiles' API.
+        required: false
+        schema:
+          type: integer
+      - name: storageID
+        in: query
+        description: Specify the storage ID to filter and get the list of users associated with a particular storage. Get the ID of a storage using the 'List all storages' API.
+        required: false
+        schema:
+          type: integer
+      - name: cacheID
+        in: query
+        description: Specify the CloudCache Server ID to get the list of users associated with a CloudCache Server. Get the ID of a CloudCache Server using the 'List all CloudCache Servers' API.
+        required: false
+        schema:
+          type: integer
+      - name: userIDs
+        in: query
+        description: Specify unique user IDs, separated by commas, to get details of specific users.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: emailID
+        in: query
+        description: Specify the email address to list a user's details.
+        required: false
+        schema:
+          type: string
+      - name: searchPrefixEmailID
+        in: query
+        description: Specify the email prefix by which you intend to search and list the users. Example - In the email address 'ernie.carter@druva.com', 'ernie.carter' is the email prefix.
+        required: false
+        schema:
+          type: string
+      - name: searchPrefixUserName
+        in: query
+        description: Specify the prefix from the user name by which you intend to search and list the users. Example, 'Ern' can be a prefix in the user name 'Ernie'.
+        required: false
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      - name: minAddedOn
+        in: query
+        description: Specify the date and time to list users that are added to Druva inSync after it. The time should be specified in the UTC time zone. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxAddedOn
+        in: query
+        description: Specify the date and time to list users that are added to Druva inSync before it. he time should be specified in the UTC time zone. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: status
+        in: query
+        description: Specify the current status of user account to filter and list the users.
+        required: false
+        schema:
+          type: string
+          enum:
+          - active
+          - preserved
+      - name: ldapGUID
+        in: query
+        description: 'Specify the AD or LDAP object GUID to get the list of users associated with it. Pass the parameter as a hex string. Example: B1C47201C67910458867BA19982E353E'
+        required: false
+        schema:
+          type: string
+      - name: privacySettingsEnabled
+        in: query
+        required: false
+        description: List users based on the status of their privacy settings. For example, if you select True, all the users with their privacy setting enabled are listed.
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getUsermanagementV1Users
+      x-operation-id-source: derived
+    post:
+      tags:
+      - User Management
+      summary: Create a new user
+      description: Creates a new user in Druva inSync with the settings defined in this API.
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: To create a user in Druva inSync.
+              required:
+              - userName
+              - profileID
+              - storageID
+              - emailID
+              properties:
+                userName:
+                  description: Specify the username for the user in Druva inSync. Example - Ernie Carter
+                  type: string
+                  example: Ernie Carter
+                profileID:
+                  description: Specify the ID of the profile to be associated with the user account. Get the ID of a profile using the 'List all profiles' API.
+                  type: integer
+                  example: 2
+                storageID:
+                  description: Specify the ID of the storage on which the user data backed up by inSync should be stored. Get the ID of a storage using the 'List all storages' API.
+                  type: integer
+                  example: 2
+                emailID:
+                  description: Specify the email address of the user.
+                  type: string
+                  example: ernie.carter@druva.com
+                quota:
+                  description: "Specify the storage quota that should be allocated to the new user. \n Specify a value between 0 to 1023. Example - 1000  \n :fa-info-circle: If kept blank, the storage quota configured in the profile is assigned to the user."
+                  type: integer
+                  example: '10'
+                quotaUnit:
+                  description: Specify the storage unit for the quota value (MB,GB, OR TB).
+                  type: string
+                  enum:
+                  - MB
+                  - GB
+                  - TB
+                sendPasswordByEmail:
+                  description: Specify whether to send the password to the user by email. If false, password is not sent to the user. Default is true and password will be sent to the user's email address.
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+        '400':
+          description: Bad Request. Provide an appropriate value in the range of 0 to 1023 for User quota.
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postUsermanagementV1Users
+      x-operation-id-source: derived
+  /usermanagement/v1/users/{userID}:
+    get:
+      tags:
+      - User Management
+      summary: Get user information using userID
+      description: Returns information about a particular user in Druva inSync using the userID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: The unique ID of a user in inSync. Get the ID of a user using the 'List all users' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getUsermanagementV1UsersByUserID
+      x-operation-id-source: derived
+    patch:
+      tags:
+      - User Management
+      summary: Update user information using userID
+      description: Use this API to update username, profile, and storage region of an existing user.
+      security:
+      - Bearer: []
+      parameters:
+      - in: path
+        name: userID
+        description: Specify the inSync user ID of the user for whom you want to update the username, profile, or storage region. Get the ID of a user using the ‘List all users’ API.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Specify the new value only for those parameters that you want to update for a user in Druva inSync.
+              properties:
+                userName:
+                  description: Specify the new username for the user.
+                  type: string
+                  example: Ernie Carter
+                profileID:
+                  description: "Specify the ID of the new profile that you want to associate with the user account. The new profile settings are applied to the user account in the next backup cycle.Get the profile ID using the 'List all profiles' API.\n :fa-info-circle: If you are changing user's profile to a profile where the Privacy Settings conflicts with the Privacy Settings in the old profile, which may result in administrators getting an unintentional access to the user's data, inSync does not allow you to update the profile. In such a case, you must request the inSync user to allow the inSync administrators to access their backed up data (setting on inSync Client) and try again."
+                  type: integer
+                  example: 2
+                storageID:
+                  description: "Specify the ID of the new storage that you want to associate with the user account.Get the storage ID using the 'List all storages' API.\n After you change the user's storage:\n 1)User data is backed up to the new storage.\n 2)Snapshots on the old storage are retained and compacted following the retention policy.\n 3) User can restore data from snapshots saved on old as well as the new storage."
+                  type: integer
+                  example: 2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: patchUsermanagementV1UsersByUserID
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - User Management
+      summary: Delete a user
+      description: 'Deletes a user in the system. When you delete a user:
+
+        1. All the user data (restore points) is deleted.
+
+        2. If the user that is being deleted has shared data with guest users, this data is also deleted.
+
+        3. All devices of the user will get deleted, and all the active and preserved licenses that the user was consuming will be freed up.
+
+        4. You can roll back the deleted user from Rollback Actions until the rollback window lapses.
+
+        5. After the rollback window lapses, the user will be deleted permanently. For more information, see Rollback Actions.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: The unique ID of a user in Endpoints and SaaS Apps. Get the ID of a user using the 'List all users' API.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                deletionReason:
+                  description: Specify the reason for user deletion (the character limit of reason is between 10-150) .  This capability will help prevent accidental deletions. If no reason is specified, the default reason i.e. <b>API initiated User Deletion</b> will be displayed.
+                  type: string
+                  example: User left the organization.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was unprocessable due to  semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: deleteUsermanagementV1UsersByUserID
+      x-operation-id-source: derived
+  /usermanagement/v1/users/{userID}/resetPassword:
+    post:
+      tags:
+      - User Management
+      summary: Reset password for a user
+      description: Resets the password for the user identified using the userID. inSync sends an email with a password reset link to the user.
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: The unique ID of a user in inSync. Get the ID of a user using the 'List all users' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postUsermanagementV1UsersByUserIDResetPassword
+      x-operation-id-source: derived
+  /usermanagement/v1/users/{userID}/preserve:
+    post:
+      tags:
+      - User Management
+      summary: Preserve a user
+      description: 'Preserves a user in Druva inSync.
+
+        When you preserve a user:
+
+        1) Backups from the user''s device are stopped and the user status changes to Preserved.
+
+        2) inSync retains the user''s data backups as long as the user is Preserved.
+
+        3) If not activated again, the preserved user is later deleted from inSync after the duration specified in the Auto-Delete Preserved User settings of the user''s profile.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: The unique ID of a user in inSync. Get the ID of a user using the 'List all users' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postUsermanagementV1UsersByUserIDPreserve
+      x-operation-id-source: derived
+  /usermanagement/v1/users/{userID}/activate:
+    post:
+      tags:
+      - User Management
+      summary: Activate a user
+      description: 'Activates an already preserved user.
+
+        When you activate a user:
+
+        1) The user status would change from Preserved to Active.
+
+        2) State of all devices assigned to this user would change from Disabled to Enabled.
+
+        3) Backups from the user''s device(s) would resume as per the configuration.
+
+        4) Before activating a user, if a user has consumed, for example, one Endpoints preserved license, then post-activation one Endpoints preserved license is freed up and one Endpoints active license is consumed (the same rationale applies to all workloads).
+
+        5) The license state of all the workloads associated with this user would change from Preserved to Active only if the user has Active licenses available for all the associated workloads.
+
+        For example, consider this scenario wherein you are trying to activate a user who has consumed one Endpoints preserved license, one Microsoft 365 preserved license, and one Google Workspace preserved license, but the user has only one Microsoft 365 Active license and one Google Workspace Active license available, and Endpoints Active license is not available, then:
+
+        a. the user activation would fail, as there is no active Endpoints license available.
+
+        b. the user will remain in a preserved state, and the license state of Microsoft 365, Google Workspace, and Endpoints would continue to remain in the preserved state.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: The unique ID of a user in inSync. Get the ID of a user using the 'List all users' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postUsermanagementV1UsersByUserIDActivate
+      x-operation-id-source: derived
+  /usermanagement/v1/users/{userID}/download_user_auth_key:
+    get:
+      tags:
+      - User Management
+      summary: Download AuthKey
+      description: Downloads the authentication key for users to replace or add a new device
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: path
+        description: "The unique ID of a user in inSync. Get the ID of a user using the 'List all users' API.\n :fa-info-circle: Download the output in an IDK file."
+        required: true
+        schema:
+          type: integer
+      - name: deviceID
+        in: query
+        description: "Specify the device ID to download the Authkey for replacing the existing device. Get the ID of a device using the 'List all devices' API.\n Do not specify the device ID to download the Authkey for adding a new device."
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getUsermanagementV1UsersByUserIDDownloadUserAuthKey
+      x-operation-id-source: derived
+components:
+  schemas:
+    UserCreate:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int64
+          description: The unique id of the user in Druva inSync. Example - 1
+          example: 1
+        userName:
+          type: string
+          description: The user name of the user in Druva inSync. Example - Ernie Carter
+          example: Ernie Carter
+        emailID:
+          type: string
+          description: The email address of the user. Example - ernie.carter@druva.com
+          example: ernie.carter@druva.com
+        status:
+          type: string
+          description: The status of the user account. Example - active
+          enum:
+          - active
+          - preserved
+        profileID:
+          type: integer
+          description: The profile ID of the profile associated with the user. Example - 1
+          example: 1
+        storageID:
+          type: integer
+          description: The storage ID of the storage associated with the user. Example - 1
+          example: 1
+        quota:
+          type: string
+          description: The storage quota assigned to the user in inSync. Example - 50 GB
+          example: 50 GB
+        quotaInBytes:
+          type: integer
+          description: The storage quota (in bytes) assigned to the user in inSync. Example - 53687091200
+          example: 53687091200
+        addedOn:
+          type: string
+          format: date-time
+          description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        privacySettingsEnabled:
+          type: string
+          description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
+          example: true
+        ldapGUID:
+          type: boolean
+          format: hexstring
+          description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
+          example: B1C47201C67910458867BA19982E353E
+        additionalProperties:
+          type: object
+          description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
+          additionalProperties:
+            type: string
+          example:
+            userIdentifierCustomAttribute: Custom Attribute Label
+            userIdentifierCustomAttributeValue: Custom Attribute Value
+    UserList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of users fetched based on applied filters.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    User:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int64
+          description: The unique id of the user in inSync. Example - 1
+          example: 1
+        userName:
+          type: string
+          description: The username of the user in inSync. Example - Ernie Carter
+          example: Ernie Carter
+        emailID:
+          type: string
+          description: The email address of the user. Example - ernie.carter@druva.com
+          example: ernie.carter@druva.com
+        status:
+          type: string
+          description: The status of the user account. Example - active
+          enum:
+          - active
+          - preserved
+        profileID:
+          type: integer
+          description: The profile ID of the profile associated with the user. Example - 1
+          example: 1
+        storageID:
+          type: integer
+          description: The storage ID of the storage associated with the user. Example - 1
+          example: 1
+        cacheID:
+          type: integer
+          description: The CloudCache Server ID associated with the user. Example - 1
+          example: 1
+        quota:
+          type: string
+          description: The storage quota assigned to the user in inSync. Example - 10 GB
+          example: 10 GB
+        quotaInBytes:
+          type: integer
+          description: The storage quota assigned to the user (in bytes) in inSync. Example - 10737418240
+          example: 10737418240
+        addedOn:
+          type: string
+          format: date-time
+          description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        privacySettingsEnabled:
+          type: string
+          description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
+          example: true
+        ldapGUID:
+          type: boolean
+          format: hexstring
+          description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
+          example: B1C47201C67910458867BA19982E353E
+        additionalProperties:
+          type: object
+          description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
+          additionalProperties:
+            type: string
+          example:
+            userIdentifierCustomAttribute: Custom Attribute Label
+            userIdentifierCustomAttributeValue: Custom Attribute Value
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,0 +1,1068 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Salesforce Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get MSP Salesforce reports data.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Salesforce Reports
+  description: Lists the APIs to get MSP Salesforce reports data.
+paths:
+  /msp/reporting/v2/reports/mspSfdcBackupActivity:
+    post:
+      tags:
+      - Salesforce Reports
+      summary: View Backup Activity Report
+      description: 'View the status and details of backup activities for configured Salesforce instances.
+
+
+        **Note**: This API is subject to ongoing updates and optimization. We recommend regularly checking this documentation for the latest schema changes.'
+      operationId: GetSfdcBackupActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: salesforceUser
+                            enum:
+                            - accountName
+                            - globalCustomerId
+                            - customerName
+                            - backupType
+                            - completedTime
+                            - definitionName
+                            - endTime
+                            - organizationID
+                            - organizationName
+                            - projectName
+                            - salesforceUser
+                            - startTime
+                            - status
+                            - statusDetails
+                            - statusDetail
+                            - totalBackupSize
+                            - totalDataBackupSizeInMB
+                            - totalRecordsBackedUp
+                            - dcpUniqueKey
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: sfdc2_sanity sfdc2_sanity
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSfdcBackupActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v2/reports/mspSfdcDataRestoreActivity:
+    post:
+      tags:
+      - Salesforce Reports
+      summary: View Data Restore Activity Report
+      description: 'View the status and details of all restore jobs for configured Salesforce instances.
+
+
+        **Note**: This API is subject to continuous improvements. We recommend regularly reviewing this documentation for the latest updates and schema changes.'
+      operationId: GetSfdcDataRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: salesforceUser
+                            enum:
+                            - accountName
+                            - globalCustomerId
+                            - customerName
+                            - backupDefinitionName
+                            - dataTemplateName
+                            - destinationOrganization
+                            - endTime
+                            - isDeleted
+                            - projectName
+                            - recordsRestored
+                            - restoreState
+                            - salesforceUser
+                            - snapshotTimestamp
+                            - startTime
+                            - statusDetails
+                            - totalRecordCount
+                            - restoreSizeInMB
+                            - dcpUniqueKey
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: sfdc2_sanity sfdc2_sanity
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSfdcDataRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v2/reports/mspSfdcArchivalActivity:
+    post:
+      tags:
+      - Salesforce Reports
+      summary: View Archival Activity Report
+      description: 'View the details of all data archival activities for configured Salesforce instances.
+
+
+        **Note**: This API is subject to continuous updates and optimization. We recommend checking the documentation regularly for the latest schema changes.'
+      operationId: GetSfdcArchivalActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: salesforceUser
+                            enum:
+                            - accountName
+                            - globalCustomerId
+                            - customerName
+                            - archivalSetName
+                            - endTime
+                            - fileSize
+                            - organizationID
+                            - organizationName
+                            - projectName
+                            - salesforceUser
+                            - startTime
+                            - status
+                            - statusDetails
+                            - totalRecords
+                            - totalDataArchivedInMB
+                            - dcpUniqueKey
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: sfdc2_sanity sfdc2_sanity
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSfdcArchivalActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v2/reports/mspSfdcArchivalRestoreActivity:
+    post:
+      tags:
+      - Salesforce Reports
+      summary: View Archival Restore Activity Report
+      description: 'View the details of Archival restore activities of configured Salesforce instances.
+
+
+        **Note**: This API is subject to continuous updates and optimization. We recommend checking the documentation regularly for the latest schema changes.'
+      operationId: GetSfdcArchivalRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: salesforceUser
+                            enum:
+                            - accountName
+                            - globalCustomerId
+                            - customerName
+                            - archivalSetName
+                            - dataTemplateName
+                            - destinationOrganization
+                            - endTime
+                            - projectName
+                            - recordsRestored
+                            - restoreState
+                            - salesforceUser
+                            - startTime
+                            - statusDetails
+                            - totalRecordCount
+                            - restoreSize
+                            - dcpUniqueKey
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: sfdc2_sanity sfdc2_sanity
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSfdcArchivalRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v2/reports/mspSfdcSandboxSeedingActivity:
+    post:
+      tags:
+      - Salesforce Reports
+      summary: View Sandbox Seeding Activity Report
+      description: 'View the status and details of sandbox seeding and data copy activities for configured Salesforce instances.
+
+
+        **Note**: This API is subject to continuous updates and optimization. We recommend checking the documentation regularly for the latest schema changes.'
+      operationId: GetSfdcSandboxSeedingActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: salesforceUser
+                            enum:
+                            - accountName
+                            - globalCustomerId
+                            - customerName
+                            - dataTemplateName
+                            - destinationOrganization
+                            - endTime
+                            - projectName
+                            - recordsCopied
+                            - salesforceUser
+                            - sourceOrganization
+                            - startTime
+                            - statusDetails
+                            - statusDetail
+                            - taskState
+                            - totalRecordCount
+                            - totalDataCopiedInMB
+                            - dcpUniqueKey
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: sfdc2_sanity sfdc2_sanity
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSfdcSandboxSeedingActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    SfdcBackupActivityReportData:
+      title: SfdcBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the Salesforce backup activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        backupType:
+          type: string
+          description: Backup type of activity. Example - Incremental, Full
+          example: Full
+        completedTime:
+          type: string
+          description: 'Backup job completion time. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        definitionName:
+          type: string
+          description: The name of the backup definition to which the activity belongs
+          example: source001_definition_2023_07_19_00_29_3
+        endTime:
+          type: string
+          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
+          format: date-time
+          example: '2025-01-29T22:00:00Z'
+        organizationID:
+          type: string
+          description: Salesforce organization ID
+          example: 00D1100000C9ysvEA
+        organizationName:
+          type: string
+          description: The name of the salesforce organization to which the activity belongs
+          example: source001
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: test Project
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        startTime:
+          type:
+          - string
+          - 'null'
+          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        status:
+          type: string
+          description: Backup job status of the activity
+          example: Completed
+        statusDetails:
+          type:
+          - string
+          - 'null'
+          description: Error details if any
+          example: Backup completed successfully.
+        totalBackupSize:
+          type: integer
+          description: Total backup data size of the activity in bytes
+          example: 2200
+        totalDataBackupSizeInMB:
+          type: integer
+          description: Total logical data backed up, in megabytes.
+          example: 1000
+        totalRecordsBackedUp:
+          type: integer
+          description: Count of Salesforce records included in the backup.
+          example: 500
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetSfdcArchivalRestoreActivityReportDataResponse:
+      title: GetSfdcArchivalRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcArchivalRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    GetSfdcBackupActivityReportDataResponse:
+      title: GetSfdcBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: ZGE4ZWYwYzctNDEwZi00MTVjLWJhNzgtMTFiYzQzMzA2ODMy
+    GetSfdcSandboxSeedingActivityReportDataResponse:
+      title: GetSfdcSandboxSeedingActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcSandboxSeedingActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied to the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    SfdcSandboxSeedingActivityReportData:
+      title: SfdcSandboxSeedingActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the sandbox seeding activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        dataTemplateName:
+          type: string
+          description: Data template name of the Activity
+          example: DC_TC02_Template
+        destinationOrganization:
+          type: string
+          description: The name of the source organization selected for data copy as part of the activity
+          example: destin001
+        endTime:
+          type: string
+          description: 'End Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: DataCopyRegression_71759
+        recordsCopied:
+          type: integer
+          description: Count of the records restored as part of the activity
+          example: 1000
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who has initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        sourceOrganization:
+          type: string
+          description: Source Salesforce org name supplying the data.
+          example: source001
+        startTime:
+          type: string
+          description: 'Start Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type: string
+          description: Error details if any
+          example: ''
+        taskState:
+          type: string
+          description: Task status of the activity
+          example: Completed
+        totalRecordCount:
+          type: integer
+          description: The total number of records identified for data copy as part of the activity
+          example: 1000
+        totalDataCopiedInMB:
+          type: integer
+          description: Total logical data copied, in megabytes.
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    SfdcDataRestoreActivityReportData:
+      title: SfdcDataRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name associated with the restore activity.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        backupDefinitionName:
+          type: string
+          description: The name of the backup definition to which the activity belongs
+          example: DR_TC06_Backup
+        dataTemplateName:
+          type: string
+          description: Data template applied for the restore operation.
+          example: DR_TC06_Template
+        destinationOrganization:
+          type: string
+          description: Target Salesforce organization name for the restore.
+          example: source001
+        endTime:
+          type: string
+          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
+          format: date-time
+          example: '2025-01-29T22:00:00Z'
+        isDeleted:
+          type: integer
+          description: Flag to filter out deleted data template
+          example: 0
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: DataRestoreRegression
+        recordsRestored:
+          type: integer
+          description: Number of records restored in this activity.
+          example: 10
+        restoreState:
+          type: string
+          description: Backup job status of the activity
+          example: Completed
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        snapshotTimestamp:
+          type: string
+          description: 'Backup job completion time. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        startTime:
+          type: string
+          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type: string
+          description: Error details if any
+          example: ''
+        totalRecordCount:
+          type: integer
+          description: Total record count reported for the restore scope.
+          example: 10
+        restoreSizeInMB:
+          type: integer
+          description: Total backup data size of the activity in bytes
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    GetSfdcDataRestoreActivityReportDataResponse:
+      title: GetSfdcDataRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcDataRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    SfdcArchivalRestoreActivityReportData:
+      title: SfdcArchivalRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the archival restore activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        archivalSetName:
+          type: string
+          description: The name of the archival definition set to which the activity belongs
+          example: source001 archival_set_2024_06_11_14_53_02
+        dataTemplateName:
+          type: string
+          description: Data template used for the archival restore.
+          example: archival_restore_templatedhr5kuv0ao
+        destinationOrganization:
+          type: string
+          description: Target Salesforce organization name for the restore.
+          example: source001
+        endTime:
+          type: string
+          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
+          format: date-time
+          example: '2025-01-29T22:00:00Z'
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: My First Project
+        recordsRestored:
+          type: integer
+          description: Number of records restored from the archival set.
+          example: 100
+        restoreState:
+          type: string
+          description: Backup job status of the activity
+          example: Completed
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        startTime:
+          type: string
+          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type:
+          - string
+          - 'null'
+          description: Error details if any
+          example: Restore completed.
+        totalRecordCount:
+          type: integer
+          description: Total record count reported for the restore scope.
+          example: 100
+        restoreSize:
+          type: integer
+          description: Total backup data size of the activity in bytes
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    SfdcArchivalActivityReportData:
+      title: SfdcArchivalActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the archival activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        archivalSetName:
+          type: string
+          description: The name of the archival definition set to which the activity belongs
+          example: source001 archival_set_2024_08_27_00_59_59
+        endTime:
+          type: string
+          description: 'End Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025, 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        fileSize:
+          type: integer
+          description: Total size(in KB) of all archived object files of the activity.
+          example: 0
+        organizationID:
+          type: string
+          description: Salesforce organization ID
+          example: 00D1100000C9ysvEAB
+        organizationName:
+          type: string
+          description: The name of the salesforce organization to which the activity belongs
+          example: source001
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: My First Project
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who has initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        startTime:
+          type: string
+          description: 'Start Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        status:
+          type: string
+          description: Archival status of the activity
+          example: Completed
+        statusDetails:
+          type:
+          - string
+          - 'null'
+          description: Error details if any
+          example: Archival completed.
+        totalRecords:
+          type: integer
+          description: Count of records archived as part of the activity
+          example: 100
+        totalDataArchivedInMB:
+          type: integer
+          description: Total logical data archived, in megabytes.
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    GetSfdcArchivalActivityReportDataResponse:
+      title: GetSfdcArchivalActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcArchivalActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

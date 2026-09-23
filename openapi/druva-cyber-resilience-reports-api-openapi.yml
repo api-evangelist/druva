@@ -1,0 +1,403 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Cyber Resilience Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get MSP Cyber Resilience reports data.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Cyber Resilience Reports
+  description: Lists the APIs to get MSP Cyber Resilience reports data.
+paths:
+  /msp/reporting/v1/reports/mspDGRollbackActions:
+    post:
+      tags:
+      - Cyber Resilience Reports
+      summary: View Rollback Actions Report
+      description: This report provides a consolidated and point-in-time views based on date ranges for all the protected entities that are deleted in your environment. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetRollbackActionsReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: deleteRequestID
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - deleteRequestID
+                            - deletedDateTime
+                            - permanentDeleteDate
+                            - deletedBy
+                            - entityType
+                            - deletedItem
+                            - entityName
+                            - deletionReason
+                            - status
+                            - lastUpdatedTime
+                            - dataSize
+                            - rollbackDateTime
+                            - rolledBackBy
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: 11ef158d-929c-4841-ab83-0ca4179c1420
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRollbackActionsReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspDGDataProtectionRisk:
+    post:
+      tags:
+      - Cyber Resilience Reports
+      summary: View Data Protection Risk Report
+      description: Returns connection status of Enterprise workload agents to the cloud for MSP customers.
+      operationId: GetDataProtectionRiskReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: workloadName
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - organization
+                            - workloadName
+                            - workloadAgent
+                            - connectionStatusToCloud
+                            - disconnectedFromCloudSince
+                            - lastUpdatedTime
+                            - vCenterESXiHosts
+                            - connectionStatusToVCenter
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report..
+                            example: Files
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataProtectionRiskReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    RollbackActionsReportData:
+      title: RollbackActionsReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        dataSize:
+          type: integer
+          description: The data size.
+          format: int64
+          example: 20
+        deleteRequestID:
+          type: string
+          description: Delete Request ID
+          example: 11ef158d-929c-4841-ab83-0ca4179c1420
+        deletedBy:
+          type: string
+          description: The admin who deleted the entity.
+          example: rollbackTest rollbackTest
+        deletedDateTime:
+          type: string
+          description: The date on which the entity was deleted. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-04-26T10:53:52.000Z'
+        deletionReason:
+          type: string
+          description: The reason for which the entity was deleted.
+          example: Automation testing - deletion for workload Teams
+        entityName:
+          type: string
+          description: The name of the entity.
+          example: entity-1
+        deletedItem:
+          type: string
+          description: Type of deleted entity
+          example: Snapshot
+        entityType:
+          type: string
+          description: The type of entity. (Endpoints, Exchange Online,File Servers,Google Drive,Google Mail,Groups,NAS,One Drive,Profiles,Public Folders,SharePoint,Shared Drives,Teams,Users, VMware)
+          example: SharePoint
+        rollbackDateTime:
+          type: string
+          description: The date on which the entity was rolled-back. The time is in the UTC time zone. Example - 2019-10-26T00:00:00Z
+          format: date-time
+          example: '2023-04-26T10:57:51.000Z'
+        rolledBackBy:
+          type: string
+          description: The admin who rolled-back the entity.
+          example: rollbackTest rollbackTest
+        status:
+          type: string
+          description: The status of the request. Possible values(Available for rollback, Permanently deleted, Rollback in progress, Rolled back)
+          example: Rolled back
+        permanentDeleteDate:
+          type: string
+          description: The date on which the entity will be permanently deleted if not rolled-back. Example - 2019-10-28T00:00:00Z
+          format: date-time
+          example: '2023-04-28T10:57:51.000Z'
+        lastUpdatedDateTime:
+          type: string
+          description: The last updated time stamp. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-04-26T11:00:56.000Z'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetRollbackActionsReportDataResponse:
+      title: GetRollbackActionsReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RollbackActionsReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp until which report data is returned in the API. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetDataProtectionRiskReportDataResponse:
+      title: GetDataProtectionRiskReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionRiskReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp until which report data is returned in the API. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    DataProtectionRiskReportData:
+      title: DataProtectionRiskReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        organization:
+          type: string
+          description: The name of the organization.
+          example: custom-org
+        workloadName:
+          type: string
+          description: The name of the workload. Possible values (Files, Hyper-V, MS-SQL, NAS, Oracle, Oracle-DTC, VMware)
+          example: Files
+        workloadAgent:
+          type: string
+          description: Name of the device associated with the workload.
+          example: device123
+        disconnectedFromCloudSince:
+          type: string
+          description: The date since which device is disconnected from cloud. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          example: '2023-04-28T10:57:51.000Z'
+          format: date-time
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-04-28T10:57:51.000Z'
+        vCenterESXiHosts:
+          type: string
+          description: Name of the vCentre or ESXi host where the backup proxy is deployed.
+          example: centerhost123
+        connectionStatusToVCenter:
+          type: string
+          description: The connection status to the vCenter. Possible values (Connected,Disconnected)
+          example: Disconnected
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

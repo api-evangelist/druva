@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Storage Regions API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get information about Storage Regions.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Storage Regions
+  description: Lists the APIs to get information about Storage Regions.
+paths:
+  /msp/v2/storage-regions:
+    get:
+      tags:
+      - Storage Regions
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorageRegionsResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetStorageRegions
+      summary: Get Storage Region details
+      description: Returns information about storage regions assigned to MSPs.
+components:
+  schemas:
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetStorageRegionsResponse:
+      description: Lists the storage regions configured for your MSP account.
+      type: object
+      properties:
+        storageRegions:
+          description: The list of storage regions and their information.
+          type: array
+          items:
+            type: object
+            properties:
+              productID:
+                format: int64
+                description: "The ID of the product tenant.\n- For Enterprise Workloads, it is '1'. \n- For SaaS Apps and Endpoints, it is '2'.\n"
+                type: integer
+                example: 1
+              regions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the storage region
+                      example: us-east-1
+                    storageProvider:
+                      type: integer
+                      description: The storage provider ID. 1 for AWS, 2 for Azure
+                      example: 1
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

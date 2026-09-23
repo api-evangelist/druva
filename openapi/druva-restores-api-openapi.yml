@@ -1,0 +1,361 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Restores API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Restores in your CloudRanger Account
+  name: Restores
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/restores:
+    get:
+      description: Returns all restores associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsRestoresResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns all restores
+      tags:
+      - Restores
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdRestores
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/restores/{restore_id}:
+    delete:
+      description: Deletes the specific restore associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the restore that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/restores which returns all restores
+        in: path
+        name: restore_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsAccountsRestoresByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete restore
+      tags:
+      - Restores
+      operationId: deleteOrganizationsByOrganizationIdAccountsByAccountIdRestoresByRestoreId
+      x-operation-id-source: derived
+    get:
+      description: Returns the specific restore associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the restore that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/restores which returns all restores
+        in: path
+        name: restore_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsRestoresByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns the restore
+      tags:
+      - Restores
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdRestoresByRestoreId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/restores/{restore_id}/download:
+    get:
+      description: Return download for restore by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the restore that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/restores which returns all restores
+        in: path
+        name: restore_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsRestoresDownloadResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return download for restore
+      tags:
+      - Restores
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdRestoresByRestoreIdDownload
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsRestoresByIdResponse:
+      properties:
+        account_id:
+          type: string
+        artifact:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        end:
+          format: date-time
+          type: string
+        error:
+          type: string
+        id:
+          type: integer
+        organization_id:
+          type: string
+        origin:
+          type: string
+        start:
+          format: date-time
+          type: string
+        status:
+          type: string
+        type_restore:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsRestoresResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            artifact:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            end:
+              format: date-time
+              type: string
+            error:
+              type: string
+            id:
+              type: integer
+            organization_id:
+              type: string
+            origin:
+              type: string
+            start:
+              format: date-time
+              type: string
+            status:
+              type: string
+            type_restore:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsRestoresDownloadResponse:
+      properties:
+        signedUrl:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsRestoresByIdResponse:
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

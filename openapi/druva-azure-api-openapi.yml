@@ -1,0 +1,403 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Azure API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: Azure
+paths:
+  /pazwlConfig/v1/azure/resources/{metadataType}:
+    get:
+      description: Lists Azure resource metadata names by metadata type specified. The unique metadata values can be used in search API.
+      tags:
+      - Azure
+      summary: List Azure resource metadata names
+      operationId: ListMetadataNamesByTypeRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: AuthEntities
+        description: Specify the Auth Entity required for passing OrgIDs. It is a key-value pair delimited by ';'.  Specify multiple org values of pIDs by separating with  comma. For example, "pType=org;pID=1,2,3".
+        name: authEntities
+        in: header
+        required: true
+        schema:
+          type: string
+      - x-go-name: MetadataType
+        description: Specify the metadata type to be searched. Valid values for metadataType are "resource_groups", "resource_names" , "tag_keys" , "tag_values", "regions".
+        name: metadataType
+        in: path
+        required: true
+        schema:
+          type: string
+      - x-go-name: ResourceType
+        description: Specify the resource type to filter resources.Valid value for resourceType is "VirtualMachine".
+        name: resourceType
+        in: query
+        required: true
+        schema:
+          type: string
+      - x-go-name: Subscriptions
+        description: Specify the subscription IDs to be searched. Enter "0" for searching in all subscriptions.
+        name: subscriptions
+        in: query
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: Regions
+        description: Specify the regions to be searched. Enter "All" to search in all regions.This field is ignored for metadataType "Region", and mandatory for all other metadataTypes.
+        name: regions
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: TagKey
+        description: It is optional field. Specify the tagKey to fetch tagvalues.
+        name: tagKey
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMetadataNamesByTypeResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '503':
+          description: The request was not processed due to an internal error in service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /pazwlConfig/v1/azure/search:
+    post:
+      description: Searches Azure resources based on specified filters.
+      tags:
+      - Azure
+      summary: Search Azure resources
+      operationId: SearchRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: AuthEntities
+        description: Specify the Auth Entity required for passing OrgIDs. It is a key-value pair delimited by ';'.  Specify multiple org values of pIDs by separating with  comma. For example, "pType=org;pID=1,2,3".
+        name: authEntities
+        in: header
+        required: true
+        schema:
+          type: string
+      - x-go-name: PageSize
+        description: This is optional field. Specify the  PageSize to determine the count of rows to be fetched. Default value is 1024.
+        name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: This is optional field. Specify the token to fetch the next page. If this is not specified, the first page is displayed.
+        name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchFilters'
+        required: true
+        x-go-name: Filters
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '503':
+          description: The request was not processed due to an internal error in service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /pazwlConfig/v1/azure/subscription:
+    get:
+      description: Lists active subscriptions.
+      tags:
+      - Azure
+      security:
+      - Bearer: []
+      summary: List subscriptions
+      operationId: ListSubscriptionsRequest
+      parameters:
+      - x-go-name: AuthEntities
+        description: Specify the Auth Entity required for passing OrgIDs. It is a key-value pair delimited by ';'.  Specify multiple org values of pIDs by separating with  comma. For example, "pType=org;pID=1,2,3".
+        name: authEntities
+        in: header
+        required: true
+        schema:
+          type: string
+      - x-go-name: PageSize
+        description: This is optional field. Specify the  PageSize to determine the count of rows to be fetched. Default value is 1024.
+        name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: This is optional field. Specify the token to fetch the next page. If this is not specified, the first page is displayed.
+        name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSubscriptionsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    SearchFilters:
+      type: object
+      title: SearchFilters ...
+      required:
+      - resourceType
+      - subscriptions
+      - regions
+      - searchBy
+      properties:
+        regions:
+          type: array
+          items:
+            type: string
+          x-go-name: RegionNames
+          description: Specify the regions to be searched. Enter "All" to search in all regions.
+        resourceGroups:
+          type: array
+          items:
+            type: string
+          x-go-name: ResourceGroups
+          description: Specify the resourcegroups to be searched.
+        resourceNames:
+          type: array
+          items:
+            type: string
+          x-go-name: ResourceNames
+          description: Specify the resourcenames to be searched.
+        resourceType:
+          type: string
+          x-go-name: ResourceType
+          description: Specify the resource type to filter resources.Valid value for resourceType is "VirtualMachine".
+        searchBy:
+          type: string
+          x-go-name: SearchBy
+          description: Specify the parameter to be used for searching resources. Valid values for searchBy are "ResourceGroups" ,"ResourceNames" ,"Tags".
+        subscriptions:
+          type: array
+          items:
+            type: integer
+            format: int32
+          x-go-name: Subscriptions
+          description: Specify the subscription IDs to be searched. Enter "0" to search in all subscriptions.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tags'
+          x-go-name: Tags
+          description: Specify the tags to be searched.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    Resource:
+      type: object
+      description: Details of the resource fetched,  such as organization, subscription, backupset, and  daintree data.
+      properties:
+        backupEnabled:
+          type: boolean
+          x-go-name: BackupEnabled
+        daintreeCsetID:
+          type: integer
+          format: int32
+          x-go-name: DaintreeCsetID
+        daintreeRegion:
+          type: string
+          x-go-name: DaintreeRegion
+        daintreeStorageID:
+          type: integer
+          format: int32
+          x-go-name: DaintreeStorageID
+        orgID:
+          type: integer
+          format: int32
+          x-go-name: OrgID
+        orgName:
+          type: string
+          x-go-name: OrgName
+        resourceID:
+          type: integer
+          format: int32
+          x-go-name: ResourceID
+        resourceName:
+          type: string
+          x-go-name: ResourceName
+        resourceType:
+          type: string
+          x-go-name: ResourceType
+        subscriptionID:
+          type: integer
+          format: int32
+          x-go-name: SubscriptionID
+        subscriptionName:
+          type: string
+          x-go-name: SubscriptionName
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    SearchResponse:
+      type: object
+      title: SearchResponse is the response schema for Search API
+      properties:
+        nextPageToken:
+          type: string
+          x-go-name: NextPageToken
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+          x-go-name: Resources
+          description: Details of the resource fetched, such as organization, subscription, backupset, and  storage data.
+        totalCount:
+          type: integer
+          format: int32
+          x-go-name: TotalCount
+          description: Total count of results fetched.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ListMetadataNamesByTypeResponse:
+      type: object
+      title: ListMetadataNamesByTypeResponse is the response schema for ListMetadataNamesByType API
+      properties:
+        metadataType:
+          type: string
+          x-go-name: MetadataType
+          description: Type of metadata  provided in request.
+        names:
+          type: array
+          items:
+            type: string
+          x-go-name: Names
+          description: Metadata values based on the type provided in request.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ListSubscriptionsResponse:
+      type: object
+      description: ListSubscriptionsResponse is the response schema for ListSubscriptions API
+      properties:
+        nextPageToken:
+          type: string
+          x-go-name: NextPageToken
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+          x-go-name: Subscriptions
+          description: Details of subscription present in the specified org. Returns subscription name, ID, accountIdentifier, and accountID.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    Subscription:
+      type: object
+      title: Subscription ...
+      properties:
+        accountID:
+          type: integer
+          format: int32
+          x-go-name: AccountID
+        accountIdentifier:
+          type: string
+          x-go-name: AccountIdentifier
+        id:
+          type: integer
+          format: int32
+          x-go-name: ID
+        name:
+          type: string
+          x-go-name: Name
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    Tags:
+      type: object
+      title: Tags ...
+      properties:
+        key:
+          type: string
+          x-go-name: Key
+        value:
+          type: string
+          x-go-name: Value
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

@@ -1,0 +1,2510 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Legal Hold API
+  description: Lists the APIs to get information about the legal hold policies, manage users on legal hold and new APIs for eDiscovery Download Client.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Legal Hold
+  description: Lists the APIs to get information about the legal hold policies, manage users on legal hold and new APIs for eDiscovery Download Client.
+paths:
+  /legalholds/v3/policies:
+    get:
+      tags:
+      - Legal Hold
+      summary: List legal hold policies - v3
+      description: Returns a list of all the Legal Hold policies that are configured in Druva inSync.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLegalholds'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getLegalholdsV3Policies
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Legal Hold
+      summary: Create a legal hold policy - v3
+      description: Creates a legal hold policy in Druva inSync.
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateLHPolicy'
+        description: Request body to create legal hold policy.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreateLHPolicy'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: postLegalholdsV3Policies
+      x-operation-id-source: derived
+  /legalholds/v3/policies/{policyId}:
+    get:
+      tags:
+      - Legal Hold
+      summary: Get details of a legal hold policy - v3
+      description: Returns details of a legal hold policy configured in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        description: Specify the unique ID of the legal hold policy to get its details. Get the ID of a legal hold policy using the 'List legal hold policies' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetLegalholds'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getLegalholdsV3PoliciesByPolicyId
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Legal Hold
+      summary: Delete a legal hold policy - v3
+      description: Deletes the legal hold policy from inSync Cloud.
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        description: Specify the unique ID of the legal hold policy to be deleted. Get the ID of a legal hold policy using the 'List legal hold policies' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeleteLegalholds'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: deleteLegalholdsV3PoliciesByPolicyId
+      x-operation-id-source: derived
+  /legalholds/v3/policies/{policyId}/users:
+    post:
+      tags:
+      - Legal Hold
+      summary: Add or delete users (custodians) from a legal hold policy - v3
+      description: Add or delete users from a legal hold policy in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        description: Specify the unique ID of the legal hold policy from which you want to add OR delete the custodians.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestOperateOnCustodians'
+        description: Request body to add OR delete users from the legal hold policy.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOperateOncustodians'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: postLegalholdsV3PoliciesByPolicyIdUsers
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Legal Hold
+      summary: List the users on legal hold - v3
+      description: Returns the list of users who are on legal hold in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        description: Specify the unique ID of the legal hold policy for which you want the list of users. Get the ID of a legal hold policy using the 'List legal hold policies' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetCustodians'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getLegalholdsV3PoliciesByPolicyIdUsers
+      x-operation-id-source: derived
+  /legalholds/v3/users/policies:
+    post:
+      tags:
+      - Legal Hold
+      summary: List legal hold policies associated with a user - v3
+      description: Returns the list of legal hold policies that are associated with a user.
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestListPoliciesByUsers'
+        description: Request body to add OR delete users from the legal hold policy.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseListPoliciesByUsers'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: postLegalholdsV3UsersPolicies
+      x-operation-id-source: derived
+  /legalholds/v4/policies:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns a list of all the Legal Hold policies that are configured in Druva inSync.
+      summary: List Legal Hold policies - v4
+      operationId: PoliciesGet
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortBy
+        in: query
+        description: Sort Legal Hold policies by using one of the following options.
+        schema:
+          type: string
+          enum:
+          - createdOn
+          - name
+      - name: sortOrder
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done in ascending or descending order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: custodians
+        in: query
+        description: Specify the Custodian email IDs separated by comma. Example - John.Doe@druva.com
+        schema:
+          type: string
+      - name: legalHoldTypes
+        in: query
+        description: Specify the Legal Hold type. Select a predefined type from the available options or a custom type as per your need.
+        schema:
+          type: string
+          enum:
+          - Human Resources
+          - Information Security
+          - Legal
+      - name: legalHoldTypeIds
+        in: query
+        description: Specify the Legal Hold type IDs. Provide comma-separated Legal Hold Type IDs. Example - 1,2,3
+        schema:
+          type: string
+      - name: searchString
+        in: query
+        description: Search by Legal Hold name. Example - Jan_2021
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLegalHoldPolicies'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+    post:
+      tags:
+      - Legal Hold
+      description: Creates a Legal Hold policy in Druva inSync.
+      summary: Create a Legal Hold policy - v4
+      operationId: PoliciesPost
+      deprecated: false
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLegalHoldPolicyRequest'
+        description: Request body to create legal hold policy.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateLegalHoldPolicyResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /legalholds/v4/policies/{policyId}:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns the details of a Legal Hold policy using policyID.
+      summary: Legal Hold policy details - v4
+      operationId: GetLegalHoldDetails
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        required: true
+        description: Unique ID of the Legal Hold policy. Example - 4
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHoldPolicy'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+    put:
+      tags:
+      - Legal Hold
+      description: Edit the details of a Legal Hold policy using policyID.
+      summary: Manage Legal Hold policy details - v4
+      operationId: EditLegalHoldDetails
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        required: true
+        description: Unique ID of the Legal Hold policy. Example - 4
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditlegalHoldPolicyDetailsRequest'
+        description: Request body to edit legal hold policy.
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditlegalHoldPolicyDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+    delete:
+      tags:
+      - Legal Hold
+      summary: Delete a Legal Hold policy - v4
+      description: Deletes the Legal Hold policy from inSync Cloud.
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        description: Specify the unique ID of the Legal Hold policy to be deleted. Get the ID of a Legal Hold policy using the 'List Legal Hold policies' API. Example - 12529
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeleteLegalholds'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: deleteLegalholdsV4PoliciesByPolicyId
+      x-operation-id-source: derived
+  /legalholds/v4/policies/{policyId}/users:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns the list of users who are a part of Legal Hold.
+      summary: Lists the users of a Legal Hold policy - v4
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        required: true
+        description: Specify the unique ID of the Legal Hold policy for which you want the list of users. Get the ID of a Legal Hold policy using the 'List Legal Hold policies' API. Example - 12529
+        schema:
+          type: integer
+      - name: pageNumber
+        in: query
+        description: Search users according to the page number. Example-1.
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        description: Search users according to the page size. The maximum page size should not exceed 500. Example - 100.
+        schema:
+          type: integer
+      - name: searchPrefix
+        in: query
+        description: Search users by user name or user's email. Example - john.doe@druva.com
+        schema:
+          type: string
+      - name: sortBy
+        in: query
+        description: Sort to filter the list of users. You can sort the users by user name.
+        schema:
+          type: string
+          enum:
+          - name
+      - name: sortOrder
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done in ascending or descending order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewLegalHoldPolicyCustodians'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getLegalholdsV4PoliciesByPolicyIdUsers
+      x-operation-id-source: derived
+  /legalholds/v4/policies/{policyId}/collection-stream:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns the list of all Legal Hold devices.
+      summary: Lists all the devices of a Legal Hold policy - v4
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyId
+        in: path
+        required: true
+        description: Specify the unique ID of the Legal Hold policy for which you want the list of devices. Get the ID of a Legal Hold policy using the 'List Legal Hold policies' API. Example - 12529
+        schema:
+          type: integer
+      - name: pageNumber
+        in: query
+        description: Search the list of devices on Legal Hold according to the page number. Default value - 1 Example - 10.
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        description: 'Search the list of devices on Legal Hold according to their page size. The maximum page size should not exceed 500. The minimum page size should be greater than or equal to 1. Example: 100.'
+        schema:
+          type: integer
+      - name: searchString
+        in: query
+        description: Search the list of devices on Legal Hold according to the device name. Example - DESKTOP1-device.
+        schema:
+          type: string
+      - name: collectionType
+        in: query
+        description: Filter the list of devices on Legal Hold according to device type. Example - Backup.
+        schema:
+          type: string
+          enum:
+          - Backup
+          - Additional
+      - name: collectionStatus
+        in: query
+        description: Filter the list of devices on Legal Hold according to device collection status. Example - Failed.
+        schema:
+          type: string
+          enum:
+          - Successful
+          - Failed
+          - Collected with Errors
+          - Never Collected
+          - Collection Throttled
+          - Inactive
+      - name: sortBy
+        in: query
+        description: Sort to filter the list of devices on Legal Hold. Example - custodianName.
+        schema:
+          type: string
+          enum:
+          - custodianName
+          - deviceName
+          - totalCollectedData
+          - lastCompletedCollection
+          - deviceStatus
+      - name: sortOrder
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done in ascending or descending order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewLegalHoldPolicyCollectionStream'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getLegalholdsV4PoliciesByPolicyIdCollectionStream
+      x-operation-id-source: derived
+  /legalholds/v4/clients:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns a list of all the eDiscovery Download Clients that are configured in inSync.
+      summary: List eDiscovery Download Clients - v4
+      operationId: ClientsGet
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortBy
+        in: query
+        description: 'Key to sort the results. You can sort by: name/clientVersion/cplatform/createdBy'
+        schema:
+          type: string
+          enum:
+          - name
+          - clientVersion
+          - cplatform
+          - createdBy
+      - name: sortOrder
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done in ascending or descending order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: connectionStatus
+        in: query
+        description: The connection status of the client. It can be 'Connected', 'Disconnected', or 'Not Registered'.
+        schema:
+          type: string
+          enum:
+          - Connected
+          - Disconnected
+          - Not Registered
+      - name: searchBy
+        in: query
+        description: Search by the name of the eDiscovery Download Client. Example - Client1
+        schema:
+          type: string
+      - name: pageNumber
+        in: query
+        description: Search by Page Number. Example - 1
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        description: Search by Page Size. Example - 100
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListClients'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /legalholds/v4/clients/{clientId}:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns details of a eDiscovery Download Client.
+      summary: Get eDiscovery Download Client details - v4
+      operationId: getClient
+      security:
+      - Bearer: []
+      parameters:
+      - in: path
+        name: clientId
+        description: Client ID for which details are to be fetched. Example - 54.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Details of the client requested.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client_details'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /legalholds/v4/job/{jobId}:
+    get:
+      tags:
+      - Legal Hold
+      description: Returns the details of the eDiscovery Download Client job.
+      summary: Get details of a download job - v4
+      operationId: GetDetailsOfJob
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        description: Specify the unique ID of the download job. Get the ID of a job using the 'List eDisovery Download Client jobs' API.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobDetails'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /legalholds/v4/job:
+    post:
+      tags:
+      - Legal Hold
+      description: Download custodian data from inSync using the eDiscovery Download Client.
+      summary: Initiate custodian data download - v4
+      operationId: createNewJob
+      deprecated: false
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDownloadJobRequest'
+        description: Request body to initiate the custodian data download.
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDownloadJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+    put:
+      tags:
+      - Legal Hold
+      description: Use this API to cancel, retry, pause, and resume download jobs.
+      summary: Manage eDiscovery Download Client jobs - v4
+      operationId: takeActionOnJob
+      deprecated: false
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TakeActionOnJobRequest'
+        description: Request body to take action on the job.
+        required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TakeActionOnJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_401'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /legalholds/v4/jobs:
+    get:
+      tags:
+      - Legal Hold
+      description: List all download jobs triggered with eDisocvery Download Clients.
+      summary: List all download jobs - v4
+      operationId: GetCustomerJobs
+      deprecated: false
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortBy
+        in: query
+        description: 'Sort the list of results. You can sort by: jobId/jobStartTime/custodian/dataDownloaded/legalholdName/jobStatus/dataSource'
+        schema:
+          type: string
+          enum:
+          - jobId
+          - jobStartTime
+          - custodian
+          - dataDownloaded
+          - legalholdName
+          - jobStatus
+          - dataSource
+      - name: sortOrder
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done in ascending or descending order.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: jobStartTime
+        in: query
+        description: The time when the job was triggered. Example - 1625154576
+        schema:
+          type: integer
+      - name: searchBy
+        in: query
+        description: Search by data source name. Example - DRUVA6598
+        schema:
+          type: string
+      - name: pageNumber
+        in: query
+        description: Search by Page Number. Example - 1
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        description: Search by Page Size. Example - 100
+        schema:
+          type: integer
+      - name: jobStatus
+        in: query
+        description: Filter jobs based on their status. Example - [Queued,Paused,Running,Cancelled,Successful,Failed,Completed with Errors]
+        schema:
+          type: string
+          enum:
+          - Queued
+          - Paused
+          - Running
+          - Cancelled
+          - Successful
+          - Failed
+          - Completed with Errors
+      - name: custodian
+        in: query
+        description: "Name of custodians. Example - John Doe. \n\nNote: You can use either the 'custodian' or 'custodianList' parameter to filter by custodians, but they cannot be used simultaneously."
+        schema:
+          type: string
+      - name: custodianList
+        in: query
+        description: "List of custodian names. Example - [\"John Doe\",\"Jane Smith\",\"Smith,John\",\"Alice Johnson\"]. \n\nNote: You can use either the 'custodian' or 'custodianList' parameter to filter by custodians, but they cannot be used simultaneously."
+        schema:
+          type: string
+      - name: legalholdName
+        in: query
+        description: Search by legal hold name. Example - Feb_2021.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListJobsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_Legalholds'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+components:
+  schemas:
+    ListLegalHoldPolicies:
+      title: ListLegalHoldPolicies
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ListingData'
+    GetLegalholds:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The data access type of the legal hold policy
+          enum:
+          - All Backup Data
+          - Last Backup Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        name:
+          type: string
+          description: The name of the legal hold policy
+          example: LH Policy 1
+        policyId:
+          type: integer
+          description: The ID of the Legal hold policy
+          example: '1'
+        cullingType:
+          type: string
+          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          enum:
+          - Include All Files
+          - Include Only Deleted Files
+          example: Include Only Deleted Files
+        startDate:
+          type: string
+          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-03-19'
+        endDate:
+          type: string
+          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-10-25'
+    CreateLegalHoldPolicyResponse:
+      title: CreateLegalHoldPolicyResponse
+      type: object
+      properties:
+        policyId:
+          type: integer
+          description: The unique ID of the created Legal Hold policy. Example - 12359
+          example: 12359
+    HTTP_500:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-2003
+          example: inSyncLegalholds-2003
+        message:
+          type: string
+          example: Programing Error occurred on server, please check server logs for more details
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+    RequestCreateLHPolicy:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the legal hold policy. Example - Legal Hold Policy 1
+          example: LH Policy 1
+        type:
+          type: string
+          description: The data access type of the legal hold policy
+          enum:
+          - All Backup Data
+          - Last Backup Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        cullingType:
+          type: string
+          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'. Use any of the filter types"
+          enum:
+          - Include All Files
+          - Include Only Deleted Files
+        startDate:
+          type: string
+          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-03-19'
+        endDate:
+          type: string
+          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-10-25'
+    EditlegalHoldPolicyDetailsResponse:
+      title: EditlegalHoldPolicyDetailsResponse
+      type: object
+      properties:
+        message:
+          type: string
+          example: Legal Hold updated successfully.
+        policyId:
+          type: integer
+          example: 2
+    PageInfo:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          description: Total number of pages for the API Response. Example - 1
+          example: 1
+        pageNumber:
+          type: integer
+          format: int32
+          description: Page number for which API response is expected. Example - 1
+          example: 1
+        pageSize:
+          type: integer
+          description: Page Size for API response. Example - 100
+          example: 100
+    CreateDownloadJobRequest:
+      title: JobDetails
+      type: object
+      properties:
+        clientName:
+          type: string
+          description: Name of the eDiscovery Download Client. Example - Client1
+          example: Client1
+        downloadOption:
+          type: integer
+          description: 0 indicates only metadata, 1 indicates data and metadata and 2 indicates zip download option.
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 2
+        legalholdId:
+          type: integer
+          description: Legal Hold ID for which download is to be triggered. Example -10
+          example: 10
+        downloadLocation:
+          type: string
+          description: Location to download the job. Example - D:\Downloads
+          example: D:\Downloads
+        createdBy:
+          type: string
+          description: Name of administrator triggering the job. Example - Ernie Carter
+          example: Ernie Carter
+        custodianEmails:
+          allOf:
+          - type: array
+            items:
+              type: string
+              description: User email for which data is to be downloaded.
+              example: john.doe@druva.com
+        enable_data_integrity:
+          type: boolean
+          description: Use 'true' to enable data integrity and 'false' to disable data integrity.
+          enum:
+          - true
+          - false
+          example: false
+      required:
+      - clientName
+      - downloadOption
+      - legalholdId
+      - downloadLocation
+      - createdBy
+      - custodianEmails
+      - enable_data_integrity
+    ListClients:
+      title: ListClients
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          description: Total number of pages for the API Response. Example - 1
+          example: 1
+        totalResults:
+          type: integer
+          description: Total number of results. Example - 1
+          example: 1
+        clients:
+          allOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/Client_details'
+        pageNumber:
+          type: integer
+          description: Page number for which API response is expected. Example - 1
+          example: 1
+        pageSize:
+          type: integer
+          description: Page Size for API response. Example - 100
+          example: 100
+    ResponseOperateOncustodians:
+      type: object
+      properties:
+        alreadyOnLegalhold:
+          type: array
+          description: While adding a user to a legal hold policy, if a user is already on legal hold then the email address is returned in this list. This field is returned only if the action is 'add'.
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are already on legal hold.
+                example: john.doe@someorg.com
+        notOnLegalhold:
+          type: array
+          description: While deleting a user from a legal hold policy, if a user is already deleted from legal hold then the user email address will be returned in this list. This field is returned only if the action is 'delete'.
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are already deleted from legal hold or are not on legal hold.
+                example: john.doe_1@someorg.com
+        notInsyncUsers:
+          type: array
+          items:
+            type: object
+            description: While adding OR deleting a user from a legal hold policy, if the user is not a valid inSync user then the user email address will be returned in this list.
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are not valid inSync users.
+                example: john.doe_2@someorg.com
+    ViewLegalHoldPolicyCollectionStream:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ViewLegalHoldPolicyCollectionStreamResponse'
+        pageInfo:
+          $ref: '#/components/schemas/PageInfo'
+    ViewLegalHoldPolicyCustodians:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ViewLegalHoldPolicyCustodiansResponse'
+        pageInfo:
+          $ref: '#/components/schemas/PageInfo'
+    RequestOperateOnCustodians:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: The email address of the user, who should be added to OR deleted from the legal hold policy.
+                example: john.doe@someorg.com
+        action:
+          type: string
+          description: The action to be performed on the user.
+          enum:
+          - add
+          - delete
+          example: add
+    TakeActionOnJobRequest:
+      title: TakeActionOnJobRequest
+      type: object
+      properties:
+        jobIds:
+          type: array
+          items:
+            type: integer
+          description: List of Job IDs for which action is to be taken. Example-[115,114]
+          example: '[115,114]'
+        action:
+          type: string
+          description: 'Specify the action that you want to take. Use any of the following: '
+          enum:
+          - Cancel
+          - Pause
+          - Retry
+          - Resume
+          example: Cancel
+      required:
+      - action
+      - jobIds
+    EditlegalHoldPolicyDetailsRequest:
+      title: EditlegalHoldPolicyDetailsRequest
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Name of the Legal Hold policy. Example - Jan_2021. Note: Changing the name of the legal Hold policy will have an impact on long-running eDiscovery Download jobs. Initiate a new eDiscovery Download job in case of failure.'
+          example: Jan_2021
+        legalHoldType:
+          type: string
+          description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
+          example: Human Resources
+        startDate:
+          type: string
+          description: Displays the start time if the webdav access type option selected is 'Data within a Date Range'. Example- Apr 11 2021
+          format: mmm DD YYYY
+          example: Apr 11 2021
+        endDate:
+          type: string
+          description: Displays the end time if the webdav access type option selected is 'Data within a Date Range'. Example- Jun 12 2021
+          format: mmm DD YYYY
+          example: Jun 12 2021
+        webDavAccessType:
+          type: string
+          description: Details about the type of Webdav access. This field is case-sensitive. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+          enum:
+          - All Collected Data
+          - Last Collected Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        isADCEnabled:
+          type: boolean
+          description: Indicates if Additional Data Collection feature is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'false'
+        accessAdditionalData:
+          type: boolean
+          description: Indicates if Additional Data access option is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'false'
+        accessBackupData:
+          type: boolean
+          description: Indicates if backup data access option is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'true'
+        collectionFrequency:
+          type: string
+          description: Provides details about additional data collection frequency. This field is case-sensitive. Example - One time/Recurring
+          enum:
+          - One time
+          - Recurring
+          example: Recurring
+        deletedFilesOnly:
+          type: boolean
+          description: Use 'true' to access only deleted files of users who belong to this Legal Hold policy. Else, use 'false'.
+          enum:
+          - true
+          - false
+          example: 'true'
+    ViewLegalHoldPolicyCustodiansResponse:
+      type: object
+      properties:
+        usersList:
+          $ref: '#/components/schemas/UsersList'
+        totalCustodians:
+          type: integer
+          format: int32
+          description: Number of custodians in a Legal Hold policy. Example- 1
+          example: 1
+    DeleteLegalholds:
+      type: object
+      properties: {}
+    LegalHoldDetails:
+      title: LegalHoldDetails
+      type: object
+      properties:
+        startDate:
+          type: string
+          description: Start time if webdav access type selected is Data within a Date Range. Example- Apr 11 2021
+          format: mmm DD YYYY
+          example: Apr 11 2021
+        endDate:
+          type: string
+          description: End time if webdav access type selected is Data within a Date Range. Example- Jun 12 2021
+          format: mmm DD YYYY
+          example: Jun 12 2021
+        webDavAccessType:
+          type: string
+          description: Type of webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+          enum:
+          - All Collected Data
+          - Last Collected Data
+          - Data within a Data Range
+          example: All Collected Data
+        isADCEnabled:
+          type: boolean
+          description: Flag to indicate if Additional Data Collection is enabled. Example - true/false.
+          enum:
+          - 'true'
+          - 'false'
+          example: 'true'
+        createdOn:
+          type: string
+          description: Date and Time when Legal Hold Policy was created. Example- 'Jul 01 2021, 08:54'
+          example: Jul 01 2021, 08:54
+        legalHoldType:
+          type: string
+          description: Type of Legal Hold Policy. Example- Human Resources
+          example: Human Resources
+        policyId:
+          type: integer
+          format: int32
+          description: Unique ID of the Legal Hold policy. Example - 20
+          example: 20
+        createdBy:
+          type: string
+          description: Name of admin creating Legal Hold Policy. Example - Ernie Carter
+          example: Ernie Carter
+        numberOfCustodians:
+          type: integer
+          format: int32
+          description: Count of Custodians in the Legal Hold Policy. Example - 7
+          example: 7
+        legalHoldTypeId:
+          type: integer
+          format: int32
+          description: Unique ID of the legal hold type. Example - 132
+          example: 132
+        deletedFilesOnly:
+          type: boolean
+          description: Use true if you want to access only deleted files. Otherwise, use false.
+          enum:
+          - true
+          - false
+          example: false
+        name:
+          type: string
+          description: Name of the Legal Hold policy. Example - Jan_2021
+          example: Jan_2021
+    HTTP_401:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967557
+          - inSyncLegalholds-4294967391
+          example: inSyncLegalholds-4294967391
+        message:
+          type: string
+          example: Authentication/Authorization failed
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - inSyncLegalholds-4294967489
+          example: inSyncLegalholds-4294967489
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          example: Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    JobDetails:
+      title: JobDetails
+      type: object
+      properties:
+        dataDownload:
+          type: integer
+          description: Flag to download data. Use 1 as the value if you want to download the data.
+          enum:
+          - 0
+          - 1
+          example: '1'
+        custodianEmail:
+          type: string
+          description: The email address of the custodian. Example - john@druva.org
+          example: john@druva.org
+        jobId:
+          type: integer
+          description: Unique Id of the job. Example - 55
+          example: 55
+        addWebdavProp:
+          type: string
+          description: WebDAV property.
+        percentComplete:
+          type: integer
+          description: Percentage of data that has been downloaded. Example - 100
+          example: 100
+        webdavUrl:
+          type: string
+          description: WebDAV access URL
+          example: https://restore-c1-druva.com/webdav/legal-policy1/John/OneDrive/
+        jobEndTime:
+          type: integer
+          description: TimeStamp when the job ended. Example - 1597914384
+          example: 1597914384
+        clientSecretId:
+          type: string
+          description: Client secret Id. Example - jEpceguNqE98heUe7rboMh9kkahXWyW
+          example: jEpceguNqE98heUe7rboMh9kkahXWyW
+        legalholdId:
+          type: integer
+          description: Unique ID of the Legal Hold policy. Example - 47
+          example: 47
+        metadataDownload:
+          type: integer
+          description: Flag to indicate if metadata option is selected for the download.
+          enum:
+          - 0
+          - 1
+          example: 1
+        ddClientId:
+          type: integer
+          description: The unique ID of the eDiscovery Download Client. Example - 48
+          example: 48
+        totalFiles:
+          type: integer
+          description: Total number of files available for download. Example - 10
+          example: 10
+        data_integrity:
+          type: integer
+          description: Data integrity. Example - 10
+          example: 10
+        type_name:
+          type: string
+          description: Legal Hold type name. Example - Human Resources
+          example: Human Resources
+        jobStatus:
+          type: string
+          description: Status of the job. Example - '[Queued,Paused,Running,Cancelled,Successful,Failed,Completed with Errors]'
+          enum:
+          - Queued
+          - Paused
+          - Running
+          - Cancelled
+          - Successful
+          - Failed
+          - Completed with Errors
+          example: Successful
+        dataDownloaded:
+          type: integer
+          description: Size of the downloaded data. Example - 5731256
+          example: 5731256
+        legalholdName:
+          type: string
+          description: Name of Legal Hold Policy for which download is triggered. Example - Legal-Policy1
+          example: Legal-Policy1
+        jobStartTime:
+          type: integer
+          description: Timestamp when job was triggered in epoch. Example - 1597909321
+          example: 1597909321
+        totalDataSize:
+          type: integer
+          description: Size of the data that is to be downloaded. Example - 5731256
+          example: 5731256
+        cplatform:
+          type: string
+          description: The operating system where the eDiscovery Download Client is installed. Example - win32
+          example: win32
+        dCategory:
+          type: string
+          description: Category of device. Example - cloudapp-others
+          example: cloudapp-others
+        custodian:
+          type: string
+          description: Name of the custodian whose data is being downloaded. Example - John Doe
+          example: John Doe
+        errorMessage:
+          type: string
+          description: Error message if download fails. Example - ERR_401
+          example: ERR_401
+        filesDownloaded:
+          type: integer
+          description: Count of files that were downloaded. Example - 10
+          example: 10
+        dataSource:
+          type: string
+          description: Name of the data source from where the data will be downloaded. Example - OneDrive
+          example: OneDrive
+        createdBy:
+          type: string
+          description: Name of the inSync administrator who is initiating the download. Example - Ernie Carter
+          example: Ernie Carter
+        totalFilesZipped:
+          type: integer
+          description: Total files that are zipped. Example - 15
+          example: 15
+        downloadLocation:
+          type: string
+          description: Download location of data to be downloaded. Example - D:\Downloads
+          example: D:\Downloads
+        data_integrity_enabled:
+          type: integer
+          description: Data integrity flag is enabled. Example - 1
+          example: 1
+        downloadOption:
+          type: integer
+          description: 0 indicates only metadata, 1 indicates data and metadata and 2 indicates zip download option.
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 1
+        total_data_integrity:
+          type: integer
+          description: Total data integrity count. Example - 131
+          example: 131
+        customerId:
+          type: integer
+          description: Unique ID of the customer. Example - 7
+          example: 7
+        clientName:
+          type: string
+          description: Name of the eDiscovery Download Client. Example - Client-1.0.0
+          example: Client-1.0.0
+    ResponseListPoliciesByUsers:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
+                example: john.doe@someorg.com
+              policyIds:
+                type: array
+                items:
+                  type: integer
+                  description: The list of legal hold policy ids associated with the user. Example - 2,4,11
+                  example: 2, 4, 11
+    HTTP_422:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - inSyncLegalholds-4294967423
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - 'false'
+          - 'true'
+    CreateDownloadJobResponse:
+      title: CreateDownloadJobResponse
+      type: object
+      properties:
+        message:
+          type: string
+          example: Download initiated. Click Download Jobs on the left pane to view details.
+    ViewLegalHoldPolicyCollectionStreamResponse:
+      type: object
+      properties:
+        streamsList:
+          $ref: '#/components/schemas/StreamList'
+        totalResults:
+          type: integer
+          format: int32
+          description: Number of devices in a given Legal Hold policy. Example- 4
+          example: 1
+    ResponseGetCustodians:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of the users associated with the legal hold policy. Example - ernie.carter@druva.com
+                example: john.doe@someorg.com
+              webdavUrl:
+                type: string
+                description: WebDAV URL to access the user's data.
+                example: https://restore-c1-kunals.drtst.in/webdav/LH Policy 1/uname/
+    LegalHoldPolicy:
+      title: LegalHoldPolicy
+      type: object
+      properties:
+        results:
+          type: object
+          properties:
+            legalHoldPolicy:
+              type: object
+              properties:
+                startDate:
+                  type: string
+                  description: Start time if webdav access type selected is 'Data within a Date Range'. Example- Apr 11 2021
+                  format: mmm DD YYYY
+                  example: Apr 11 2021
+                webDavAccessUrls:
+                  type: array
+                  items:
+                    type: string
+                  description: URL for accessing webDav. Example - ['https://restore-c22-cloud.druva.com/webdav/Mike']
+                  example: '[''https://restore-c22-cloud.druva.com/webdav/Mike'']'
+                endDate:
+                  type: string
+                  description: End time if webdav access type selected is 'Data within a Date Range'. Example- Jun 12 2021
+                  format: mmm DD YYYY
+                  example: Jun 12 2021
+                webDavAccessType:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Type of Webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+                  enum:
+                  - All Collected Data
+                  - Last Collected Data
+                  - Data within a Date Range
+                  example: Data within a Date Range
+                isADCEnabled:
+                  type: boolean
+                  description: Flag to indicate if ADC feature is enable for Legal Hold policy or not. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'false'
+                directDownLoadLink:
+                  type: string
+                  description: URL for direct download Legalhold Policy of a user. Example-'https://downloads.druva.com/insync/webdav/1-2/'
+                  example: https://downloads.druva.com/insync/webdav/1-2/
+                createdOn:
+                  type: string
+                  description: Date and Time when Legal Hold Policy was created. Example- 'Feb 24 2021, 08:54'
+                  example: Feb 24 2021, 08:54
+                usersCount:
+                  type: integer
+                  format: int32
+                  description: Count of custodians on Legal Hold. Example -5
+                  example: 5
+                accessAdditionalData:
+                  type: boolean
+                  description: Flag to indicate additional data access for Legal Hold policy. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'false'
+                legalHoldType:
+                  type: string
+                  description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
+                  example: Human Resources
+                webDavAuthentication:
+                  type: string
+                  description: webDAV authentication is done using inSync Administrator credential.
+                  example: Use your inSync Administrator credential
+                accessBackupData:
+                  type: boolean
+                  description: Flag to indicate backup data access for Legal Hold policy. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'true'
+                policyId:
+                  type: integer
+                  format: int32
+                  description: Unique ID of the Legal Hold policy. Example - 4
+                  example: 4
+                createdBy:
+                  type: string
+                  description: Name of the admin who created the Legal Hold policy. Example - Ernie Carter
+                  example: Ernie Carter
+                legalHoldTypeId:
+                  type: integer
+                  format: int32
+                  description: Legal Hold policy type Id. Example - 1397
+                  example: 1397
+                collectionFrequency:
+                  type: string
+                  description: Backup data collection frequency. Example - Not collecting/One time/Recurring.
+                  enum:
+                  - Not collecting
+                  - One time
+                  - Recurring
+                  example: Not collecting
+                deletedFilesOnly:
+                  type: boolean
+                  description: Use 'true' if you want to access only deleted files of users who are on this Legal Hold policy. Otherwise use 'false'.
+                  enum:
+                  - true
+                  - false
+                  example: 'true'
+                name:
+                  type: string
+                  description: Name of Legal Hold policy. Example - Jan_2021
+                  example: Jan_2021
+    StreamList:
+      type: array
+      items:
+        properties:
+          deviceName:
+            type: string
+            description: Name of the device that is on Legal Hold. Example - Desktop1-john
+            example: Desktop1-john
+          collectionType:
+            type: string
+            description: The type of the device. It can be either Backup or Additional.
+            enum:
+            - Backup
+            - Additional
+            example: Backup
+          collectionStatus:
+            type: string
+            description: Collection status of a device on Legal Hold. Example - Successful
+            enum:
+            - Successful
+            - Failed
+            - Collected with Errors
+            - Never Collected
+            - Collection Throttled
+            - Inactive
+            example: Successful
+          totalCollectedDataInBytes:
+            type: integer
+            format: int32
+            description: Size of the total data (in bytes) collected. Example - 1800010372
+            example: 1800010372
+          linkId:
+            type: integer
+            format: int32
+            description: For device type 'Additional', this is the ID of the linked backup device. Example - 10008179
+            example: 10008179
+          custodianName:
+            type: string
+            description: Name of the custodian on Legal Hold. Example - John Doe
+            example: John Doe
+          platformIcon:
+            type: string
+            description: Name of the device platform image. Example - windows.png
+            example: windows.png
+          deviceStatus:
+            type: string
+            description: Status of the device. Example - Enabled
+            example: Enabled
+          isCollectionDisabled:
+            type: boolean
+            description: Flag to indicate if collection on Legal Hold is disabled or not. Example - false
+            example: false
+          isCloudApp:
+            type: boolean
+            description: Flag to indicate if device on Legal Hold is of type cloudapp. Example - false
+            example: false
+          custodianId:
+            type: integer
+            format: int32
+            description: Unique ID of the custodian. Example - 10005623
+            example: 10005623
+          deviceId:
+            type: integer
+            format: int32
+            description: Unique ID of the device. Example - 10008211
+            example: 10008211
+          lastCompletedCollection:
+            type: string
+            description: Timestamp of last completed collection for a device. Example - Sep 05 2024, 02:55
+            example: Sep 05 2024, 02:55
+          platformName:
+            type: string
+            description: Name of the device platform. Example - win32
+            example: win32
+          totalCollectedData:
+            type: string
+            description: Total data collected. Example - 2.12 GB
+            example: 2.12 GB
+    CreateLegalHoldPolicyRequest:
+      title: CreateLegalHoldPolicyRequest
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Legal Hold policy to be created. Example - Feb_2021.
+          example: Feb_2021
+        legalHoldType:
+          type: string
+          description: "Type of Legal Hold to be created. \n This parameter is optional. \n If not specified it is set to '--'. Example- Human Resources."
+          example: Human Resources
+        webDavAccessType:
+          type: string
+          description: 'The data access type of the legal hold policy. Use any of the following: '
+          enum:
+          - All Collected Data
+          - Last Collected Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        startDate:
+          type: string
+          description: "The start date in the range in which the data is to be accessed if webdav access type selected is 'Data within a Date Range'. \n This parameter is optional if webdav access type is not 'Data within a Date Range'. Example - Apr 11 2021"
+          format: mmm DD YYYY
+          example: Apr 11 2021
+        endDate:
+          type: string
+          description: "The end date in the range in which the data is to be accessed if webdav access type selected is 'Data within a Date Range'. \n This parameter is optional if webdav access type is not 'Data within a Date Range'. Example - May 11 2021"
+          format: mmm DD YYYY
+          example: May 11 2021
+        deletedFilesOnly:
+          type: boolean
+          description: "Use 'true' if you want to access only deleted files. Otherwise, use 'false'. \n This parameter is optional."
+          enum:
+          - true
+          - false
+          example: 'false'
+        isADCEnabled:
+          type: boolean
+          description: "Use 'true' if you want to enable Additional Data Collection for this Legal Hold. Otherwise, use 'false'. \n This parameter is optional."
+          enum:
+          - true
+          - false
+          example: 'true'
+        collectionFrequency:
+          type: string
+          description: "Choose collection frequency of additional data collection from one of the following option. To use this parameter isADCEnabled should be set to true. \n This parameter is optional."
+          enum:
+          - One time
+          - Recurring
+          example: Recurring
+        accessBackupData:
+          type: boolean
+          description: Use 'true' if you want to enable Backup Data Access for this Legal Hold policy. The accessBackupData and accessAdditionalData parameters cannot be set to false simultaneously. The default value is set to 'true'.
+          example: true
+        accessAdditionalData:
+          type: boolean
+          description: Use 'true' if you want to enable Additional Data Collection access for this Legal Hold policy. The isADCEnabled value must be set to 'true' to enable this option. The default value is set to 'false'.
+          example: false
+      required:
+      - name
+      - webDavAccessType
+      - startDate
+      - endDate
+    ListingData:
+      title: ListingData
+      type: object
+      properties:
+        legalHoldsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegalHoldDetails'
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967438
+          example: inSyncLegalholds-4294967438
+        message:
+          type: string
+          enum:
+          - Legalhold policy not found.
+          example: Legalhold policy not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+    ResponseCreateLHPolicy:
+      type: object
+      properties:
+        policyId:
+          type: integer
+          description: The ID of the legal hold policy. Example - 1
+          example: '1'
+    HTTP_403_Legalholds:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967490
+          example: inSyncLegalholds-4294967490
+        message:
+          type: string
+          enum:
+          - You do not have permissions for the action.
+          example: You do not have permissions for the action.
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+        data:
+          type: object
+    ListJobsResponse:
+      allOf:
+      - title: ListJobsResponse
+        type: object
+        properties:
+          totalPages:
+            type: integer
+            description: Total number of pages for the API Response. Example - 10
+            example: 10
+          pageNumber:
+            type: integer
+            description: Page Number for which API response is expected. Example - 1
+            example: 1
+          totalResults:
+            type: integer
+            description: Total number of jobs. Example - 4
+            example: 4
+          jobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/JobDetails'
+          pageSize:
+            type: integer
+            description: Page Size for API response. Example - 100
+            example: 100
+    TakeActionOnJobResponse:
+      title: TakeActionOnJobResponse
+      type: object
+      properties:
+        message:
+          type: string
+          example: Download Job has been Cancelled Successfully.
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetails'
+    Client_details:
+      title: Client_details
+      properties:
+        ddClientHostName:
+          type: string
+          description: The name of the device where the client is installed. Example - John-8765-Windows-PC
+          example: John-8765-Windows-PC
+        clientSecretId:
+          type: string
+          description: API secret part of API credentials. Example - E1AMfwKbQUXGY6sbPB9igPyDL3CbhyWa
+          example: E1AMfwKbQUXGY6sbPB9igPyDL3CbhyWa
+        client_features:
+          type: object
+          properties:
+            metadata_download:
+              type: boolean
+              enum:
+              - true
+              - false
+              example: true
+            zip_download:
+              type: boolean
+              enum:
+              - true
+              - false
+              example: true
+            data_download:
+              type: boolean
+              enum:
+              - true
+              - false
+              example: true
+            integrity_check:
+              type: boolean
+              enum:
+              - true
+              - false
+              example: true
+          description: A dictionary containing information about the features that the client supports.
+        cplatform:
+          type: string
+          description: The operating system of the device where the client is installed. Example - win32
+          example: win32
+        name:
+          type: string
+          description: Name of the eDiscovery Download Client machine. Example - client1_PF_123
+          example: client1_PF_123
+        clientVersion:
+          type: string
+          description: Version of the eDiscovery Download Client. Example - 1.1.1
+          example: 1.1.1
+        ip:
+          type: string
+          description: IP address of the eDiscovery Download Client machine. Example - 110.11.14.10
+          example: 110.11.14.10
+        clientId:
+          type: integer
+          description: Client ID part of API credentials. Example-59
+          example: 59
+        connectionStatus:
+          type: string
+          description: 'Connection status of the eDiscovery Download Client. It can be any of the following statuses:'
+          enum:
+          - Not Registered
+          - Connected
+          - Disconnected
+          example: Connected
+        createdBy:
+          type: string
+          description: Name of admin who created the eDiscovery Download Client. Example - John Doe
+          example: John Doe
+        defaultDownloadLocation:
+          type: string
+          description: Default download location for eDiscovery download. Example - 'D:\Data'
+          example: D:\Data
+        activationTime:
+          type: integer
+          description: Timestamp when the eDiscovery Download Client machine was activated. Example - 1624887294
+          example: 1624887294
+    ListLegalholds:
+      type: object
+      properties:
+        legalholdList:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The data access type of the legal hold policy
+                enum:
+                - All Backup Data
+                - Last Backup Data
+                - Data within a Date Range
+                example: Data within a Date Range
+              name:
+                type: string
+                description: The name of the legal hold policy
+                example: LH Policy 1
+              policyId:
+                type: integer
+                description: The ID of the legal hold policy
+                example: '1'
+              cullingType:
+                type: string
+                description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                enum:
+                - Include All Files
+                - Include Only Deleted Files
+                example: Include Only Deleted Files
+              startDate:
+                type: string
+                description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                format: date
+                example: '2019-03-19'
+              endDate:
+                type: string
+                description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                format: date
+                example: '2019-10-25'
+    RequestListPoliciesByUsers:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
+                example: john.doe@someorg.com
+        action:
+          type: string
+          enum:
+          - list
+    UsersList:
+      type: array
+      items:
+        properties:
+          userName:
+            type: string
+            description: Name of the user who is on Legal Hold. Example - John Doe
+            example: John Doe
+          status:
+            type: string
+            description: The status of the user. It can be either Active or Inactive.
+            enum:
+            - Active
+            - Inactive
+            example: Active
+          userEmail:
+            type: string
+            description: User email ID who is on Legal Hold. Example - john@druva.org
+            example: john@druva.org
+          collectedData:
+            type: string
+            description: Size of the data collected in the last backup snapshot. Example - 1.68 GB
+            example: 1.68 GB
+          collectedDataInBytes:
+            type: integer
+            description: Size of the data (in bytes) collected in the last backup snapshot. Example - 1800010372
+            example: 1800010372
+          userId:
+            type: integer
+            format: int32
+            description: Unique ID of the user. Example - 3
+            example: 3
+          policyId:
+            type: integer
+            format: int32
+            description: Unique ID of the Legal Hold policy to which the user belongs. Example - 12529
+            example: 12529
+          onLegalHold:
+            type: boolean
+            description: Flag to indicate if user is on Legal Hold or not. Example - true/false
+            example: true
+          numberOfDataSources:
+            type: integer
+            description: Number of data sources for current User. Example - 2
+            example: 2
+          totalCollectedData:
+            type: string
+            description: Total data collected. Example - 2.12 GB
+            example: 2.12 GB
+          totalCollectedDataInBytes:
+            type: integer
+            description: Total data collected in bytes. Example - 2276332666
+            example: '2276332666'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

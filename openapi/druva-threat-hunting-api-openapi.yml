@@ -1,0 +1,1760 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to get information and perform operations on the resources managed in Druva Cloud for threat hunt.
+  version: 3.0.0
+  title: Cyber Resilience Threat Hunting API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Threat Hunting
+  description: List of APIs to get information and perform operations on the resources managed in Druva Cloud for threat hunt.
+paths:
+  /threathunting/v1/search/backupset:
+    post:
+      summary: Search resources for VMware resource type
+      description: Find all resources available for the provided search filters.
+      security:
+      - Bearer: []
+      tags:
+      - Threat Hunting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreatHuntSearchBackupsetParams'
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntSearchBackupsetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: postThreathuntingV1SearchBackupset
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts:
+    post:
+      description: Create a threat hunt for all the selected resources.
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Create a threat hunt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreatHuntCreateParams'
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: postThreathuntingV1Threathunts
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: List all threat hunts
+      description: Displays a list of all the existing threat hunts.
+      parameters:
+      - name: searchName
+        in: query
+        description: Specify the name of the threat hunt to search and list all the threat hunts that match the name.
+        schema:
+          type: string
+      - description: Specify the scan status of the threat hunt to search and list the threat hunts based on scan statuses. The status can be 'Running', 'Queued', 'Completed', 'Cancelled', or 'Failed'.
+        name: scanStatus[]
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - Queued
+          - Running
+          - Failed
+          - Cancelled
+          - Completed
+      - description: Specify the resource types and list the threat hunts based on resource types. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', and 'ExchangeOnline'.
+        name: resourceTypes[]
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - EC2
+          - AzureVM
+          - VMware
+          - OneDrive
+          - SharePoint
+          - ExchangeOnline
+      - description: Specify the scan result of the threat hunt to search and list the threat hunts based on scan results. The scan result can either be 'File matches found' or 'File matches not found'.
+        name: scanResult[]
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - File matches found
+          - File matches not found
+      - name: pageToken
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntListResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1Threathunts
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/cancel:
+    put:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to cancel an ongoing threat hunt. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      summary: Cancel a threat hunt
+      description: Allows you to cancel an ongoing or running threat hunt job.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntJobCancelResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: putThreathuntingV1ThreathuntsByThreatHuntIDCancel
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}:
+    delete:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to delete a specific threat hunt. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreatHuntJobDeleteParams'
+      summary: Delete a threat hunt
+      description: Allows you to delete an existing non-running threat hunt job. Threat hunt, once deleted, cannot be recovered.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: deleteThreathuntingV1ThreathuntsByThreatHuntID
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      summary: List threat hunt configuration details
+      description: You can view the configuration details provided during threat hunt creation, such as file hashes and file extensions.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntGetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntID
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/summary:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Get threat hunt summary for a specific threat hunt
+      description: View the scan summary for a specific threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntScanSummaryResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDSummary
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/devices:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Lists the devices that are a part of a Threat Hunt job
+      description: Displays a list of all the devices for the selected threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: pageToken
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntListDevicesResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDDevices
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/devices/stats:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: List statistics of devices configured for threat hunt
+      description: Displays a list of statistics for all devices selected for threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: deviceIDs[]
+        in: query
+        description: Specify the deviceIDs to filter device statistics.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntListDevicesStatsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDDevicesStats
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/devices/{deviceID}:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Get resource details for a specific threat hunt
+      description: Displays the selected device ID details and resource type for a specific threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: deviceID
+        in: path
+        description: Specify the device ID. You can obtain the device ID using the 'List threat hunt devices API'.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: Specify the resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or Exchange Online.
+        required: true
+        schema:
+          type: string
+          enum:
+          - VMware
+          - EC2
+          - AzureVM
+          - OneDrive
+          - SharePoint
+          - ExchangeOnline
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntGetDeviceDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDDevicesByDeviceID
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/devices/{deviceID}/stats:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Get device statistics for a specific threat hunt
+      description: Displays a list of statistics for a specific device ID and resource type for a particular threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: deviceID
+        in: path
+        description: Specify the device ID. You can obtain the device ID using the 'List threat hunt devices API'.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: Name of the resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or Exchange Online.
+        required: true
+        schema:
+          type: string
+          enum:
+          - VMware
+          - EC2
+          - AzureVM
+          - OneDrive
+          - SharePoint
+          - ExchangeOnline
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntGetDeviceStatsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDDevicesByDeviceIDStats
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/devices/{deviceID}/snapshots:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: List impacted snapshots for a specific threat hunt
+      description: Displays a list of impacted snapshots for the selected device ID and resource type for a specific threat hunt.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID to view the details. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: deviceID
+        in: path
+        description: Specify the device ID. You can obtain the device ID using the 'List threat hunt devices API'.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: Name of the resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or Exchange Online.
+        required: true
+        schema:
+          type: string
+          enum:
+          - VMware
+          - EC2
+          - AzureVM
+          - OneDrive
+          - SharePoint
+          - ExchangeOnline
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntListImpactedSnapshotsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDDevicesByDeviceIDSnapshots
+      x-operation-id-source: derived
+  /threathunting/v1/threathunts/{threatHuntID}/report:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Download a report
+      description: This API provides the option to download the threat hunt summary or a detailed report. The report will be available after the threat hunt job is complete. The API provides a download URL in its response. Use the URL to download the report.
+      parameters:
+      - name: threatHuntID
+        in: path
+        description: Specify the threat hunt ID. You can obtain the ID using the 'List all threat hunts API'.
+        required: true
+        schema:
+          type: integer
+      - name: reportType
+        in: query
+        description: Specify the report Type. The 'File' report type provides a download URL for the File Level Report, and the 'Summary' report type provides a download URL for the snapshot summary report.
+        required: true
+        schema:
+          type: string
+          enum:
+          - File
+          - Summary
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHuntDownloadReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatHunt_HTTP_500'
+      operationId: getThreathuntingV1ThreathuntsByThreatHuntIDReport
+      x-operation-id-source: derived
+  /common/v1/search/aws/awsaccounts:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Search AWS Accounts
+      description: This API provides the option to search AWS Accounts for provided Phoenix (Enterprise Workloads) organization IDs.
+      parameters:
+      - name: orgIDs[]
+        in: query
+        description: Specify the unique Phoenix(Enterprise Workload) organization ID.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SearchAWSAccountsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_500'
+      operationId: getCommonV1SearchAwsAwsaccounts
+      x-operation-id-source: derived
+  /common/v1/search/aws/resourceids:
+    get:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: List AWS Resources
+      description: Provides a list of the AWS Resources backed up to Druva Cloud. It is relevant to the selected Phoenix (Enterprise Workloads) organization IDs, AWS account IDs, and regions. Currently, support is limited to EC2 and EBS Volumes AWS workloads.
+      parameters:
+      - name: orgIDs[]
+        in: query
+        description: Specify the unique Phoenix(Enterprise Workload) organization ID.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: accountIDs[]
+        in: query
+        description: Specify the unique AWS Account IDs. You can obtain the ID using the 'Search AWS Accounts API'.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: regions[]
+        in: query
+        description: Specify the AWS region's code. For the list of supported regions, refer to the AWS Workloads documentation. For example, 'us-east-1' and 'us-west-2'.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ListResourceIDsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_500'
+      operationId: getCommonV1SearchAwsResourceids
+      x-operation-id-source: derived
+  /common/v1/search/aws/resources:
+    post:
+      tags:
+      - Threat Hunting
+      security:
+      - Bearer: []
+      summary: Search AWS Resources
+      description: Allows you to search AWS workloads- EC2 and EBS Volumes backed up to Druva Cloud for the selected/provided Phoenix (Enterprise Workloads) organization IDs, AWS account IDs, and regions. Currently, only AWS workloads - EC2 and EBS Volumes are supported.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchAWSResourcesParams'
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SearchAWSResourcesResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RealizeCommon_HTTP_500'
+      operationId: postCommonV1SearchAwsResources
+      x-operation-id-source: derived
+components:
+  schemas:
+    ThreatHuntScanSummaryResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The identifier to uniquely identify threat hunt.
+        impactedResources:
+          type: integer
+          description: Count of impacted resources against which threat was identified.
+        impactedDevices:
+          type: integer
+          description: Count of impacted devices against which threat was identified.
+        impactedSnapshots:
+          type: integer
+          description: Count of impacted snapshots against which threat was identified among all provided resources.
+        totalFilesImpacted:
+          type: integer
+          description: Count of impacted files against which threat was identified among all provided resources.
+        totalResources:
+          type: integer
+          description: Count of total resources provided during threat hunt creation.
+        totalDevices:
+          type: integer
+          description: Count of total devices provided during threat hunt creation.
+        totalSnapshots:
+          type: integer
+          description: Count of total snapshots that were included in the threat hunt scan.
+        scanStartedTime:
+          type: string
+          description: The date and time when the threat hunt scan was started. Example - Aug 27, 2024 14:13:42.
+          example: Aug 27, 2024 14:13:42
+        scanCompletedTime:
+          type: string
+          description: The date and time when the threat hunt scan was completed. Example - Aug 27, 2024 14:13:42.
+          example: Aug 27, 2024 14:13:42
+        scanStatus:
+          type: string
+          description: The current status of the threat hunt scan. The status can be 'Running,' 'Queued,' 'Completed,' 'Cancelled,' or 'Failed'.
+        skippedIocsCount:
+          type: integer
+          description: The count of file hashes skipped from the threat hunt scan.
+          example: 1
+        errorCode:
+          type: string
+          description: The error states that the threat hunt scan failed.
+          example: THAnalyzer-1401
+        errorReason:
+          type: string
+          description: Details about the reason for the threat hunt scan failure.
+          example: Threat Hunt scan failed due to an internal error.
+    ThreatHuntSearchBackupsetResponse:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceName:
+                type: string
+                description: Name of the resource. In case of VMware, resource name will be VM name. Example - Ernie Carter's VM.
+              resourceType:
+                type: string
+                description: Name of the resource type. Example - VMware, Endpoint, File Server. Currently, only the VMware resource type is supported.
+              resourceID:
+                type: integer
+                description: Unique identifier for a resource.
+              resourceParentName:
+                type: string
+                description: The ESXi name (for VMware) or Server Name (for other server types) is used to identify a backup set. For instance, the name might be an IP address like 172.16.14.43.
+              resourceParentID:
+                type: integer
+                description: Unique identifier of the parent resource. Unique identifier for ESXI FQDN in case of VMware.
+              orgID:
+                type: integer
+                description: The unique identifier of the Phoenix (Enterprise Workloads) organization for the resource.
+              lastIndexedSnapshot:
+                type: string
+                description: Last indexed snapshot for this resource. The threat hunt scan will run until this snapshot.
+              lastSnapshot:
+                type: string
+                description: The last snapshot whose backup has successfully been completed in Druva Cloud.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+    ThreatHunt_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatHuntCreateResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The identifier to uniquely identify threat hunt.
+        message:
+          type: string
+          example: Threat hunt created successfully.
+        validationFailures:
+          type: object
+          description: This occurs in case of validation failure for the file hash, file extension, resources or IOC sets.
+          properties:
+            invalidHashes:
+              type: array
+              description: File hashes discarded from threat hunt creation.
+              items:
+                type: string
+                example: abvfdinvalid
+            excludedExtensions:
+              type: array
+              description: Extensions with a length of more than 200 or extensions having more than one dot are discarded.
+              items:
+                type: string
+                example: .abc.txt.1
+            invalidResourceIDs:
+              type: array
+              description: Resources that are deleted or unavailable are discarded from threat hunt creation.
+              items:
+                type: integer
+                example: 1
+            invalidIOCSets:
+              type: array
+              description: IOC sets that are either deleted or invalid.
+              items:
+                type: integer
+                example: 1
+    ThreatHuntSearchBackupsetParams:
+      type: object
+      properties:
+        resourceName:
+          type: string
+          description: Specify the complete name or a prefix for the device name, hostname, or server name to search and list the devices, hostname, or servers. Example - “My” is the prefix in the device name “MyDevice123”.
+        orgIDs:
+          type: array
+          description: Specify the unique Phoenix(Enterprise Workload) organization ID for the resource.
+          items:
+            type: integer
+            example: 1
+        resourceParentIDs:
+          type: array
+          description: Specify the ResourceParentID. In the case of VMware, the resource parent ID is ESXI host or Vcenter.
+          items:
+            type: integer
+            example: 1
+        resourceTypes:
+          type: array
+          description: Specify the resource type. Currently, VMware resource type is supported.
+          items:
+            type: string
+            example: VMware
+        pageToken:
+          type: string
+          description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+    ThreatHuntJobCancelResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          example: 1
+          description: The identifier to uniquely identify threat hunt.
+        message:
+          type: string
+          example: Threat hunt cancelled successfully.
+    ThreatHuntListResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        threathunts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreatHunt'
+        totalItems:
+          type: integer
+          description: Total count of threat hunts created.
+    ThreatHunt_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1006
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatHunt_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatHuntDownloadReportResponse:
+      type: object
+      properties:
+        downloadLink:
+          type: string
+          description: Download URL for the requested report type.
+    RealizeCommon_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - realizecommon-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    SearchAWSAccountsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          accountID:
+            type: integer
+            example: 1
+            description: The identifier to uniquely identify AWS Account.
+          accountName:
+            type: string
+            example: Target
+            description: Name of the AWS Account.
+    ThreatHuntListDevicesResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The identifier to uniquely identify threat hunt.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        totalResources:
+          type: integer
+          description: Count of resources provided for threat hunt creation.
+        devices:
+          type: array
+          items:
+            type: object
+            properties:
+              deviceID:
+                type: integer
+                description: Unique identifier for a device.
+              resourceName:
+                type: string
+                description: Name of the resource. In case of VMware, resource name will be VM name. Example - Ernie Carter's VM.
+              resourceType:
+                type: string
+                description: Name of the resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', and 'ExchangeOnline'.
+              resourceIDs:
+                type: array
+                description: List of resource IDs selected for the threat hunt.
+                items:
+                  type: integer
+              orgID:
+                type: integer
+                description: The unique identifier of the Phoenix (Enterprise Workloads) organization for the resource.
+              payload:
+                type: object
+                description: All other fields that belong to the selected resource. Example - {'type':'EBS'}.
+    ThreatHuntListDevicesStatsResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The unique identifier for a threat hunt.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        devices:
+          type: array
+          items:
+            type: object
+            properties:
+              deviceID:
+                type: integer
+                description: Unique identifier for a device.
+              resourceType:
+                type: string
+                description: Name of resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or 'ExchangeOnline'.
+              totalSnapshots:
+                type: integer
+                description: Count of total snapshots for this resource.
+              totalFilesImpacted:
+                type: integer
+                description: Count of impacted files against which threat was identified for this resource.
+              impactedSnapshots:
+                type: integer
+                description: Count of impacted snapshots against which threat was identified for this resource.
+              scannedSnapshots:
+                type: integer
+                description: A count of snapshots included in the threat hunt scan for this resource.
+              totalQuarantinedSnapshots:
+                type: integer
+                description: Count of impacted snapshots that were quarantined.
+              firstImpactedSnapshot:
+                type: string
+                description: Name of the first impacted snapshot. Example - Nov 21 2019, 14:39:34.
+                example: Nov 21 2019, 14:39:34
+              lastImpactedSnapshot:
+                type: string
+                description: Name of the last impacted snapshot. Example - Nov 21 2019, 14:39:34.
+                example: Nov 21 2019, 14:39:34
+              latestCleanSnapshot:
+                type: string
+                description: Name of the latest clean snapshot. Example - Nov 21 2019, 14:39:34.
+                example: Nov 21 2019, 14:39:34
+              resourceIDs:
+                type: array
+                description: List of resource IDs for the selected device ID.
+                items:
+                  type: integer
+    ThreatHuntGetDeviceDetailsResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The unique identifier for a threat hunt.
+          example: 13
+        deviceID:
+          type: integer
+          description: Unique identifier for a device.
+        orgID:
+          type: integer
+          description: The unique identifier of the Phoenix (Enterprise Workloads) organization for the resource.
+        resourceParentID:
+          type: integer
+          description: Unique identifier for the parent resource.In the context of VMware, this is the unique identifier for the ESXi FQDN.
+        resourceName:
+          type: string
+          description: Name of the resource. In case of VMware, resource name will be VM name. Example - Ernie Carter's VM.
+        resourceType:
+          type: string
+          description: Name of resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or 'Exchange Online'.
+        resourceParentName:
+          type: string
+          description: Resource Parent Name. In case of VMware, this will be vCenter/ESXi name.
+        orgName:
+          type: string
+          description: Organization Name for Enterprise Workloads. This field is empty if the organization has been deleted.
+        payload:
+          type: object
+          description: All other fields that belong to the selected resource. Example - {'type':'EBS'}.
+        resourceIDs:
+          type: array
+          description: List of resource IDs for the selected device ID.
+          items:
+            type: integer
+    ListResourceIDsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          deviceID:
+            type: integer
+            example: 123
+            description: The unique identifier for EC2 and EBS resources.
+          resourceName:
+            type: string
+            example: docker-test
+            description: Name of the AWS EC2 instance or EBS volume.
+          type:
+            type: string
+            example: EC2
+            description: Type of resource. EC2 or EBS
+          resourceIDs:
+            type: array
+            description: List of EC2 and EBS resources belonging to device.
+            items:
+              type: integer
+    SearchAWSResourcesResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceName:
+                type: string
+                description: Name of the resource. In case of EC2, resource name can be instance id or name given to instance. Example - docker-test
+              type:
+                type: string
+                description: Name of the resource type. Example - EC2, EBS.
+              deviceID:
+                type: integer
+                description: Unique identifier for a resource.
+              awsAccountName:
+                type: string
+                description: The name of AWS account.
+              awsAccountID:
+                type: integer
+                description: Unique identifier for AWS account IDs.
+              orgID:
+                type: integer
+                description: The unique identifier of the Phoenix (Enterprise Workloads) organization for the resource.
+              region:
+                type: string
+                description: AWS region
+                example: us-east-1
+              regionLabel:
+                type: string
+                description: Region label for AWS region. Example - Oregon (US West).
+              resources:
+                type: array
+                description: List of associated resources.
+                items:
+                  type: object
+                  properties:
+                    resourceID:
+                      type: integer
+                      description: Unique identifier for the associated resource.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+    ThreatHunt:
+      type: object
+      properties:
+        createdOn:
+          type: string
+          description: "The date and time when the threat hunt was created. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z."
+          example: '2020-01-02T15:04:05Z'
+        resourceTypes:
+          type: array
+          description: The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', and 'ExchangeOnline'.
+          items:
+            type: string
+            example: VMware
+        description:
+          type: string
+          description: The description provided during threat hunt creation.
+        impactedResources:
+          type: integer
+          description: Count of impacted resources against which threat was identified.
+        impactedDevices:
+          type: integer
+          description: Count of impacted devices against which threat was identified.
+        impactedSnapshots:
+          type: integer
+          description: Count of impacted snapshots against which threat was identified among all provided resources.
+        jobID:
+          type: integer
+          format: int64
+          description: Unique Identifier for threat hunt job.
+        name:
+          type: string
+          description: Name of the threat hunt.
+        scanStartedTime:
+          type: string
+          description: The date and time when the threat hunt scan was started. Example - Aug 27, 2024 14:13:42.
+          example: Aug 27, 2024 14:13:42
+        scanStatus:
+          type: string
+          description: The current status of the threat hunt scan. The status can be 'Running,' 'Queued,' 'Completed,' 'Cancelled,' or 'Failed'.
+        snapshotRangeEndDate:
+          type: string
+          description: "The end date selected while threat hunt creation. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z."
+          example: '2020-01-02T15:04:05Z'
+        snapshotRangeStartDate:
+          type: string
+          description: "The start date selected while threat hunt creation. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z."
+          example: '2020-01-02T15:04:05Z'
+        threatHuntID:
+          type: integer
+          format: int64
+          description: The identifier to uniquely identify threat hunt.
+        totalFilesImpacted:
+          type: integer
+          description: Count of impacted files against which threat was identified among all provided resources.
+        totalResources:
+          type: integer
+          description: Count of total resources provided during threat hunt creation.
+        totalDevices:
+          type: integer
+          description: Count of total devices provided during threat hunt creation.
+        totalSnapshots:
+          type: integer
+          description: Count of total snapshots that were included in the threat hunt scan.
+    ThreatHuntListImpactedSnapshotsResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The identifier to uniquely identify threat hunt.
+        deviceID:
+          type: integer
+          description: Unique identifier for a device.
+        resourceType:
+          type: string
+          description: Name of resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or Exchange Online.
+        totalSnapshots:
+          type: integer
+          description: Count of total snapshots for this resource.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        snapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              snapshotID:
+                type: string
+                description: The unique ID of the snapshot. Example - Mjk4OC1GcmkgTm92IDIyIDExOjEzOjU5IDIwMTk=.
+                example: Mjk4OC1GcmkgTm92IDIyIDExOjEzOjU5IDIwMTk=
+              snapshotName:
+                type: string
+                description: Name of the snapshot. Example - Nov 21 2019, 14:39:34.
+                example: Nov 21 2019, 14:39:34
+              size:
+                type: integer
+                description: The size of the snapshot in bytes.
+              isQuarantined:
+                type: boolean
+                description: This field will indicate if snapshot is quarantined or not.
+              totalFilesScanned:
+                type: integer
+                description: Count of total files present in the snapshot.
+              totalFileHashesFound:
+                type: integer
+                description: Count of files matched against custom file hashes.
+              totalPredefinedFileHashesFound:
+                type: integer
+                description: Count of files matched against predefined Threat-Intel file hashes.
+              totalFileExtensionsFound:
+                type: integer
+                description: Count of files matched against custom file extensions.
+              totalPredefinedFileExtensionsFound:
+                type: integer
+                description: Count of files matched against predefined Threat-Intel file extensions.
+    RealizeCommon_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - realizecommon-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    SearchAWSResourcesParams:
+      type: object
+      properties:
+        orgIDs:
+          type: array
+          description: Specify the unique Phoenix(Enterprise Workload) organization ID.
+          items:
+            type: integer
+            example: 1
+        accountIDs:
+          type: array
+          description: Specify the AWS Account IDs. You can obtain the ID using the 'Search AWS Accounts API'.
+          items:
+            type: integer
+            example: 1
+        regions:
+          type: array
+          description: Specify the AWS region's code. For the list of supported regions, refer to the AWS Workloads documentation. For example, 'us-east-1' and 'us-west-2'.
+          items:
+            type: string
+            example: us-east-1
+        deviceIDs:
+          type: array
+          description: Specify the AWS Device IDs. You can obtain the ID using the 'List AWS Resources API'.
+          items:
+            type: integer
+            example: 1
+        tags:
+          type: array
+          description: Specify the tag keys and tag values.
+          items:
+            type: object
+            properties:
+              Key:
+                type: string
+                example: Created by policy
+                description: Name of tag.
+              Value:
+                type: string
+                example: Threat-Hunt-Windows-Instance-Weekly
+                description: Value of tag.
+        pageToken:
+          type: string
+          description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+    RealizeCommon_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - realizecommon-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatHuntCreateParams:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Specify a name for the threat hunt.
+          example: Lock Extension Analysis
+        description:
+          type: string
+          description: Provide a description of the threat hunt.
+          example: Threat hunting for lock extension analysis
+        fileHashes:
+          type: array
+          items:
+            type: string
+            example: 9032a70bc7f6c44ba2bf639b6f09b8d10b056e00
+          description: Specify the malicious file hashes for the threat hunt. Example - ['9032a70bc7f6c44ba2bf639b6f09b8d10b056e00']
+        fileExtensions:
+          type: array
+          items:
+            type: string
+            example: .wcry
+          description: Specify the malicious file extensions for the threat hunt. Example - ['.wcry']
+        threatIntelIOCSetIDs:
+          type: array
+          items:
+            type: integer
+            example: '1'
+          description: Specify the Threat-Intel IOC Set IDs list to include predefined file hashes and extensions in the threat scan. You can choose the IOC Sets from the IOC Library section under Cyber Resilience.
+        autoQuarantine:
+          type: boolean
+          description: Specify the boolean flag to mark snapshots as quarantined when a threat is detected after the scan completion. Currently, Auto-Quarantine is supported for VMware, Azure Virtual Machines, and AWS Workloads - EC2 and EBS Volumes.
+        snapshotRangeStartDate:
+          type: string
+          description: 'Specify the start date to allow the threat hunt to scan for threats using snapshots created on this date. Format: YYYY-MM-DD.'
+          example: '2024-10-25'
+        snapshotRangeEndDate:
+          type: string
+          description: Specify the end date to allow the threat hunt to use snapshots created through this date to scan for threats. Format - YYYY-MM-DD.
+          example: '2024-10-27'
+        resourcesToScan:
+          type: object
+          description: 'Specify the resources for creating a threat hunt and provide the resource type. Supported resource types: VMware, EC2 and EBS Volumes (AWS workloads), Azure Virtual Machines (Enterprise workloads), and OneDrive, SharePoint, ExchangeOnline (Microsoft 365 workloads).'
+          properties:
+            <resourceType>:
+              type: array
+              description: 'Resource type key: VMware, AzureVM, EC2, OneDrive, SharePoint, or ExchangeOnline. For Phoenix workloads use orgID; for M365 workloads use orgID -1.'
+              items:
+                type: object
+                properties:
+                  orgID:
+                    type: integer
+                    description: Phoenix (Enterprise Workloads) organization ID in case of Phoenix Servers.
+                    example: -1
+                  deviceID:
+                    type: integer
+                    description: The unique identifier of the device for which threat hunt should be created.
+                    example: 124
+    ThreatHuntGetResponse:
+      type: object
+      properties:
+        autoQuarantine:
+          type: boolean
+          description: This field states if the Auto-Quarantine option was selected. If set to true,then Auto-Quarantine was selected.
+        createdBy:
+          type: string
+          description: Name of the administrator who created this threat hunt.
+        description:
+          type: string
+          description: The description provided during threat hunt creation.
+        fileExtensions:
+          type: array
+          description: List of file extensions provided during threat hunt creation.
+          items:
+            type: string
+        fileHashes:
+          type: array
+          description: List of file hashes provided during threat hunt creation.
+          items:
+            type: string
+        includePredefinedFileHash:
+          type: boolean
+          description: This field states if the predefined file hashes option was selected. If set to true, then the predefined file hashes option was selected.
+        threatIntelIOCs:
+          type: object
+          properties:
+            hashSets:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                    description: The unique ID of the IOC Set.
+                  name:
+                    type: string
+                    example: IOC Set 1
+                    description: The name provided for the IOC Set.
+                  totalIOCs:
+                    type: integer
+                    example: 39
+                    description: The total count of SHA-1 converted file hashes in the IOC Set.
+              description: Details of selected IOC sets with file hashes.
+            extSets:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                    description: The unique ID of the IOC Set.
+                  name:
+                    type: string
+                    example: IOC Set 2
+                    description: The name provided for the IOC Set.
+                  totalIOCs:
+                    type: integer
+                    example: 63
+                    description: The total count of file extensions in the IOC Set.
+              description: Details of selected IOC sets with file extensions.
+          description: Details of all the selected IOC sets used in the Threat scan.
+        name:
+          type: string
+          description: Name of the threat hunt.
+        resourceTypes:
+          type: array
+          items:
+            type: string
+            example: VMware
+        devices:
+          type: array
+          description: List of devices that were a part of the threat hunt scan.
+          items:
+            type: object
+            properties:
+              deviceID:
+                type: integer
+                example: 1
+              resourceType:
+                type: string
+                example: VMware
+              resourceIDs:
+                type: array
+                description: List of resource IDs that were part of the threat hunt scan.
+                items:
+                  type: integer
+        snapshotRangeEndDate:
+          type: string
+          description: "The end date selected while threat hunt creation. Format - YYYY-MM-DD \n  Example - 2020-01-02."
+          example: '2020-01-02'
+        snapshotRangeStartDate:
+          type: string
+          description: "The start date selected while threat hunt creation. Format - YYYY-MM-DD \n  Example - 2020-01-02."
+          example: '2020-01-02'
+        threatHuntID:
+          type: integer
+          format: int64
+          description: The identifier to uniquely identify threat hunt.
+    ThreatHuntJobDeleteParams:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          description: Specfiy the reason why the threat hunt needs to be deleted.
+          example: Finished analysis for this threat hunt.
+    ThreatHuntGetDeviceStatsResponse:
+      type: object
+      properties:
+        threatHuntID:
+          type: integer
+          description: The unique identifier for a threat hunt.
+          example: 13
+        deviceID:
+          type: integer
+          description: Unique identifier for a device.
+        resourceType:
+          type: string
+          description: Name of the resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', or Exchange Online.
+        totalSnapshots:
+          type: integer
+          description: Count of total snapshots for this resource.
+        totalFilesImpacted:
+          type: integer
+          description: Count of impacted files against which threat was identified for this resource.
+        impactedSnapshots:
+          type: integer
+          description: Count of impacted snapshots against which threat was identified for this resource.
+        totalQuarantinedSnapshots:
+          type: integer
+          description: Count of impacted snapshots that were quarantined.
+        firstImpactedSnapshot:
+          type: string
+          description: Name of the first impacted snapshot. Example - Nov 21 2019, 14:39:34.
+          example: Nov 21 2019, 14:39:34
+        lastImpactedSnapshot:
+          type: string
+          description: Name of the last impacted snapshot. Example - Nov 21 2019, 14:39:34.
+          example: Nov 21 2019, 14:39:34
+        firstScannedSnapshot:
+          type: string
+          description: Name of the first scanned snapshot. Example - Nov 21 2019, 14:39:34.
+          example: Nov 21 2019, 14:39:34
+        lastScannedSnapshot:
+          type: string
+          description: Name of the last scanned snapshot. Example - Nov 21 2019, 14:39:34.
+          example: Nov 21 2019, 14:39:34
+        autoQuarantineStatus:
+          type: string
+          description: The auto quarantine status of the threat hunt. The status can be 'Successful,' 'Successful with errors', 'Not Applicable', or 'Failed'.
+        resourceIDs:
+          type: array
+          description: Lists the Resource IDs associated with the chosen device ID.
+          items:
+            type: integer
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

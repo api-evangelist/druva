@@ -1,0 +1,220 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Buckets API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- name: Buckets
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/buckets/{bucket_id}:
+    get:
+      description: Get bucket by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The bucket identifier assigned to identify the S3 bucket. This id can be used to return information about a bucket used within CloudRanger in your organization.
+        in: path
+        name: bucket_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBucketsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Bucket
+      tags:
+      - Buckets
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBucketsByBucketId
+      x-operation-id-source: derived
+components:
+  schemas:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsBucketsByIdResponse:
+      properties:
+        __AccountId:
+          type: string
+        __OrganizationId:
+          type: string
+        BucketAcl:
+          properties:
+            Grants:
+              items:
+                properties:
+                  Grantee:
+                    properties:
+                      DisplayName:
+                        type: string
+                      ID:
+                        type: string
+                      Type:
+                        type: string
+                    type: object
+                  Permission:
+                    type: string
+                type: object
+              type: array
+            Owner:
+              properties:
+                DisplayName:
+                  type: string
+                ID:
+                  type: string
+              type: object
+            publicAccessEnabled:
+              type: boolean
+          type: object
+        BucketEncryption:
+          properties:
+            enabled:
+              type: boolean
+            ServerSideEncryptionConfiguration:
+              properties:
+                Rules:
+                  items:
+                    properties:
+                      ApplyServerSideEncryptionByDefault:
+                        properties:
+                          SSEAlgorithm:
+                            type: string
+                        type: object
+                      BucketKeyEnabled:
+                        type: boolean
+                    type: object
+                  type: array
+              type: object
+          type: object
+        BucketLifecycleConfiguration:
+          properties:
+            enabled:
+              type: boolean
+          type: object
+        BucketLogging:
+          properties:
+            enabled:
+              type: boolean
+          type: object
+        BucketReplication:
+          properties:
+            enabled:
+              type: boolean
+          type: object
+        BucketTagging:
+          properties:
+            enabled:
+              type: boolean
+          type: object
+        BucketVersioning:
+          properties:
+            enabled:
+              type: boolean
+            MFADelete:
+              type: string
+            Status:
+              type: string
+          type: object
+        CreationDate:
+          format: date-time
+          type: string
+        Id:
+          type: string
+        Name:
+          type: string
+        ObjectLockConfiguration:
+          properties:
+            enabled:
+              type: boolean
+            ObjectLockConfiguration:
+              properties:
+                ObjectLockEnabled:
+                  type: string
+              type: object
+          type: object
+        ObjectType:
+          type: string
+        postDate:
+          format: date-time
+          type: string
+        Source:
+          type: string
+        Tags:
+          items:
+            type: string
+          type: array
+        Type:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

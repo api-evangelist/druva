@@ -1,0 +1,478 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Federated Search API
+  description: Quickly find backed-up files and emails of end-users using metadata attributes.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Federated Search
+  description: Quickly find backed-up files and emails of end-users using metadata attributes.
+paths:
+  /search/mds/v1/user/files:
+    get:
+      tags:
+      - Federated Search
+      summary: Search for files
+      description: 'Search for backed-up files using the SHA1 checksum value and view their details.
+
+        While using this API, ensure the following:
+
+        1. Make repeated API calls until the next page token is empty
+
+        2. For each response, append the previous search results into the list until the next page token yields empty results
+
+        3. This list is the final search result across the entire dataset
+
+
+        Note :
+
+        SaaS Apps such as SharePoint Online and Shared Drive are not supported'
+      security:
+      - Bearer: []
+      parameters:
+      - in: query
+        name: sha1Checksum
+        required: true
+        description: Specify the SHA1 value of the file that you want to search. To know how to get SHA1 value of a file, see <a href=https://docs.druva.com/Data_Governance/Federated_Search_for_backed_up_data/010_How_to_search_backed_up_files#Search_files_using_checksums>Search files using checksums.</a>
+        schema:
+          type: string
+      - in: query
+        name: minCreationTime
+        description: Filter to list the files which are created after a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: maxCreationTime
+        description: Filter to list the files which are created before a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: minModificationTime
+        description: Specify the minimum cut-off value of modification time to filter the list of files after a specific date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: maxModificationTime
+        description: Specify the maximum cut-off value of modification time to filter the list of files before a specific date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: fileType
+        description: Specify the file extensions by which you intend to filter the file search list. For e.g .txt
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: minFileSize
+        description: Filter to list the files based on their minimum file size (in bytes). All files with a size greater than mentioned value will be listed.
+        schema:
+          type: integer
+      - in: query
+        name: maxFileSize
+        description: Filter to list the files based on their maximum file size (in bytes). All files with a size less than mentioned value will be listed.
+        schema:
+          type: integer
+      - in: query
+        name: dataSource
+        description: Select a data source from which you want to list the files.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Devices
+            - Google Drive
+            - OneDrive
+      - in: query
+        name: userID
+        description: Specify the User ID of the user for whom you want to filter and list the file results. Get the ID of a user using the ‘List all users’ API.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - in: query
+        name: pageToken
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter nextPageToken.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        deviceID:
+                          type: integer
+                          description: The device ID of the device from which the file is backed up.
+                          example: 12345
+                        userID:
+                          type: integer
+                          description: The user ID of the user to which the file belongs.
+                          example: 12345
+                        storageID:
+                          type: integer
+                          description: The storage ID of the storage associated with the user.
+                          example: 1
+                        sha1Checksum:
+                          type: string
+                          description: The SHA1 value of the file.
+                          example: 3ac242e17d884c9aa442aaee324dab316cddefa1
+                        fileName:
+                          type: string
+                          description: The name of the file.
+                          example: abc.txt
+                        fileSize:
+                          type: integer
+                          description: The size of the file in Bytes.
+                          example: 408
+                        creationTime:
+                          type: string
+                          description: The date on which the file was created (in UTC timezone).
+                          example: '2022-07-25T00:00:00Z'
+                        modificationTime:
+                          type: string
+                          description: The date on which the file was last updated (in UTC timezone).
+                          example: '2022-07-25T00:00:00Z'
+                        folderPath:
+                          type: string
+                          description: The absolute path of the file on the user device.
+                          example: C:\Users\johnd\Desktop\scan\
+                        objectID:
+                          type: string
+                          description: The unique identifier of the file to take further action based on the result.
+                  nextPageToken:
+                    type: string
+                    description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                    - MDS-1001
+                    - MDS-1002
+                    - MDS-1003
+                    - MDS-1004
+                    - MDS-1005
+                    - MDS-1007
+                    - MDS-1008
+                    - MDS-1009
+                    - MDS-1010
+                    - MDS-1011
+                  message:
+                    type: string
+                  data:
+                    type: object
+                  retryable:
+                    type: boolean
+                    enum:
+                    - false
+                    - true
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_403'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_500'
+      operationId: getSearchMdsV1UserFiles
+      x-operation-id-source: derived
+  /search/mds/v1/user/emails:
+    get:
+      tags:
+      - Federated Search
+      summary: Search for emails
+      description: 'Search for backed-up emails using the email attachments’ SHA1 checksum value and view their details.
+
+        While using this API, ensure the following:
+
+        1. Make repeated API calls until the next page token is empty
+
+        2. For each response, append the previous search results into the list until the next page token yields empty results
+
+        3. This list is the final search result across the entire dataset
+
+
+        Note :
+
+        SaaS Apps such as SharePoint Online and Shared Drive are not supported'
+      security:
+      - Bearer: []
+      parameters:
+      - in: query
+        name: attachmentSha1Checksum
+        required: true
+        description: Specify the SHA1 value of the email attachment that you want to search. To know how to get SHA1 value of an email, see <a href=https://developer.druva.com/docs/event-apis>Search emails using checksums</a> .
+        schema:
+          type: string
+      - in: query
+        name: minReceiveTime
+        description: Filter to list the emails which are received after a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: maxReceiveTime
+        description: Filter to list the emails which are received before a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        schema:
+          type: string
+      - in: query
+        name: attachmentType
+        description: Specify the attachment file extensions by which you intend to filter the email search list.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: minAttachmentSize
+        description: Filter to list the emails based on their minimum attachment file size (in bytes). All emails with an attachment file size greater than mentioned value will be listed.
+        schema:
+          type: integer
+      - in: query
+        name: maxAttachmentSize
+        description: Filter to list the emails based on their maximum attachment file size (in bytes). All emails with an attachment file size less than mentioned value will be listed.
+        schema:
+          type: integer
+      - in: query
+        name: dataSource
+        description: Select a data source from which you want to search and list emails.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Exchange Online
+            - Gmail
+            - Outlook
+      - in: query
+        name: userID
+        description: Specify the User ID of the user for whom you want to filter and list the email results. Get the ID of a user using the ‘List all users’ API.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - in: query
+        name: pageToken
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter nextPageToken.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of emails.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        deviceID:
+                          type: integer
+                          description: The device ID of the device from which the email is backed up
+                          example: 12345
+                        userID:
+                          type: integer
+                          description: The user ID of the user to which the email belongs.
+                          example: 12345
+                        storageID:
+                          type: integer
+                          description: The storage ID of the storage associated with the user.
+                          example: 1
+                        attachments:
+                          type: array
+                          description: The attachments of the email.
+                          items:
+                            type: object
+                            properties:
+                              attachmentName:
+                                type: string
+                                example: abc.txt
+                              attachmentSize:
+                                type: integer
+                                example: 500
+                              attachmentSha1Checksum:
+                                type: string
+                                description: The checksum (SHA1) value of the email attachment.
+                                example: AQAAAAEAAAAwQDAwMDAxQDAwMDBA
+                        recieveTime:
+                          type: string
+                          description: The date on which the email was received (in UTC timezone).
+                          example: '2022-07-25T00:00:00Z'
+                        messagePath:
+                          type: string
+                          description: The absolute path of the email on the user device.
+                          example: Outlook Advanced/john.smith@druva.org/Inbox/Inbox/Druva inSync.eml
+                        objectID:
+                          type: string
+                          description: The unique identifier of the email to take further action based on the result.
+                  nextPageToken:
+                    type: string
+                    description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                    - MDS-1001
+                    - MDS-1002
+                    - MDS-1003
+                    - MDS-1006
+                    - MDS-1007
+                    - MDS-1008
+                    - MDS-1009
+                    - MDS-1011
+                    - MDS-1012
+                  message:
+                    type: string
+                  data:
+                    type: object
+                  retryable:
+                    type: boolean
+                    enum:
+                    - false
+                    - true
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_401'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_403'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FS_HTTP_500'
+      operationId: getSearchMdsV1UserEmails
+      x-operation-id-source: derived
+components:
+  schemas:
+    FS_HTTP_403:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - MDS-1205
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    FS_HTTP_401:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - MDS-1201
+          - MDS-1202
+          - MDS-1203
+          - MDS-1204
+          - MDS-1206
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    FS_HTTP_500:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - MDS-1000
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    FS_HTTP_404:
+      type: string
+      enum:
+      - 404 page not found
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

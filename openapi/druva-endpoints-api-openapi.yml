@@ -1,0 +1,1833 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Endpoints API
+  description: Lists the APIs to get information about devices managed in Druva inSync.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Endpoints
+  description: Lists the APIs to get information about devices managed in Druva inSync.
+paths:
+  /endpoints/v1/devices:
+    get:
+      tags:
+      - Endpoints
+      summary: List all devices - v1
+      description: Returns information about all the user devices protected using Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: query
+        description: Specify the user ID to get a list of devices associated with a single user. Get the ID of a user using the 'List all users' API.
+        required: false
+        schema:
+          type: integer
+      - name: userIDs
+        in: query
+        description: Specify the user IDs, separated by commas, to get a list of devices associated with multiple users. Get the user IDs using the 'List all users' API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: deviceIDs
+        in: query
+        description: Filter the list of devices by specifying only the required device IDs, separated by commas. Get the device IDs by using this ‘List all devices’ API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: profileIDs
+        in: query
+        description: Specify the profile IDs, separated by commas, to get a list of devices associated with multiple profiles. Get the ID of a profile using the ‘List all profiles’ API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: searchPrefixDeviceName
+        in: query
+        description: Specify the prefix from the device name by which you intend to search and list the devices. Example - “My” is the prefix in the device name “MyDevice123”.
+        required: false
+        schema:
+          type: string
+      - name: clientVersion
+        in: query
+        description: Filter the list of devices by the inSync Client version installed on it. Example - 6.2.0
+        required: false
+        schema:
+          type: string
+      - name: platformOS
+        in: query
+        required: false
+        description: Filter the list of devices by specifying the operating system of the device.
+        schema:
+          type: string
+          enum:
+          - win32
+          - linux2
+          - darwin
+          - android
+          - ios
+      - name: deviceStatus
+        in: query
+        required: false
+        description: Filter the list by specifying the status of the device.
+        schema:
+          type: string
+          enum:
+          - enabled
+          - disabled
+      - name: upgradeState
+        in: query
+        required: false
+        description: The upgrade state of the device.
+        schema:
+          type: string
+          enum:
+          - NOT UPGRADABLE
+          - UPGRADABLE
+          - UPTODATE
+          - SCHEDULED
+          - UNKNOWN
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      - name: minLastConnected
+        in: query
+        description: Filter to list devices that are connected to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxLastConnected
+        in: query
+        description: Filter to list devices that are connected to Druva inSync before a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: minAddedOn
+        in: query
+        description: Filter to list devices that are added to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxAddedOn
+        in: query
+        description: Filter to list devices that are added to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: serialNumber
+        in: query
+        description: Get device information using the unique serial number assigned to an individual piece of hardware by the manufacturer.
+        required: false
+        schema:
+          type: string
+      - name: uuid
+        in: query
+        description: Get device information using the unique 128-bit number UUID used to identify device on internet.
+        required: false
+        schema:
+          type: string
+      - name: deviceMarkedInactive
+        in: query
+        description: Filter the list of devices that are marked as inactive. For example, if you select true, all devices that are marked as inactive are listed. For more information about inactive devices, see <a href=https://docs.druva.com/Endpoints/030_Set_up_inSync_for_Endpoints/010_Initial_Configuration/030_Create_and_manage_profiles/010_Create_a_profile>Create Profile</a>.
+        required: false
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1Devices
+      x-operation-id-source: derived
+  /endpoints/v1/devices/{deviceID}:
+    get:
+      tags:
+      - Endpoints
+      summary: Get device information - v1
+      description: Returns device information using deviceID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1DevicesByDeviceID
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Endpoints
+      summary: Delete a device
+      description: 'Deletes a device in the system. When you delete a device:
+
+        1) All the device data (restore points) is deleted.
+
+        2) You can roll back the deleted device from Rollback Actions until the rollback window lapses.
+
+        3) After the rollback window lapses, the device will be deleted permanently. For more information, see Rollback Actions.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in Endpoints. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                deletionReason:
+                  description: Specify the reason for device deletion, (the character limit of reason is between 10-150) . This capability will help prevent accidental deletions. If no reason is specified, the default reason i.e. <b>API initiated Device Deletion</b> will be displayed.
+                  type: string
+                  example: Inactive device
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was unprocessable due to  semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: deleteEndpointsV1DevicesByDeviceID
+      x-operation-id-source: derived
+  /endpoints/v1/devices/{deviceID}/disable:
+    post:
+      tags:
+      - Endpoints
+      summary: Disable a device
+      description: Disables a user device. Once disabled, the data backup from the device stops, and the user can no longer restore data to that same device. The data of disabled device is available in inSync and can be restored to different devices belonging to the same user, either by the user or an administrator.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1DevicesByDeviceIDDisable
+      x-operation-id-source: derived
+  /endpoints/v1/devices/{deviceID}/enable:
+    post:
+      tags:
+      - Endpoints
+      summary: Enable a device
+      description: Enables a user's device. After the device is enabled, the user of the selected device can start taking its backup and restore.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1DevicesByDeviceIDEnable
+      x-operation-id-source: derived
+  /endpoints/v1/devicemappings:
+    post:
+      tags:
+      - Endpoints
+      summary: Create device mapping
+      description: Creates a secure user-to-device mapping to perform a mass deployment in a non-AD/LDAP environment or perform bulk replace of devices. The user-to-device mapping ensures controlled device and user activation of inSync client and prevents addition of rogue or unauthorized devices to inSync.
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Device Mapping
+              required:
+              - emailID
+              - userName
+              - deviceName
+              - deviceIdentifierType
+              - deviceIdentifier
+              properties:
+                emailID:
+                  description: Specify the email address of the user. Example - ernie.carter@druva.com
+                  type: string
+                  example: ernie.carter@druva.com
+                userName:
+                  description: Specify the username of the user in Druva inSync. Example - Ernie Carter
+                  type: string
+                  example: Ernie Carter
+                deviceName:
+                  description: Specify the name of the device that is registered with the user. Example - Ernie Carter's Macbook
+                  type: string
+                  example: ErnieCarter's Macbook
+                deviceIdentifierType:
+                  description: Specify the unique device identifier type of the device.(serial-number, uuid, or hostname)
+                  type: string
+                  example: serial-number
+                  enum:
+                  - serial-number
+                  - uuid
+                  - hostname
+                deviceIdentifier:
+                  description: Specify the unique device identifier for the selected type. (serial-number, uuid, or hostname).
+                  type: string
+                  example: P0XGGGH
+                oldDeviceName:
+                  description: "Name of the user's old device in Druva inSync that is to be replaced with a new device. \n\n:fa-info-circle: Note: Specify the value for this parameter only if you want to replace the device for the user, else keep this field blank."
+                  type: string
+                  example: ErnieCarter's Old Macbook
+                restoreData:
+                  description: "The type of data restore to be performed.(ALL, SYSTEM, OR DATA)\n Type of data to be restored on the new device.Specify one of the following value:\n 1) All - To restore both, the data and the system settings from the existing device on the new device.\n2) SYSTEM - To restore only the system settings from the existing device on the new device.\n3)DATA - To restore only the data from the existing device on the new device.\n\n:fa-info-circle: Note: Specify the value for this parameter only if you want to replace the device for the user, else keep this field blank."
+                  type: string
+                  example: SYSTEM
+                  enum:
+                  - ALL
+                  - DATA
+                  - SYSTEM
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceMappingCreate'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1Devicemappings
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Endpoints
+      summary: List device mapping
+      description: Returns a list of user-to-device mapping created to perform a mass deployment in a non-AD/LDAP environment or perform bulk replace of devices.
+      security:
+      - Bearer: []
+      parameters:
+      - name: emailID
+        in: query
+        description: Filter to list device mappings using the email address of a user.
+        required: false
+        schema:
+          type: string
+      - name: deviceIdentifierType
+        in: query
+        description: Filter to list device mappings using the unique device identifier type of the device.(serial-number, uuid, or hostname).
+        required: false
+        schema:
+          type: string
+          enum:
+          - serial-number
+          - uuid
+          - hostname
+      - name: deviceIdentifier
+        in: query
+        description: Specify the unique id of the device for the selected deviceIdentifierType in inSync.
+        required: false
+        schema:
+          type: string
+      - name: restoreData
+        in: query
+        description: Filter to list device mappings using the type of data restore performed
+        required: false
+        schema:
+          type: string
+          enum:
+          - All
+          - Data
+          - System
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceMappingList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1Devicemappings
+      x-operation-id-source: derived
+  /endpoints/v1/devicemappings/{mappingID}:
+    delete:
+      tags:
+      - Endpoints
+      summary: Delete device mapping
+      description: Permanently deletes a user-to-device mapping created for mass deployment.
+      security:
+      - Bearer: []
+      parameters:
+      - name: mappingID
+        in: path
+        description: The id associated with the device mapping. Get the mapping id by running the List Device Mapping API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK. The device mapping is deleted successfully.
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: deleteEndpointsV1DevicemappingsByMappingID
+      x-operation-id-source: derived
+  /endpoints/v1/devices/{deviceID}/decommission:
+    post:
+      tags:
+      - Endpoints
+      summary: Decommission a device
+      description: Decommission the device. Decommissioning a laptop or desktop allows you to securely wipe out data from all folders that inSync protects, which includes backup folders and inSync Share data. This is helpful in scenarios where devices are stolen or lost and you want to wipe out critical data from a device.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1DevicesByDeviceIDDecommission
+      x-operation-id-source: derived
+  /endpoints/v1/devices/{deviceID}/upgradeClient:
+    post:
+      tags:
+      - Endpoints
+      summary: Upgrade inSync Client on a device
+      description: Upgrade inSync Client to its latest version on a user device. The inSync Client is upgraded only if a higher version is available.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '422':
+          description: The request was well-formed but was not processed due to semantic errors.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1DevicesByDeviceIDUpgradeClient
+      x-operation-id-source: derived
+  /endpoints/v1/backups:
+    get:
+      tags:
+      - Endpoints
+      summary: List endpoint backups
+      description: Returns the details of last successful backups of all user devices.
+      security:
+      - Bearer: []
+      parameters:
+      - name: lastSuccessful
+        in: query
+        required: true
+        description: "Provides details of the last successful backup for a device. \n Currently, only 'True' is the supported value for this parameter."
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+      - name: deviceID
+        in: query
+        description: 'Filter to get list of last successful backups for a particular device using its unique ID. Get the ID of a device using the ‘List all devices’ API. '
+        required: false
+        schema:
+          type: integer
+      - name: userID
+        in: query
+        description: Filter to get list of last successful backups on devices owned by a particular user using their user ID. Get the ID of a user using the ‘List all users’ API.
+        required: false
+        schema:
+          type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      - name: minBackupStartTime
+        in: query
+        description: Filter to list successful backups that started after a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxBackupStartTime
+        in: query
+        description: Filter to list successful backups that started before a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: minBackupEndTime
+        in: query
+        description: Filter to list successful backups that ended after a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxBackupEndTime
+        in: query
+        description: Filter to list successful backups that ended before a particular date and time. Format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1Backups
+      x-operation-id-source: derived
+  /endpoints/v1/restores:
+    get:
+      tags:
+      - Endpoints
+      summary: List all restore activities
+      description: Returns the list of all the restore activities performed on user devices with their details.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: query
+        description: "Specify the device ID to get a filtered list of restore activities performed from a device. \n Get the device ID by using the ‘List all devices’ API."
+        required: false
+        schema:
+          type: integer
+      - name: targetDeviceID
+        in: query
+        description: "Specify the device ID to get a filtered list of restore activities performed on that device. \n Get the target device ID by using the ‘List all devices’ API."
+        required: false
+        schema:
+          type: integer
+      - name: userID
+        in: query
+        description: Specify the user ID to filter and get the list of restore activities performed by a user. You can get the user ID by using the ‘List all users’ API.
+        required: false
+        schema:
+          type: integer
+      - name: minStartTime
+        in: query
+        description: "Specify the start date and start time to get the list of restore activities performed after the specified start date and time. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ \nExample: 2019-10-04T11:03:27Z"
+        required: false
+        schema:
+          type: string
+      - name: maxStartTime
+        in: query
+        description: "Specify the start date and start time to get the list of restore activities performed before the specified start date and time. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ \nExample: 2019-10-04T11:03:27Z \n\nNote: Restore activity data is fetched for past 365 days. Request for data beyond this limit will return an empty list."
+        required: false
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestoreList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1Restores
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Endpoints
+      summary: Initiate a restore activity
+      description: 'Creates a data restore request and provides the option to scan the data for malware or viruses before restoring to the desired location on the target device.
+
+        You can either restore the user''s data to the same device from which it was backed up or to a different device registered with inSync.
+
+        You can restore the data ONLY from the most recent snapshot to the target device.
+
+        You can initiate multiple restore activities, which may be consolidated into a single activity based on the inSync Client version; appropriate status is displayed for each activity.'
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - deviceID
+              - targetDeviceID
+              - restoreLocation
+              properties:
+                deviceID:
+                  description: 'Specify the unique ID of the device in inSync from which you want to initiate the restore activity.
+
+                    Get the ID of the device using the ‘List all devices’ API.'
+                  type: integer
+                  example: 1234
+                targetDeviceID:
+                  description: 'Specify the target device ID to which you intend to restore the data.
+
+                    The target device must belong to the same user.
+
+                    Get the target device ID by using the ‘List all devices’ API.
+
+                    Target device ID can be same in case you are restoring the data on the same device.'
+                  type: integer
+                  example: 242
+                restoreLocation:
+                  description: "Specify the location to which you intend to restore the data on the selected device.\n Specify one of the following - \n1) Desktop - If you want to restore the data to the desktop on the target device. \n2) Original - If you want to restore data to the same location from which it was backed up. \n3) If you want to restore the data at a custom location, specify absolute path of the location. Example - /home/jeremy/statusReport"
+                  type: string
+                  example: Original
+                snapshotName:
+                  description: 'To restore a curated snapshot, provide the curated snapshot name. Get the curated snapshot name using the ''List all the Curated Snapshots'' API.
+
+                    :fa-info-circle: Malicious file scan (enableAVscan parameter) is not applicable for curated snapshots.'
+                  type: string
+                  example: virtual_Tue Aug  9 16:24:39 2022
+                enableAVScan:
+                  description: 'If your organization has the ''Restore With Confidence'' license, you can force scan the Snapshot for malware and viruses before restoring the data to the target device and location. Select True to enable Malicious File Scan for the Snapshot being restored.
+
+                    :fa-info-circle: Malicious file scan is not applicable if you are restoring a Curated Snapshot.'
+                  type: boolean
+                  example: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRestores'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: InsyncEndpoints-1003
+                  message:
+                    type: string
+                    enum:
+                    - Snapshot with the given name does not exist for this device
+                    - Restore Failed. Device is not a part of your organization.
+                  data:
+                    type: object
+                  retryable:
+                    type: boolean
+                    example: false
+        '422':
+          description: "Unprocessable entity. \n Example - Restore Failed. Selected device is disabled in inSync."
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: postEndpointsV1Restores
+      x-operation-id-source: derived
+  /endpoints/v1/restores/{restoreID}:
+    get:
+      tags:
+      - Endpoints
+      summary: Get restore by restoreID
+      description: Returns the restore activity details based on the restore ID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: restoreID
+        in: path
+        description: Specify the unique ID of the restore activity. You can get the restore ID by using the ‘List all restore activities’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restore'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV1RestoresByRestoreID
+      x-operation-id-source: derived
+  /endpoints/v2/devices:
+    get:
+      tags:
+      - Endpoints
+      summary: List all devices - v2
+      description: Returns information about all the user devices protected using Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: userID
+        in: query
+        description: Specify the user ID to get a list of devices associated with a single user. Get the ID of a user using the 'List all users' API.
+        required: false
+        schema:
+          type: integer
+      - name: userIDs
+        in: query
+        description: Specify the user IDs, separated by commas, to get a list of devices associated with multiple users. Get the user IDs using the 'List all users' API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: deviceIDs
+        in: query
+        description: Filter the list of devices by specifying only the required device IDs, separated by commas. Get the device IDs by using this ‘List all devices’ API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: profileIDs
+        in: query
+        description: Specify the profile IDs, separated by commas, to get a list of devices associated with multiple profiles. Get the ID of a profile using the ‘List all profiles’ API.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: searchPrefixDeviceName
+        in: query
+        description: Specify the prefix from the device name by which you intend to search and list the devices. Example - “My” is the prefix in the device name “MyDevice123”.
+        required: false
+        schema:
+          type: string
+      - name: clientVersion
+        in: query
+        description: Filter the list of devices by the inSync Client version installed on it. Example - 6.2.0
+        required: false
+        schema:
+          type: string
+      - name: platformOS
+        in: query
+        required: false
+        description: Filter the list of devices by specifying the operating system of the device.
+        schema:
+          type: string
+          enum:
+          - win32
+          - linux2
+          - darwin
+          - android
+          - ios
+      - name: deviceStatus
+        in: query
+        required: false
+        description: Filter the list by specifying the status of the device.
+        schema:
+          type: string
+          enum:
+          - enabled
+          - disabled
+      - name: upgradeState
+        in: query
+        required: false
+        description: The upgrade state of the device.
+        schema:
+          type: string
+          enum:
+          - NOT UPGRADABLE
+          - UPGRADABLE
+          - UPTODATE
+          - SCHEDULED
+          - UNKNOWN
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      - name: minLastConnected
+        in: query
+        description: Filter to list devices that are connected to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxLastConnected
+        in: query
+        description: Filter to list devices that are connected to Druva inSync before a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: minAddedOn
+        in: query
+        description: Filter to list devices that are added to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: maxAddedOn
+        in: query
+        description: Filter to list devices that are added to Druva inSync after a particular date. Example format - YYYY-MM-DDTHH:MM:SSZ
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: serialNumber
+        in: query
+        description: Get device information using the unique serial number assigned to an individual piece of hardware by the manufacturer.
+        required: false
+        schema:
+          type: string
+      - name: uuid
+        in: query
+        description: Get device information using the unique 128-bit number UUID used to identify device on internet.
+        required: false
+        schema:
+          type: string
+      - name: deviceMarkedInactive
+        in: query
+        description: Filter the list of devices that are marked as inactive. For example, if you select true, all devices that are marked as inactive are listed. For more information about inactive devices, see <a href=https://docs.druva.com/Endpoints/030_Set_up_inSync_for_Endpoints/010_Initial_Configuration/030_Create_and_manage_profiles/010_Create_a_profile>Create Profile</a>.
+        required: false
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceListV2'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV2Devices
+      x-operation-id-source: derived
+  /endpoints/v2/devices/{deviceID}:
+    get:
+      tags:
+      - Endpoints
+      summary: Get device information - v2
+      description: Returns device information using deviceID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: deviceID
+        in: path
+        description: The unique ID of device in inSync. Get the ID of a device using the ‘List all devices’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceV2'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEndpointsV2DevicesByDeviceID
+      x-operation-id-source: derived
+components:
+  schemas:
+    DeviceV2:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          format: int64
+          description: The unique id of the device in inSync. Example - 12345
+          example: 12345
+        deviceName:
+          type: string
+          description: The device name in inSync. Example - Ernie Carter's Macbook
+          example: Ernie Carter's Macbook
+        serialNumber:
+          type: string
+          description: A unique, identifying number assigned to an individual piece of hardware by the manufacturer. Example - PX045
+          example: PX045
+        deviceOS:
+          type: string
+          description: The operating system of the device. Example - Mojave
+          example: mojave
+        deviceOSVersion:
+          type: string
+          description: The version of the operating system of the device. Example - 10.14 r34567
+          example: 10.14 r34567
+        platformOS:
+          type: string
+          description: The operating system platform of the device. Example - darwin
+          example: darwin
+          enum:
+          - win32
+          - linux2
+          - darwin
+          - android
+          - ios
+        uuid:
+          type: string
+          description: A 128-bit number used to uniquely identify device in internet. Example - TY5h67-5674r-675645
+          example: TY5h67-5674r-675645
+        clientVersion:
+          type: string
+          description: The inSync Client version installed on the device. Example - 6.1.0 r56746
+          example: 6.1.0 r56746
+        deviceStatus:
+          type: string
+          description: The status of the device. Example - enabled
+          enum:
+          - enabled
+          - disabled
+        upgradeState:
+          type: string
+          description: The upgrade state of the device.
+          enum:
+          - NOT UPGRADABLE
+          - UPGRADABLE
+          - UPTODATE
+          - SCHEDULED
+          - UNKNOWN
+        userID:
+          type: integer
+          description: A unique id of the user in inSync.
+          example: 1
+        totalBackupData:
+          type: string
+          description: The storage quota consumed by the user.
+          example: 40.05 GB
+        totalBackupDataInBytes:
+          type: integer
+          description: The storage quota consumed by the user (in bytes).
+          example: 43003360051
+        addedOn:
+          type: string
+          format: date-time
+          description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        lastUpgradedOn:
+          type: string
+          format: date-time
+          description: The date on which the inSync Client was last updated for the user. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        lastConnected:
+          type: string
+          format: date-time
+          description: The date and time on which the inSync Client last connected with inSync Cloud. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        deviceMarkedInactive:
+          type: boolean
+          description: Devices marked as inactive. Example - true
+          example: true
+        disabledMode:
+          type: string
+          description: The mode via which the device was disabled. Example - Manual
+          example: Manual
+          enum:
+          - Manual
+          - API
+          - User Preserved
+          - Decommission
+        disabledOn:
+          type: string
+          format: date-time
+          description: The date and time when the device was disabled. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+    RestoreList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: 'The total number of restore activities listed in the result pages. Example: 4096'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        restores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Restore'
+    CreateRestores:
+      type: object
+      properties:
+        restores:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestoreDefault'
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of restore activities created.
+          example: 1
+    RestoreDefault:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          description: 'The unique ID of the device in inSync from which the restore activity was triggered. Example: 12345'
+          default: null
+          example: 12345
+        targetDeviceID:
+          type: integer
+          description: 'The unique ID of the device in inSync to which the data was restored.
+
+            It can be similar to ''deviceID'' if the data was restored on the same device. Example: 12345.'
+          default: null
+          example: 12345
+        restoreLocation:
+          type: string
+          description: "Displays the location at which the data was restored. Example - Original.\nPossible values are - \n1) Desktop - If the data was restored on the user desktop. \n2) Original - If the data was restored to the original location from where it was backed up. \n3) Absolute path of the location on the device if the data was restored at a custom location."
+          default: ''
+          example: Desktop
+        userID:
+          type: integer
+          description: 'The unique ID of the user in inSync for whom the restore activity was triggered. Example: 12345'
+          default: null
+          example: 12345
+        restoreID:
+          type: integer
+          description: "The unique ID of the restore activity. Example: 12345. \nThis value is 'null' in case the restore was initiated from a mobile device. "
+          default: null
+          example: 12345
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the restore activity. Example - 2013-04-17T09:12:36Z
+          default: ''
+          example: '2019-11-19T06:49:15Z'
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the restore activity. No value is displayed for this field as it is an ongoing restore activity.
+          default: ''
+          example: ''
+        status:
+          type: string
+          description: ' The status of the restore activity. Always displays ''Ongoing'' as the restore activity is in progress'
+          default: Ongoing
+          example: Ongoing
+        restoreSize:
+          type: string
+          description: The size of data restored. No value is displayed for this field as it is an ongoing restore activity.
+          default: ''
+          example: ''
+        numberOfFilesRestored:
+          type: integer
+          description: The number of files restored in the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity..
+          default: null
+          example: null
+        numberOfFilesMissed:
+          type: integer
+          description: The number of files missed during the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity.
+          default: null
+          example: null
+        restoreMode:
+          type: string
+          description: Information of the restore initiator. Always displays 'Admin' as the initiator of the restore activity.
+          default: Admin
+          example: Admin
+        systemSettingsRestore:
+          type: boolean
+          description: ' Displays whether system settings are restored as part of restore. ''Null'' is displayed for this field as it is an ongoing restore activity.'
+          default: null
+          example: null
+        failureReason:
+          type: string
+          description: Displays the reason for failure if the restore activity has failed, else the value is empty.
+          default: ''
+          example: ''
+    DeviceMappingList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of device mappings listed on the result page. Example - 3
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        imdMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceMappingListResponse'
+    DeviceListV2:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of devices listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceV2'
+    DeviceList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of devices listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    Backup:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          format: int64
+          description: It is unique postive integer id associated with device.
+          example: 12345
+        backupStatus:
+          type: string
+          description: Backup status of the device
+          enum:
+          - Completed
+        filesBackedUp:
+          type: integer
+          description: The number of files backed up in the last successful backup.
+          example: 124
+        bytesTransferred:
+          type: integer
+          description: The number of bytes transferred in the last successful backup.
+          example: 23456
+        filesMissed:
+          type: integer
+          description: The number of files missed on the device in the last successful backup.
+          example: 50
+        snapshotSize:
+          type: string
+          description: The size of the snapshot generated in the last successful backup in MBs.
+          example: 2546 MB
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        systemSettingsBackedUp:
+          type: boolean
+          description: Specifies whether the system settings were backed up as part of the backup.
+    DeviceMappingCreate:
+      type: object
+      properties:
+        mappingID:
+          type: string
+          description: The id of the device mapping in inSync. Example - 3452rw6
+          example: 3452rw6
+        emailID:
+          type: string
+          description: The email address of the user. Example - ernie.carter@druva.com
+          example: ernie.carter@druva.com
+        userName:
+          type: string
+          description: The username of the user in inSync. Example - Ernie Carter
+          example: Ernie Carter
+        deviceName:
+          type: string
+          description: The device name linked to the user in inSync.
+          example: Ernie Carter's Macbook
+        deviceIdentifierType:
+          type: string
+          description: The unique id type of the device in inSync. Example - Serial Number
+          example: Serial Number
+        deviceIdentifier:
+          type: string
+          description: 'The unique id of the device in inSync. Example - Po3XF '
+          example: Po3XF
+        oldDeviceName:
+          type: string
+          description: The old device name linked to the user in inSync. Example - Ernie Carter's Old Macbook
+          example: Ernie Carter's Old Macbook
+        restoreData:
+          type: string
+          description: The type of data restore performed on the new device. Example - SYSTEM
+          example: SYSTEM
+    Device:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          format: int64
+          description: The unique id of the device in inSync. Example - 12345
+          example: 12345
+        deviceName:
+          type: string
+          description: The device name in inSync. Example - Ernie Carter's Macbook
+          example: Ernie Carter's Macbook
+        serialNumber:
+          type: string
+          description: A unique, identifying number assigned to an individual piece of hardware by the manufacturer. Example - PX045
+          example: PX045
+        deviceOS:
+          type: string
+          description: The operating system of the device. Example - Mojave
+          example: mojave
+        deviceOSVersion:
+          type: string
+          description: The version of the operating system of the device. Example - 10.14 r34567
+          example: 10.14 r34567
+        platformOS:
+          type: string
+          description: The operating system platform of the device. Example - darwin
+          example: darwin
+          enum:
+          - win32
+          - linux2
+          - darwin
+          - android
+          - ios
+        uuid:
+          type: string
+          description: A 128-bit number used to uniquely identify device in internet. Example - TY5h67-5674r-675645
+          example: TY5h67-5674r-675645
+        clientVersion:
+          type: string
+          description: The inSync Client version installed on the device. Example - 6.1.0 r56746
+          example: 6.1.0 r56746
+        deviceStatus:
+          type: string
+          description: The status of the device. Example - enabled
+          enum:
+          - enabled
+          - disabled
+        upgradeState:
+          type: string
+          description: The upgrade state of the device.
+          enum:
+          - NOT UPGRADABLE
+          - UPGRADABLE
+          - UPTODATE
+          - SCHEDULED
+          - UNKNOWN
+        userID:
+          type: integer
+          description: A unique id of the user in inSync.
+          example: 1
+        totalBackupData:
+          type: string
+          description: The storage quota consumed by the user.
+          example: 40.05 GB
+        totalBackupDataInBytes:
+          type: integer
+          description: The storage quota consumed by the user (in bytes).
+          example: 43003360051
+        addedOn:
+          type: string
+          format: date-time
+          description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        lastUpgradedOn:
+          type: string
+          format: date-time
+          description: The date on which the inSync Client was last updated for the user. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        lastConnected:
+          type: string
+          format: date-time
+          description: The date and time on which the inSync Client last connected with inSync Cloud. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        deviceMarkedInactive:
+          type: boolean
+          description: Devices marked as inactive. Example - true
+          example: true
+    BackupList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Backup'
+    Restore:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          description: 'The unique ID of the device from which the restore activity was triggered. Example: 12345'
+        targetDeviceID:
+          type: integer
+          description: 'The device ID of the device to which the data was restored. Example: 12345'
+        restoreLocation:
+          type: string
+          description: "The location on the device to which the data was restored. \nThe possibles locations are:\n 1) Original: If the data was restored to the original location\n 2) Desktop: If the data was restored to desktop\n 3)Custom location: If data was restored to a custom location\n 4) Unknown: If the restore was performed from a mobile device to a mobile device."
+        userID:
+          type: integer
+          description: 'The unique ID of the user who triggered the restore activity. Example: 12345'
+        restoreID:
+          type: integer
+          description: 'The unique ID of the restore activity. This value is ''null'' in case of restore was initiated from a mobile device. Example: 12345'
+        startTime:
+          type: string
+          format: date-time
+          description: "The start time of the restore activity. \nExample: 2013-04-17T09:12:36Z"
+        endTime:
+          type: string
+          format: date-time
+          description: 'The end time of the restore activity. Example: 2013-04-17T09:13:36Z. This value is empty if the restore activity is ongoing.'
+        status:
+          type: string
+          description: "Status of the restore activity. It is:\n 1) Successful: If the restore activity was completed successfully.\n 2) Ongoing: If the restore activity is ongoing. \n 3) Failed: If the restore activity was failed.\n4) Cancelled: If the restore activity was cancelled manually.\n 5) Completed with Errors: If some files were missed during the restore activity."
+        restoreSize:
+          type: string
+          description: "The size of the data restored. Example: 285 MB \n This value is 'Unknown' for restores that failed to start. "
+        numberOfFilesRestored:
+          type: integer
+          description: 'The total number of files that were restored in the restore activity. Example: 456'
+        numberOfFilesMissed:
+          type: integer
+          description: "The total number of files that were missed from the restore activity. Example: 12 \n This value is 'null' if the restore activity is ongoing."
+        restoreMode:
+          type: string
+          description: "The persona who initiated the restore. Personas are: \nSelf: inSync user himself \nAdmin: Administrator."
+        systemSettingsRestore:
+          type: boolean
+          description: This returns 'true' if system setting were restored else returns 'false'.
+        failureReason:
+          type: string
+          description: This returns the failure reason if the status is 'failed' else returns 'empty.
+          example: ''
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    DeviceMappingListResponse:
+      type: object
+      properties:
+        mappingID:
+          type: string
+          description: The id of the device mapping in inSync. Example - 3452rw6
+          example: 3452rw6
+        emailID:
+          type: string
+          description: The email address of the user. Example - ernie.carter@druva.com
+          example: ernie.carter@druva.com
+        userName:
+          type: string
+          description: The username of the user in inSync. Example - Ernie Carter
+          example: Ernie Carter
+        deviceName:
+          type: string
+          description: The device name linked to the user in inSync.
+          example: Ernie Carter's Macbook
+        deviceIdentifierType:
+          type: string
+          description: The unique id type of the device in inSync. Example - Serial Number
+          example: Serial Number
+        deviceIdentifier:
+          type: string
+          description: 'The unique id of the device in inSync. Example - Po3XF '
+          example: Po3XF
+        oldDeviceName:
+          type: string
+          description: The old device name linked to the user in inSync. Example - Ernie Carter's Old Macbook
+          example: Ernie Carter's Old Macbook
+        restoreData:
+          type: string
+          description: The type of data restore performed on the new device. Example - SYSTEM
+          example: SYSTEM
+        createdTime:
+          type: string
+          format: date-time
+          description: The date and time when the device mapping was created. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

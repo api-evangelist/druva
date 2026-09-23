@@ -1,0 +1,697 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Data Protection API
+  version: 1.0.0
+  x-logo:
+    url: ''
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Data Protection
+paths:
+  /msp/dataProtection/v1/customers/{customer_global_id}/rules:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customer_global_id
+        description: Specify the unique global ID of the customer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionGetRulesForCustomerResponse'
+          description: Ok
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Tenant Admin does not have access to this customer
+        '404':
+          description: Not Found - Customer does not belong to this MSP
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetRulesForCustomerRequestForDoc
+      summary: List rules for a customer
+      description: Returns data protection rule IDs mapped to a customer.
+  /msp/dataProtection/v1/customers/{customer_global_id}/workloads/{workload_id}/entities:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customer_global_id
+        description: Specify the unique global ID of the customer.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: workload_id
+        description: Specify the workload ID.
+        schema:
+          type: integer
+          format: int64
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionListEntitiesResponse'
+          description: Ok
+        '400':
+          description: Bad Request - Invalid workload or entities not supported for this workload
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Tenant Admin does not have access to this customer
+        '404':
+          description: Not Found - Workload not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: ListEntitiesRequestForDoc
+      summary: List entities for a customer's workload
+      description: Returns entities for a customer workload (such as organizations or backup profiles) using cursor-based pagination.
+  /msp/dataProtection/v1/customers/{customer_global_id}/workloads/{workload_id}/resources:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customer_global_id
+        description: Specify the unique global ID of the customer.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: workload_id
+        description: Specify the workload ID.
+        schema:
+          type: integer
+          format: int64
+        in: path
+        required: true
+      - name: entityName
+        description: Organization or site name (Enterprise workloads) or profile name (user-based workloads). Optional filter.
+        schema:
+          type: string
+        in: query
+      - name: pageSize
+        description: Specify the number of results per page. Default is 100. Maximum is 500.
+        schema:
+          type: integer
+          format: int64
+        in: query
+      - name: pageToken
+        description: '- The token to access the next page of results. Use the token value received in the previous response.
+
+          - Keep this field blank in the first request.'
+        schema:
+          type: string
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionSearchResourcesResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: SearchResourcesRequestForDoc
+      summary: Search resources for a customer's workload
+      description: Returns backup sets or resources for a customer workload.
+  /msp/dataProtection/v1/rules:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: pageSize
+        description: Specify the number of records you wish to receive in the API response. Defaults to 50. Maximum allowed page size is 100.
+        schema:
+          type: string
+        in: query
+      - name: pageToken
+        description: '- The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+          - Keep this field blank in the first request.'
+        schema:
+          type: string
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionListRulesResponse'
+          description: Ok
+        '400':
+          description: Bad Request - Invalid pagination parameters
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Insufficient permissions
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: ListRulesRequestForDoc
+      summary: List data protection rules
+      description: Returns data protection rules for the MSP.
+    post:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProtectionCreateRuleRequest'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionCreateRuleResponse'
+          description: Created
+        '400':
+          description: Bad Request - Invalid input or rule name already exists
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Insufficient permissions
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: CreateRuleRequestForDoc
+      summary: Create a data protection rule
+      description: Creates a new data protection rule for the MSP.
+  /msp/dataProtection/v1/rules/{rule_id}:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: rule_id
+        description: Specify the unique ID of the data protection rule.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionRuleResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Insufficient permissions
+        '404':
+          description: Not Found - Rule does not exist or does not belong to MSP
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetRuleRequestForDoc
+      summary: Get rule details
+      description: 'Returns full details of a specific data protection rule.
+
+        * Includes all rule configuration and associated workloads'
+  /msp/dataProtection/v1/rules/{rule_id}/customers:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: rule_id
+        description: Specify the unique ID of the data protection rule.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionRuleCustomersResponse'
+          description: Ok
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Insufficient permissions
+        '404':
+          description: Not Found - Rule does not exist or does not belong to MSP
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetCustomersRequestForDoc
+      summary: List customers mapped to a rule
+      description: Returns customer global IDs mapped to a data protection rule.
+  /msp/dataProtection/v1/rules/{rule_id}/exclusions:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: rule_id
+        description: Specify the unique ID of the data protection rule.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionListExclusionsResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: ListExclusionsRequestForDoc
+      summary: List exclusions for a rule
+      description: Returns exclusions configured for a data protection rule.
+  /msp/dataProtection/v1/workloads:
+    get:
+      tags:
+      - Data Protection
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: productID
+        description: 'Filter by product ID: 1=Enterprise Workloads, 2=SaaS Apps and Endpoints'
+        schema:
+          type: integer
+          format: int64
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProtectionListWorkloadsResponse'
+          description: Ok
+        '400':
+          description: Bad Request - Invalid product_id value
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '403':
+          description: Forbidden - Insufficient permissions
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: ListWorkloadsRequestForDoc
+      summary: List available workloads
+      description: Returns workloads available for data protection rules, optionally filtered by product.
+components:
+  schemas:
+    DataProtectionSearchResourcesResponse:
+      description: SearchResourcesResponse represents the response for searching resources
+      type: object
+      properties:
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+        resources:
+          description: List of resources
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionResource'
+          x-go-name: Resources
+    DataProtectionListEntitiesResponse:
+      description: ListEntitiesResponse represents the response for listing entities
+      type: object
+      properties:
+        entities:
+          description: List of entities (organizations for Enterprise, profiles for User-based)
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionEntity'
+          x-go-name: Entities
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+    DataProtectionExclusionResponse:
+      description: ExclusionResponse represents a single exclusion in list results for a rule.
+      type: object
+      properties:
+        customerGlobalID:
+          description: Customer global ID for the excluded scope
+          type: string
+          x-go-name: CustomerGlobalID
+        entityName:
+          description: Organization, site, or profile name excluded, when applicable
+          type: string
+          x-go-name: EntityName
+        resourceName:
+          description: Specific resource excluded (for example backup set or mailbox), when applicable
+          type: string
+          x-go-name: ResourceName
+    DataProtectionListExclusionsResponse:
+      description: ListExclusionsResponse represents the response for listing exclusions
+      type: object
+      properties:
+        exclusions:
+          description: List of exclusions
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionExclusionResponse'
+          x-go-name: Exclusions
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    DataProtectionListRulesResponse:
+      description: ListRulesResponse represents list rules API response
+      type: object
+      properties:
+        nextPageToken:
+          description: Token for fetching next page (empty if no more pages)
+          type: string
+          x-go-name: NextPageToken
+        rules:
+          description: List of rules
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionRuleResponse'
+          x-go-name: Rules
+    DataProtectionListWorkloadsResponse:
+      description: ListWorkloadsResponse represents list workloads API response
+      type: object
+      properties:
+        workloads:
+          description: List of available workloads
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionWorkloadResponse'
+          x-go-name: Workloads
+    DataProtectionResource:
+      description: Resource represents a resource (backup set, user email, site URL, etc.)
+      type: object
+      properties:
+        additionalData:
+          x-go-name: AdditionalData
+        entityName:
+          type: string
+          x-go-name: EntityName
+        resourceName:
+          type: string
+          x-go-name: ResourceName
+    DataProtectionEntity:
+      description: Entity represents an organization/site (Enterprise workloads) or a backup profile (user-based workloads) in entity listing results.
+      type: object
+      properties:
+        entityName:
+          description: Organization, site, or profile name
+          type: string
+          x-go-name: EntityName
+    DataProtectionCreateRuleResponse:
+      description: CreateRuleResponse represents create rule API response
+      allOf:
+      - $ref: '#/components/schemas/DataProtectionRuleResponse'
+    DataProtectionRuleResponse:
+      description: RuleResponse represents single rule API response
+      type: object
+      properties:
+        createdOn:
+          description: When rule was created
+          type: string
+          format: date-time
+          x-go-name: CreatedOn
+        evaluationFrequency:
+          description: 'Evaluation frequency: 0=N/A, 1=Hourly, 2=Daily, 3=Weekly, 4=Monthly'
+          type: integer
+          format: int64
+          x-go-name: EvaluationFrequency
+        parameterType:
+          description: 'Parameter type: 1=RPO Compliance, 2=Backup Success Rate, 3=Consecutive Failures'
+          type: integer
+          format: int64
+          x-go-name: ParameterType
+        productID:
+          description: 'Product ID: 1=Enterprise Workloads, 2=SaaS Apps and Endpoints'
+          type: integer
+          format: int64
+          x-go-name: ProductID
+        ruleID:
+          description: Rule unique identifier
+          type: string
+          x-go-name: RuleID
+        ruleName:
+          description: Rule name
+          type: string
+          x-go-name: RuleName
+        status:
+          description: 'Rule status: 1=Active, 2=Disabled'
+          type: integer
+          format: int64
+          x-go-name: Status
+        threshold:
+          description: Threshold value
+          type: integer
+          format: int64
+          x-go-name: Threshold
+        updatedOn:
+          description: When rule was last updated
+          type: string
+          format: date-time
+          x-go-name: UpdatedOn
+        workloadIDs:
+          description: Workload IDs being monitored
+          type: array
+          items:
+            type: integer
+            format: int64
+          x-go-name: WorkloadIDs
+    DataProtectionRuleCustomersResponse:
+      description: RuleCustomersResponse represents customers mapped to a rule
+      type: object
+      properties:
+        customerGlobalIDs:
+          description: Customer global IDs mapped to this rule
+          type: array
+          items:
+            type: string
+          x-go-name: CustomerGlobalIDs
+    DataProtectionGetRulesForCustomerResponse:
+      description: GetRulesForCustomerResponse represents get rules for customer API response
+      type: object
+      properties:
+        customerGlobalID:
+          type: string
+          x-go-name: CustomerGlobalID
+        ruleIDs:
+          type: array
+          items:
+            type: string
+          x-go-name: RuleIDs
+    DataProtectionWorkloadResponse:
+      description: WorkloadResponse represents a single workload in the response
+      type: object
+      properties:
+        productID:
+          description: 'Product ID this workload belongs to: 1=Enterprise Workloads, 2=SaaS Apps and Endpoints'
+          type: integer
+          format: int64
+          x-go-name: ProductID
+        workloadID:
+          description: Unique workload identifier
+          type: integer
+          format: int64
+          x-go-name: WorkloadID
+        workloadName:
+          description: Workload display name
+          type: string
+          x-go-name: WorkloadName
+    DataProtectionCreateRuleRequest:
+      description: CreateRuleRequest represents create rule API request
+      type: object
+      required:
+      - ruleName
+      - parameterType
+      - productID
+      - threshold
+      - status
+      - workloadIDs
+      properties:
+        evaluationFrequency:
+          description: 'Evaluation frequency: 0=N/A, 1=Hourly, 2=Daily, 3=Weekly, 4=Monthly'
+          type: integer
+          format: int64
+          x-go-name: EvaluationFrequency
+        parameterType:
+          description: 'Parameter type: 1=RPO Compliance, 2=Backup Success Rate, 3=Consecutive Failures'
+          type: integer
+          format: int64
+          x-go-name: ParameterType
+        productID:
+          description: 'Product ID: 1=Enterprise Workloads, 2=SaaS Apps and Endpoints'
+          type: integer
+          format: int64
+          x-go-name: ProductID
+        ruleName:
+          description: Rule name (3-255 characters, unique per MSP)
+          type: string
+          x-go-name: RuleName
+        status:
+          description: 'Rule status: 1=Active, 2=Disabled'
+          type: integer
+          format: int64
+          x-go-name: Status
+        threshold:
+          description: Threshold value (depends on parameter_type)
+          type: integer
+          format: int64
+          x-go-name: Threshold
+        workloadIDs:
+          description: Workload IDs to monitor
+          type: array
+          items:
+            type: integer
+            format: int64
+          x-go-name: WorkloadIDs
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

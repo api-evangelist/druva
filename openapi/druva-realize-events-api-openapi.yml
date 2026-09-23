@@ -1,0 +1,319 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to get information of Events of Realize product in Druva Cloud.
+  version: 3.0.0
+  title: Cyber Resilience Realize Events API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Realize Events
+  description: List of APIs to get information of Events of Realize product in Druva Cloud.
+paths:
+  /eventmanagement/v1/events:
+    get:
+      tags:
+      - Realize Events
+      summary: Lists all Realize Events
+      description: Returns the list of all the events generated in Druva Realize.
+      security:
+      - Bearer: []
+      operationId: ListEvents
+      parameters:
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+  /eventmanagement/v1/events/tracker:
+    get:
+      tags:
+      - Realize Events
+      summary: Lists specific events according to the tracker ID
+      description: Returns the list of specific events according to the tracker ID. The events list order is according to event creation time.
+      security:
+      - Bearer: []
+      operationId: ListEventsByTracker
+      parameters:
+      - name: trackerToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextTrackerToken'.
+        required: false
+        schema:
+          type: string
+      - name: ignoreTrackerExpiry
+        in: query
+        description: The tracker token expires in 48 hours. Set this parameter to 'true' to ignore the expiry and fetch the next available set of events.
+        required: false
+        schema:
+          type: string
+      - name: filters
+        in: query
+        description: 'Specify the filters. Filter can be added for ''event_type_name''
+
+          Example: {"event_type_name":"Admin Login"}'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventsByTrackerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+components:
+  schemas:
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ListEventsResponse:
+      type: object
+      required:
+      - events
+      - nextPageToken
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The unique id of the event in Druva Realize. For example - 20
+                example: 20
+              area:
+                type: string
+                description: The part of the product from where the event generated. For example - Platform.
+                example: Platform
+              category:
+                type: string
+                description: The category of the product area from where the event generated. For example - Admin Event.
+                example: Admin Event
+              type:
+                type: string
+                description: The type of the generated event. This is usually an action that took place for that event category. For example - Admin Login.
+                example: Admin Login
+              occurenceTime:
+                type: integer
+                description: The epoch time when the event was generated. For example - 1610707530.
+                example: 1610707530
+              syslogSeverity:
+                type: integer
+                description: The severity level mentioned in the Sys Log. For example - 6.
+                example: 6
+              syslogFacility:
+                type: integer
+                description: The facility code mentioned in the Sys Log. For example - 23.
+                example: 23
+              details:
+                type: object
+                description: Specific details of the event and the source from where the event generated. These are generic.
+                properties:
+                  location:
+                    type: string
+                    example: Pune, India
+                  adminName:
+                    type: string
+                    example: Druva Cloud Admin
+                  adminEmail:
+                    type: string
+                    example: cloud.admin@druva.com
+                  loginResult:
+                    type: string
+                    example: Success
+                  adminActivity:
+                    type: string
+                    example: Admin Login Event
+                  adminIPAddress:
+                    type: string
+                    example: 192.168.0.100
+                  adminLoginTime:
+                    type: string
+                    example: '2021-07-27T05:46:55Z'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1002
+          - RealizeUda-1002
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1001
+          - RealizeUda-1001
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ListEventsByTrackerResponse:
+      type: object
+      required:
+      - events
+      - nextTrackerToken
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The unique ID of the event. For example - 20
+                example: 20
+              area:
+                type: string
+                description: The segment of the product from where the event is generated. For example - Platform.
+                example: Platform
+              category:
+                type: string
+                description: The category of the product from where the event is generated. For example - Admin Event.
+                example: Admin Event
+              type:
+                type: string
+                description: The type of event - action performed for that event category. For example - Admin Login.
+                example: Admin Login
+              occurenceTime:
+                type: integer
+                description: The epoch time when the event was generated. For example - 1610707530.
+                example: 1610707530
+              syslogSeverity:
+                type: integer
+                description: The severity level mentioned in the Sys Log. For example - 6.
+                example: 6
+              syslogFacility:
+                type: integer
+                description: The facility code mentioned in the Sys Log. For example - 23.
+                example: 23
+              details:
+                type: object
+                description: Specific details of the event and the source from where the event got generated.
+                properties:
+                  location:
+                    type: string
+                    example: Pune, India
+                  adminName:
+                    type: string
+                    example: Cloud Admin
+                  adminEmail:
+                    type: string
+                    example: cloud.admin@druva.com
+                  loginResult:
+                    type: string
+                    example: Success
+                  adminActivity:
+                    type: string
+                    example: Admin Login Event
+                  adminIPAddress:
+                    type: string
+                    example: 192.168.0.100
+                  adminLoginTime:
+                    type: string
+                    example: '2021-07-27T05:46:55Z'
+        nextTrackerToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,0 +1,1903 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Resources API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Resource specific API functions
+  name: Resources
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/resources:
+    get:
+      description: Return resources by account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Determines whether or not additional information will be returned for each resource. Additional information properties are hasBackupPolicy, hasSchedule, scheduleActive and lastBackupTime. Extend can only be cr_configuration if present
+        in: query
+        name: extend
+        required: true
+        schema:
+          enum:
+          - cr_configuration
+          type: string
+      - description: A list of object types you want to perform the request against.
+        in: query
+        name: types
+        required: true
+        schema:
+          enum:
+          - ec2
+          - ebs
+          - rds
+          - dynamodb
+          - redshift
+          type: string
+      - description: 'Filter object containing keys that can be one or more of [region, tags, types, hasbackuppolicy, hasschedule, resource_id, resource_name, accounts]. Values must be a an array of strings. EG: {"region": ["us-east-1"]}'
+        in: query
+        name: filter
+        required: true
+        schema:
+          default: '{"region": ["us-east-1"]}'
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      - description: The  you want to order the result set in.
+        in: query
+        name: order
+        required: true
+        schema:
+          enum:
+          - id
+          - type
+          - region
+          - hasbackuppolicy
+          - hasschedule
+          - lastbackup
+          - state.Name
+          type: string
+      - description: The direction you want to order the result set in.
+        in: query
+        name: direction
+        required: true
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsResourcesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Resources by account
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdResources
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/resources/{resource_id}:
+    put:
+      description: Update resource by resource id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsResourcesByIdRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsResourcesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update a resource
+      tags:
+      - Resources
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdResourcesByResourceId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/resources/{resource_id}/backup:
+    post:
+      description: Initiate a backup using the resource_id provided
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsResourcesBackupRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsResourcesBackupResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create a backup
+      tags:
+      - Resources
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdResourcesByResourceIdBackup
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/resources/{resource_id}/policies:
+    get:
+      description: Get backup policies for the resource_id provided
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      - description: The region of the resource(s) that you are looking to retrieve.
+        in: query
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsResourcesPoliciesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get backup policies
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdResourcesByResourceIdPolicies
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/resources/{resource_id}/schedules:
+    get:
+      description: Get schedules for the resource_id provided
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsResourcesSchedulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get schedules
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdResourcesByResourceIdSchedules
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/resources/{resource_id}/scripts:
+    get:
+      description: Get scripts for the resource_id provided
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsResourcesScriptsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get scripts
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdResourcesByResourceIdScripts
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/rules/resources:
+    post:
+      description: Returns the list of resources matching the rules provided.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the environment that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/environments which returns all envionments inside an account '
+        in: query
+        name: environment_id
+        required: false
+        schema:
+          type: integer
+      - description: 'Filter object containing keys that can be one or more of [region, tags, types, hasbackuppolicy, hasschedule, resource_id, resource_name, accounts]. Values must be a an array of strings. EG: {"region": ["us-east-1"]}'
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsRulesResourcesRequest'
+        description: Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsRulesResourcesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get resources matching rules
+      tags:
+      - Resources
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdRulesResources
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/rules/resources/count:
+    post:
+      description: Returns the count of resources matching the rules provided.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the environment that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/environments which returns all envionments inside an account '
+        in: query
+        name: environment_id
+        required: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsRulesResourcesCountRequest'
+        description: Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsRulesResourcesCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get resource count by rules
+      tags:
+      - Resources
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdRulesResourcesCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/resources:
+    get:
+      description: Return resouces by organization id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Determines whether or not additional information will be returned for each resource. Additional information properties are hasBackupPolicy, hasSchedule, scheduleActive and lastBackupTime. Extend can only be cr_configuration if present
+        in: query
+        name: extend
+        required: true
+        schema:
+          enum:
+          - cr_configuration
+          type: string
+      - description: A list of object types you want to perform the request against.
+        in: query
+        name: types
+        required: true
+        schema:
+          enum:
+          - ec2
+          - ebs
+          - rds
+          - dynamodb
+          - redshift
+          type: string
+      - description: 'Filter object containing keys that can be one or more of [region, tags, types, hasbackuppolicy, hasschedule, resource_id, resource_name, accounts]. Values must be a an array of strings. EG: {"region": ["us-east-1"]}'
+        in: query
+        name: filter
+        required: true
+        schema:
+          default: '{"region": ["us-east-1"]}'
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsResourcesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Resources by organization
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdResources
+      x-operation-id-source: derived
+  /organizations/{organization_id}/resources/counts:
+    get:
+      description: Return resource count by organization id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsResourcesCountsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return resource count
+      tags:
+      - Resources
+      operationId: getOrganizationsByOrganizationIdResourcesCounts
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsAccountsRulesResourcesRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+                rule_id:
+                  type: integer
+                ruleId:
+                  type: integer
+              type: object
+            type: array
+          all_resource_types:
+            type: boolean
+          createdAt:
+            format: date-time
+            type: string
+          dr_plan_id:
+            type: integer
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          match:
+            type: integer
+          matches:
+            properties:
+              tags:
+                items:
+                  type: string
+                type: array
+            type: object
+          protectedStatus:
+            type: string
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              type: string
+            type: array
+          rule_type:
+            type: string
+          updatedAt:
+            format: date-time
+            type: string
+        type: object
+      type: array
+    PostOrganizationsAccountsResourcesBackupResponse:
+      properties:
+        backup_type:
+          type: string
+        resource:
+          properties:
+            __AccountId:
+              type: string
+            _id:
+              type: string
+            AmiLaunchIndex:
+              type: integer
+            Architecture:
+              type: string
+            BlockDeviceMappings:
+              items:
+                properties:
+                  DeviceName:
+                    type: string
+                  Ebs:
+                    properties:
+                      AttachTime:
+                        format: date-time
+                        type: string
+                      DeleteOnTermination:
+                        type: boolean
+                      Status:
+                        type: string
+                      VolumeId:
+                        type: string
+                    type: object
+                type: object
+              type: array
+            CapacityReservationSpecification:
+              properties:
+                CapacityReservationPreference:
+                  type: string
+              type: object
+            ClientToken:
+              type: string
+            CpuOptions:
+              properties:
+                CoreCount:
+                  type: integer
+                ThreadsPerCore:
+                  type: integer
+              type: object
+            EbsOptimized:
+              type: boolean
+            ElasticGpuAssociations:
+              items:
+                type: string
+              type: array
+            ElasticInferenceAcceleratorAssociations:
+              items:
+                type: string
+              type: array
+            EnaSupport:
+              type: boolean
+            hasBackupPolicy:
+              type: boolean
+            hasSchedule:
+              type: boolean
+            HibernationOptions:
+              properties:
+                Configured:
+                  type: boolean
+              type: object
+            Hypervisor:
+              type: string
+            Id:
+              type: string
+            ImageId:
+              type: string
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            is_success:
+              type: boolean
+            KeyName:
+              type: string
+            lastBackupTime:
+              format: date-time
+              type: string
+            LaunchTime:
+              format: date-time
+              type: string
+            Licenses:
+              items:
+                type: string
+              type: array
+            MetadataOptions:
+              properties:
+                HttpEndpoint:
+                  type: string
+                HttpPutResponseHopLimit:
+                  type: integer
+                HttpTokens:
+                  type: string
+                State:
+                  type: string
+              type: object
+            Monitoring:
+              properties:
+                State:
+                  type: string
+              type: object
+            Name:
+              type: string
+            NetworkInterfaces:
+              items:
+                properties:
+                  Association:
+                    properties:
+                      IpOwnerId:
+                        type: string
+                      PublicDnsName:
+                        type: string
+                      PublicIp:
+                        type: string
+                    type: object
+                  Attachment:
+                    properties:
+                      AttachmentId:
+                        type: string
+                      AttachTime:
+                        format: date-time
+                        type: string
+                      DeleteOnTermination:
+                        type: boolean
+                      DeviceIndex:
+                        type: integer
+                      Status:
+                        type: string
+                    type: object
+                  Description:
+                    type: string
+                  Groups:
+                    items:
+                      properties:
+                        GroupId:
+                          type: string
+                        GroupName:
+                          type: string
+                      type: object
+                    type: array
+                  InterfaceType:
+                    type: string
+                  Ipv6Addresses:
+                    items:
+                      type: string
+                    type: array
+                  MacAddress:
+                    type: string
+                  NetworkInterfaceId:
+                    type: string
+                  OwnerId:
+                    type: string
+                  PrivateDnsName:
+                    type: string
+                  PrivateIpAddress:
+                    type: string
+                  PrivateIpAddresses:
+                    items:
+                      properties:
+                        Association:
+                          properties:
+                            IpOwnerId:
+                              type: string
+                            PublicDnsName:
+                              type: string
+                            PublicIp:
+                              type: string
+                          type: object
+                        Primary:
+                          type: boolean
+                        PrivateDnsName:
+                          type: string
+                        PrivateIpAddress:
+                          type: string
+                      type: object
+                    type: array
+                  SourceDestCheck:
+                    type: boolean
+                  Status:
+                    type: string
+                  SubnetId:
+                    type: string
+                  VpcId:
+                    type: string
+                type: object
+              type: array
+            ObjectType:
+              type: string
+            Placement:
+              properties:
+                AvailabilityZone:
+                  type: string
+                GroupName:
+                  type: string
+                Tenancy:
+                  type: string
+              type: object
+            policies:
+              items:
+                type: string
+              type: array
+            postDate:
+              format: date-time
+              type: string
+            PrivateDnsName:
+              type: string
+            PrivateIpAddress:
+              type: string
+            ProductCodes:
+              items:
+                properties:
+                  ProductCodeId:
+                    type: string
+                  ProductCodeType:
+                    type: string
+                type: object
+              type: array
+            PublicDnsName:
+              type: string
+            PublicIpAddress:
+              type: string
+            Region:
+              type: string
+            RootDeviceName:
+              type: string
+            RootDeviceType:
+              type: string
+            scheduleActive:
+              type: string
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            Source:
+              type: string
+            SourceDestCheck:
+              type: boolean
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            StateTransitionReason:
+              type: string
+            SubnetId:
+              type: string
+            Tags:
+              items:
+                properties:
+                  Key:
+                    type: string
+                  Value:
+                    type: string
+                type: object
+              type: array
+            TagStrings:
+              items:
+                properties:
+                  Combined:
+                    type: string
+                type: object
+              type: array
+            Type:
+              type: string
+            VirtualizationType:
+              type: string
+            VpcId:
+              type: string
+          type: object
+      type: object
+    PutOrganizationsAccountsResourcesByIdRequest:
+      type: object
+    PutOrganizationsAccountsResourcesByIdResponse:
+      type: object
+    PostOrganizationsAccountsRulesResourcesCountRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+                rule_id:
+                  type: integer
+              type: object
+            type: array
+          all_accounts:
+            type: boolean
+          all_regions:
+            type: boolean
+          all_resource_types:
+            type: boolean
+          created_at:
+            type: string
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          matches:
+            properties:
+              tags:
+                items:
+                  properties:
+                    Key:
+                      type: string
+                    Value:
+                      type: string
+                  type: object
+                type: array
+            type: object
+          policy_id:
+            type: integer
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              properties:
+                account_id:
+                  type: string
+                region:
+                  type: string
+                resource_id:
+                  type: string
+                resource_name:
+                  type: string
+                rule_id:
+                  type: integer
+                type:
+                  type: string
+              type: object
+            type: array
+          rule_id:
+            type: integer
+          rule_type:
+            type: string
+          updated_at:
+            type: string
+        type: object
+      type: array
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsResourcesResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: string
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                AmiLaunchIndex:
+                  type: integer
+                Architecture:
+                  type: string
+                BlockDeviceMappings:
+                  items:
+                    properties:
+                      DeviceName:
+                        type: string
+                      Ebs:
+                        properties:
+                          AttachTime:
+                            format: date-time
+                            type: string
+                          DeleteOnTermination:
+                            type: boolean
+                          Status:
+                            type: string
+                          VolumeId:
+                            type: string
+                        type: object
+                    type: object
+                  type: array
+                CapacityReservationSpecification:
+                  properties:
+                    CapacityReservationPreference:
+                      type: string
+                  type: object
+                ClientToken:
+                  type: string
+                CpuOptions:
+                  properties:
+                    CoreCount:
+                      type: integer
+                    ThreadsPerCore:
+                      type: integer
+                  type: object
+                EbsOptimized:
+                  type: boolean
+                ElasticGpuAssociations:
+                  items:
+                    type: string
+                  type: array
+                ElasticInferenceAcceleratorAssociations:
+                  items:
+                    type: string
+                  type: array
+                EnaSupport:
+                  type: boolean
+                HibernationOptions:
+                  properties:
+                    Configured:
+                      type: boolean
+                  type: object
+                Hypervisor:
+                  type: string
+                Id:
+                  type: string
+                ImageId:
+                  type: string
+                InstanceId:
+                  type: string
+                InstanceType:
+                  type: string
+                KeyName:
+                  type: string
+                LaunchTime:
+                  format: date-time
+                  type: string
+                Licenses:
+                  items:
+                    type: string
+                  type: array
+                MetadataOptions:
+                  properties:
+                    HttpEndpoint:
+                      type: string
+                    HttpPutResponseHopLimit:
+                      type: integer
+                    HttpTokens:
+                      type: string
+                    State:
+                      type: string
+                  type: object
+                Monitoring:
+                  properties:
+                    State:
+                      type: string
+                  type: object
+                NetworkInterfaces:
+                  items:
+                    properties:
+                      Association:
+                        properties:
+                          IpOwnerId:
+                            type: string
+                          PublicDnsName:
+                            type: string
+                          PublicIp:
+                            type: string
+                        type: object
+                      Attachment:
+                        properties:
+                          AttachmentId:
+                            type: string
+                          AttachTime:
+                            format: date-time
+                            type: string
+                          DeleteOnTermination:
+                            type: boolean
+                          DeviceIndex:
+                            type: integer
+                          Status:
+                            type: string
+                        type: object
+                      Description:
+                        type: string
+                      Groups:
+                        items:
+                          properties:
+                            GroupId:
+                              type: string
+                            GroupName:
+                              type: string
+                          type: object
+                        type: array
+                      InterfaceType:
+                        type: string
+                      Ipv6Addresses:
+                        items:
+                          type: string
+                        type: array
+                      MacAddress:
+                        type: string
+                      NetworkInterfaceId:
+                        type: string
+                      OwnerId:
+                        type: string
+                      PrivateDnsName:
+                        type: string
+                      PrivateIpAddress:
+                        type: string
+                      PrivateIpAddresses:
+                        items:
+                          properties:
+                            Association:
+                              properties:
+                                IpOwnerId:
+                                  type: string
+                                PublicDnsName:
+                                  type: string
+                                PublicIp:
+                                  type: string
+                              type: object
+                            Primary:
+                              type: boolean
+                            PrivateDnsName:
+                              type: string
+                            PrivateIpAddress:
+                              type: string
+                          type: object
+                        type: array
+                      SourceDestCheck:
+                        type: boolean
+                      Status:
+                        type: string
+                      SubnetId:
+                        type: string
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                ObjectType:
+                  type: string
+                Placement:
+                  properties:
+                    AvailabilityZone:
+                      type: string
+                    GroupName:
+                      type: string
+                    Tenancy:
+                      type: string
+                  type: object
+                postDate:
+                  format: date-time
+                  type: string
+                PrivateDnsName:
+                  type: string
+                PrivateIpAddress:
+                  type: string
+                ProductCodes:
+                  items:
+                    type: string
+                  type: array
+                PublicDnsName:
+                  type: string
+                PublicIpAddress:
+                  type: string
+                Region:
+                  type: string
+                RootDeviceName:
+                  type: string
+                RootDeviceType:
+                  type: string
+                SecurityGroups:
+                  items:
+                    properties:
+                      GroupId:
+                        type: string
+                      GroupName:
+                        type: string
+                    type: object
+                  type: array
+                Source:
+                  type: string
+                SourceDestCheck:
+                  type: boolean
+                State:
+                  properties:
+                    Code:
+                      type: integer
+                    Name:
+                      type: string
+                  type: object
+                StateTransitionReason:
+                  type: string
+                SubnetId:
+                  type: string
+                Tags:
+                  items:
+                    type: string
+                  type: array
+                TagStrings:
+                  items:
+                    type: string
+                  type: array
+                Type:
+                  type: string
+                VirtualizationType:
+                  type: string
+                VpcId:
+                  type: string
+              type: object
+            _type:
+              type: string
+            cr_configuration:
+              properties:
+                hasBackupPolicy:
+                  type: boolean
+                hasSchedule:
+                  type: boolean
+                lastBackupTime:
+                  type: string
+                scheduleActive:
+                  type: string
+              type: object
+            sort:
+              items:
+                type: string
+              type: array
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsRulesResourcesCountResponse:
+      properties:
+        count:
+          type: integer
+        protectedCount:
+          type: integer
+      type: object
+    GetOrganizationsResourcesCountsResponse:
+      properties:
+        resources:
+          properties:
+            count:
+              type: integer
+            types:
+              properties:
+                backups:
+                  properties:
+                    count:
+                      type: integer
+                    types:
+                      properties:
+                        dynamodbbackup:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        image:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        rdsclustersnapshot:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        rdssnapshot:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        redshiftsnapshot:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        snapshot:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                      type: object
+                  type: object
+                servers:
+                  properties:
+                    count:
+                      type: integer
+                    types:
+                      properties:
+                        dynamodb:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                        ec2:
+                          properties:
+                            configured_count:
+                              type: integer
+                            count:
+                              type: integer
+                          type: object
+                        rds:
+                          properties:
+                            count:
+                              type: integer
+                          type: object
+                      type: object
+                  type: object
+              type: object
+          type: object
+      type: object
+    PostOrganizationsAccountsRulesResourcesResponse:
+      properties:
+        hits:
+          properties:
+            exclude:
+              type: boolean
+            last_backup_status:
+              type: boolean
+            last_backup_time:
+              format: date-time
+              type: string
+            protected:
+              type: boolean
+            resource_id:
+              type: string
+            resource_name:
+              type: string
+            type:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsResourcesScriptsResponse:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        rule:
+          properties:
+            execution_type:
+              type: string
+            id:
+              type: integer
+            resource_id:
+              type: string
+            resource_name:
+              type: string
+            type:
+              type: string
+          type: object
+        type:
+          type: string
+        useLatestVersion:
+          type: boolean
+      type: object
+    GetOrganizationsAccountsResourcesPoliciesResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsResourcesBackupRequest:
+      properties:
+        backup_type:
+          type: string
+        resource:
+          properties:
+            Id:
+              type: string
+            ObjectType:
+              type: string
+            Region:
+              type: string
+            Source:
+              type: string
+            Type:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsResourcesSchedulesResponse:
+      properties:
+        schedules:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsResourcesResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: string
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                AmiLaunchIndex:
+                  type: integer
+                Architecture:
+                  type: string
+                BlockDeviceMappings:
+                  items:
+                    properties:
+                      DeviceName:
+                        type: string
+                      Ebs:
+                        properties:
+                          AttachTime:
+                            format: date-time
+                            type: string
+                          DeleteOnTermination:
+                            type: boolean
+                          Status:
+                            type: string
+                          VolumeId:
+                            type: string
+                        type: object
+                    type: object
+                  type: array
+                CapacityReservationSpecification:
+                  properties:
+                    CapacityReservationPreference:
+                      type: string
+                  type: object
+                ClientToken:
+                  type: string
+                CpuOptions:
+                  properties:
+                    CoreCount:
+                      type: integer
+                    ThreadsPerCore:
+                      type: integer
+                  type: object
+                EbsOptimized:
+                  type: boolean
+                ElasticGpuAssociations:
+                  items:
+                    type: string
+                  type: array
+                ElasticInferenceAcceleratorAssociations:
+                  items:
+                    type: string
+                  type: array
+                EnaSupport:
+                  type: boolean
+                HibernationOptions:
+                  properties:
+                    Configured:
+                      type: boolean
+                  type: object
+                Hypervisor:
+                  type: string
+                IamInstanceProfile:
+                  properties:
+                    Arn:
+                      type: string
+                    Id:
+                      type: string
+                  type: object
+                Id:
+                  type: string
+                ImageId:
+                  type: string
+                InstanceId:
+                  type: string
+                InstanceType:
+                  type: string
+                KeyName:
+                  type: string
+                LaunchTime:
+                  format: date-time
+                  type: string
+                Licenses:
+                  items:
+                    type: string
+                  type: array
+                MetadataOptions:
+                  properties:
+                    HttpEndpoint:
+                      type: string
+                    HttpPutResponseHopLimit:
+                      type: integer
+                    HttpTokens:
+                      type: string
+                    State:
+                      type: string
+                  type: object
+                Monitoring:
+                  properties:
+                    State:
+                      type: string
+                  type: object
+                Name:
+                  type: string
+                NetworkInterfaces:
+                  items:
+                    properties:
+                      Attachment:
+                        properties:
+                          AttachmentId:
+                            type: string
+                          AttachTime:
+                            format: date-time
+                            type: string
+                          DeleteOnTermination:
+                            type: boolean
+                          DeviceIndex:
+                            type: integer
+                          Status:
+                            type: string
+                        type: object
+                      Description:
+                        type: string
+                      Groups:
+                        items:
+                          properties:
+                            GroupId:
+                              type: string
+                            GroupName:
+                              type: string
+                          type: object
+                        type: array
+                      InterfaceType:
+                        type: string
+                      Ipv6Addresses:
+                        items:
+                          type: string
+                        type: array
+                      MacAddress:
+                        type: string
+                      NetworkInterfaceId:
+                        type: string
+                      OwnerId:
+                        type: string
+                      PrivateDnsName:
+                        type: string
+                      PrivateIpAddress:
+                        type: string
+                      PrivateIpAddresses:
+                        items:
+                          properties:
+                            Primary:
+                              type: boolean
+                            PrivateDnsName:
+                              type: string
+                            PrivateIpAddress:
+                              type: string
+                          type: object
+                        type: array
+                      SourceDestCheck:
+                        type: boolean
+                      Status:
+                        type: string
+                      SubnetId:
+                        type: string
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                ObjectType:
+                  type: string
+                Placement:
+                  properties:
+                    AvailabilityZone:
+                      type: string
+                    GroupName:
+                      type: string
+                    Tenancy:
+                      type: string
+                  type: object
+                postDate:
+                  format: date-time
+                  type: string
+                PrivateDnsName:
+                  type: string
+                PrivateIpAddress:
+                  type: string
+                ProductCodes:
+                  items:
+                    type: string
+                  type: array
+                PublicDnsName:
+                  type: string
+                Region:
+                  type: string
+                RootDeviceName:
+                  type: string
+                RootDeviceType:
+                  type: string
+                SecurityGroups:
+                  items:
+                    properties:
+                      GroupId:
+                        type: string
+                      GroupName:
+                        type: string
+                    type: object
+                  type: array
+                Source:
+                  type: string
+                SourceDestCheck:
+                  type: boolean
+                State:
+                  properties:
+                    Code:
+                      type: integer
+                    Name:
+                      type: string
+                  type: object
+                StateReason:
+                  properties:
+                    Code:
+                      type: string
+                    Message:
+                      type: string
+                  type: object
+                StateTransitionReason:
+                  type: string
+                SubnetId:
+                  type: string
+                Tags:
+                  items:
+                    type: object
+                  type: array
+                TagStrings:
+                  items:
+                    properties:
+                      Combined:
+                        type: string
+                    type: object
+                  type: array
+                Type:
+                  type: string
+                VirtualizationType:
+                  type: string
+                VpcId:
+                  type: string
+              type: object
+            _type:
+              type: string
+            cr_configuration:
+              properties:
+                hasBackupPolicy:
+                  type: boolean
+                hasSchedule:
+                  type: boolean
+                lastBackupTime:
+                  type: string
+                policies:
+                  items:
+                    type: string
+                  type: array
+                scheduleActive:
+                  type: string
+              type: object
+            sort:
+              items:
+                type: string
+              type: array
+          type: object
+        total:
+          type: integer
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

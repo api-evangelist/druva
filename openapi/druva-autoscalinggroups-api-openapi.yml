@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Auto Scaling Groups API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: AutoScalingGroups specific API functions
+  name: AutoScalingGroups
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/asgroups/ids:
+    get:
+      description: Return all Autoscaling Group ids for a specified account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAsgroupsIdsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get ASG Ids
+      tags:
+      - AutoScalingGroups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsIds
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/asgroups/tags/count:
+    post:
+      description: Return the number of Autoscaling Groups that correspond to the specified tag
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsAsgroupsTagsCountRequest'
+        description: Tags
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsAsgroupsTagsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Count
+      tags:
+      - AutoScalingGroups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsTagsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/asgroups/tags/keys:
+    get:
+      description: Return all tag keys that are associated with Autoscaling Groups for a specified account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAsgroupsTagsKeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Keys
+      tags:
+      - AutoScalingGroups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/asgroups/tags/keys/{key}/values:
+    get:
+      description: Return all tag values for all tags that are associated to Autoscaling Groups with a certain tag key
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Values
+      tags:
+      - AutoScalingGroups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsTagsKeysByKeyValues
+      x-operation-id-source: derived
+components:
+  schemas:
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsAsgroupsTagsCountRequest:
+      properties:
+        Tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsAsgroupsTagsCountResponse:
+      properties:
+        hits:
+          properties:
+            hits:
+              items:
+                type: string
+              type: array
+            total:
+              type: integer
+          type: object
+      type: object
+    GetOrganizationsAccountsAsgroupsTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsAsgroupsIdsResponse:
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+        Type:
+          type: string
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

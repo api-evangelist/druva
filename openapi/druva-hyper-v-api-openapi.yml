@@ -1,0 +1,1581 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Hyper V API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: Hyper-V
+paths:
+  /hyperv/v1/orgs/{OrgID}/reports/backupsets:
+    get:
+      description: Returns a list of all backup sets for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all backupsets
+      operationId: HVGetBackupSetReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetBackupSetReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/flrproxies:
+    get:
+      description: Returns a list of FLR proxies for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all FLR proxies
+      operationId: HVGetFLRProxyReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: HostName
+        description: The name of the Hyper-V host on which the FLR proxy is deployed. Multiple host names can be separated by commas.
+        name: hostName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetFRLProxyReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/hosts:
+    get:
+      description: Returns a list of host proxies for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all hosts
+      operationId: HVGetHostReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: HostName
+        description: The name of the Hyper-V host on which the FLR proxy is deployed. Multiple host names can be separated by commas.
+        name: hostName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetHostReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/jobs:
+    get:
+      description: Returns a list of all jobs for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all jobs
+      operationId: HVGetAllJobsReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: JobType
+        description: 'Specify the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651316-monitor-hyper-v-jobs>Job Types.</a>'
+        name: jobType
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMName
+        description: The name of the virtual machine (VM) for which the job has been initiated. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: HostName
+        description: The name of the Hyper-V host on which the FLR proxy is deployed. Multiple host names can be separated by commas.
+        name: hostName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: EndTime
+        description: Specify a time to filter jobs that were run before it. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetAllJobsReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/jobs/backups:
+    get:
+      description: Returns a list of all backup jobs for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all backup jobs
+      operationId: HVGetBackupJobReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: VMName
+        description: The name of the virtual machine (VM) for which the job has been initiated. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: HostName
+        description: The name of the Hyper-V host on which the FLR proxy is deployed. Multiple host names can be separated by commas.
+        name: hostName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: EndTime
+        description: Specify a time to filter jobs that were run before it. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetBackupJobsReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/jobs/restores:
+    get:
+      description: Returns a list of all restore jobs for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all restore jobs
+      operationId: HVGetRestoreJobReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: VMName
+        description: The name of the virtual machine (VM) for which the job has been initiated. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: EndTime
+        description: Specify a time to filter jobs that were run before it. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetRestoreJobsReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/jobs/uploadlogs:
+    get:
+      description: Returns a list of all upload jobs for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all upload logs jobs
+      operationId: HVGetUploadLogJobReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: EndTime
+        description: Specify a time to filter jobs that were run before it. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - x-go-name: VMName
+        description: The name of the virtual machine (VM) for which the job has been initiated. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetUploadLogJobReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /hyperv/v1/orgs/{OrgID}/reports/policies:
+    get:
+      description: Returns a list of all backup policies for Hyper-V.
+      tags:
+      - Hyper-V
+      summary: List all backup policies
+      operationId: HVGetBackupPoliciesReportRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/HVGetBackupPoliciesReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error in the Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    HVHyperVHost:
+      description: HyperVHost is the response schema for HyperV FLR Proxies
+      type: object
+      properties:
+        connectionStatus:
+          description: The connection status of the host.
+          type: string
+          x-go-name: ConnectionStatus
+        name:
+          description: The name of the host.
+          type: string
+          x-go-name: Name
+        os:
+          description: The operating system of the host.
+          type: string
+          x-go-name: OS
+        osVersion:
+          description: The version of the operating system of the hosts.
+          type: string
+          x-go-name: OSVersion
+      x-go-name: HyperVHost
+      x-go-package: phoenix/hyperv/cloud/report/spec/host
+    HVGetBackupPoliciesReportResponse:
+      type: object
+      title: GetBackupPoliciesReportResponse returns a list of all backup sets for Hyper-V.
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        policies:
+          description: List of Hyper-V policies
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVPolicies'
+          x-go-name: Policies
+      x-go-name: GetBackupPoliciesReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/policy
+    HVGetBackupSetReportResponse:
+      description: GetBackupSetReportResponse is the response schema for HyperVBackupSets
+      type: object
+      properties:
+        backupsets:
+          description: Returns a list of all Hyper-V backup sets.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVBackupSets'
+          x-go-name: BackupSets
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupSetReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/backupset
+    HVGetUploadLogJobReportResponse:
+      type: object
+      title: GetUploadLogJobReportResponse returns a list of all upload logs jobs run for Hyper-V.
+      properties:
+        jobs:
+          description: List of all upload logs jobs run for Hyper-V.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVUploadJob'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetUploadLogJobReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVAllJob:
+      type: object
+      title: HyperVAllJob is the response schema for Hyper-V utils.
+      properties:
+        clusterName:
+          description: The name of Cluster
+          type: string
+          x-go-name: ClusterName
+        endTime:
+          description: The time when the job operation ends. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'Specifies the error code when the backup operation fails. The possible values are:\n \"0\": If the job is successful\n <error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the message for rhe failed job. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        host:
+          description: The name of the Hyper-V host. Multiple host names can be separated by commas. Get the list of the Hyper-V host names using the 'ListHost' API.
+          type: string
+          x-go-name: Host
+        jobID:
+          description: Specifies a unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: 'Specifies the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651316-monitor-hyper-v-jobs>Job Types.</a>'
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        scvmmName:
+          description: The name of System Center Virtual Machine Manager(SCVMM).
+          type: string
+          x-go-name: SCVMMName
+        startTime:
+          description: The time when the job operation starts. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+          type: string
+          x-go-name: Status
+        vmName:
+          description: The name of the VM for which the job is initiated. Specify multiple VM names by separating them with commas.
+          type: string
+          x-go-name: VMName
+      x-go-name: HyperVAllJob
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVBackupDataTransfer:
+      description: HyperVBackupDataTransfer is the response schema for Hyper-V BackupData Transfer
+      type: object
+      properties:
+        backupDuration:
+          description: Specifies the total time taken to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: string
+          x-go-name: BackupDuration
+        backupDurationInSeconds:
+          description: Specifies the total time taken in seconds to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: integer
+          format: int64
+          x-go-name: BackupDurationInSeconds
+        backupSpeed:
+          description: Specifies the rate at which the source data is backed up to the Cloud.
+          type: string
+          x-go-name: BackupSpeed
+        backupSpeedInKBps:
+          description: Specifies the rate at which the source data is backed up to the Cloud in KBps.
+          type: number
+          format: double
+          x-go-name: BackupSpeedInKBps
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        dataTransferCache:
+          description: Specifies the incremental data that is uploaded to CloudCache after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCache
+        dataTransferCacheInBytes:
+          description: Specifies the incremental data that is uploaded in bytes to CloudCache after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCacheInBytes
+        dataTransferCloud:
+          description: Specifies the incremental data that is uploaded to the Cloud after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCloud
+        dataTransferCloudInBytes:
+          description: Specifies the incremental data that is uploaded in bytes to the Cloud after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCloudInBytes
+      x-go-name: HyperVBackupDataTransfer
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVRestoreExecutionDetails:
+      description: HyperVRestoreExecutionDetails is the response schema for Hyper-V Restore Execution Details
+      type: object
+      properties:
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        endTime:
+          description: The time when the job operation ends. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'Specifies the error code when the backup operation fails. The possible values are:\n \"0\": If the job is successful\n <error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the message for rhe failed job. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        restoredData:
+          description: Specifies the total amount of data restored.
+          type: string
+          x-go-name: RestoredData
+        restoredDataInBytes:
+          description: Specifies the total amount of data restored in bytes.
+          type: integer
+          format: uint64
+          x-go-name: RestoredDataInBytes
+        restoredItems:
+          description: Specifies the data items restored.
+          type: string
+          x-go-name: RestoredItems
+        startTime:
+          description: The time when the job operation starts. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+          type: string
+          x-go-name: Status
+      x-go-name: HyperVRestoreExecutionDetails
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVUploadJob:
+      type: object
+      title: HyperVUploadJob is the response schema for Hyper-V Upload Job.
+      properties:
+        environmentDetails:
+          $ref: '#/components/schemas/HVUploadLogsEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/HVUploadLogsExecutionDetailsStruct'
+        jobID:
+          description: Specifies a unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: 'Specifies the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651316-monitor-hyper-v-jobs>Job Types.</a>'
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        vmName:
+          description: The name of the VM for which the job is initiated. Specify multiple VM names by separating them with commas.
+          type: string
+          x-go-name: VMName
+      x-go-name: HyperVUploadJob
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVRestoreEnvironmentDetails:
+      description: HyperVRestoreEnvironmentDetails struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        diskWriteRate:
+          description: Specifies the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: string
+          x-go-name: DiskWriteRate
+        diskWriteRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: number
+          format: double
+          x-go-name: DiskWriteRateInKBps
+        networkRetries:
+          description: Specifies the number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: HyperVRestoreEnvironmentDetails
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVGetFRLProxyReportResponse:
+      description: GetFRLProxyReportResponse is the response schema for GetFRLProxyReport
+      type: object
+      properties:
+        flrProxies:
+          description: Specifies the list of FLR proxies for Hyper-V.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVFLRProxies'
+          x-go-name: Result
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetFRLProxyReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/flrproxies
+    HVUploadLogsExecutionDetailsStruct:
+      description: UploadLogsExecutionDetailsStruct struct holds the response for GetUploadLogsJobsReport api
+      type: object
+      properties:
+        endTime:
+          description: The time when the job operation ends. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'Specifies the error code when the backup operation fails. The possible values are:\n \"0\": If the job is successful\n <error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the message for rhe failed job. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        logsExpiryTime:
+          description: Specifies the expiry time of the uploaded logs.
+          type: string
+          x-go-name: LogsExpiryTime
+        logsSize:
+          description: Specifies the size of the logs.
+          type: string
+          x-go-name: LogsSize
+        logsSizeInBytes:
+          description: Specifies the size of the logs in bytes.
+          type: integer
+          format: uint64
+          x-go-name: LogsSizeInBytes
+        sourceJobID:
+          description: Specifies the unique udentification number of the job for which logs are requested.
+          type: integer
+          format: int32
+          x-go-name: SourceJobID
+        sourceJobLogType:
+          description: Specifies the tyoe of the job for which logs are requested.
+          type: string
+          x-go-name: SourceJobLogType
+        startTime:
+          description: The time when the job operation starts. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+          type: string
+          x-go-name: Status
+      x-go-name: UploadLogsExecutionDetailsStruct
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVPolicies:
+      type: object
+      title: HyperVPolicies specifies the description of the backup policy.
+      properties:
+        appliedToVMs:
+          description: Specifies the list of virtual machines to which the backup policy is applied.
+          type: array
+          items:
+            type: string
+          x-go-name: AppliedToVMs
+        automaticRetry:
+          description: Specifies whether the automatic retry option is enabled or disabled.
+          type: boolean
+          x-go-name: AutomaticRetry
+        description:
+          description: Description of the policy.
+          type: string
+          x-go-name: Description
+        ignoreFirstBackupDuration:
+          description: Specifies whether to ignore the specified backup duration for the first backup job.
+          type: boolean
+          x-go-name: IgnoreBackupDuration
+        dataLock:
+          description: The status indicating if Data Lock is enabled in the backup policy.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        maxRetryCount:
+          description: Specifies the maximum number of retries for a failed backup.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryCount
+        maxRetryDuration:
+          description: Specifies the maximum duration between each retry attempt for a failed backup.
+          type: string
+          x-go-name: MaxRetryDuration
+        maxRetryDurationInSeconds:
+          description: Specifies the maximum duration in seconds between each retry attempt for a failed backup.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryDurationInSeconds
+        policyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: PolicyID
+        policyName:
+          description: Specifies the name of the backup policy.
+          type: string
+          x-go-name: Name
+        policyType:
+          description: Specifies the type of the backup policy.
+          type: string
+          x-go-name: PolicyType
+        quiescingEnabled:
+          description: Specifies whether to enable the VMware tools quiescing.
+          type: boolean
+          x-go-name: QuiescingEnabled
+        retention:
+          $ref: '#/components/schemas/HVHyperVPolicyRetentionData'
+        schedules:
+          description: Specifies the list of backup schedules.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVPolicySchedule'
+          x-go-name: Schedule
+      x-go-name: HyperVPolicies
+      x-go-package: phoenix/hyperv/cloud/report/spec/policy
+    HVUploadLogsEnvironmentStruct:
+      description: UploadLogsEnvironmentStruct struct holds the response for GetUploadLogsJobsReport api
+      type: object
+      properties:
+        diskWriteRate:
+          description: Specifies the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: string
+          x-go-name: DiskWriteRate
+        networkRetries:
+          description: Specifies the number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+      x-go-name: UploadLogsEnvironmentStruct
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVPolicySchedule:
+      description: HyperVPolicySchedule is the response schema for HyperV Policy Backup Schedule
+      type: object
+      properties:
+        bandwidth:
+          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          description: Specifies the duration for which the backup job should run.
+          type: string
+          x-go-name: Duration
+        durationInSeconds:
+          description: Specifies the duration in seconds after which the backup should stop.
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          $ref: '#/components/schemas/JSONStringList'
+        startAt:
+          description: Specifies the time when the backup starts.
+          type: string
+          x-go-name: StartAt
+      x-go-name: HyperVPolicySchedule
+      x-go-package: phoenix/hyperv/cloud/report/spec/policy
+    HVHyperVBackupSets:
+      description: HyperVBackupSets is the response schema for HyperVBackupSets
+      type: object
+      properties:
+        backupEnabled:
+          description: Specifies whether backup is enabled for the backup set.
+          type: boolean
+          x-go-name: BackupEnabled
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int32
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy attached to the backup set.
+          type: string
+          x-go-name: BackupPolicyName
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        diskExcludeList:
+          description: Specifies the list of disks that are excluded from the backup set.
+          items:
+            type: string
+          type: array
+          x-go-name: ExcludeDisk
+        dataLock:
+          description: The status indicating if Data Lock is enabled for the backup set.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        lastBackupDetails:
+          $ref: '#/components/schemas/HVLastBackupDetailsStruct'
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        name:
+          description: The name of the VM for which the job is initiated. Specify multiple VM names by separating them with commas.
+          type: string
+          x-go-name: VMName
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        storageName:
+          description: The name of the storage.
+          type: string
+          x-go-name: StorageName
+        vmID:
+          description: The ID of your virtual machine.
+          format: int32
+          type: integer
+          x-go-name: VMID
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+      x-go-name: HyperVBackupSets
+      x-go-package: phoenix/hyperv/cloud/report/spec/backupset
+    HVGetAllJobsReportResponse:
+      type: object
+      title: GetAllJobsReportResponse returns a list of all jobs run for Hyper-V.
+      properties:
+        jobs:
+          description: List of all jobs run for Hyper-V.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVAllJob'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllJobsReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVEstimationDetails:
+      description: HyperVEstimationDetails struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        dataScanned:
+          description: Specifies the total data scanned during the job.
+          type: integer
+          format: uint64
+          x-go-name: DataScanned
+        disksAdded:
+          description: The number of VM disks added at the source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksAdded
+        disksModified:
+          description: The number of VM disks changed at the source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksModified
+        disksRemoved:
+          description: The number of VM disks removed at the source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksRemoved
+        sourceDataScanned:
+          description: Specifies the data scanned at the source in order to backup.
+          type: string
+          x-go-name: SourceDataScanned
+        sourceDataScannedInBytes:
+          description: Specifies the data scanned in bytes at the source in order to backup.
+          type: integer
+          format: uint64
+          x-go-name: SourceDataScannedInBytes
+      x-go-name: HyperVEstimationDetails
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVRestoreJob:
+      description: HyperVRestoreJob is the response schema for Hyper-V Restore Job
+      type: object
+      properties:
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        clusterName:
+          description: The name of Cluster.
+          type: string
+          x-go-name: ClusterName
+        destinationVMName:
+          description: Specifies the name of the Hyper-V host to which restore was initiated. Specify multiple host names by separating them with commas.
+          type: string
+          x-go-name: DestinationVMName
+        environmentDetails:
+          $ref: '#/components/schemas/HVHyperVRestoreEnvironmentDetails'
+        executionDetails:
+          $ref: '#/components/schemas/HVHyperVRestoreExecutionDetails'
+        host:
+          description: The name of the Hyper-V host. Multiple host names can be separated by commas. Get the list of the Hyper-V host names using the 'ListHost' API.
+          type: string
+          x-go-name: Host
+        jobID:
+          description: Specifies a unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: 'Specifies the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651316-monitor-hyper-v-jobs>Job Types.</a>'
+          type: string
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        restoreType:
+          description: Specifies the name of the restore operation initiated.
+          type: string
+          x-go-name: RestoreType
+        scvmmName:
+          description: The name of System Center Virtual Machine Manager(SCVMM).
+          type: string
+          x-go-name: SCVMMName
+      x-go-name: HyperVRestoreJob
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVGetHostReportResponse:
+      description: GetHostReportResponse is the response schema for GetFRLProxyReport
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        result:
+          description: List of Hyper-V host.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVHost'
+          x-go-name: Result
+      x-go-name: GetHostReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/host
+    HVHyperVBackupExecutionDetails:
+      description: HyperVBackupExecutionDetails is the response schema for Hyper-V Backup Execution Details
+      type: object
+      properties:
+        endTime:
+          description: The time when the job operation ends. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'Specifies the error code when the backup operation fails. The possible values are:\n \"0\": If the job is successful\n <error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the message for rhe failed job. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        startTime:
+          description: The time when the job operation starts. The time is specified in the UTC time zone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+          type: string
+          x-go-name: Status
+      x-go-name: HyperVBackupExecutionDetails
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVFLRProxies:
+      description: HyperVFLRProxies is the response schema for HyperV FLR Proxies
+      type: object
+      properties:
+        connectionStatus:
+          description: The connection status of the FLR proxies.
+          type: string
+          x-go-name: ConnectionStatus
+        maxConcurrentBackups:
+          description: The maximum number of concurrent backup jobs supported by the backup proxy.
+          type: integer
+          format: int32
+          x-go-name: MaxConcurrentBackups
+        name:
+          description: The name of the FLR Proxy.
+          type: string
+          x-go-name: Name
+        vHost:
+          description: The name of the Hyper-V host.
+          type: string
+          x-go-name: Host
+      x-go-name: HyperVFLRProxies
+      x-go-package: phoenix/hyperv/cloud/report/spec/flrproxies
+    HVHyperVBackupJob:
+      type: object
+      title: HyperVBackupJob is the response schema for Hyper-V backup job.
+      properties:
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int32
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy attached to the backup set.
+          type: string
+          x-go-name: BackupPolicyName
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        clusterName:
+          description: The name of Cluster.
+          type: string
+          x-go-name: ClusterName
+        dataTransfer:
+          $ref: '#/components/schemas/HVHyperVBackupDataTransfer'
+        environmentDetails:
+          $ref: '#/components/schemas/HVHyperVEnvironmentDetails'
+        estimationDetails:
+          $ref: '#/components/schemas/HVHyperVEstimationDetails'
+        executionDetails:
+          $ref: '#/components/schemas/HVHyperVBackupExecutionDetails'
+        host:
+          description: The name of the Hyper-V host. Multiple host names can be separated by commas. Get the list of the Hyper-V host names using the 'ListHost' API.
+          type: string
+          x-go-name: Host
+        jobID:
+          description: Specifies a unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: 'Specifies the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651316-monitor-hyper-v-jobs>Job Types.</a>'
+          type: string
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        scvmmName:
+          description: The name of System Center Virtual Machine Manager(SCVMM).
+          type: string
+          x-go-name: SCVMMName
+        vmName:
+          description: The name of the VM for which the job is initiated. Specify multiple VM names by separating them with commas.
+          type: string
+          x-go-name: VMName
+      x-go-name: HyperVBackupJob
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    HVHyperVPolicyRetentionData:
+      description: HyperVPolicyRetentionData is the response schema for HyperV Policy Retention Data
+      type: object
+      properties:
+        allSnapshots:
+          description: Specifies the duration in days to retain all the daily snapshots.
+          type: integer
+          format: int32
+          x-go-name: Daily
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        monthly:
+          description: Specifies the number of months for which you want to retain the latest monthly snapshot.
+          type: integer
+          format: int32
+          x-go-name: Monthly
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+        weekly:
+          description: Specifies the number of weeks for which you want to retain the latest weekly snapshot.
+          type: integer
+          format: int32
+          x-go-name: Weekly
+        yearly:
+          description: Specifies the number of years for which you want to retain the latest yearly snapshot.
+          type: integer
+          format: int32
+          x-go-name: Yearly
+      x-go-name: HyperVPolicyRetentionData
+      x-go-package: phoenix/hyperv/cloud/report/spec/policy
+    HVGetBackupJobsReportResponse:
+      type: object
+      title: GetBackupJobsReportResponse returns a list of all backup jobs run for Hyper-V.
+      properties:
+        jobs:
+          description: List of all backup jobs run for Hyper-V.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVBackupJob'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupJobsReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
+    HVHyperVEnvironmentDetails:
+      description: HyperVEnvironmentDetails is the response schema for Hyper-V EnvironmentDetails
+      type: object
+      properties:
+        diskReadRate:
+          description: Specifies the bit rate for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: string
+          x-go-name: DiskReadRate
+        diskReadRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: number
+          format: double
+          x-go-name: DiskReadRateInKBps
+        networkRetries:
+          description: Specifies the number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: HyperVEnvironmentDetails
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+    JSONStringList:
+      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
+      type: array
+      items:
+        type: string
+      x-go-package: phoenix/pkg/dlutil
+    HVLastBackupDetailsStruct:
+      description: LastBackupDetailsStruct is response schema for LastBackupDetailsStruct
+      type: object
+      properties:
+        jobID:
+          description: Specifies a unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        status:
+          description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+          type: string
+          x-go-name: Status
+      x-go-name: LastBackupDetailsStruct
+      x-go-package: phoenix/hyperv/cloud/report/spec/backupset
+    HVGetRestoreJobsReportResponse:
+      type: object
+      title: GetRestoreJobsReportResponse returns a list of all restore jobs run for Hyper-V.
+      properties:
+        jobs:
+          description: List of all restore jobs run for Hyper-V.
+          type: array
+          items:
+            $ref: '#/components/schemas/HVHyperVRestoreJob'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetRestoreJobsReportResponse
+      x-go-package: phoenix/hyperv/cloud/report/spec/job
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

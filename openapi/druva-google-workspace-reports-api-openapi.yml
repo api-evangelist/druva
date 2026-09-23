@@ -1,0 +1,2035 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Google Workspace Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get MSP Google Workspace reports data.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Google Workspace Reports
+  description: Lists the APIs to get MSP Google Workspace reports data.
+paths:
+  /msp/reporting/v1/reports/mspGoogleUserRestoreActivity:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View User Restore Activity Report
+      description: View the status and details of all restore jobs for user workloads. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleUserRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - jobId
+                            - userName
+                            - userEmail
+                            - profileName
+                            - workloadType
+                            - restoreMode
+                            - restoreStatus
+                            - restoreLocation
+                            - restoreSize
+                            - itemsRestored
+                            - itemsMissed
+                            - startTime
+                            - endTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleUserRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleSharedDriveRestoreActivity:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Google Shared Drive Restore Activity Report
+      description: View daily trends & details of all restore activities performed on Google Shared Drive. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleSharedDriveRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - accountTitle
+                            - administrator
+                            - startTime
+                            - endTime
+                            - restoreSize
+                            - snapshotTimestamp
+                            - restoreStatus
+                            - jobId
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleSharedDriveRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGooglePreservedUsersDatasources:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Preserved Users Datasources Report
+      description: View details about preserved users across SaaS Apps including consumed workloads, preservation date, and more. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGooglePreservedUsersDataSourcesReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - userName
+                            - userEmail
+                            - profileName
+                            - googleLicenseState
+                            - preservedOn
+                            - mode
+                            - autoDeleteOn
+                            - lastUpdatedTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGooglePreservedUsersDataSourcesReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleStorageConsumption:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Storage Consumption Report
+      description: View workload specific storage consumption details and its summary. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleStorageConsumptionReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - workloadName
+                            - resourceCount
+                            - totalBackupData
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleStorageConsumptionReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleSharedDriveBackupActivity:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Google Shared Drive Backup Activity Report
+      description: View daily trends & details of all backup activities performed on Google Shared Drive. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleSharedDriveBackupActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - driveName
+                            - administrator
+                            - startTime
+                            - endTime
+                            - snapshotSize
+                            - backupStatus
+                            - appStatus
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleSharedDriveBackupActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleUserProvisioning:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View User Provisioning Report
+      description: The User Provisioning report provides information about the users provisioned in the Google Workspace. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleUserProvisioningReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - userName
+                            - userEmail
+                            - profileName
+                            - userStatus
+                            - googleLicenseState
+                            - totalBackupData
+                            - createdOn
+                            - managedBy
+                            - mapping
+                            - customAttributeName
+                            - customAttributeValue
+                            - lastUpdatedTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleUserProvisioningReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleUserLastBackupStatus:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View User Last Backup Status Report
+      description: View the last backup status and details about backup jobs for user workloads. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleUserLastBackupStatusReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - userName
+                            - userEmail
+                            - workloadType
+                            - profileName
+                            - appStatus
+                            - startTime
+                            - endTime
+                            - itemsBackedUp
+                            - itemsMissed
+                            - lastBackupData
+                            - totalBackupData
+                            - lastBackupStatus
+                            - statusDetails
+                            - lastUpdatedTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleUserLastBackupStatusReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleUserCountAndStatus:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Users Count & Status Report
+      description: View the weekly and monthly count of users added, preserved, and deleted for a specified period. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleUserCountAndStatusReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - period
+                            - startDate
+                            - endDate
+                            - totalUsers
+                            - totalPreservedUsers
+                            - userAdded
+                            - usersDeleted
+                            - usersPreserved
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleUserCountAndStatusReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleUserWorkload:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View User Workload Report
+      description: View backup status, activity logs, and summary for user workloads. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleUserWorkloadReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - userName
+                            - userEmail
+                            - addedOn
+                            - workloadType
+                            - profileName
+                            - storageName
+                            - appStatus
+                            - totalBackupData
+                            - lastSuccessfulBackup
+                            - lastAttemptedBackup
+                            - lastBackupStatus
+                            - statusDetails
+                            - lastUpdatedTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleUserWorkloadReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleLicenseUsage:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View License Usage Report
+      description: View the weekly and monthly count of total active and preserved licenses allocated and consumed. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleLicenseUsageReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - period
+                            - startDate
+                            - endDate
+                            - usersAdded
+                            - usersDeleted
+                            - totalActiveLicense
+                            - activeLicenseUsed
+                            - totalPreservedLicense
+                            - preservedLicenseUsed
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleLicenseUsageReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspGoogleAlerts:
+    post:
+      tags:
+      - Google Workspace Reports
+      summary: View Alert Report
+      description: View details like alert types, severities, occurrence dates, and more, along with a summary of generated alerts. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetGoogleAlertHistoryReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - entity
+                            - alertDetails
+                            - severity
+                            - firstOccurrence
+                            - latestOccurrence
+                            - isActive
+                            - isDeleted
+                            - lastUpdatedTime
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGoogleAlertHistoryReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    GetGoogleSharedDriveRestoreActivityReportDataResponse:
+      title: GetGoogleSharedDriveRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleSharedDriveRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleUserLastBackupStatusReportDataResponse:
+      title: GetGoogleUserLastBackupStatusReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserLastBackupStatusReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleSharedDriveRestoreActivityReportData:
+      title: GoogleSharedDriveRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        accountTitle:
+          type: string
+          description: The name of the drive associated with the activity.
+          example: 05Oct2023
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-08T06:09:17.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-08T06:12:51.000Z'
+        restoreSize:
+          type: integer
+          description: The total amount of data restored, in bytes.
+          example: 45330357
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-06T09:56:26.000Z'
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restore Successful
+        jobId:
+          type: integer
+          description: The unique identifier of the activity stored in the database.
+          example: 2180
+    GetGoogleSharedDriveBackupActivityReportDataResponse:
+      title: GetGoogleSharedDriveBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleSharedDriveBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleUserProvisioningReportDataResponse:
+      title: GetGoogleUserProvisioningReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserProvisioningReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleUserCountAndStatusReportDataResponse:
+      title: GetGoogleUserCountAndStatusReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserCountAndStatusReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleAlertHistoryReportDataResponse:
+      title: GetGoogleAlertHistoryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAlertHistoryReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleUserProvisioningReportData:
+      title: GoogleUserProvisioningReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: amar
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: amar@qagtest.drtst.org
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: profile_gsuite
+        userStatus:
+          type: string
+          description: The status of the user, indicating whether they are `Active` or `Preserved`.
+          example: Active
+        googleLicenseState:
+          type: string
+          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
+          example: Active License Users
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 342452
+        createdOn:
+          type: string
+          description: 'The timestamp when the user was first onboarded into the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-05-02T09:46:56.000Z'
+        managedBy:
+          type: string
+          description: 'The onboarding and management method for the user. Possible values: `Manually`, `AD`, `SCIM`, `AzureAD`, `API`, `GDir`.'
+          example: AzureAD
+        mapping:
+          type: string
+          description: The name of the profile mapping associated with the user.
+          example: Manual
+        customAttributeName:
+          type: string
+          description: The name of the custom attribute filter.
+          example: '-'
+        customAttributeValue:
+          type: string
+          description: The value of the custom attribute filter.
+          example: '-'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GoogleUserWorkloadReportData:
+      title: GoogleUserWorkloadReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: vishal
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: vishal10@qagtest.drtst.org
+        addedOn:
+          type: string
+          description: 'The timestamp when the user was added to the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:15:57.000Z'
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Google Drive
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Gsuite
+        storageName:
+          type: string
+          description: The name of the storage associated with the user.
+          example: org_reports_ap1
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Enabled
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 8476886
+        lastSuccessfulBackup:
+          type: string
+          description: 'The timestamp of the last successful backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:24:28.000Z'
+        lastAttemptedBackup:
+          type: string
+          description: 'The timestamp of the last attempted backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:24:28.000Z'
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backup Failed
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: EINTERNAL
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GoogleStorageConsumptionReportData:
+      title: GoogleStorageConsumptionReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        workloadName:
+          type: string
+          description: The name of the workload for which storage consumption is displayed.
+          example: Google Drive
+        resourceCount:
+          type: integer
+          description: The total number of resources associated with the workload.
+          example: 14
+        totalBackupData:
+          type: integer
+          description: The total backup data of all resources associated with the workload.
+          example: 0
+    GoogleUserCountAndStatusReportData:
+      title: GoogleUserCountAndStatusReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        period:
+          type: string
+          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
+          example: month
+        startDate:
+          type: string
+          description: The start date of the specified week or month.
+          format: date-time
+          example: '2024-03-01T00:00:00.000Z'
+        endDate:
+          type: string
+          description: The end date of the specified week or month.
+          format: date-time
+          example: '2024-03-31T23:59:59.000Z'
+        totalUsers:
+          type: integer
+          description: The total number of active users allocated within the specified period.
+          example: 16
+        totalPreservedUsers:
+          type: integer
+          description: The total number of preserved users allocated within the specified period.
+          example: 1
+        userAdded:
+          type: integer
+          description: The number of users added within the specified period.
+          example: 17
+        usersDeleted:
+          type: integer
+          description: The number of users deleted within the specified period.
+          example: 1
+        usersPreserved:
+          type: integer
+          description: The number of users marked as preserved within the specified period.
+          example: 0
+    GooglePreservedUsersDataSourcesReportData:
+      title: GooglePreservedUsersDataSourcesReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: abhi singh
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: 1234re5678@druvadatasoftware.onmicrosoft.com
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        googleLicenseState:
+          type: string
+          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
+          example: Active Licensed Users
+        preservedOn:
+          type: string
+          description: 'The timestamp when the user was marked as preserved. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        mode:
+          type: string
+          description: 'The onboarding method for the user. Possible values: `Manual`, `GOOGLEDIRECTORY`, `AZUREAD`, `AD/LDAP`, `SCIM`, `Upgrade`.'
+          example: Manual
+        autoDeleteOn:
+          type: string
+          description: 'The timestamp when the user is scheduled for automatic deletion. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GetGooglePreservedUsersDataSourcesReportDataResponse:
+      title: GetGooglePreservedUsersDataSourcesReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GooglePreservedUsersDataSourcesReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleSharedDriveBackupActivityReportData:
+      title: GoogleSharedDriveBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        driveName:
+          type: string
+          description: The name of the drive associated with the activity.
+          example: 05Oct2023
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-04T10:51:03.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-04T10:52:48.000Z'
+        snapshotSize:
+          type: integer
+          description: The total amount of data backed up during the activity, in bytes.
+          example: 45330357
+        backupStatus:
+          type: string
+          description: The backup status of the activity.
+          example: Backed Up Successfully
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Disabled
+    GoogleUserRestoreActivityReportData:
+      title: GoogleUserRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        jobId:
+          type: integer
+          description: The unique identifier of the activity stored in the database.
+          example: 97
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: vishal
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: vishal10@qagtest.drtst.org
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Gsuite
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Google Drive
+        restoreMode:
+          type: string
+          description: 'The restore mode. Possible values: `Self`, `Web`, `Admin`, `Mobile`.'
+          example: Admin
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restore Successful
+        restoreLocation:
+          type: string
+          description: 'The restore location. Possible values: Same user account, Different user account.'
+          example: Same user account
+        restoreSize:
+          type: integer
+          description: The total amount of data restored, in bytes.
+          example: 4235239
+        itemsRestored:
+          type: integer
+          description: The total number of items restored as part of the activity.
+          example: 4
+        itemsMissed:
+          type: integer
+          description: The total number of items that failed to restore as part of the activity.
+          example: 0
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:22:34.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:22:40.000Z'
+    GetGoogleUserRestoreActivityReportDataResponse:
+      title: GetGoogleUserRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleLicenseUsageReportDataResponse:
+      title: GetGoogleLicenseUsageReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleLicenseUsageReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GoogleLicenseUsageReportData:
+      title: GoogleLicenseUsageReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        period:
+          type: string
+          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
+          example: month
+        startDate:
+          type: string
+          description: The start date of the specified week or month.
+          format: date-time
+          example: '2024-10-01T00:00:00.000Z'
+        endDate:
+          type: string
+          description: The end date of the specified week or month.
+          format: date-time
+          example: '2024-10-31T23:59:59.000Z'
+        usersAdded:
+          type: integer
+          description: The number of users added within the specified period.
+          example: 0
+        usersDeleted:
+          type: integer
+          description: The number of users deleted within the specified period.
+          example: 22
+        totalActiveLicense:
+          type: integer
+          description: The total number of licenses active within the specified period.
+          example: 100
+        activeLicenseUsed:
+          type: integer
+          description: The total number of licenses used within the specified period.
+          example: 0
+        totalPreservedLicense:
+          type: integer
+          description: The total number of preserved licenses allocated within the specified period.
+          example: 20
+        preservedLicenseUsed:
+          type: integer
+          description: The total number of preserved licenses used within the specified period.
+          example: 0
+    GetGoogleUserWorkloadReportDataResponse:
+      title: GetGoogleUserWorkloadReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserWorkloadReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleAlertHistoryReportData:
+      title: GoogleAlertHistoryReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        entity:
+          type: string
+          description: The workload or entity associated with the alert.
+          example: 09Oct
+        alertDetails:
+          type: string
+          description: The alert details, including status and updated values.
+          example: Google Shared Drives Backup Failed
+        severity:
+          type: string
+          description: 'The alert severity level. Possible values: `Warning`, `Critical`, `High`.'
+          example: Warning
+        firstOccurrence:
+          type: string
+          description: 'The timestamp of the alert''s first occurrence. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-07-17T16:22:49.000Z'
+        latestOccurrence:
+          type: string
+          description: 'The timestamp of the alert''s latest occurrence. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-07-23T05:45:20.000Z'
+        isActive:
+          type: string
+          description: 'The alert''s active status. Possible values: Yes, No.'
+          example: 'Yes'
+        isDeleted:
+          type: integer
+          description: Indicates whether the alert is deleted from the database.
+          example: 0
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GetGoogleStorageConsumptionReportDataResponse:
+      title: GetGoogleStorageConsumptionReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleStorageConsumptionReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleUserLastBackupStatusReportData:
+      title: GoogleUserLastBackupStatusReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: vishal
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: vishal10@qagtest.drtst.org
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Google Drive
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Gsuite
+        appStatus:
+          type: string
+          description: The status of the workload, indicating whether it is `Enabled` or `Disabled`.
+          example: Enabled
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:23:09.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:23:24.000Z'
+        itemsBackedUp:
+          type: integer
+          description: The total number of items successfully backed up in the last backup activity.
+          example: 56
+        itemsMissed:
+          type: integer
+          description: The total number of items that failed to back up in the last backup activity.
+          example: 8
+        lastBackupData:
+          type: integer
+          description: The total amount of backup data recorded in the last backup activity, in bytes.
+          example: 4241647
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 24332
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backed Up Successfully
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: '-'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

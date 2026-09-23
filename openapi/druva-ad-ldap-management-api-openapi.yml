@@ -1,0 +1,161 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud AD/LDAP Management API
+  description: Lists the APIs to get information about the AD/LDAP Connectors configured for Endpoints & SaaS Apps.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: AD/LDAP Management
+  description: Lists the APIs to get information about the AD/LDAP Connectors configured for Endpoints & SaaS Apps.
+paths:
+  /admanagement/v1/adConnectors:
+    get:
+      tags:
+      - AD/LDAP Management
+      summary: List all AD/LDAP Connectors
+      description: Returns a list of all AD/LDAP Connectors configured in Druva Console with their details.
+      security:
+      - Bearer: []
+      parameters:
+      - name: status
+        in: query
+        description: 'Specify the status to filter and list AD/LDAP Connectors with the selected status.
+
+          - connected - To filter and list AD/LDAP Connectors which are connected to Druva Cloud.
+
+          - not connected - To filter and list AD/LDAP Connector which are not connected to Druva Cloud.'
+        required: false
+        schema:
+          type: string
+          enum:
+          - connected
+          - not connected
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ADConnectorList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: The request was not processed due to insufficient permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getAdmanagementV1AdConnectors
+      x-operation-id-source: derived
+components:
+  schemas:
+    ADConnectorList:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: The total number of AD/LDAP Connectors listed on the result page.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        adConnectorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ADConnector'
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    ADConnector:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the AD/LDAP Connector in Druva Cloud.
+          example: '1'
+        name:
+          type: string
+          description: The name of the AD/LDAP Connector configured in the Druva Console.
+          example: AD_Conn_1
+        lastConnectedTime:
+          type: integer
+          description: "The date and time when the AD/LDAP Connector to Druva Cloud. \n:fa-info-circle: The date and time is displayed in Unix epoch time. Kindly convert as appropriate for further consumption."
+          example: '1665038000'
+        lastStatusChange:
+          type: integer
+          description: "The date and time when the AD/LDAP Connector status changed from 'Connected' to 'Not Connected' or vice versa. \n:fa-info-circle: The date and time is displayed in Unix epoch time. Kindly convert as appropriate for further consumption."
+          example: '1665038043'
+        status:
+          type: string
+          description: The current status of the AD/LDAP Connector
+          example: Connected
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

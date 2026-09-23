@@ -1,0 +1,1221 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to get information of and manage the Curated Snapshots for the resources managed in Druva Cloud.
+  version: 3.0.0
+  title: Cyber Resilience Curated Snapshots API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Curated Snapshots
+  description: List of APIs to get information of and manage the Curated Snapshots for the resources managed in Druva Cloud.
+paths:
+  /curatedsnapshot/v1/jobs:
+    post:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CSJobCreationParams'
+      summary: Create a new Curated Snapshot
+      description: Creates a new Curated Snapshot for the specified resource, which could be Endpoint devices, OneDrive, SharePoint sites, File Server, or NAS.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSJobCreationResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: postCuratedsnapshotV1Jobs
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortOrder
+        in: query
+        description: Specify the order by which you intend to sort and list the results. Sorting can be done in ascending or descending order.
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: sortBy
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done on basis of 'jobID', 'status' parameters.
+        required: false
+        schema:
+          type: string
+          enum:
+          - jobID
+          - status
+          - resourceName
+      - name: resourceType[]
+        in: query
+        required: false
+        description: Specify the resource type to filter and list the data for the resource types. The resource type can be 'File Server', 'Endpoints', 'NAS', 'OneDrive' or 'SharePoint'
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - File Server
+          - Endpoints
+          - NAS
+          - OneDrive
+          - SharePoint
+      - name: status[]
+        in: query
+        description: Specify the current status of the scan job to filter and list the jobs. The status can be 'Running', 'Queued', 'Successful', 'Cancelled', and 'Failed'.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - Running
+          - Queued
+          - Successful
+          - Cancelled
+          - Failed
+      - name: startedIn
+        in: query
+        required: false
+        description: Specify the time when the job was started.
+        schema:
+          type: string
+          enum:
+          - Last 24 Hours
+          - Last 7 Days
+          - Last 1 Month
+      - name: resourceName
+        in: query
+        required: false
+        description: Specify the resource name to filter and list the data for that specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      summary: List all the Curated Snapshot Jobs
+      description: Lists the Curated Snapshot Jobs.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSListJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: getCuratedsnapshotV1Jobs
+      x-operation-id-source: derived
+  /curatedsnapshot/v1/jobs/{jobID}:
+    get:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      parameters:
+      - name: jobID
+        in: path
+        required: true
+        description: "Specify the job ID of the Curated Snapshot to view its details. \nGet the Job ID using the 'List all the Curated Snapshots.' API."
+        schema:
+          type: string
+      summary: List the details of the Curated Snapshot job
+      description: Lists the details of Curated Snapshot job specified according to jobID.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSGetJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: getCuratedsnapshotV1JobsByJobID
+      x-operation-id-source: derived
+  /curatedsnapshot/v1/jobs/cancel:
+    put:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CSJobCancelParams'
+        description: List of the ongoing jobs you intend to cancel.
+      summary: Cancel the ongoing Curated Snapshot job
+      description: Cancels the ongoing Curated Snapshot job.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSJobCancelResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: putCuratedsnapshotV1JobsCancel
+      x-operation-id-source: derived
+  /curatedsnapshot/v1/jobs/{JobID}/report:
+    get:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      parameters:
+      - name: JobID
+        in: path
+        required: true
+        description: "Specify the job ID of the Curated Snapshot to view its report. \nGet the Job ID using the 'List all the Curated Snapshots.' API."
+        schema:
+          type: integer
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'pageToken'.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        required: false
+        description: 'Specify the content types, expressed as MIME types. The valid values can be: ''aplication/json'', ''text/csv'''
+        schema:
+          type: string
+          enum:
+          - aplication/json
+          - text/csv
+      summary: Download Report of Curated Snapshot job
+      description: Lists all the files and folders scanned while creating the Curated Snapshot.
+      responses:
+        '200':
+          description: Files and folders scanned for creating the Curated Snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CSReportResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: getCuratedsnapshotV1JobsByJobIDReport
+      x-operation-id-source: derived
+  /curatedsnapshot/v1/snapshots:
+    get:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortOrder
+        in: query
+        description: Specify the order by which you intend to sort and list the results. Sorting can be done in ascending or descending order.
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: sortBy
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done on basis of 'jobID', 'status' parameters.
+        required: false
+        schema:
+          type: string
+          enum:
+          - jobID
+          - status
+          - resourceName
+      - name: resourceName
+        in: query
+        description: Specify the resource name to filter and list the data for that specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+        schema:
+          type: string
+      - name: status[]
+        in: query
+        description: Specify the current status of the Curated Snapshot to filter and list the snapshots. The status can be 'Active' and 'Deleted'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - Active
+          - Deleted
+      - name: resourceType[]
+        in: query
+        required: false
+        description: Specify the resource type to filter and list the data for the resource types. The resource type can be 'File Server', 'Endpoints' and 'NAS'
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - File Server
+          - Endpoints
+          - NAS
+      - name: retainedFor
+        in: query
+        description: Specify the time until which the Curated Snapshot will be active.
+        required: false
+        schema:
+          type: string
+          format: date
+          enum:
+          - Next 24 Hours
+          - Next 7 Days
+          - Next 1 Month
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      summary: List all the Curated Snapshots
+      description: Lists all the Curated Snapshots.
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSListSnapshotsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: getCuratedsnapshotV1Snapshots
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Curated Snapshots
+      security:
+      - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CSDeleteParams'
+        description: List of the Curated Snapshots you intend to delete.
+      summary: Delete the Curated Snapshot
+      description: Deletes the Curated Snapshot(s).
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CSExpireSnapshotsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CS_HTTP_500'
+      operationId: deleteCuratedsnapshotV1Snapshots
+      x-operation-id-source: derived
+components:
+  schemas:
+    JobModelError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: Error code seen when Curated Snapshot job could not be created.
+        errorMessage:
+          type: string
+          description: Error message seen when Curated Snapshot job could not be created.
+        errorDescription:
+          type: string
+          description: Detailed error description explaining the error when Curated Snapshot job could not be created.
+    CSListSnapshotsResponse:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              jobID:
+                type: integer
+                example: 1
+                description: ID of Curated Snapshot Job.
+              resourceID:
+                type: integer
+                description: ID of resource for which restore job is created in inSync or Phoenix.
+                example: 1234
+              resourceName:
+                type: string
+                description: Name of resource for which restore job is created in inSync or Phoenix.
+                example: Ernie Carter's Macbook
+              resourceType:
+                type: string
+                description: Type of resource for which restore job is created in inSync or Phoenix.
+                example: Endpoint
+              resourceURL:
+                type: string
+                description: Link to resource for which Curated Snapshot job is executed.
+                example: ''
+              restoreURL:
+                type: string
+                description: Link to resource for which Curated Snapshot job is executed.
+                example: ''
+              platformType:
+                type: string
+                description: ''
+                example: ''
+              ssRangeStartDate:
+                type: string
+                format: date
+                description: Start date from which snapshots are considered for creation of Curated Snapshot
+                example: '2020-10-25T00:00:00Z'
+              ssRangeEndDate:
+                type: string
+                format: date
+                description: End date till when snapshots are considered for creation of Curated Snapshot
+                example: 2020-10-29T:23:59:59Z
+              expiry:
+                type: string
+                format: date
+                description: Date till when Curated Snapshot is retained.
+                example: 2020-11-28T:23:59:59Z
+              enableAVScan:
+                type: boolean
+                example: true
+                description: Flag stating if AV Scan is enabled while creating Curated Snapshot. This is always True
+              excludeFileHashes:
+                type: boolean
+                example: true
+                description: Flag stating if File Hash Scan is enabled while creating Curated Snapshot. This is always True
+              excludeFileExtentions:
+                type: boolean
+                example: false
+                description: Boolean flag to include files extensions for exclusion based on the added extensions.
+              fileExtentions:
+                type: array
+                items:
+                  type: string
+                  example: .txt
+              replaceExistingSnapshot:
+                type: boolean
+                example: true
+                description: Flag to decide if existing Curated Snapshot should be replaced by a newer one.
+              virtualSnapshotID:
+                type: string
+                description: Base-64 encoded name of Curated Snapshot created by the job.
+                example: dmlydHVhbF9Nb24gQXVnIDMwIDA2OjQxOjE3IDIwMjE=
+              virtualSnapshotEpoch:
+                type: integer
+                description: Epoch timestamp of Curated Snapshot created by the job.
+                example: 129080982
+              virtualSnapshotName:
+                type: string
+                description: Storage name of Curated Snapshot created by the job.
+                example: virtual_Mon Aug 30 06:41:17 2021
+              displaySnapshotName:
+                type: string
+                description: Display name of Curated Snapshot created by the job.
+                example: Aug 30, 2021 06:41
+              size:
+                type: integer
+                description: Size of Curated Snapshot created in bytes.
+                example: 10240
+              statusCode:
+                type: integer
+                example: 1
+                description: Current status code of Curated Snapshot.
+              status:
+                type: string
+                example: Active
+                description: Current status of Curated Snapshot.
+              filesIncluded:
+                type: integer
+                description: Files included in Curated Snapshot.
+                example: 100
+              filesScanedSkipped:
+                type: integer
+                description: Files skipped from scan by Scan Engine
+                example: 1
+              filesExcluded:
+                type: integer
+                description: Files excluded with extension exclusion from Curated Snapshot by Scan Engine.
+                example: 5
+              filesBlocked:
+                type: integer
+                description: Files blocked be Scan service while creating Curated Snapshot.
+                example: 5
+              filesEncrypted:
+                type: integer
+                description: Files excluded from Curated Snapshot as they were found to be encrypted
+                example: 5
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalItems:
+          type: integer
+          description: Total snapshots present in the response.
+          example: 87
+    CSListJobResponse:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              jobID:
+                type: integer
+                description: ID of Curated Snapshot Job.
+                example: 1
+              globalCustomerID:
+                type: string
+                description: Global Customer ID.
+                example: '10293'
+              productID:
+                type: integer
+                description: inSync or Phoenix Product ID.
+                example: 12289
+              createdByName:
+                type: string
+                description: Full name of Administrator.
+                example: Cloud Admin
+              orgID:
+                type: integer
+                description: Phoenix Organization ID in case of Phoenix Servers.
+                example: -1
+              orgName:
+                type: string
+                description: Phoenix Organization ID in case of Phoenix Servers.
+                example: Default Organization
+              workload:
+                type: string
+                description: Specify the workload for which you want to create the Curated Snapshot
+                example: endpoints
+              resourceID:
+                type: integer
+                description: ID of resource for which restore job is created in inSync or Phoenix.
+                example: 1234
+              resourceName:
+                type: string
+                description: Name of resource for which restore job is created in inSync or Phoenix.
+                example: Ernie Carter's Macbook
+              resourceType:
+                type: string
+                description: Type of resource for which restore job is created in inSync or Phoenix.
+                example: Endpoint
+              resourceParentName:
+                type: string
+                description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+                example: Ernie Carter
+              platformType:
+                type: string
+                description: ''
+                example: ''
+              addTime:
+                type: string
+                description: Creation time of Curated Snapdhot job.
+                example: '2021-04-12T09:33:55Z'
+              endTime:
+                type: string
+                description: Completion time of Curated Snapdhot job.
+                example: '2021-04-12T10:33:55Z'
+              jobType:
+                type: string
+                example: Synthetic Snapshot
+                description: Type of job.
+              statusCode:
+                type: integer
+                description: Status code for Curated Snapshot job.
+                example: 2
+              status:
+                type: string
+                description: Status for Curated Snapshot job.
+                example: Running
+              resourceURL:
+                type: string
+                description: Link to resource for which Curated Snapshot job is executed.
+                example: ''
+              restoreURL:
+                type: string
+                description: Link to resource for which Curated Snapshot job is executed.
+                example: ''
+              error:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: ''
+                    description: Code of the error seen while Curated Snapshot job is in progress.
+                  errorMessage:
+                    type: string
+                    example: ''
+                    description: Message of the error seen while Curated Snapshot job is in progress.
+                  errorDescription:
+                    type: string
+                    example: ''
+                    description: Description of the error seen while Curated Snapshot job is in progress.
+              useLightScan:
+                type: boolean
+                example: true
+                description: Boolean flag to denote if Quick Scan was enabled for Curated Snapshot.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalItems:
+          type: integer
+          description: Total jobs present in the response.
+          example: 38
+    CSJobCreationParams:
+      type: object
+      required:
+      - ssRangestartDate
+      - ssRangeEndDate
+      - retentionPeriod
+      properties:
+        ssRangestartDate:
+          type: string
+          format: date
+          description: Start date from which snapshots are considered for creation of Curated Snapshot
+          example: '2020-10-25T00:00:00Z'
+        ssRangeEndDate:
+          type: string
+          format: date
+          description: End date till when snapshots are considered for creation of Curated Snapshot
+          example: '2020-10-29T23:59:59Z'
+        retentionPeriod:
+          type: integer
+          description: Number of days for which Curated Snapshot is to be retained for.
+          example: 1
+        excludeFileExtentions:
+          type: boolean
+          example: true
+          default: false
+          description: Boolean flag to include files extensions for exclusion based on the added extensions.
+        fileExtentions:
+          type: array
+          description: File extensions which are to be excluded from Curated Snapshot.
+          items:
+            type: string
+            example: .txt
+        matchCaseSensitiveExtensions:
+          type: boolean
+          example: false
+          description: If set to true, it performs a case-sensitive comparison of excluded extensions. By default, it uses case-insensitive comparison.
+        replaceExistingSnapshot:
+          type: boolean
+          example: false
+          default: false
+          description: Flag to decide if existing Curated Snapshot should be replaced by a newer one.
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        useLightScan:
+          type: boolean
+          example: true
+          description: Boolean flag to enable Quick Scan for Curated Snapshot creation.
+        maxScanFileSizeLimitInMB:
+          type: integer
+          example: 100
+          description: Maximum file size limit in MB (between 100 to 1024) for Curated Snapshot creation.
+    CSJobCancelParams:
+      type: object
+      properties:
+        jobIDs:
+          type: array
+          items:
+            type: integer
+          example:
+          - 1
+    JobCreationError:
+      type: object
+      properties:
+        resource:
+          $ref: '#/components/schemas/Resource'
+        error:
+          $ref: '#/components/schemas/JobModelError'
+    CSExpireSnapshotsResponse:
+      type: object
+      properties:
+        expiredSnapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              virtualSnapshotID:
+                type: string
+                description: Base-64 encoded name of Curated Snapshot created by the job.
+                example: dmlydHVhbF9Nb24gQXVnIDMwIDA2OjQxOjE3IDIwMjE=
+              isSucessful:
+                type: boolean
+                example: true
+                description: Curated Snapshot deletion is successful.
+              reason:
+                type: string
+                description: Reason for failure in Curated Snapshot deletion.
+                example: Internal Error
+    CS_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    CSJobCreationResponse:
+      type: object
+      properties:
+        jobIDs:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: The jobs started for Curated Snapshot creation.
+          example:
+          - 1
+          - 2
+        errorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobCreationError'
+          description: List of resources for which an error was encountered during job creation.
+    CSDeleteParams:
+      type: object
+      required:
+      - virtualSnapshotIDs
+      properties:
+        virtualSnapshotIDs:
+          type: string
+          description: "Specify the virtualSnapshotID of Curated Snapshot that you want to delete. \nGet the virtualSnapshotID using the 'List all the Curated Snapshots.' API."
+          example:
+          - dmlydHVhbF9UaHUgSnVsIDIyIDA4OjQxOjMzIDIwMjE=
+        deleteReason:
+          type: string
+          description: The reason for deletion.
+          example: Restored Data from Curated Snapshot
+          minLength: 10
+          maxLength: 150
+    CSGetJobResponse:
+      type: object
+      properties:
+        job:
+          type: object
+          properties:
+            jobID:
+              type: integer
+              description: ID of Curated Snapshot Job.
+              example: 1
+            globalCustomerID:
+              type: string
+              description: Global Customer ID.
+              example: '10293'
+            productID:
+              type: integer
+              description: inSync or Phoenix Product ID.
+              example: 12289
+            createdByName:
+              type: string
+              description: Full name of Administrator.
+              example: Cloud Admin
+            orgID:
+              type: integer
+              description: Phoenix Organization ID in case of Phoenix Servers.
+              example: -1
+            orgName:
+              type: string
+              description: Phoenix Organization ID in case of Phoenix Servers.
+              example: Default Organization
+            workload:
+              type: string
+              description: Specify the workload for which you want to create the Curated Snapshot
+              example: endpoints
+            resourceID:
+              type: integer
+              description: ID of resource for which restore job is created in inSync or Phoenix.
+              example: 1234
+            resourceName:
+              type: string
+              description: Name of resource for which restore job is created in inSync or Phoenix.
+              example: Ernie Carter's Macbook
+            resourceType:
+              type: string
+              description: Type of resource for which restore job is created in inSync or Phoenix.
+              example: Endpoint
+            resourceParentName:
+              type: string
+              description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+              example: Ernie Carter
+            platformType:
+              type: string
+              description: ''
+              example: ''
+            addTime:
+              type: string
+              description: Creation time of Curated Snapdhot job.
+              example: '2021-04-12T09:33:55Z'
+            endTime:
+              type: string
+              description: Completion time of Curated Snapdhot job.
+              example: '2021-04-12T09:35:15Z'
+            jobType:
+              type: string
+              example: Synthetic Snapshot
+              description: Type of job.
+            statusCode:
+              type: integer
+              description: Status code for Curated Snapshot job.
+              example: 3
+            status:
+              type: string
+              description: Status for Curated Snapshot job.
+              example: Failed
+            resourceURL:
+              type: string
+              description: Link to resource for which Curated Snapshot job is executed.
+              example: ''
+            restoreURL:
+              type: string
+              description: Link to resource for which Curated Snapshot job is executed.
+              example: ''
+            error:
+              type: object
+              properties:
+                errorCode:
+                  type: string
+                  example: ''
+                  description: Code of the error seen while Curated Snapshot job is in progress.
+                errorMessage:
+                  type: string
+                  example: ''
+                  description: Message of the error seen while Curated Snapshot job is in progress.
+                errorDescription:
+                  type: string
+                  example: ''
+                  description: Provides details of the error encountered when the Curated Snapshot job is in progress.
+            useLightScan:
+              type: boolean
+              description: Boolean flag to denote if Quick Scan was enabled for Curated Snapshot.
+              example: true
+        snapshot:
+          type: object
+          properties:
+            jobID:
+              type: string
+              description: ID of Curated Snapshot Job.
+              example: 1
+            ssRangeStartDate:
+              type: string
+              format: date
+              description: Start date from which snapshots are considered for creation of Curated Snapshot
+              example: '2020-10-25T00:00:00Z'
+            ssRangeEndDate:
+              type: string
+              format: date
+              description: End date till when snapshots are considered for creation of Curated Snapshot
+              example: 2020-10-29T:23:59:59Z
+            expiry:
+              type: string
+              format: date
+              description: Date till when Curated Snapshot is retained.
+              example: 2020-11-28T:23:59:59Z
+            enableAVScan:
+              type: boolean
+              example: true
+              description: Flag stating if AV Scan is enabled while creating Curated Snapshot. This is always True
+            excludeFileHashes:
+              type: boolean
+              example: true
+              description: Flag stating if File Hash Scan is enabled while creating Curated Snapshot. This is always True
+            excludeFileExtentions:
+              type: boolean
+              example: true
+              description: Boolean flag to include files extensions for exclusion based on the added extensions.
+            fileExtentions:
+              type: array
+              items:
+                type: string
+                example: .txt
+            replaceExistingSnapshot:
+              type: boolean
+              example: true
+              description: Flag to decide if existing Curated Snapshot should be replaced by a newer one.
+            virtualSnapshotID:
+              type: string
+              description: Base-64 encoded name of Curated Snapshot created by the job.
+              example: dmlydHVhbF9Nb24gQXVnIDMwIDA2OjQxOjE3IDIwMjE=
+            virtualSnapshotIDEpoch:
+              type: integer
+              description: Epoch timestamp of Curated Snapshot created by the job.
+              example: 129080982
+            virtualSnapshotName:
+              type: string
+              description: Storage name of Curated Snapshot created by the job.
+              example: virtual_Mon Aug 30 06:41:17 2021
+            displaySnapshotName:
+              type: string
+              description: Display name of Curated Snapshot created by the job.
+              example: Aug 30, 2021 06:41
+            size:
+              type: integer
+              description: Size of Curated Snapshot created in bytes.
+              example: 10240
+            statusCode:
+              type: integer
+              description: Status code for Curated Snapshot job.
+              example: 1
+            status:
+              type: string
+              description: Status for Curated Snapshot job.
+              example: Failed
+            filesIncluded:
+              type: integer
+              description: Files included in Curated Snapshot.
+              example: 100
+            filesScanSkipped:
+              type: integer
+              description: Files skipped from scan by Scan Engine
+              example: 1
+            filesExcluded:
+              type: integer
+              description: Files excluded with extension exclusion from Curated Snapshot by Scan Engine.
+              example: 5
+            filesBlocked:
+              type: integer
+              description: Files blocked be Scan service while creating Curated Snapshot.
+              example: 5
+            filesEncrypted:
+              type: integer
+              description: Files excluded from Curated Snapshot as they were found to be encrypted.
+              example: 5
+            scanSkipBeyondStartDate:
+              type: boolean
+              description: Boolean flag used to denote if the scan is skipped for files modified before the start date of the snapshot range.
+              example: true
+            maxScanFileSizeLimitInMB:
+              type: integer
+              description: Integer value used to denote the maximum file size limit in MB (between 100 to 1024) for Curated Snapshot creation.
+              example: 100
+    Resource:
+      type: object
+      properties:
+        orgID:
+          type: integer
+          description: Phoenix Organization ID in case of Phoenix Servers.
+          example: -1
+        workload:
+          type: string
+          enum:
+          - fileserver
+          - nas
+          - endpoints
+          - onedrive
+          - sharepoint
+          description: Specify the workload for which you want to create the Curated Snapshot
+          example: endpoints
+        resourceType:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - OneDrive
+          - SharePoint
+          description: Specify the resource type for which you want to create the Curated Snapshot
+          example: endpoints
+        resourceID:
+          type: integer
+          description: ID of resource for which restore job is created in inSync or Phoenix.
+          example: 1234
+        resourceName:
+          type: string
+          description: Name of the resource for which the restore job is created in inSync or Phoenix. Ensure that you have entered the correct resource name associated with the resource ID mentioned in the above parameter. For example, enter Ernie Carter's MacBook if the resource ID 1234 is associated with Ernie Carter's MacBook.
+          example: Ernie Carter's Macbook
+        resourceParentName:
+          type: string
+          description: Name of the user's device, in case of a device, or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+          example: Ernie Carter
+    CS_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1006
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    CSReportResponse:
+      type: object
+      properties:
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              fileName:
+                type: string
+                description: Name of the file scanned.
+                example: file1.csv
+              fileType:
+                type: string
+                example: File
+                description: Type of file or folder scanned.
+                enum:
+                - File
+                - Folder
+              mTime:
+                type: string
+                format: date-time
+                description: File Modified Time.
+                example: ''
+              fileCver:
+                type: integer
+                format: int32
+                description: Version of file scanned.
+                example: 17
+              path:
+                type: string
+                example: D:/a/b/a.txt
+                description: The path of the scanned file.
+              ssName:
+                type: string
+                description: Name of Curated Snapshot for which files were scanned.
+                example: Fri Sep  3 17:42:47 2021
+              isSkipped:
+                type: boolean
+                example: true
+                description: Boolean depicting if version of the file scanned is skipped.
+              reasonToSkip:
+                type: string
+                description: Reason with which the file version scanned is skipped.
+                example: Encrypted file found
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+        ContentType:
+          type: string
+          example: '*/*'
+    CS_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    CSJobCancelResponse:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              jobID:
+                type: integer
+                example: 1
+                description: Curated Snapshot job ID.
+              isSucessful:
+                type: boolean
+                example: true
+                description: Success status of cancelling running Curated Snapshot job.
+              reason:
+                type: string
+                example: Internal Error
+                description: Failure reason to cancel the running Curated Snapshot job.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

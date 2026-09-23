@@ -1,0 +1,1734 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Disaster Recovery Plans API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Disaster Recovery Plan specific API functions
+  name: DisasterRecoveryPlans
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans:
+    get:
+      description: Return Disater Recovery Plans
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Disaster Recovery Plans
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplans
+      x-operation-id-source: derived
+    post:
+      description: Create a new Disaster Recovery Plan
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansRequest'
+        description: DR Plan Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create DR Plan
+      tags:
+      - DisasterRecoveryPlans
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplans
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}:
+    delete:
+      description: Delete DR plan by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsAccountsDisasterrecoveryplansByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete DR plan
+      tags:
+      - DisasterRecoveryPlans
+      operationId: deleteOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanId
+      x-operation-id-source: derived
+    get:
+      description: Return Disater Recovery Plans by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return DR Plans
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanId
+      x-operation-id-source: derived
+    put:
+      description: Update DR Plan by ud
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsDisasterrecoveryplansByIdRequest'
+        description: DR Plans Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsDisasterrecoveryplansByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Disaster Recovery Plan
+      tags:
+      - DisasterRecoveryPlans
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/executions:
+    get:
+      description: Return executions for a given DR plan
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansExecutionsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get DR Executions
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdExecutions
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/executions/{execution_id}:
+    get:
+      description: Return executions for a given DR plan by ID
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the disaster recovery execution record. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans/:dr_plan_id/executions which returns all executions
+        in: path
+        name: execution_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansExecutionsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get a DR Execution
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdExecutionsByExecutionId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/failback:
+    post:
+      description: Execute failback for plan, currently under beta
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansFailbackRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansFailbackResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Execute Failback
+      tags:
+      - DisasterRecoveryPlans
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdFailback
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/logs:
+    get:
+      description: Return the logs for a given DR plan
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansLogsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get DR Plan Jobs
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdLogs
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/schedule:
+    post:
+      description: Create new schedule by DR plan id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansScheduleRequest'
+        description: Schedule Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansScheduleResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update DR Test Schedule
+      tags:
+      - DisasterRecoveryPlans
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdSchedule
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/servers/{resource_id}/backups:
+    get:
+      description: Return backups for a given DR plan
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the normalized resource object.
+        in: path
+        name: resource_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansServersBackupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Backups for DR
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdServersByResourceIdBackups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/{dr_plan_id}/servers/verify:
+    post:
+      description: Verify the total number of servers in a DR plan
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the disaster recovery plan that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/disasterrecoveryplans which returns all plans
+        in: path
+        name: dr_plan_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansServersVerifyRequest'
+        description: DR Plan Server Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsDisasterrecoveryplansServersVerifyResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Verify DR Plan Servers
+      tags:
+      - DisasterRecoveryPlans
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansByDrPlanIdServersVerify
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/count:
+    get:
+      description: Return count of Disaster Recovery Plans
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Count DR Plans
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/disasterrecoveryplans/environment/{environment_id}:
+    get:
+      description: Return Disaster Recovery environments by environment
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the environment that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/environments which returns all envionments inside an account '
+        in: path
+        name: environment_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsDisasterrecoveryplansEnvironmentByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get DR Plans
+      tags:
+      - DisasterRecoveryPlans
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdDisasterrecoveryplansEnvironmentByEnvironmentId
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyResponse:
+      properties:
+        verifiedResources:
+          items:
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansByIdResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        failover_shutdown_setting:
+          type: boolean
+        id:
+          type: integer
+        instance_not_available_setting:
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        mappings:
+          items:
+            properties:
+              disaster_recovery_plan_id:
+                type: integer
+              disasterRecoveryPlanId:
+                type: integer
+              id:
+                type: integer
+              mapping:
+                type: string
+              target_account_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        organizationId:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                    ruleId:
+                      type: integer
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              match:
+                type: integer
+              matches:
+                type: object
+              protectedStatus:
+                type: string
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        source_environment:
+          properties:
+            account_id:
+              type: string
+            accountId:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            organizationId:
+              type: string
+            region:
+              type: string
+            status:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        source_environment_id:
+          type: integer
+        summary:
+          type: string
+        target_account_id:
+          type: string
+        target_environment:
+          properties:
+            account_id:
+              type: string
+            accountId:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            organizationId:
+              type: string
+            region:
+              type: string
+            status:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          type: string
+        test_retention_amount:
+          type: integer
+        test_retention_unit:
+          type: string
+        test_schedule_cron:
+          type: string
+        test_schedule_enabled:
+          type: boolean
+        test_schedule_timezone:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansServersBackupsResponse:
+      properties:
+        backups:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansExecutionsByIdResponse:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        disaster_recovery_plan:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            failover_shutdown_setting:
+              type: boolean
+            id:
+              type: integer
+            instance_not_available_setting:
+              type: string
+            is_cross_account:
+              type: boolean
+            is_valid:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+            recovery_time_objective:
+              type: integer
+            recovery_time_unit:
+              type: string
+            source_environment_id:
+              type: integer
+            summary:
+              type: string
+            target_account_id:
+              type: string
+            target_environment_id:
+              type: integer
+            test_plan_ec2_instance_type:
+              type: string
+            test_plan_rds_instance_type:
+              type: string
+            test_retention_amount:
+              type: integer
+            test_retention_unit:
+              type: string
+            test_schedule_cron:
+              type: string
+            test_schedule_enabled:
+              type: boolean
+            test_schedule_timezone:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        disaster_recovery_plan_id:
+          type: integer
+        end_time:
+          type: string
+        execution_resources:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        is_latest:
+          type: boolean
+        start_time:
+          format: date-time
+          type: string
+        status:
+          type: string
+        test_retention_amount:
+          type: integer
+        test_retention_unit:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansScheduleRequest:
+      properties:
+        cron_string:
+          type: string
+        never_delete:
+          type: boolean
+        retention_amount:
+          type: integer
+        retention_unit:
+          type: string
+        test_restart_setting:
+          type: boolean
+        test_schedule_enabled:
+          type: boolean
+        test_shutdown_setting:
+          type: boolean
+        timezone_location:
+          type: string
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansLogsResponse:
+      properties:
+        jobs:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    PutOrganizationsAccountsDisasterrecoveryplansByIdResponse:
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansFailbackResponse:
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansEnvironmentByIdResponse:
+      properties:
+        drplans:
+          items:
+            properties:
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              deleted_at:
+                type: string
+              description:
+                type: string
+              failover_shutdown_setting:
+                type: boolean
+              id:
+                type: integer
+              instance_not_available_setting:
+                type: string
+              is_cross_account:
+                type: boolean
+              is_valid:
+                type: boolean
+              match_all_tags_flag:
+                type: boolean
+              name:
+                type: string
+              organization_id:
+                type: string
+              recovery_point_objective:
+                type: integer
+              recovery_point_unit:
+                type: string
+              recovery_time_objective:
+                type: integer
+              recovery_time_unit:
+                type: string
+              source_environment_id:
+                type: integer
+              summary:
+                type: string
+              target_account_id:
+                type: string
+              target_environment_id:
+                type: integer
+              test_plan_ec2_instance_type:
+                type: string
+              test_plan_rds_instance_type:
+                type: string
+              test_retention_amount:
+                type: string
+              test_retention_unit:
+                type: string
+              test_schedule_cron:
+                type: string
+              test_schedule_enabled:
+                type: boolean
+              test_schedule_timezone:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansExecutionsResponse:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        disaster_recovery_plan:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            failover_shutdown_setting:
+              type: boolean
+            id:
+              type: integer
+            instance_not_available_setting:
+              type: string
+            is_cross_account:
+              type: boolean
+            is_valid:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+            recovery_time_objective:
+              type: integer
+            recovery_time_unit:
+              type: string
+            source_environment_id:
+              type: integer
+            summary:
+              type: string
+            target_account_id:
+              type: string
+            target_environment_id:
+              type: integer
+            test_plan_ec2_instance_type:
+              type: string
+            test_plan_rds_instance_type:
+              type: string
+            test_retention_amount:
+              type: integer
+            test_retention_unit:
+              type: string
+            test_schedule_cron:
+              type: string
+            test_schedule_enabled:
+              type: boolean
+            test_schedule_timezone:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        disaster_recovery_plan_id:
+          type: integer
+        end_time:
+          type: string
+        execution_resources:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        is_latest:
+          type: boolean
+        start_time:
+          format: date-time
+          type: string
+        status:
+          type: string
+        test_retention_amount:
+          type: integer
+        test_retention_unit:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansResponse:
+      properties:
+        total:
+          type: integer
+      type: object
+    DeleteOrganizationsAccountsDisasterrecoveryplansByIdResponse:
+      type: object
+    PutOrganizationsAccountsDisasterrecoveryplansByIdRequest:
+      properties:
+        account_id:
+          type: string
+        description:
+          type: string
+        failover_shutdown_setting:
+          type: boolean
+        instance_not_available_setting:
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        mappings:
+          items:
+            type: object
+          type: array
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        resources:
+          items:
+            type: string
+          type: array
+        rules:
+          items:
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          type: string
+        test_plan_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansScheduleResponse:
+      type: integer
+    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyRequest:
+      properties:
+        resources:
+          items:
+            type: string
+          type: array
+        source_region:
+          type: string
+        target_account_id:
+          type: string
+        target_region:
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansFailbackRequest:
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        failover_shutdown_setting:
+          type: boolean
+        id:
+          type: integer
+        instance_not_available_setting:
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        mappings:
+          items:
+            properties:
+              disaster_recovery_plan_id:
+                type: integer
+              disasterRecoveryPlanId:
+                type: integer
+              id:
+                type: integer
+              mapping:
+                type: string
+              target_account_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        organizationId:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                    ruleId:
+                      type: integer
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              matches:
+                type: object
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          type: string
+        test_schedule_enabled:
+          type: boolean
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansRequest:
+      properties:
+        account_id:
+          type: string
+        description:
+          type: string
+        instance_not_available_setting:
+          enum:
+          - up
+          - down
+          - fail
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        resources:
+          items:
+            type: string
+          type: array
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              matches:
+                properties:
+                  tags:
+                    items:
+                      properties:
+                        Key:
+                          type: string
+                        Value:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    region:
+                      type: string
+                    resource_id:
+                      type: string
+                    resource_name:
+                      type: string
+                    rule_id:
+                      type: integer
+                    type:
+                      type: string
+                  type: object
+                type: array
+              rule_type:
+                type: string
+              updated_at:
+                type: string
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          default: source
+          type: string
+        test_plan_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          default: source
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

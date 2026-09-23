@@ -1,0 +1,199 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads D Raa S API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: DRaaS
+paths:
+  /draasconfig/v2/orgs/{OrgID}/drplans:
+    get:
+      description: Lists the DR Plan details for all DR Plans in the organization.
+      tags:
+      - DRaaS
+      summary: List all DR Plans
+      operationId: ListRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: SiteID
+        description: The organization ID of your organization. Set it to a value greater than "0" to select your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ListResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /draasconfig/v2/orgs/{OrgID}/jobs/failover:
+    post:
+      description: Executes the Test or Production DR failover jobs for all virtual machines in the selected DR Plan.
+      tags:
+      - DRaaS
+      summary: Execute DR Failover jobs
+      operationId: FailoverRequest
+      security:
+      - Bearer: []
+      parameters:
+      - description: The organization ID of your organization. Set it to a value greater than "0" to select your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FailoverRequestParams'
+        description: All the parameters required for the DR failover job.
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/FailoverJobResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+components:
+  schemas:
+    DRPlan:
+      type: object
+      title: DRPlan ...
+      properties:
+        awsAccountID:
+          description: The AWS account ID of the DR Plan
+          type: string
+          x-go-name: AWSAccountID
+        drPlanID:
+          description: The ID of the DR Plan
+          type: integer
+          format: int32
+          x-go-name: ID
+        healthStatus:
+          $ref: '#/components/schemas/HealthStatus'
+        name:
+          description: The name of the DR Plan
+          type: string
+          x-go-name: DRPlanName
+        region:
+          description: The region of the DR Plan
+          type: string
+          x-go-name: Region
+        vmCount:
+          description: The count of VMs associated with the DR Plan
+          type: integer
+          format: int32
+          x-go-name: VMCount
+      x-go-package: phoenix/draas/cloud/configserver/spec/drplan
+    FailoverRequestParams:
+      description: FailoverRequestParams are all the user inputs required for a failover job request
+      type: object
+      required:
+      - drPlanID
+      - failoverType
+      properties:
+        drPlanID:
+          description: The DR Plan ID for which a failover needs to be initiated. Get the ID of the DR Plan using the 'List all DR Plans' API.
+          type: integer
+          format: int32
+          x-go-name: DRPlanID
+        failoverType:
+          description: Set 'failoverType' to 1 to run a Test DR Failover job and 2 to run a Production DR failover job.
+          type: integer
+          format: int32
+          x-go-name: FailoverType
+      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
+    ListResponse:
+      description: ListResponse is the response schema for List DR Plans
+      type: object
+      properties:
+        drPlans:
+          description: List of DRPlans
+          type: array
+          items:
+            $ref: '#/components/schemas/DRPlan'
+          x-go-name: DRPlanList
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/draas/cloud/configserver/spec/drplan
+    HealthStatus:
+      type: object
+      title: HealthStatus ...
+      properties:
+        failoverCheckStatus:
+          description: 'The status representing the failover checks.
+
+            1: Success
+
+            2: In-progress
+
+            3: Failure
+
+            4: Warning
+
+            5: Not-initiated'
+          type: integer
+          format: int32
+          x-go-name: FailoverCheckStatus
+        latestValidationTimestamp:
+          description: The epoch timestamp of last successful failover check execution
+          type: integer
+          format: int32
+          x-go-name: LatestValidationTimestamp
+      x-go-package: phoenix/draas/cloud/configserver/spec/drplan
+    FailoverJobResponse:
+      description: FailoverJobResponse is response to failover request
+      type: object
+      properties:
+        jobID:
+          description: Job ID for successfully triggered failover job
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

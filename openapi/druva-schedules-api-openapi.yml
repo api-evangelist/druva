@@ -1,0 +1,1493 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Schedules API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Schedules in your CloudRanger Account
+  name: Schedules
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/schedules:
+    get:
+      description: Returns all schedules associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get All Schedule
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedules
+      x-operation-id-source: derived
+    post:
+      description: Creates the schedules associated to the specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesRequest'
+        description: Schedule Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create the schedules
+      tags:
+      - Schedules
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedules
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}:
+    put:
+      description: Updates the specific schedule associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsSchedulesByIdRequest'
+        description: Schedule Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsSchedulesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update A Schedule
+      tags:
+      - Schedules
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}/scale:
+    post:
+      description: Create a new up point in an ASG schedule
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesScaleRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesScaleResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create ASG Scale Event
+      tags:
+      - Schedules
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleIdScale
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}/servers:
+    get:
+      description: Fetch all severs that are managed by the schedule with the ID supplied in the URL param schedule_id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesServersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Schedule Servers
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleIdServers
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}/servers/{server_id}:
+    delete:
+      description: Delete a specific server from a schedule
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsAccountsSchedulesServersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete Server From Schedule
+      tags:
+      - Schedules
+      operationId: deleteOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleIdServersByServerId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}/start:
+    post:
+      description: Starts the specific schedule associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesStartRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesStartResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Emit Start Event
+      tags:
+      - Schedules
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleIdStart
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/{schedule_id}/stop:
+    post:
+      description: Stops the specific schedule associated to the account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the schedule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/schedules which returns all schedules inside an account '
+        in: path
+        name: schedule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesStopRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesStopResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Emit Stop Event
+      tags:
+      - Schedules
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedulesByScheduleIdStop
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/average:
+    get:
+      description: Returns the average of all the schedules associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesAverageResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Average Schedule Time
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesAverage
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/count:
+    get:
+      description: Returns the count of all the schedules associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Schedule Count
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/search:
+    post:
+      description: Search for schedules in an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesSearchRequest'
+        description: Search Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSchedulesSearchResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Search Schedules
+      tags:
+      - Schedules
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedulesSearch
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/tags/keys:
+    get:
+      description: Returns the keys of tags of the schedules associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesTagsKeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Schedule's Tag Keys
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/schedules/tags/keys/{key}/values:
+    get:
+      description: Return values by tag keys
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSchedulesTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Schedule's Tag Values
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesTagsKeysByKeyValues
+      x-operation-id-source: derived
+  /organizations/{organization_id}/tasks/schedules:
+    get:
+      description: Return task schedules by organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsTasksSchedulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Schedules From Tasks
+      tags:
+      - Schedules
+      operationId: getOrganizationsByOrganizationIdTasksSchedules
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsAccountsSchedulesStopRequest:
+      type: object
+    PostOrganizationsAccountsSchedulesStartRequest:
+      type: object
+    GetOrganizationsAccountsSchedulesTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PutOrganizationsAccountsSchedulesByIdResponse:
+      type: object
+    PostOrganizationsAccountsSchedulesStartResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsSchedulesCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    GetOrganizationsTasksSchedulesResponse:
+      properties:
+        account_id:
+          type: string
+        deleted_at:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsSchedulesResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            hours_on:
+              type: integer
+            id:
+              type: integer
+            is_active:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            percent_on:
+              type: integer
+            schedule_json:
+              type: string
+            schedule_times:
+              items:
+                type: object
+              type: array
+            servers:
+              items:
+                type: string
+              type: array
+            tags:
+              items:
+                type: string
+              type: array
+            timezone_location:
+              type: string
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsSchedulesStopResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesRequest:
+      properties:
+        account_id:
+          type: string
+        group_tags:
+          items:
+            type: string
+          type: array
+        groups:
+          items:
+            type: string
+          type: array
+        hours_on:
+          type: integer
+        is_active:
+          type: boolean
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        percent_on:
+          type: integer
+        retainObjects:
+          type: boolean
+        schedule_json:
+          properties:
+            Friday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Monday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Saturday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Sunday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Thursday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Tuesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Wednesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+          type: object
+        schedule_times:
+          items:
+            type: string
+          type: array
+        servers:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        type:
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        hours_on:
+          type: integer
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        percent_on:
+          type: integer
+        schedule_json:
+          type: string
+        schedule_times:
+          items:
+            type: string
+          type: array
+        servers:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesSearchResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            hours_on:
+              type: integer
+            id:
+              type: integer
+            is_active:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            percent_on:
+              type: integer
+            schedule_json:
+              type: string
+            servers:
+              items:
+                properties:
+                  server_id:
+                    type: string
+                type: object
+              type: array
+            tags:
+              items:
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+                type: object
+              type: array
+            timezone_location:
+              type: string
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsSchedulesAverageResponse:
+      properties:
+        Friday:
+          type: integer
+        Monday:
+          type: integer
+        Saturday:
+          type: integer
+        Sunday:
+          type: integer
+        Thursday:
+          type: integer
+        Tuesday:
+          type: integer
+        Wednesday:
+          type: integer
+      type: object
+    PostOrganizationsAccountsSchedulesScaleResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PutOrganizationsAccountsSchedulesByIdRequest:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        highest_scale:
+          type: integer
+        hours_on:
+          type: integer
+        id:
+          type: string
+        is_active:
+          type: boolean
+        lowest_scale:
+          type: integer
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        percent_on:
+          type: integer
+        retainObjects:
+          type: boolean
+        schedule_json:
+          properties:
+            Friday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Monday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Saturday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Sunday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Thursday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Tuesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Wednesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+          type: object
+        schedule_times:
+          items:
+            properties:
+              action_type:
+                type: string
+              day:
+                type: string
+              dayNumber:
+                type: integer
+              schedule_id:
+                type: string
+              start_cron:
+                type: string
+              start_hour:
+                type: integer
+              start_mins:
+                type: integer
+              stop_cron:
+                type: string
+              stop_hour:
+                type: integer
+              stop_mins:
+                type: integer
+            type: object
+          type: array
+        servers:
+          items:
+            properties:
+              region:
+                type: string
+              schedule_id:
+                type: string
+              server_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsSchedulesTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsSchedulesServersByIdResponse:
+      properties:
+        region:
+          type: string
+        server_id:
+          type: string
+        type:
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesScaleRequest:
+      type: object
+    PostOrganizationsAccountsSchedulesSearchRequest:
+      properties:
+        Keywords:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsSchedulesServersResponse:
+      properties:
+        region:
+          type: string
+        server_id:
+          type: string
+        type:
+          type: string
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

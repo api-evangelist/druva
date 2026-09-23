@@ -1,0 +1,954 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Microsoft 365 Restore OneDrive/Exchange Online data API
+  description: This document lists M365 APIs for data protection using Druva inSync.
+servers:
+- url: https://apis.druva.com
+tags:
+- name: Restore OneDrive/Exchange Online data
+paths:
+  /insync/usermanagement/v1/users:
+    get:
+      tags:
+      - Restore OneDrive/Exchange Online data
+      summary: List users based on query filters
+      description: Retrieve a filtered list of users based on query filters.
+      operationId: getUserList
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: profileID
+        schema:
+          type: integer
+        required: false
+        description: Specify the unique ID of a profile to retrieve the list of users associated with that profile. Obtain the profile ID using the `List all profiles` API.
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - preserved
+        required: false
+        description: "Specify the flag indicating the desired user account status to filter the list of users based on the current status of their accounts. \n Set it to `active` to list active users or `Preserved` to list the preserved users."
+      - in: query
+        name: storageID
+        schema:
+          type: integer
+          minimum: 1
+        required: false
+        description: "Specify the ID of the storage assigned to the site collection. Get the ID of storage using the `List all storages API`. This API returns the list of all storage that the customer is using. \n\nThe list will provide the ID - Storage name mapping for each region that the customer is using. To know a SharePoint site's storage name, customers can see a SharePoint site's summary"
+      - in: query
+        name: minAddedOn
+        schema:
+          type: string
+          pattern: ([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z
+        required: false
+        description: Specify the date/time to filter the list of users to include only those who were added to Druva inSync after the specified date and time. Provide the UTC date and time using the  `YYYY-MM-DDTHH:MM:SSZ` format.
+      - in: query
+        name: maxAddedOn
+        schema:
+          type: string
+          pattern: ([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z
+        required: false
+        description: Specify the date/time to filter the list of users to include only those who were added to Druva inSync before the specified date and time. Provide the UTC date and time using the `YYYY-MM-DDTHH:MM:SSZ` format.
+      - in: query
+        name: emailID
+        schema:
+          type: string
+          pattern: ^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
+        required: false
+        description: Specify the email address of a user to retrieve their details.
+      - in: query
+        name: cacheID
+        schema:
+          type: integer
+        required: false
+        description: "Specify the ID of a CloudCache Server to retrieve the list of users associated with that server. \n\nObtain theCloudCache Server ID using the  `List all CloudCache Servers` API."
+      - in: query
+        name: userIDs
+        schema:
+          type: array
+          items:
+            type: integer
+        required: false
+        description: Specify an array of unique user IDs to retrieve the details of specific users. Separate multiple user IDs with commas. /n/n -  When this parameter is provided, the API will return information for only the users whose IDs are included in the array. /n - If it is not provided, the API returns the details of all the users.
+      - in: query
+        name: searchPrefixUserName
+        schema:
+          type: string
+        required: false
+        description: "Specify a prefix string to search and list users whose usernames begin with that prefix. The search is case-insensitive. \n\nExample: To search for users with usernames that start with `Ern` (such as `Ernie` or `Ernest`), set `searchPrefixUserName=Ern`."
+      - in: query
+        name: searchPrefixEmailID
+        schema:
+          type: string
+        required: false
+        description: "Specify a prefix string to search and list users whose email addresses begin with that prefix. The search is case-insensitive. \n\n Example: To search for users with email addresses that start with `ernie.carter` (such as `ernie.carter@example.com`), set `searchPrefixEmailID=ernie.carter`."
+      - in: query
+        name: ldapGUID
+        schema:
+          type: string
+        required: false
+        description: "Specify the Active Directory (AD) or Lightweight Directory Access Protocol (LDAP) object globally unique identifier (GUID) to retrieve a list of users associated with it. \n\nPass the parameter value as a hexadecimal string. For example: 'B1C47201C67910458867BA19982E353E'."
+      - in: query
+        name: privacySettingsEnabled
+        schema:
+          type: boolean
+        required: false
+        description: "Specify the privacy flag to filter the list of users based on the status of their privacy settings. \n\n - Set it to true to list users who have their privacy settings enabled or \n\n - Set it to false to list users who have their privacy settings disabled."
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+          enum:
+          - userName
+          - emailID
+          - deviceCount
+          - customUniqueID
+          - totalDeviceUsage
+          - m365Usage
+          - googleUsage
+          - cloudappCount
+          - userID
+        required: false
+        description: "Specify the column name that Druva should use for sorting the data. Druva will sort the results using the data in the column and the sorting order that you specify in the next field. \n\nFor example, to sort the data using the `emailID` column, set `orderBy=emailID.`"
+      - in: query
+        name: order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        required: false
+        description: "Specify the sorting order for the data. \n\n - Set it to  asc to sort the data in ascending order or \n\n - Set it as desc to sort the data in descending order."
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_list_users'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+  /insync/cadevice/v1/devices:
+    get:
+      tags:
+      - Restore OneDrive/Exchange Online data
+      summary: List All Protected Cloud Apps
+      description: Retrieve the list of all protected SaaS apps.
+      operationId: getDeviceList
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: appName
+        in: query
+        description: "Specify the name of the application for which you want to retrieve a list of associated devices. \n\nExample: Exchange Online"
+        required: false
+        schema:
+          type: string
+      - name: sortByColumn
+        in: query
+        description: "Specify the column name to use for sorting the list of devices that the API returns. \n\nxample: To sort the device list by the application name, set `sortByColumn`=appName."
+        required: false
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: "Specify the order in which to sort the results based on the column specified in the `sortByColumn` parameter. \n\n - Set it to `asc` to sort the data in ascending order or \n\n - Set it to desc to sort the data in descending order."
+        required: false
+        schema:
+          type: string
+      - name: searchTerm
+        in: query
+        description: "Specify a search term to filter the list of devices returned. The results will include devices whose `appName` partially matches the provided search term (case-insensitive). \n\nExample: To search for devices with application names containing `Test`, set `searchTerm`=Test. This would match applications like \"TestApp\", \"MyTestApplication\", and \"ProductionTestSuite\"."
+        required: false
+        schema:
+          type: string
+      - name: userID
+        in: query
+        description: "Specify the user IDs for which to retrieve device lists. \n\n - If provided, the API will return the list of devices associated with the specified user(s). \n\n - If not provided, the API will return the list of devices for all users. \n\nExample: To retrieve the device list for the user with ID 123, set `userID`=[123]. To retrieve device lists for multiple users, such as 123 and 456, set `userID`=[123, 456]."
+        required: false
+        schema:
+          type: array
+          items:
+            type: number
+      - name: profileID
+        in: query
+        description: "Specify an array of profile IDs for which to retrieve device lists. \n\n - If provided, the API will return the list of devices associated with the specified profile(s). \n\n - If not provided, the API will return the list of devices for all profiles. \n\n Example: To retrieve the device list for the profile with ID 123, set `profileID`=[123]. To retrieve device lists for multiple profiles, such as 123 and 456, set `profileID`=[123, 456]."
+        required: false
+        schema:
+          type: array
+          items:
+            type: number
+      - name: pageSize
+        in: query
+        description: "Specify the number of devices to include in each page of the paginated response. This value must be an integer between 1 and 1000. \n\n If not provided, the default page size is 1000.\n\nExample: To retrieve the device list in pages of 25 devices at a time, set `pageSize=25`."
+        required: false
+        schema:
+          type: string
+      - name: nextPageToken
+        in: query
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter `nextPageToken`
+        required: false
+        schema:
+          type: string
+      - name: workload
+        in: query
+        description: Specify the workload for which to retrieve the list of devices. Each workload identifier corresponds to the `cplatform` value stored in the device table.
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: lastBackupStatus
+        in: query
+        description: Specify the backup status flag to filter the list of devices based on their last backup status.The provided value must match the backup status exactly (case-sensitive), and partial matches are not accepted.
+        required: false
+        schema:
+          type: string
+      - name: lastBackupTime
+        in: query
+        description: Specify the `lastBackupTime` flag as an date (epochtime) to filter out the devices based on their last successful backup time.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_DeviceList'
+              examples:
+                example:
+                  value:
+                    totalResults: 1
+                    nextPageToken: ''
+                    devices:
+                    - id: 1
+                      appName: OneDrive
+                      userID: 1
+                      userUrl: https://insync.druva.com/admin/app/#/user/users/1
+                      workload: Office 365 OneDrive
+                      createdOn: '2021-10-25T00:00:00.000Z'
+                      lastCompacted: 1640076452
+                      profileID: 1
+                      customerID: 1
+                      lastBackupStatus: Backed Up Successfully
+                      lastBackupJob: 1640076452
+                      lastSuccessfulBackup: 1640076452
+                      deviceDisabled: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+  /insync/cloudapp/v1/restorePoints:
+    get:
+      tags:
+      - Restore OneDrive/Exchange Online data
+      summary: List All OneDrive/Exchange Online Restore points
+      description: Retrieve the list of OneDrive/Exchange Online restore points.
+      operationId: getRestorePoints
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: deviceId
+        description: Specify the device ID associated with the OneDrive or Exchange account for which restore points are required.
+        schema:
+          type: integer
+          example: 10001
+        required: true
+        in: query
+      - name: userId
+        description: Specify the user ID associated with the OneDrive or Exchange account for which restore points are required.
+        schema:
+          type: integer
+          example: 10001
+        required: true
+        in: query
+      - name: storageId
+        description: "Specify the ID of the storage assigned to the account. Get the ID of storage using the `List all storages API`. \n\nThis API returns the list of all storage that the customer is using. The list will provide the ID - Storage name mapping for each region that the customer is using."
+        required: false
+        schema:
+          type: integer
+          example: 10003
+        in: query
+      - name: detailedRpStats
+        description: "Specify the flag indicating whether detailed snapshot statistics are required in the list of all OneDrive/Exchange Online restore points. \n\n - Set it to `true` to include detailed statistics about the snapshot in the response or \n\n - `false` to exclude detailed statistics about the snapshot in the response."
+        required: false
+        schema:
+          type: boolean
+          example: false
+        in: query
+      - name: anomalousInfoRequired
+        description: "Specify the flag indicating whether information about anomalous snapshots is required in the list of all OneDrive/Exchange Online restore points. \n\n - Set it to `true` to include anomalous snapshot information or \n\n - Set it to `false` to exclude anomalous snapshot information."
+        required: false
+        schema:
+          type: boolean
+          example: false
+        in: query
+      - name: includVirtual
+        description: "Specify the flag indicating whether information about curated snapshots is required in all OneDrive/Exchange Online restore points lists. \n\n - Set it to `true` to include curated snapshot information or \n\n - set it to `false` to exclude curated snapshot information."
+        required: false
+        schema:
+          type: boolean
+          example: false
+        in: query
+      - name: startTime
+        description: Specify the start time to filter the list of restore points. The value must be a Unix timestamp in seconds. Use with the endTime parameter to retrieve restore points within a specific time range.
+        required: false
+        schema:
+          type: integer
+          example: 1710424684
+        in: query
+      - name: endTime
+        description: Specify the end time to filter the list of restore points. The value must be a Unix timestamp in seconds. Use with the startTime parameter to retrieve restore points within a specific time range.
+        required: false
+        schema:
+          type: integer
+          example: 1710424684
+        in: query
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_list_restore_points'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+  /insync/cloudapp/v1/restores:
+    post:
+      tags:
+      - Restore OneDrive/Exchange Online data
+      summary: Restore a OneDrive Account or Exchange Online Mailbox
+      description: Performs a restore of a OneDrive account or an Exchange Online mailbox to a new or existing account.
+      operationId: restore
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                retainShareSettings:
+                  type: boolean
+                  example: false
+                  description: "Specify the flag indicating whether the sharing settings of the restored items should be retained during the restore operation. \n\n - Set it to `true` to apply the original sharing settings or \n\n - `false` to apply the default sharing settings to the restored items."
+                inplaceRestoreDeletedOnly:
+                  type: boolean
+                  example: false
+                  description: "Specify the flag indicating whether the in-place restore operation should restore deleted items. \n\n - Set it to `true` to restore deleted items or \n\n - `false` to exclude deleted items."
+                sources:
+                  type: array
+                  description: "Specify the paths of files or folders that you want to restore. \n\n ⓘ Note: The length of the sources array should match the length of the source_types array. The format for each path or file is as follows:`/backup_date/folder_or_library_name/file_or_folder_name`"
+                  items:
+                    type: string
+                    example: /Wed Mar  6 11:54:00 2024/Documents/1st Aug
+                destination:
+                  type: string
+                  description: "Specify the destination where you want to restore the data.\n\n ⓘ Note: This field is required for Exchange Online device restore operations."
+                  example: inSync Restore Thu Mar  7 07-50-01 2024
+                storage:
+                  type: integer
+                  example: 0
+                  description: "Specify the storage flag to identify if the provided storageId refers to a primary or secondary storage. \n\nSet the storage flag to 0 for primary storage and 1 for secondary storage."
+                sourceTypes:
+                  type: array
+                  description: "Specify the types of sources (files or folders) to be restored. Set it to `32768` for files or `16384` for folders. \n\n ⓘ Note: The length of the sourceTypes array should match the length of the sources array."
+                  items:
+                    type: integer
+                    example: 16384
+                  example:
+                  - 16384
+                  - 32768
+                storageId:
+                  type: integer
+                  description: Specify the ID of the storage assigned. Get the ID of storage using the `List all storages API`. Refer This API returns the list of all storage that the customer is using. The list will provide the ID - Storage name mapping for each region that the customer is using.
+                  example: 1001
+                  required:
+                  - storageId
+                restoreOption:
+                  description: "Specify the type of restore operation. \n\n - Set it to `inplacerestore` to restore data to the original location from which the backup was taken or \n\n - Set it to `restorecopy` to restore to a new or different location."
+                  type: string
+                  example: restorecopy
+                  required:
+                  - 'true'
+                isCloudapp:
+                  type: boolean
+                  example: true
+                  description: "Specify the flag indicating whether the restore operation is for a cloud application. \n\n - Set it to `true` for cloud applications or  \n\n - `false` for non-cloud applications such as on-premises systems, local servers, or other non-cloud environments."
+                includeExchangeInplaceArchive:
+                  type: boolean
+                  example: false
+                  description: "Specify the flag indicating whether the restore operation should include the Exchange In-Place Archive. \n\n - Set it to `true` to restore operation and include the Exchange In-Place Archive data. Any archived emails or data stored in the user's In-Place Archive will be restored along with the primary mailbox data. \n\n - Set it to `false` for the restore operation to exclude the Exchange In-Place Archive data and only restore the data from the primary mailbox."
+                selectiveRestore:
+                  type: boolean
+                  example: false
+                  description: "Specify the flag indicating whether the restore operation should be a selective restore or a full restore. \n\n - Set to `true` for a selective restore or \n\n - `false` to indicate that the restore operation will be a full restore, where the entire backup set or data source will be restored."
+                fromDeviceId:
+                  type: integer
+                  description: Specify the source device ID from which the data needs to be restored.
+                  example: 1000001
+                  required:
+                  - fromDeviceId
+                deviceId:
+                  type: integer
+                  description: Specify the destination device ID to which the data should be restored.
+                  example: 1000001
+                  required:
+                  - deviceId
+                appType:
+                  type: string
+                  description: "Specify the application for which the restore operation is being performed. \n\n - Set to `O365 OneDrive` to Indicate that the restore operation is for Microsoft Office 365 OneDrive or \n\n - Set to `O365 Exchange Online` if the restore operation is for Microsoft Office 365 Exchange Online."
+                  required:
+                  - appType
+                  example: O365 OneDrive
+                version:
+                  type: integer
+                  description: "Specify the version number or identifier for the Exchange Online device restore operation.\n\n ⓘ Note: This field is required only for Exchange Online device restore operations."
+                pathDetails:
+                  type: array
+                  example:
+                  - inSync-Mails-root
+                  description: "Specify the path or locations of the data to be restored in an Exchange Online device restore operation. \n\nExample: the pathDetails array contains three strings: `inSync-Mails-root` Represents the path or location of the mailbox or mail data to be restored.\n\nⓘ Note: This field is required only for Exchange Online device restore operations."
+                  items:
+                    type: string
+                    example: inSync-Mails-root
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_trigger_restore_resp'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+components:
+  schemas:
+    200_DeviceList:
+      required:
+      - devices
+      - nextPageToken
+      - totalResults
+      type: object
+      properties:
+        totalResults:
+          type: number
+          description: The total number of devices listed in the result pages.
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+        devices:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+            - id
+            - appName
+            - userID
+            - userUrl
+            - workload
+            - createdOn
+            - lastCompacted
+            - profileID
+            - customerID
+            - lastBackupStatus
+            - lastBackupJob
+            - lastSuccessfulBackup
+            type: object
+            properties:
+              id:
+                type: number
+                description: The unique id of the device in inSync. Example - 12345
+              appName:
+                minLength: 1
+                type: string
+                description: The device app name in inSync. Example - OneDrive
+              userId:
+                type: number
+                description: A unique id of the user in inSync. Example - 1234
+              workload:
+                minLength: 1
+                type: string
+                description: Name of cloud platform. Example - Office 365 OneDrive, Office 365 Exchange Online, G Suite Gmail, G Suite Google Drive.
+              createdOn:
+                minLength: 1
+                type: string
+                description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
+              profileID:
+                type: number
+                description: A unique id of the profile in inSync.
+              customerID:
+                type: number
+                description: A unique id of the administrator in inSync.
+              lastBackupStatus:
+                type: number
+                description: Shows last backup status. Example - Backed Up Successfully
+              lastBackupJob:
+                type: string
+                description: Date string indicating latest time of the backup job run.
+              lastSuccessfulBackup:
+                type: string
+                description: Date string indicating latest time of the backup job run that was successful.
+      x-examples:
+        example-1:
+          totalResults: 1
+          nextPageToken: ''
+          devices:
+            id: 1
+            appName: OneDrive
+            userID: 1
+            userUrl: https://insync.druva.com/admin/app/#/user/users/1
+            workload: Office 365 OneDrive
+            createdOn: '2021-10-25T00:00:00.000Z'
+            lastCompacted: 1640076452
+            profileID: 1
+            customerID: 1
+            lastBackupStatus: Backed Up Successfully
+            lastBackupJob: 1640076452
+            lastSuccessfulBackup: 1640076452
+    200_trigger_restore_resp:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+    200_list_users:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          description: The total number of users fetched based on applied filters.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              userName:
+                type: string
+                description: The username of the user in inSync. Example - Ernie Carter
+              emailID:
+                type: string
+                description: The email address of the user. Example - ernie.carter@druva.com
+              userID:
+                type: integer
+                description: The unique id of the user in inSync. Example - 1
+              status:
+                type: string
+                description: The status of the user account. Example - active/preserved
+              profileID:
+                type: integer
+                description: The profile ID of the profile associated with the user. Example - 1
+              storageID:
+                type: integer
+                description: The storage ID of the storage associated with the user. Example - 1
+              quota:
+                type: integer
+                description: The storage quota assigned to the user in inSync. Example - 10 GB
+              quotaInBytes:
+                type: integer
+                description: The storage quota assigned to the user (in bytes) in inSync. Example - 10737418240
+              cacheID:
+                type: integer
+                description: The CloudCache Server ID associated with the user. Example - 1
+              addedOn:
+                type: string
+                description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
+              ldapGUID:
+                type: string
+                description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
+              privacySettingsEnabled:
+                type: boolean
+                description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
+              additionalProperties:
+                type: object
+                description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_list_restore_points:
+      type: array
+      items:
+        type: object
+        properties:
+          anomalous:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is anomalous.
+          created:
+            type: string
+            example: 20/02/2024 11:58
+            description: Datetime of snapshot creation in human readable format
+          timestamp:
+            type: integer
+            example: 1710424684
+            description: Datetime of snapshot creation
+          filesMissed:
+            type: integer
+            example: 0
+            description: Number of files missed in snapshot backup
+          displayName:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot display name
+          filesSynced:
+            type: integer
+            example: 0
+            description: Number files backed up in snapshot
+          storageId:
+            type: integer
+            example: 1000002
+            description: Storage id of snapshot
+          latestUnquarantined:
+            type: boolean
+            example: true
+            description: Flag indicating if the snapshot is latest unquarantined snapshot
+          isQuarantined:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is quarantined snapshot
+          anomalousStats:
+            type: object
+            example: {}
+            description: Object containing detailed stats of anomalous snapshot.
+          ignFilesMissed:
+            type: integer
+            description: Number of ignored files missed.
+            example: 0
+          bmr:
+            type: boolean
+            example: false
+            description: Flag indicating if the meeting recordings are backed up in snapshot
+          lsCver:
+            type: integer
+            example: 17
+            description: Snapshot version number
+          size:
+            type: integer
+            example: 23903222
+            description: Total size of snapshot in bytes
+          name:
+            type: string
+            example: Thu Mar 14 13:58:04 2024
+            description: Snapshot name
+          activityLogsDownloadable:
+            type: boolean
+            example: false
+            description: Flag indicating if the activity logs of snapshot are downloadable
+          isLockedByVirtual:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked by virtual snapshot
+          anomalousUda:
+            type: boolean
+            example: false
+            description: Flag indicating if snapshot is anomalous
+          isVirtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot on storage
+          isLocked:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked
+          totalFiles:
+            type: integer
+            example: 639
+            description: Total number of files in the snapshot. Applicable for M365 OneDrive
+          sizeInBytes:
+            type: integer
+            example: 1024000
+            description: Total size of the snapshot in bytes
+  examples:
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
+        data:
+          status: 1
+          message: Failed to get Customer License
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header

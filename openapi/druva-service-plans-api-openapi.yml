@@ -1,0 +1,208 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Service Plans API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get information about service plans managed.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Service Plans
+  description: Lists the APIs to get information about service plans managed.
+paths:
+  /msp/v3/servicePlans:
+    get:
+      tags:
+      - Service Plans
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: pageSize
+        description: Specify the number of records you wish to receive in API response. Example - 30.
+        schema:
+          type: string
+        in: query
+      - name: pageToken
+        description: '- The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+          - Keep this field blank in the first request.
+
+          '
+        schema:
+          type: string
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListServicePlansV3Response'
+              examples:
+                ListServicePlanV3 Sample 1:
+                  value: "{\n  \"servicePlans\": [\n    {\n      \"id\": 1,\n      \"name\": \"Default service plan\",\n      \"status\": 1,\n      \"products\": [\n        {\n          \"edition\": \"elite\",\n          \"productID\": 1,\n          \"features\": [\n            {\n              \"name\": \"string\",\n              \"isEnabled\": true,\n              \"attrs\": [\n                {\n                  \"name\": \"string\",\n                  \"value\": {}\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    },\n\t{\n      \"id\": 2,\n      \"name\": \"Sample service plan\",\n      \"status\": 1,\n      \"products\": [\n        {\n          \"edition\": \"elite\",\n          \"productID\": 1,\n          \"features\": [\n            {\n              \"name\": \"string\",\n              \"isEnabled\": true,\n              \"attrs\": [\n                {\n                  \"name\": \"string\",\n                  \"value\": {}\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"nextPageToken\": \"eyJwYWdlU2l6ZSI6IDEwMH0=\"\n}"
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: ListServicePlansV3
+      summary: List all service plans
+      description: Returns the list of service plans configured along with the details.
+  /msp/v3/servicePlans/{servicePlanID}:
+    get:
+      tags:
+      - Service Plans
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: servicePlanID
+        description: Specify the unique ID of a service plan. Get the ID of a service plan using the 'List all service plans' API.
+        schema:
+          format: int64
+          type: integer
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicePlanV3'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetServicePlanV3
+      summary: Get service plan
+      description: Returns information about a particular service plan using provided service plan ID.
+components:
+  schemas:
+    ServicePlanProductFeaturesV3:
+      required:
+      - name
+      - isEnabled
+      type: object
+      properties:
+        name:
+          description: "Name of the feature as per Service Plan. The feature names can have the following values - \n- 1: Enterprise Workloads\n- 2: M365\n- 3: Endpoints\n- 4: Google Workspace\n- 5: D365\n- 6: Salesforce\n- 7: Entra ID\n- 8: Okta\n- 9: Active Directory\n- 10: Storage\n- 11: sensitiveDataGovernance\n"
+          type: string
+        isEnabled:
+          type: boolean
+        attrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanV3Attrs'
+    ServicePlanProductDetailsV3Response:
+      description: Contains service plan details for a specific product.
+      type: object
+      properties:
+        edition:
+          description: "The name of the edition assigned to the service plan. The edition can have one of the following values - \n - business \n - enterprise \n - elite\n"
+          type: string
+          example: elite
+        productID:
+          format: int64
+          description: The ID of the product for which this service plan is configured. Example - 1
+          type: integer
+          example: 1
+        features:
+          description: The list containing service plan features for specific products. Example - []
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanProductFeaturesV3'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ServicePlanV3:
+      type: object
+      properties:
+        id:
+          format: int64
+          description: The ID of the service plan. Example - 1
+          type: integer
+          example: 1
+        name:
+          description: The name of the service plan. Example - 'Default service plan'
+          type: string
+          example: Default service plan
+        status:
+          format: int64
+          description: "- The status of the Service Plan.\n    - 0 - Updating\n    - 1 - Ready \n"
+          type: integer
+          example: 1
+        products:
+          description: The list containing service plan details for specific products. Example - []
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
+    ServicePlanV3Attrs:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          description: '- Name of the attribute as per Service Plan Feature
+
+            - The Storage feature will have ''unlimited storage'' as an attribute'
+          type: string
+        value:
+          description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: object
+    ListServicePlansV3Response:
+      type: object
+      properties:
+        servicePlans:
+          description: The list of service plans.
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanV3'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
+          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

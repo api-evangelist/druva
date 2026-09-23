@@ -1,0 +1,471 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Alerts API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: Alerts
+paths:
+  /alerts/v1/orgs/{OrgID}/alerts:
+    get:
+      description: Returns a paginated list of all alerts
+      tags:
+      - Alerts
+      security:
+      - Bearer: []
+      summary: List of Alerts
+      operationId: ListAlertsRequest
+      parameters:
+      - name: OrgID
+        description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: workloadType
+        description: 'Specify the type of the workload for which you want to see the alerts. This parameter can be set to one of the following values: fs, sql, nas, hyperv, vmware, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: minGeneratedOn
+        description: Specify the lower bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: maxGeneratedOn
+        description: Specify the upper bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: resourceType
+        description: 'Specify the type of the resource. This parameter can be set to one of the following values: physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: resourceID
+        description: Specify the resource ID of the resource.
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Result schema for 200 Response of GET ListAlerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAlertsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /alerts/v1/orgs/{OrgID}/alerts/{type}:
+    get:
+      description: Returns a paginated list of all alerts of the specified type
+      tags:
+      - Alerts
+      security:
+      - Bearer: []
+      summary: List of Alerts by type
+      operationId: ListAlertsByTypeRequest
+      parameters:
+      - name: OrgID
+        description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: type
+        description: 'Specify the alert type. This parameter can be set to one of the following values: cloudcache, license, jobs, upgrade, configuration, seeding, oracle, billing.'
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: workloadType
+        description: 'Specify the type of the workload for which you want to see the alerts. This parameter can be set to one of the following values: fs, sql, nas, hyperv, vmware, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: minGeneratedOn
+        description: Specify the lower bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: maxGeneratedOn
+        description: Specify the upper bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: resourceType
+        description: 'Specify the type of the resource. This parameter can be set to one of the following values: physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: resourceID
+        description: Specify the resource ID of the resource.
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Result schema for 200 Response of GET ListAlerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAlertsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /alerts/v1/orgs/{OrgID}/alerts/jobs/backupFailures:
+    get:
+      description: ListAlerts returns a list of backup failure alerts with generic details, resource details, failed job IDs and the last successful job timestamp, if applicable
+      tags:
+      - Alerts
+      security:
+      - Bearer: []
+      summary: List backup failure alerts
+      operationId: ListBackupFailureAlertsRequest
+      parameters:
+      - name: OrgID
+        description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: failureNumberSinceLastSuccess
+        description: Once this parameter is specified, the API returns the nth alert (where n is the value of this parameter) in the sequence since the last successful backup job, provided it lies within the time window bound by the minGeneratedOn and maxGeneratedOn. If the time window is not specified, the minGeneratedOn gets the default value as the timestamp of the last successful backup job and maxGeneratedOn gets the default value as the current time. In addition, the alert details also include the list of consecutively failed backup job IDs and the timestamp of the last successful backup job.
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: workloadType
+        description: 'Specify the type of the workload for which you want to see the alerts. This parameter can be set to one of the following values: fs, sql, nas, hyperv, vmware, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: minGeneratedOn
+        description: Specify the lower bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: maxGeneratedOn
+        description: Specify the upper bound value of the time window. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        in: query
+        schema:
+          type: string
+      - name: resourceType
+        description: 'Specify the type of the resource. This parameter can be set to one of the following values: physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.'
+        in: query
+        schema:
+          type: string
+      - name: resourceID
+        description: Specify the resource ID of the resource.
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Result schema for 200 Response of GET ListAlerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBackupAlertsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    ListAlertsResponse:
+      description: Includes an array of alerts
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        nextPageToken:
+          type: string
+    ListBackupAlertsResponse:
+      description: Includes an array of alerts
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupJobAlert'
+        nextPageToken:
+          type: string
+    AlertDetails:
+      description: Contains backup job specific details. Only failedJobIDs and lastSucceeded will be present if failureNumberSinceLastSuccess field is specified. jobID, jobErrorMsg, jobStartTime and jobEndTime will be present for all other cases
+      type: object
+      properties:
+        jobID:
+          description: ID of the job
+          type: integer
+          format: int32
+          example: 1
+        jobStartTime:
+          description: Timestamp at which the job started
+          type: string
+          example: '2019-07-08T03:38:22.000Z'
+        jobEndTime:
+          description: Timestamp at which the job ended
+          type: string
+          example: '2019-07-08T05:52:36.000Z'
+        jobErrorMsg:
+          description: Error message stating the reason for job failure
+          type: string
+          example: error message
+        failedJobIDs:
+          description: List of failed job IDs since the last successful job
+          type: array
+          items:
+            type: integer
+            format: int32
+            example: 1
+        lastSucceeded:
+          description: The last backup job completion timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: '2019-07-05T03:38:22.000Z'
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    BackupJobAlert:
+      description: Includes generic, alert type specific and resource specific details
+      type: object
+      properties:
+        id:
+          description: Alert ID
+          type: integer
+          format: int32
+          example: 1
+        type:
+          description: Alert type, for example, jobs, storage, and cloudcache.
+          type: string
+          example: jobs
+        subtype:
+          description: Alert subtype, for example, backupFailures, and restoreFailures.
+          type: string
+          example: backupFailures
+        generatedOn:
+          description: Alert generation timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: '2019-07-09T05:08:16Z'
+        OrgID:
+          description: Organization ID
+          type: integer
+          format: int32
+          example: 1
+        workloadType:
+          description: Type of the workload. The value can be fs, sql, nas, vmware, hyperv, or oracle.
+          type: string
+          example: vmware
+        targetType:
+          description: Target type of the alert
+          type: string
+          example: jobs
+        targetID:
+          description: Target ID of the alert. In the case of job alerts, targetID is same as the jobID of the job.
+          type: integer
+          format: int32
+          example: 1
+        resourceType:
+          description: Type of resource. The value can be physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.
+          type: string
+          example: device
+        resourceName:
+          description: Name of the resource.
+          type: string
+          example: hostname
+        status:
+          description: The status of the alert. The value can be resolved or active.
+          type: string
+          example: active
+        resolutionTime:
+          description: Alert resolution timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: NA
+        severity:
+          description: Severity of the alert. The value can be critical, warning, or info.
+          type: string
+          example: critical
+        alertDetails:
+          $ref: '#/components/schemas/AlertDetails'
+        resourceInfo:
+          $ref: '#/components/schemas/ResourceInfo'
+    ResourceInfo:
+      description: Contains product-specific information of the resource
+      type: object
+      properties:
+        fsServerName:
+          type: string
+          description: Server name of the FS backup set
+          example: serverName
+        fsContentRule:
+          type: string
+          description: Content rule of the FS backup set
+          example: contentRule
+        nasShare:
+          type: string
+          description: Path to the directory of the NAS share
+          example: sharename
+        sqlResourceType:
+          type: string
+          description: Type of the SQL resource. The value can be sqlAvailabilityGroup or sqlStandaloneInstance.
+          example: instance
+        sqlResourceName:
+          type: string
+          description: Name of the SQL resource
+          example: instanceName
+        sqlContentRule:
+          type: string
+          description: Content rule of the SQL resource
+          example: contentRule
+        oracleMountPoint:
+          type: string
+          description: Mount point of the Oracle resource
+          example: mountPoint
+        oraclePBS:
+          type: string
+          description: Device name of the Oracle resource
+          example: deviceName
+        vmName:
+          type: string
+          description: Name of the virtual machine
+          example: vmName
+    Alert:
+      description: Includes generic alert details
+      type: object
+      properties:
+        id:
+          description: Alert ID
+          type: integer
+          format: int32
+          example: 1
+        type:
+          description: Alert type, for example, jobs, storage, and cloudcache.
+          type: string
+          example: jobs
+        subtype:
+          description: Alert subtype, for example, backupFailures, and restoreFailures.
+          type: string
+          example: backupFailures
+        generatedOn:
+          description: Alert generation timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: '2019-07-09T05:08:16Z'
+        OrgID:
+          description: Organization ID
+          type: integer
+          format: int32
+          example: 1
+        workloadType:
+          description: Type of the workload. The value can be fs, sql, nas, vmware, hyperv, or oracle.
+          type: string
+          example: vmware
+        targetType:
+          description: Target type of the alert
+          type: string
+          example: jobs
+        targetID:
+          description: Target ID of the alert. In the case of job alerts, targetID is same as the jobID of the job.
+          type: integer
+          format: int32
+          example: 1
+        resourceType:
+          description: Type of resource. The value can be physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.
+          type: string
+          example: device
+        resourceName:
+          description: Name of the resource.
+          type: string
+          example: hostname
+        status:
+          description: The status of the alert. The value can be resolved or active.
+          type: string
+          example: active
+        resolutionTime:
+          description: Alert resolution timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: NA
+        severity:
+          description: Severity of the alert. The value can be critical, warning, or info.
+          type: string
+          example: critical
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

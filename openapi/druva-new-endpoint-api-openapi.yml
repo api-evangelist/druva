@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: GovCloud-Authorization-CyberResilience New Endpoint API
+servers:
+- url: https://govapis.druva.com
+tags:
+- name: New Endpoint
+paths:
+  /new-endpoint:
+    get:
+      summary: New Endpoint
+      description: This is your first endpoint! Edit this page to start documenting your API.
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: Successful response
+      tags:
+      - New Endpoint
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

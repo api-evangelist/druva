@@ -1,0 +1,650 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Report Subscriptions API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- name: Report Subscriptions
+paths:
+  /organizations/{organization_id}/reportsubscriptions:
+    get:
+      description: Returns all of the CloudRanger report subscriptions within the specified organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsReportsubscriptionsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Report subscriptions
+      tags:
+      - Report Subscriptions
+      operationId: getOrganizationsByOrganizationIdReportsubscriptions
+      x-operation-id-source: derived
+  /organizations/{organization_id}/reportsubscriptions/{subscription_id}:
+    put:
+      description: Update the CloudRanger report subscription matching the subscription_id specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The subscription identifier can be used to return a report subscription . You can get the subscription_id using the GET call /organizations/:organization_id/reportsubscriptions which will return all of the subscriptions which have been created within your organization
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsReportsubscriptionsByIdRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsReportsubscriptionsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Report subscription
+      tags:
+      - Report Subscriptions
+      operationId: putOrganizationsByOrganizationIdReportsubscriptionsBySubscriptionId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/reportsubscriptions/{subscription_id}/recipients:
+    post:
+      description: Adds a new recipient email to a CloudRanger report subscription matching the subscription_id specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The subscription identifier can be used to return a report subscription . You can get the subscription_id using the GET call /organizations/:organization_id/reportsubscriptions which will return all of the subscriptions which have been created within your organization
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsReportsubscriptionsRecipientsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsReportsubscriptionsRecipientsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Add recipient to Report subscription
+      tags:
+      - Report Subscriptions
+      operationId: postOrganizationsByOrganizationIdReportsubscriptionsBySubscriptionIdRecipients
+      x-operation-id-source: derived
+  /organizations/{organization_id}/reportsubscriptions/{subscription_id}/recipients/{email}:
+    delete:
+      description: Deletes a recipient email from a CloudRanger report subscription matching the subscription_id specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The subscription identifier can be used to return a report subscription . You can get the subscription_id using the GET call /organizations/:organization_id/reportsubscriptions which will return all of the subscriptions which have been created within your organization
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      - description: The report subscription recipient email address. You can get all recipient email addresses for a specific subscription using the GET call /organizations/:organization_id/reportsubscriptions/:subscription_id which will return all of the subscriptions (and the recipients) which have been created within your organization
+        in: path
+        name: email
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete a recipient from a Report subscription
+      tags:
+      - Report Subscriptions
+      operationId: deleteOrganizationsByOrganizationIdReportsubscriptionsBySubscriptionIdRecipientsByEmail
+      x-operation-id-source: derived
+components:
+  schemas:
+    PutOrganizationsReportsubscriptionsByIdRequest:
+      properties:
+        all_accounts:
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        format:
+          enum:
+          - pdf
+          - csv
+          type: string
+        frequency:
+          type: string
+        name:
+          type: string
+        organization_id:
+          type: string
+        recipients:
+          items:
+            properties:
+              email:
+                type: string
+              external:
+                type: boolean
+              organization_id:
+                type: string
+              subscription_id:
+                type: string
+            type: object
+          type: array
+        schedule_cron:
+          type: string
+        time:
+          format: time
+          type: string
+        timezone:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsReportsubscriptionsResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              deleted_at:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              subscription_id:
+                type: integer
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        format:
+          type: string
+        frequency:
+          type: string
+        id:
+          type: integer
+        model:
+          properties:
+            accounts:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              type: array
+            created_at:
+              format: date-time
+              type: string
+            created_by:
+              type: string
+            deleted_at:
+              type: string
+            format:
+              type: string
+            frequency:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            recipients:
+              items:
+                properties:
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  email:
+                    type: string
+                  external:
+                    type: boolean
+                  organization_id:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              type: array
+            reports:
+              items:
+                properties:
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  parameters:
+                    properties:
+                      backup_policies:
+                        items:
+                          type: integer
+                        type: array
+                      date_range:
+                        properties:
+                          end:
+                            type: string
+                          start:
+                            type: string
+                        type: object
+                    type: object
+                  report_id:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              type: array
+            schedule_cron:
+              type: string
+            time:
+              format: time
+              type: string
+            timezone:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        name:
+          type: string
+        organization_id:
+          type: string
+        recipients:
+          items:
+            properties:
+              created_at:
+                format: date-time
+                type: string
+              deleted_at:
+                type: string
+              email:
+                type: string
+              external:
+                type: boolean
+              model:
+                properties:
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  email:
+                    type: string
+                  external:
+                    type: boolean
+                  organization_id:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              subscription_id:
+                type: integer
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        reports:
+          items:
+            properties:
+              created_at:
+                format: date-time
+                type: string
+              deleted_at:
+                type: string
+              model:
+                properties:
+                  created_at:
+                    format: date-time
+                    type: string
+                  deleted_at:
+                    type: string
+                  parameters:
+                    properties:
+                      backup_policies:
+                        items:
+                          type: integer
+                        type: array
+                      date_range:
+                        properties:
+                          end:
+                            type: string
+                          start:
+                            type: string
+                        type: object
+                    type: object
+                  report_id:
+                    type: string
+                  subscription_id:
+                    type: integer
+                  updated_at:
+                    format: date-time
+                    type: string
+                type: object
+              parameters:
+                properties:
+                  backup_policies:
+                    items:
+                      type: integer
+                    type: array
+                  date_range:
+                    properties:
+                      end:
+                        type: string
+                      start:
+                        type: string
+                    type: object
+                type: object
+              report_id:
+                type: string
+              subscription_id:
+                type: integer
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        schedule_cron:
+          type: string
+        time:
+          format: time
+          type: string
+        timezone:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsRequest:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
+      type: object
+    DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsResponse:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
+      type: object
+    PutOrganizationsReportsubscriptionsByIdResponse:
+      properties:
+        all_accounts:
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        format:
+          type: string
+        frequency:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+        organization_id:
+          type: string
+        recipients:
+          items:
+            properties:
+              email:
+                type: string
+              external:
+                type: boolean
+              organization_id:
+                type: string
+              subscription_id:
+                type: string
+            type: object
+          type: array
+        schedule_cron:
+          type: string
+        time:
+          format: time
+          type: string
+        timezone:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

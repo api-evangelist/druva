@@ -1,0 +1,1757 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads V Mware API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: VMware
+paths:
+  /vmware/v1/orgs/{OrgID}/reports/backupsets:
+    get:
+      description: Returns all backup sets for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all backup sets
+      operationId: VMwareGetBackupsetsRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: VMNames
+        description: Specify the name of the virtual machine (VM). Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: BackupEnable
+        description: 'Specify whether the backup is enabled for the virtual machine. Example: Enabled, Disabled.'
+        name: backupEnable
+        in: query
+        schema:
+          type: boolean
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetBackupsetsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/proxies:
+    get:
+      description: Returns all Backup Proxies for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all backup proxies
+      operationId: VMwareGetBackupProxiesRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: VCNames
+        description: Specify the name of the VCenter registered with Phoenix. Specify multiple VCenter names by separating them with commas.
+        name: vcenterName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetBackupProxiesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/jobs:
+    get:
+      description: Returns all jobs for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all jobs
+      operationId: VMwareGetAllJobsInfoRequest
+      parameters:
+      - x-go-name: JobType
+        description: 'Specify the type of the job. This parameter can be set to one or more of the following values: Backup, Restore, Log Request and Defreeze. Specify multiple job types by separating them with commas. See <a href=https://help.druva.com/en/articles/8651191-monitoring-vmware-jobs>Job Types.</a>'
+        name: jobType
+        in: query
+        schema:
+          type: string
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMName
+        description: Specify the name of the virtual machine (VM). Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetAllJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/jobs/backups:
+    get:
+      description: Returns all backup jobs for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all backup jobs
+      operationId: VMwareGetAllBackupJobsInfoRequest
+      parameters:
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the virtual machine (VM). Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetAllBackupJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/jobs/restores:
+    get:
+      description: Returns all restore jobs for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all restore jobs
+      operationId: VMwareGetAllRestoreJobsInfoRequest
+      parameters:
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the virtual machine (VM). Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetAllRestoreJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/jobs/uploadlogs:
+    get:
+      description: Returns all upload log jobs for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all upload logs jobs
+      operationId: VMwareGetAllUploadLogsJobsInfoRequest
+      parameters:
+      - x-go-name: Status
+        description: 'Specify the status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful, Successful with errors and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the virtual machine (VM). Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetAllUploadLogsJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{OrgID}/reports/policies:
+    get:
+      description: Returns all backup policies for VMware
+      tags:
+      - VMware
+      security:
+      - Bearer: []
+      summary: List all policies
+      operationId: VMwareGetPoliciesRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VMwareGetPoliciesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+  /vmware/v1/orgs/{orgID}/jobs/backupNow:
+    post:
+      description: Initiates an on-demand backup for a configured virtual machine.
+      tags:
+      - VMware
+      summary: On-demand backup
+      operationId: BackupNowRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the organization ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VMBackupNowRequestParams'
+        description: Body parameters
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/VMBackupNowResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /vmware/v1/orgs/{orgID}/jobs/cancel:
+    post:
+      description: Cancels the specified job.
+      tags:
+      - VMware
+      summary: Cancel a job
+      operationId: CancelJobRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the organization ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VMCancellationParams'
+        description: Body parameters
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/VMCancelJobResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /vmware/v1/orgs/{orgID}/backupsets/{backupsetID}/snapshots:
+    get:
+      description: Returns all snapshots for the specified backup set.
+      tags:
+      - VMware
+      summary: List all snapshots
+      operationId: GetSnapshotRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: BackupSetID
+        description: Specify the ID of your backup set. Get the ID using the 'List all backup sets' API.
+        name: backupsetID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: SnapshotTypes
+        description: 'Specify the type of snapshot. The possible values for the snapshot type are: "HOT", "WARM", and "COLD". Specify multiple snapshot types by separating the values with commas.'
+        name: snapshotTypes
+        in: query
+        schema:
+          type: string
+          enum:
+          - HOT
+          - WARM
+          - COLD
+      - x-go-name: FromTime
+        description: Specify a date and time in the UTC format YYYY-MM-DDTHH:MM:SSZ to display all snapshots created after this date and time.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+      - x-go-name: ToTime
+        description: Specify a date and time in the UTC format YYYY-MM-DDTHH:MM:SSZ to display all snapshots created before this date and time.
+        name: toTime
+        in: query
+        schema:
+          type: string
+      - x-go-name: SortOrder
+        description: 'Specify whether to sort the returned snapshots in ascending or descending order of the snapshot creation time. Set it to "ASC" or "DESC" to sort the list in ascending or descending order respectively. The default value is ASC. '
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/VMGetSnapshotResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /vmware/v1/orgs/{orgID}/jobs/restores/original:
+    post:
+      description: Performs a FULL restore of the VM to the original location.
+      tags:
+      - VMware
+      summary: Restore VM to original location
+      operationId: RestoreOriginalRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the organization ID of your organization. Get the ID of an organization using the ‘List all organizations’ API
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VMRestoreOriginalParams'
+        description: Body parameters
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/VMRestoreOriginalResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+components:
+  schemas:
+    VMwareRestoreExecutionDetailsStruct:
+      description: RestoreExecutionDetailsStruct struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        endTime:
+          description: The time when the job operation ends.
+          type: string
+          x-go-name: EndTime
+        restoredData:
+          description: Specifies the total amount of data restored.
+          type: string
+          x-go-name: RestoredData
+        restoredDataInBytes:
+          description: Specifies the total amount of data restored in bytes.
+          type: integer
+          format: uint64
+          x-go-name: RestoredDataInBytes
+        restoredItems:
+          description: Data items restored.
+          type: string
+          x-go-name: RestoredItems
+        startTime:
+          description: The time when the job operation starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: RestoreExecutionDetailsStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetAllRestoreJobsInfoResponse:
+      description: GetAllRestoreJobsInfoResponse is the response schema for GetRestoreJobReport
+      type: object
+      properties:
+        jobs:
+          description: List of all restore jobs run for VMware.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareGetRestoreJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllRestoreJobsInfoResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareMSSqlConfigDetails:
+      description: MSSqlConfigDetails struct holds the response for GetPolicies api
+      type: object
+      properties:
+        backupTransactionLog:
+          description: Specifies the option to enable transaction log backups for applications.
+          type: boolean
+          x-go-name: BackupTransactionLog
+        tlBackupFrequencyInMinutes:
+          description: Specifies the interval in minutes to run the transaction log backups.
+          type: integer
+          format: int32
+          x-go-name: TLBackupFrequencyInMinutes
+        tlBackupMaxBandwidthInMbps:
+          description: Specifies the maximum bandwidth for a transaction log backup.
+          type: integer
+          format: int32
+          x-go-name: TLBackupMaxBandwidthInMbps
+      x-go-name: MSSqlConfigDetails
+      x-go-package: phoenix/vmware/cloud/report/spec/policies
+    VMwareEnvironmentStruct:
+      description: EnvironmentStruct struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        diskReadRate:
+          description: Specifies the bit rate for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: string
+          x-go-name: DiskReadRate
+        diskReadRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: number
+          format: double
+          x-go-name: DiskReadRateInKBps
+        networkRetries:
+          description: Number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: EnvironmentStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMSnapshotList:
+      description: VMSnapshotList struct holds the response for GetSnapshot api
+      type: object
+      properties:
+        name:
+          description: The name of the snapshot.
+          type: string
+          x-go-name: SnapshotName
+        createdAt:
+          description: The creation date and time of the snapshot.
+          type: string
+          x-go-name: SnapshotCreationTime
+        isQuarantined:
+          description: The value is set to 'TRUE' if the snapshot is a quarantined snapshot, otherwise, it is set to 'FALSE'.
+          type: boolean
+          x-go-name: IsQuarantined
+        type:
+          description: 'The type of snapshot. The possible values for the snapshot type are: "HOT", "WARM", and "COLD".'
+          type: string
+          x-go-name: SnapshotType
+      x-go-package: phoenix/vmware/cloud/configserver/spec/backupset
+    VMwareLastBackupDetailsStruct:
+      description: LastBackupDetailsStruct is response schema for GetBackupsets
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job
+          type: integer
+          format: int32
+          x-go-name: JobID
+        status:
+          description: Status of the job
+          type: string
+          x-go-name: Status
+      x-go-name: LastBackupDetailsStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/backupsets
+    VMwareGetRestoreJobsReport:
+      description: GetRestoreJobsReport struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        backupProxyName:
+          description: Name of the backup proxy on which the job is processed.
+          type: string
+          x-go-name: BackupProxyName
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        destinationVMName:
+          description: Name of the VM on which the restore was initiated
+          type: string
+          x-go-name: DestinationVMName
+        environmentDetails:
+          $ref: '#/components/schemas/VMwareRestoreEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/VMwareRestoreExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the operation.
+          type: string
+          x-go-name: JobType
+        msSqlRestoreDetails:
+          $ref: '#/components/schemas/VMwareMSSqlRestoreDetails'
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        restoreType:
+          type: string
+          x-go-name: RestoreType
+        sourceVMName:
+          description: Name of the VM for which the restore was initiated.
+          type: string
+          x-go-name: SourceVMName
+      x-go-name: GetRestoreJobsReport
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMRestoreOriginalParams:
+      description: VMRestoreOriginalParams is restore to original job request inputs
+      type: object
+      properties:
+        snapshotName:
+          description: Specify the name of the snapshot. Get the name of the snapshot using the 'List all snapshots' API.
+          type: string
+          x-go-name: SnapshotName
+        vmID:
+          description: Specify the ID of the virtual machine. Get the ID of the virtual machine using the 'List all backup sets' VMware API.
+          type: integer
+          format: int32
+          x-go-name: VMID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    VMwareEstimationDetailsStruct:
+      description: EstimationDetailsStruct struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        dataScanned:
+          description: Data scanned during the job.
+          type: integer
+          format: int64
+          x-go-name: DataScanned
+        disksAdded:
+          description: Number of VM Disks added at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksAdded
+        disksModified:
+          description: Number of VM Disks changed at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksModified
+        disksRemoved:
+          description: Number of VM Disks removed at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksRemoved
+        sourceDataScanned:
+          description: Specifies the data scanned in at the source in order to backup.
+          type: string
+          x-go-name: SourceDataScanned
+        sourceDataScannedInBytes:
+          description: Specifies the data scanned in bytes at the source in order to backup.
+          type: integer
+          format: uint64
+          x-go-name: SourceDataScannedInBytes
+      x-go-name: EstimationDetailsStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareUploadLogsExecutionDetailsStruct:
+      description: UploadLogsExecutionDetailsStruct struct holds the response for GetUploadLogsJobsReport api
+      type: object
+      properties:
+        endTime:
+          description: The time when the job operation ends.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        logsExpiryTime:
+          description: Expiry time of the uploaded logs.
+          type: string
+          x-go-name: LogsExpiryTime
+        logsSize:
+          description: Specifies the size of the extracted log files.
+          type: string
+          x-go-name: LogsSize
+        logsSizeInBytes:
+          description: Specifies the size of the extracted log files in bytes.
+          type: integer
+          format: uint64
+          x-go-name: LogsSizeInBytes
+        sourceJobID:
+          description: The operation for which logs are being requested.
+          type: integer
+          format: int32
+          x-go-name: SourceJobID
+        sourceJobLogType:
+          description: The operation type for which logs are being requested.
+          type: string
+          x-go-name: SourceJobLogType
+        startTime:
+          description: The time when the job operation starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: UploadLogsExecutionDetailsStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareExecutionDetailsStruct:
+      description: ExecutionDetailsStruct struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        endTime:
+          description: The time when the job operation ends.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        startTime:
+          description: The time when the job operation starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: ExecutionDetailsStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareBackupProxyPoolStruct:
+      description: BackupProxyPoolStruct struct holds the information of the backup proxy pool.
+      type: object
+      properties:
+        name:
+          description: The name of the backup proxy pool.
+          type: string
+          x-go-name: Name
+        timezone:
+          description: The time zone for the backup proxy pool. Phoenix triggers backup of the virtual machines mapped to the proxy pool in this time zone.
+          type: string
+          x-go-name: TimeZone
+      x-go-name: BackupProxyPoolStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/proxies
+    VMwareRetentionPolicy:
+      description: RetentionPolicy struct holds the response for GetPolicies api
+      type: object
+      properties:
+        allSnapshots:
+          description: Daily copies of the backup to retain
+          type: string
+          x-go-name: Daily
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        monthly:
+          description: Monthly copies of the backup to retain
+          type: string
+          x-go-name: Monthly
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+        weekly:
+          description: Weekly copies of the backup to retain
+          type: string
+          x-go-name: Weekly
+        yearly:
+          description: Yearly copies of the backup to retain
+          type: string
+          x-go-name: Yearly
+      x-go-name: RetentionPolicy
+      x-go-package: phoenix/vmware/cloud/report/spec/policies
+    VMwareGetUploadLogsJobsReport:
+      description: GetUploadLogsJobsReport struct holds the response for GetDefreezeJobsReport api
+      type: object
+      properties:
+        environmentDetails:
+          $ref: '#/components/schemas/VMwareUploadLogsEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/VMwareUploadLogsExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the operation.
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        vmName:
+          description: Name of the VM for which the operation was initiated.
+          type: string
+          x-go-name: VMName
+      x-go-name: GetUploadLogsJobsReport
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetAllJobsInfoResponse:
+      description: GetAllJobsInfoResponse is the response schema for GetAllJobsInfo
+      type: object
+      properties:
+        jobs:
+          description: List of all jobs run for VMware.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareJobResponse'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllJobsInfoResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetBackupJobsReport:
+      description: GetBackupJobsReport struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int32
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy
+          type: string
+          x-go-name: BackupPolicyName
+        backupProxyName:
+          description: The name of Backup Proxy.
+          type: string
+          x-go-name: BackupProxyName
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        cbtStatus:
+          description: Status of VMware CBT
+          type: string
+          x-go-name: CBTStatus
+        dataTransfer:
+          $ref: '#/components/schemas/VMwareDataTransferStruct'
+        environmentDetails:
+          $ref: '#/components/schemas/VMwareEnvironmentStruct'
+        estimationDetails:
+          $ref: '#/components/schemas/VMwareEstimationDetailsStruct'
+        executionDetails:
+          $ref: '#/components/schemas/VMwareExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of job.
+          type: string
+          x-go-name: JobType
+        msSqlBackupDetails:
+          $ref: '#/components/schemas/VMwareMSSqlBackupDetails'
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        vmName:
+          description: The name of VM.
+          type: string
+          x-go-name: VMName
+      x-go-name: GetBackupJobsReport
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetPolicies:
+      description: GetPolicies struct holds the response for GetPolicies api
+      type: object
+      properties:
+        autoEnableCBT:
+          description: Enable CBT - yes/no
+          type: boolean
+          x-go-name: AutoEnableCBT
+        automaticRetry:
+          description: Automatic retry enabled/disabled
+          type: boolean
+          x-go-name: AutomaticRetry
+        description:
+          description: Description of the policy
+          type: string
+          x-go-name: Description
+        enableAppAwareProcessing:
+          description: Specifies the option to enable SQL Server database backups on the virtual machine.
+          type: boolean
+          x-go-name: EnableAppAwareProcessing
+        enableVMToolsQuiescing:
+          description: Enable vmtools quiescing -yes/no
+          type: boolean
+          x-go-name: EnableVMToolsQuiescing
+        ignoreFirstBackupDuration:
+          description: Ignore first backup duration - yes/no
+          type: boolean
+          x-go-name: IgnoreBackupDuration
+        dataLock:
+          description: The status indicating if Data Lock is enabled in the backup policy.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        maxRetryCount:
+          description: Maximum retry count
+          type: integer
+          format: int64
+          x-go-name: MaxRetryCount
+        maxRetryDuration:
+          description: Specifies the wait interval before the job is retried.
+          type: string
+          x-go-name: MaxRetryDuration
+        maxRetryDurationInSeconds:
+          description: Specifies the wait interval in seconds before the job is retried.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryDurationInSeconds
+        msSqlConfigDetails:
+          $ref: '#/components/schemas/VMwareMSSqlConfigDetails'
+        policyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: PolicyID
+        policyName:
+          description: Name of the policy
+          type: string
+          x-go-name: PolicyName
+        policyType:
+          description: Type of the policy
+          type: string
+          x-go-name: PolicyType
+        retention:
+          $ref: '#/components/schemas/VMwareRetentionPolicy'
+        schedules:
+          description: Schedules for the backup
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareSchedules'
+          x-go-name: Schedules
+      x-go-name: GetPolicies
+      x-go-package: phoenix/vmware/cloud/report/spec/policies
+    VMwareMSSqlBackupDetails:
+      description: MSSqlBackupDetails struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        appAwareBackupType:
+          description: Specifies the type of the SQL backup. The possible values are Full Backup and Transaction Log Backup.
+          type: string
+          x-go-name: AppAwareBackupType
+        dbInstanceNames:
+          description: Specifies the names of the SQL instances, which are present in the virtual machine and backed up during the full backup.
+          type: array
+          items:
+            type: string
+          x-go-name: DbInstanceNames
+      x-go-name: MSSqlBackupDetails
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareJobResponse:
+      description: JobResponse struct holds the response for JobResponse api
+      type: object
+      properties:
+        endTime:
+          description: The time when the job operation completes.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of job.
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        startTime:
+          description: The time when the job operation starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+        vmName:
+          description: The name of VM
+          type: string
+          x-go-name: VMName
+      x-go-name: JobResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareSchedules:
+      description: Schedules struct holds the response for GetPolicies api
+      type: object
+      properties:
+        bandwidth:
+          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          description: Specifies the duration after which you want backup operations to stop.
+          type: string
+          x-go-name: Duration
+        durationInSeconds:
+          description: Specifies the duration in seconds after which you want backup operations to stop.
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          $ref: '#/components/schemas/JSONStringList'
+        startAt:
+          description: Schedule start time
+          type: string
+          x-go-name: StartAt
+      x-go-name: Schedules
+      x-go-package: phoenix/vmware/cloud/report/spec/policies
+    VMwareGetAllUploadLogsJobsInfoResponse:
+      description: GetAllUploadLogsJobsInfoResponse is the response schema for GetAllUploadLogsJobsInfoResponse
+      type: object
+      properties:
+        jobs:
+          description: List of all jobs in which logs were uploaded to Phoenix.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareGetUploadLogsJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllUploadLogsJobsInfoResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareBackupProxyInfo:
+      description: BackupProxyInfo is response schema for GetBackupProxies
+      type: object
+      properties:
+        backupProxyPool:
+          $ref: '#/components/schemas/VMwareBackupProxyPoolStruct'
+        dataCenter:
+          description: The name of the Data Center
+          type: string
+          x-go-name: DataCenterName
+        dataStore:
+          description: The name of the Data Store
+          type: string
+          x-go-name: DataStoreName
+        maxConcurrentBackups:
+          description: Maximum number of concurrent backup jobs supported by the backup proxy
+          type: integer
+          format: int32
+          x-go-name: MaxConcurrentBackups
+        name:
+          description: The name of the Backup Proxy
+          type: string
+          x-go-name: Name
+        vCenter:
+          description: The name of the VCenter
+          type: string
+          x-go-name: VCenterName
+        vhost:
+          description: The name of the VHost
+          type: string
+          x-go-name: VHost
+      x-go-name: BackupProxyInfo
+      x-go-package: phoenix/vmware/cloud/report/spec/proxies
+    VMwareMSSqlFileLocation:
+      type: object
+      title: MSSqlFileLocation struct specifies the locations where the MDF, LDF, and NDF files are restored.
+      properties:
+        ldfFileLocation:
+          description: Specifies the location where the LDF files are restored.
+          type: string
+          x-go-name: LdfFileLocation
+        mdfFileLocation:
+          description: Specifies the location where the MDF files are restored.
+          type: string
+          x-go-name: MdfFileLocation
+        ndfFileLocation:
+          description: Specifies the location where the NDF files are restored.
+          type: string
+          x-go-name: NdfFileLocation
+      x-go-name: MSSqlFileLocation
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetPoliciesResponse:
+      description: GetPoliciesResponse is response schema for GetPolicies
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        policies:
+          description: List of all backup policies for VMware.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareGetPolicies'
+          x-go-name: Policies
+      x-go-name: GetPoliciesResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/policies
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    VMwareGetBackupsetsResponse:
+      description: GetBackupsetsResponse is response schema for GetBackupsets
+      type: object
+      properties:
+        backupsets:
+          description: List of backup sets based on the query. In this case, returns the backup sets created for VMware.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareBackupsetInfo'
+          x-go-name: Backupsets
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupsetsResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/backupsets
+    VMwareBackupsetInfo:
+      description: BackupsetInfo is response schema for GetBackupsets
+      type: object
+      properties:
+        appsPresentInBackup:
+          description: Specifies the list of the applications, which are backed up as part of the application-aware backup.
+          type: array
+          items:
+            type: string
+          x-go-name: AppsPresentInBackup
+        backupEnabled:
+          description: Specifies whether the backup is enabled for the virtual machine.
+          type: boolean
+          x-go-name: BackupEnabled
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int64
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: Name of the backup policy attached to the backup set
+          type: string
+          x-go-name: BackupPolicyName
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        dataCenter:
+          description: The name of the Data Center
+          type: string
+          x-go-name: DataCenterName
+        diskExcludeList:
+          description: Exclude Filter
+          type: array
+          items:
+            type: string
+          x-go-name: DiskExcludeList
+        dataLock:
+          description: The status indicating if Data Lock is enabled for the backup set.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        lastBackupDetails:
+          $ref: '#/components/schemas/VMwareLastBackupDetailsStruct'
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        name:
+          description: The name of the virtual machine (VM)
+          type: string
+          x-go-name: VMName
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the Organization
+          type: string
+          x-go-name: OrgName
+        vCenter:
+          description: The name of the VCenter
+          type: string
+          x-go-name: VCenterName
+        vCenterID:
+          description: The ID of your vCenter.
+          format: int64
+          type: integer
+          x-go-name: VCenterID
+        vhost:
+          description: The name of the Vhost
+          type: string
+          x-go-name: VHost
+        vmID:
+          description: The ID of your virtual machine.
+          format: int64
+          type: integer
+          x-go-name: VMID
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+      x-go-name: BackupsetInfo
+      x-go-package: phoenix/vmware/cloud/report/spec/backupsets
+    VMwareMSSqlRestoreDetails:
+      description: MSSqlRestoreDetails struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        appAwareRestoreType:
+          description: Specifies the type of the SQL restore. The possible value of the restore type are Database Restore, Transaction Mark Restore, and Point In Time Restore
+          type: string
+          x-go-name: AppAwareRestoreType
+        destinationInstanceName:
+          description: Specifies the name of the SQL instance on the target virtual machine on which you want to restore the databases.
+          type: string
+          x-go-name: DestinationInstanceName
+        fileLocation:
+          $ref: '#/components/schemas/VMwareMSSqlFileLocation'
+        recoveryMode:
+          description: Specifies the recovery mode in which the restored database should be left once the restore is completed. The possible values are Recovery Mode and Non Recovery Mode.
+          type: string
+          x-go-name: RecoveryMode
+        sourceInstanceName:
+          description: Specifies the name of the SQL instance on the source virtual machine from which the databases are restored.
+          type: string
+          x-go-name: SourceInstanceName
+        stagingVMName:
+          description: Specifies the name of the staging virtual machine to mount the selected SQL data for restoring to the target virtual machine.
+          type: string
+          x-go-name: StagingVMName
+      x-go-name: MSSqlRestoreDetails
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMCancellationParams:
+      description: VMCancellationParams is job cancellation request inputs
+      type: object
+      properties:
+        jobID:
+          description: Specify the ID of the job to be canceled. Get the ID of the job using the 'List all jobs' VMware API.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    VMGetSnapshotResponse:
+      description: VMGetSnapshotResponse is the response schema for GetSnapshot API
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: NextPageToken
+        snapshots:
+          description: Snapshots details
+          type: array
+          items:
+            $ref: '#/components/schemas/VMSnapshotList'
+          x-go-name: Snapshots
+      x-go-package: phoenix/vmware/cloud/configserver/spec/backupset
+    VMRestoreOriginalResponse:
+      description: VMRestoreOriginalResponse is response to restore job request
+      type: object
+      properties:
+        jobID:
+          description: The unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    VMwareDataTransferStruct:
+      description: DataTransferStruct struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        backupDuration:
+          description: Specifies the total time taken to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: string
+          x-go-name: BackupDuration
+        backupDurationInSeconds:
+          description: Specifies the total time taken in seconds to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: integer
+          format: int64
+          x-go-name: BackupDurationInSeconds
+        backupSpeed:
+          description: Specifies the rate at which the source data is backed up to the Cloud.
+          type: string
+          x-go-name: BackupSpeed
+        backupSpeedInKBps:
+          description: Specifies the rate in Kilobytes per second at which the source data is backed up to the Cloud.
+          type: number
+          format: double
+          x-go-name: BackupSpeedInKBps
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        dataTransferCache:
+          description: Specifies the incremental data that is uploaded to CloudCache after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCache
+        dataTransferCacheInBytes:
+          description: Specifies the incremental data in bytes that is uploaded to CloudCache after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCacheInBytes
+        dataTransferCloud:
+          description: Specifies the incremental data that is uploaded to the Cloud after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCloud
+        dataTransferCloudInBytes:
+          description: Specifies the incremental data in bytes that is uploaded to the Cloud after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCloudInBytes
+      x-go-name: DataTransferStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareGetBackupProxiesResponse:
+      description: GetBackupProxiesResponse is response schema for GetBackupsets
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        proxies:
+          description: List of the backup proxies deployed and the information of each backup proxy.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareBackupProxyInfo'
+          x-go-name: BackupProxies
+      x-go-name: GetBackupProxiesResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/proxies
+    VMCancelJobResponse:
+      description: VMCancelJobResponse is response to cancel job API
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the canceled job if the job is successfully canceled. This parameter will be 0 if the job completed, completed with errors, was canceled, or failed before it could be canceled.
+          type: integer
+          format: int32
+          x-go-name: CancelledJobID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    VMBackupNowRequestParams:
+      description: VMBackupNowRequestParams is backup job request inputs
+      type: object
+      properties:
+        vmID:
+          description: The ID of the virtual machine. Get the ID of the virtual machine using the 'List all backup sets' VMware API
+          type: integer
+          format: int32
+          x-go-name: VMID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    VMBackupNowResponse:
+      description: VMBackupNowResponse is response to backupnow request
+      type: object
+      properties:
+        jobID:
+          description: 'The unique identification number associated with the job. '
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/vmware/cloud/configserver/spec/job
+    JSONStringList:
+      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
+      type: array
+      items:
+        type: string
+      x-go-package: phoenix/pkg/dlutil
+    VMwareGetAllBackupJobsInfoResponse:
+      description: GetAllBackupJobsInfoResponse is the response schema for GetAllBackupJobsInfo
+      type: object
+      properties:
+        jobs:
+          description: List of all backup jobs for VMware.
+          type: array
+          items:
+            $ref: '#/components/schemas/VMwareGetBackupJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllBackupJobsInfoResponse
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareUploadLogsEnvironmentStruct:
+      description: UploadLogsEnvironmentStruct struct holds the response for GetUploadLogsJobsReport api
+      type: object
+      properties:
+        diskWriteRate:
+          description: Disk write rate during the job.
+          type: string
+          x-go-name: DiskWriteRate
+        networkRetries:
+          description: Number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Duration of network retries during the job.
+          type: string
+          x-go-name: NetworkRetryDuration
+      x-go-name: UploadLogsEnvironmentStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+    VMwareRestoreEnvironmentStruct:
+      description: RestoreEnvironmentStruct struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        diskWriteRate:
+          description: Specifies the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: string
+          x-go-name: DiskWriteRate
+        diskWriteRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: number
+          format: double
+          x-go-name: DiskWriteRateInKBps
+        networkRetries:
+          description: Number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: RestoreEnvironmentStruct
+      x-go-package: phoenix/vmware/cloud/report/spec/jobs
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

@@ -1,0 +1,866 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to get information and perform operations of Restore scans on the resources managed in Druva Cloud.
+  version: 3.0.0
+  title: Cyber Resilience Restore scans API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Restore scans
+  description: List of APIs to get information and perform operations of Restore scans on the resources managed in Druva Cloud.
+paths:
+  /rwc/v1/settings:
+    get:
+      tags:
+      - Restore scans
+      summary: Lists all the current settings
+      description: Returns the details of the current settings of Restore scans.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: getRwcV1Settings
+      x-operation-id-source: derived
+    put:
+      tags:
+      - Restore scans
+      summary: Save the current settings
+      description: Saves the current settings of Restore scans.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsRequest'
+        description: Required parameters for a default setting to be created for scan. To enable or disable the Anti Virus (AV) scan and File Hash scan settings as default.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema: {}
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: putRwcV1Settings
+      x-operation-id-source: derived
+  /rwcscanmaster/v1/jobs:
+    get:
+      tags:
+      - Restore scans
+      security:
+      - Bearer: []
+      parameters:
+      - name: sortBy
+        in: query
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done on basis of 'scanJobID', 'resourceType' parameters.
+        required: false
+        schema:
+          type: string
+          enum:
+          - scanJobID
+          - status
+          - resourceType
+      - name: sortOrder
+        in: query
+        description: Specify the order by which you intend to sort and list the results. Sorting can be done in ascending or descending order.
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: status[]
+        in: query
+        description: Specify the current status of the scan job to filter and list the jobs. The status can be 'Running', 'Queued', 'Successful', 'Cancelled' and 'Failed'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - Running
+          - Queued
+          - Successful
+          - Cancelled
+          - Failed
+      - name: resourceType[]
+        in: query
+        required: false
+        description: Specify the resource type to filter and list the data for the resource types. The resource type can be 'File Server', 'Endpoints' and 'NAS'
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - File Server
+          - Endpoints
+          - NAS
+      - name: resourceName
+        in: query
+        description: Specify the resource name to filter and list the data for that specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+        schema:
+          type: string
+      - name: startedIn
+        in: query
+        required: false
+        description: Specify the time when the job was started.
+        schema:
+          type: string
+          enum:
+          - Last 24 Hours
+          - Last 7 Days
+          - Last 1 Month
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      summary: Lists all the Restore scans jobs
+      description: Returns the list of all Restore scans jobs.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobListModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: getRwcscanmasterV1Jobs
+      x-operation-id-source: derived
+  /rwcscanmaster/v1/jobs/{JobID}:
+    get:
+      tags:
+      - Restore scans
+      parameters:
+      - name: JobID
+        in: path
+        description: Specify the Restore scans job ID to view its details. Get the Restore scans job ID using 'Lists all the Restore scans jobs.' API.
+        required: true
+        schema:
+          type: integer
+      security:
+      - Bearer: []
+      summary: Lists the details of Restore scans job
+      description: Returns the details of Restore scans job.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobDetailsModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: getRwcscanmasterV1JobsByJobID
+      x-operation-id-source: derived
+  /rwcscanmaster/v1/jobs/{JobID}/report:
+    get:
+      tags:
+      - Restore scans
+      security:
+      - Bearer: []
+      parameters:
+      - name: JobID
+        in: path
+        required: true
+        description: Specify the Restore scans job ID to view details of affected or skipped files. Get the Restore scans job ID using 'Lists all the Restore scans jobs.' API.
+        schema:
+          type: integer
+      - name: Accept
+        in: header
+        required: false
+        description: 'Specify the content types, expressed as MIME types. The valid values can be: ''aplication/json'', ''text/csv'''
+        schema:
+          type: string
+          enum:
+          - aplication/json
+          - text/csv
+      - name: quarantineState
+        in: query
+        required: false
+        description: Quarantine State of the expected result set. It can be either all, affected or skipped.
+        schema:
+          type: integer
+          enum:
+          - all
+          - affected
+          - skipped
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      summary: Lists the details of the affected or skipped files in the Restore scans job
+      description: Returns the details of the affected or skipped files in the Restore scans the scan job.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobFilesDetailsResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/jobFilesDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: getRwcscanmasterV1JobsByJobIDReport
+      x-operation-id-source: derived
+  /rwcscanmaster/v1/jobs/count:
+    get:
+      tags:
+      - Restore scans
+      security:
+      - Bearer: []
+      summary: List count of restore scan jobs
+      description: Returns the count of restore scan jobs.
+      parameters:
+      - name: createdIn
+        in: query
+        required: false
+        description: 'Specify the duration to retrieve the number of restore scan jobs that have been run within a specified period of time.
+
+          :fa-info-circle: The API returns the total count of all restore scan jobs run to date if no value is provided.'
+        schema:
+          type: string
+          enum:
+          - Last 24 Hours
+          - Last 7 Days
+          - Last 1 Month
+          - Last 2 Months
+          - Last 3 Months
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getJobCount'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RWC_HTTP_500'
+      operationId: getRwcscanmasterV1JobsCount
+      x-operation-id-source: derived
+components:
+  schemas:
+    getJobCount:
+      type: object
+      properties:
+        totalJobs:
+          type: integer
+          description: The total count of restore scan jobs. Example - 50
+          example: 5
+        countByResourceType:
+          type: object
+          properties:
+            Endpoint:
+              type: integer
+              description: The total count of restore scan jobs for Endpoints. Example - 20
+              example: '2'
+            File Server:
+              type: integer
+              description: The total count of restore scan jobs for File Server. Example - 20
+              example: '1'
+            NAS:
+              type: integer
+              description: The total count of restore scan jobs for NAS. Example - 30
+              example: '1'
+            VMware:
+              type: integer
+              description: The total count of restore scan jobs for VMware. Example - 25
+              example: '1'
+    jobListModel:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              scanJobID:
+                type: integer
+                description: Restore scans Job ID.
+                example: 831
+              globalCustomerID:
+                type: string
+                description: Global Customer ID.
+                example: '10293'
+              orgID:
+                type: integer
+                description: Phoenix Organization ID in case of Phoenix Servers.
+                example: 123
+              orgName:
+                type: string
+                description: Phoenix Organization name in case of Phoenix Servers.
+                example: Default Organization
+              productID:
+                type: integer
+                description: inSync or Phoenix Product ID.
+                example: 12289
+              productJobType:
+                type: string
+                description: Type of restore job created in inSync or Phoenix.
+                example: Restore
+              resourceType:
+                type: string
+                description: Type of resource for which restore job is created in inSync or Phoenix.
+                example: Endpoint
+              resourceID:
+                type: integer
+                description: ID of resource for which restore job is created in inSync or Phoenix.
+                example: 1234
+              resourceName:
+                type: string
+                description: Name of resource for which restore job is created in inSync or Phoenix.
+                example: Ernie Carter Macbook
+              addTime:
+                type: string
+                description: Creation time of Restore scans job.
+                example: '2021-04-12T09:33:55Z'
+              endTime:
+                type: string
+                description: The time when the scan job was completed.
+                example: '2021-04-12T09:33:55Z'
+              jobType:
+                type: string
+                description: Type of Restore scans job.
+                example: Restore Scan
+              statusCode:
+                type: integer
+                description: Status code for Restore scans job.
+                example: 2
+              status:
+                type: string
+                description: Status for Restore scans job.
+                example: Successful
+              deviceName:
+                type: string
+                description: Resource Name for which Restore scans job is executed.
+                example: Ernie Carter's Macbook.
+              ResourceURL:
+                type: string
+                description: Link to resource for which Restore scans job is executed.
+                example: ''
+              RestoreJobURL:
+                type: string
+                description: Link to product Restore Job corresponding to Restore scans job.
+                example: ''
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalItems:
+          type: integer
+          description: Total jobs present in the response.
+          example: 38
+    jobFilesDetailsResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                description: The path of the scanned file.
+                example: C:/Backup_Folder/file1.pdf
+              ver:
+                type: integer
+                format: int32
+                description: The version of the scanned file.
+                example: 16
+              mTime:
+                type: string
+                format: date-time
+                description: The modification time of the scanned file.
+                example: Jul 8 2021 03:51
+              sha1Hash:
+                type: string
+                description: SHA1 sum of the scanned file.
+                example: 077eb3024604928da9a5c70c0efefd805819e7da
+              size:
+                type: integer
+                format: int64
+                description: Size of the scanned file.
+                example: 10240
+              unique_id:
+                type: string
+                description: Unique ID of the scanned file.
+                example: d4702061-e783-46da-9161-ed9a10209c6a-33693:43:1:15
+              sha1Match:
+                type: boolean
+                description: True in case the SHA1sum matches for.
+                example: 'true'
+              sha1MatchAgainst:
+                type: string
+                description: Uploaded SHA1 ID against which File SHA1 matched.
+                example: 077eb3024604928da9a5c70c0efefd805819e7da
+              virusFound:
+                type: boolean
+                description: True in case virus found for the file.
+                example: 'false'
+              virusName:
+                type: string
+                description: Name of the virus if found.
+                example: ''
+              isSkipped:
+                type: boolean
+                description: True in case the file could not be scanned and hence was skipped from restore
+                example: 'false'
+              reasonToSkip:
+                type: string
+                description: The reason to skip the file scan.
+                example: File size is more than 1 GB
+              status:
+                type: integer
+                description: Status of the file deletion. Applicable only in case of a Sandbox Recovery Job. Possible status values are '1' and '2' which indicates that the 'file was deleted' and 'file was not deleted' respectively.
+                example: 2
+        ContentType:
+          type: string
+          example: application/json
+    SettingsResponse:
+      type: object
+      properties:
+        AVScanEnabled:
+          type: boolean
+          description: Boolean denoting if Anti Virus (AV) scan is enabled.
+          example: 'True'
+        fileHashScanEnabled:
+          type: boolean
+          description: Boolean denoting if scan for File Hash is enabled.
+          example: 'False'
+        allowAdminToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        allowAdminToSkipScanServers:
+          type: boolean
+          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
+          example: 'True'
+        allowUserToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync Client user is allowed to enable or disable Restore scans for Endpoints.
+          example: 'False'
+        skipScanForDeviceReplace:
+          type: boolean
+          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
+          example: 'False'
+        useDruvaCuratedIOCs:
+          type: boolean
+          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
+          example: 'True'
+        useLightScan:
+          type: boolean
+          description: Boolean denoting if Quick Scan is enabled.
+          example: 'True'
+        excludeExtensionsFromScan:
+          type: array
+          items:
+            type: string
+          description: Array of Strings(File Extensions)skipped from the scan.
+          example:
+          - .exe
+          - .dll
+          - .tmp
+        maxFileSizeToScanInMB:
+          type: integer
+          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+          example: 200
+        daysBeyondWhichToSkipScan:
+          type: integer
+          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+          example: 30
+    jobDetailsModel:
+      type: object
+      properties:
+        scanJobID:
+          type: integer
+          description: Restore scans Job ID.
+          example: 831
+        customerID:
+          type: integer
+          description: Customer ID.
+          example: 2
+        globalCustomerID:
+          type: string
+          description: Global Customer ID.
+          example: '10293'
+        orgID:
+          type: integer
+          description: Phoenix Organization ID in case of Phoenix Servers.
+          example: -1
+        orgName:
+          type: string
+          description: Phoenix Organization ID in case of Phoenix Servers.
+          example: Default Organization
+        userID:
+          type: integer
+          description: User ID in case of user-specific apps.
+          example: 1
+        userName:
+          type: string
+          description: User Name in case of user-specific apps.
+          example: Ernie Carter
+        csetID:
+          type: integer
+          description: Cset ID in case of user-specific apps.
+          example: 123
+        deviceID:
+          type: integer
+          description: Resource ID for which Restore scans job is executed.
+          example: 123
+        deviceName:
+          type: string
+          description: Resource Name for which Restore scans job is executed.
+          example: Ernie Carter's Macbook.
+        productID:
+          type: integer
+          description: inSync or Phoenix Product ID.
+          example: 8193
+        productJobType:
+          type: string
+          description: Type of restore job created in inSync or Phoenix.
+          example: Restore
+        resourceType:
+          type: string
+          description: Type of resource for which restore job is created in inSync or Phoenix.
+          example: Endpoint
+        resourceID:
+          type: integer
+          description: ID of resource for which restore job is created in inSync or Phoenix.
+          example: 1
+        resourceName:
+          type: string
+          description: Name of resource for which restore job is created in inSync or Phoenix.
+          example: Ernie Carter's Macbook.
+        restoreJobID:
+          type: integer
+          description: Restore Job ID created in inSync or Phoenix.
+          example: 1
+        addTime:
+          type: string
+          description: Creation time of Restore scans job.
+          example: '2021-04-12T09:33:55Z'
+        startTime:
+          type: string
+          description: Start time of Restore scans job.
+          example: '2021-04-12T09:33:55Z'
+        lastUpdatedTime:
+          type: string
+          description: Last Updated time of Restore scans job.
+          example: '2021-04-12T09:33:55Z'
+        endTime:
+          type: string
+          description: The time when the scan job was completed.
+          example: '2021-04-12T09:33:55Z'
+        compactedTime:
+          type: string
+          description: Compaction time of Restore scans job.
+          example: '2021-04-12T09:33:55Z'
+        jobType:
+          type: string
+          description: Type of Restore scans job.
+          example: Restore Scan
+        houstonJobID:
+          type: integer
+          description: H+ Job ID for restore scan job.
+          example: 123
+        attemptNo:
+          type: integer
+          description: Number of attempts of restore scans job
+          example: 1
+        statusCode:
+          type: integer
+          example: 1
+          description: Status code for Restore scans job.
+        status:
+          type: string
+          description: Status for Restore scans job.
+          example: Successful
+        workloadName:
+          type: string
+          description: Worklaod Name for which restore scans job is created.
+          example: Endpoint
+        restoreSPaths:
+          type: string
+          description: Restore Paths which needs to be restored in inSync or Phoenix.
+          example: ''
+        fsID:
+          type: string
+          description: File Servers ID in case of Phoenix Servers.
+          example: '123'
+        storageTableName:
+          type: string
+          description: Storage Table Name of the resource.
+          example: storage_us_east_1_123
+        storageID:
+          type: integer
+          description: Storage ID of the resource
+          example: 1
+        filesProcessed:
+          type: integer
+          description: Number of processed files during restore scans job.
+          example: 1000
+        affectedFiles:
+          type: integer
+          description: Number of malicious files found during restore scans job.
+          example: 10
+        skippedFiles:
+          type: integer
+          description: Number of skipped files found during restore scans job.
+          example: 20
+        createdByID:
+          type: integer
+          description: ID of Administrator.
+          example: 123
+        createdByName:
+          type: string
+          description: Full name of Administrator.
+          example: Druva Cloud Admin
+        createdByType:
+          type: string
+          description: Creator Type
+          example: Admin
+        createdByGlobalID:
+          type: string
+          description: Global ID of Administrator.
+          example: '12345'
+        ResourceURL:
+          type: string
+          description: Link to resource for which Restore scans job is executed.
+          example: ''
+        RestoreJobURL:
+          type: string
+          description: Link to product Restore Job corresponding to Restore scans job.
+          example: ''
+        deletedFiles:
+          type: integer
+          description: Number of deleted files found in case of Sandbox Recovery.
+          example: 0
+        deleteMaliciousFiles:
+          type: boolean
+          description: Boolean denoting the status of malicious files for Sandbox Recovery. This is true if the malicious files need to be deleted.
+          example: false
+        quickRestoreScanSettings:
+          type: object
+          description: Displays the parameters set for Quick Scan if the feature is enabled
+          properties:
+            useLightScan:
+              type: boolean
+              description: Boolean denoting if Quick Scan is enabled.
+              example: 'True'
+            excludeExtensionsFromScan:
+              type: array
+              items:
+                type: string
+              description: Array of Strings(File Extensions)skipped from the scan.
+              example:
+              - .exe
+              - .dll
+              - .tmp
+            maxFileSizeToScanInMB:
+              type: integer
+              description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+              example: 200
+            daysBeyondWhichToSkipScan:
+              type: integer
+              description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+              example: 30
+    RWC_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1002
+          - RWCMaster-1102
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          - Invalid Resource Type
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    RWC_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    SettingsRequest:
+      type: object
+      properties:
+        AVScanEnabled:
+          type: boolean
+          description: Boolean denoting if Anti Virus (AV) scan is enabled.
+          example: 'True'
+        fileHashScanEnabled:
+          type: boolean
+          description: Boolean denoting if scan for File Hash is enabled.
+          example: 'True'
+        allowAdminToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        allowAdminToSkipScanServers:
+          type: boolean
+          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
+          example: 'True'
+        allowUserToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync Client User is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        skipScanForDeviceReplace:
+          type: boolean
+          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
+          example: 'False'
+        useDruvaCuratedIOCs:
+          type: boolean
+          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
+          example: 'True'
+        useLightScan:
+          type: boolean
+          description: Boolean denoting if Quick Scan is enabled.
+          example: 'True'
+        excludeExtensionsFromScan:
+          type: array
+          items:
+            type: string
+          description: Array of Strings(File Extensions)skipped from the scan.
+          example:
+          - .exe
+          - .dll
+          - .tmp
+        maxFileSizeToScanInMB:
+          type: integer
+          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+          example: 200
+        daysBeyondWhichToSkipScan:
+          type: integer
+          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+          example: 30
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

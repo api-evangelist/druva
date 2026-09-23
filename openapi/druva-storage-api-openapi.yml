@@ -1,0 +1,132 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Storage API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: Storage
+paths:
+  /storage/v1/orgs/{OrgID}/reports/usage:
+    get:
+      description: Returns storage usage details for an organization, such as size of the data on the source server(s), the amount of backup data generated at the source, and the amount of storage consumed post deduplication.
+      tags:
+      - Storage
+      summary: List storage usage
+      operationId: GetStorageUsagePerOrganizationRequest
+      security:
+      - Bearer: []
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorageUsagePerOrganizationResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    GetStorageUsagePerOrganizationResponse:
+      description: GetStorageUsagePerOrganizationResponse is the response schema for GetStorageUsagePerOrganization
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        storageUsage:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgUsageResponse'
+          x-go-name: StorageUsage
+      x-go-package: phoenix/storageconfig/report/spec
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    OrgUsageResponse:
+      description: OrgUsageResponse is the response schema for storage usage per organization
+      type: object
+      properties:
+        currentSource:
+          description: Specifies the latest backup size of all resources in the organization.
+          type: string
+          x-go-name: CurrentSource
+        currentSourceInBytes:
+          description: Specifies the latest backup size of all resources in the organization in bytes.
+          type: integer
+          format: uint64
+          x-go-name: CurrentSourceInBytes
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        phoenixStorage:
+          description: Specifies the actual storage utilization of the organization.
+          type: string
+          x-go-name: PhoenixStorage
+        phoenixStorageInBytes:
+          description: Specifies the actual storage utilization of the organization in bytes.
+          type: integer
+          format: uint64
+          x-go-name: PhoenixStorageInBytes
+        sourcePlusChanges:
+          description: Specifies the amount of data that was modified, added, or deleted at the source during incremental backups.
+          type: string
+          x-go-name: SourcePlusChanges
+        sourcePlusChangesInBytes:
+          description: Specifies the amount of data in bytes that was modified, added, or deleted at the source during incremental backups.
+          type: integer
+          format: uint64
+          x-go-name: SourcePlusChangesInBytes
+      x-go-package: phoenix/storageconfig/report/spec
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

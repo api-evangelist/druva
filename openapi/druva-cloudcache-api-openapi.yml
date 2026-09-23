@@ -1,0 +1,245 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Cloud Cache API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: CloudCache
+paths:
+  /cloudcache/v1/orgs/{OrgID}/reports/config:
+    get:
+      description: Returns cache configuration information, such as cache server information, cache schedules, volumes and volumes usage.
+      tags:
+      - CloudCache
+      summary: List cloudcache config
+      operationId: GetAllCloudCacheConfigRequest
+      security:
+      - Bearer: []
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: State
+        description: Specify the current network status of the Cloudcache server.
+        name: state
+        in: query
+        schema:
+          type: integer
+          format: int32
+          enum:
+          - unconfigured
+          - configured
+      - x-go-name: CacheName
+        description: Specify the name of Cloudcache(s). Specify multiple cloudcache names by separating them with commas.
+        name: cacheName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllCacheConfigResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    CacheScheduleResponse:
+      description: CacheScheduleResponse is the response schema for CacheSchedule
+      type: object
+      properties:
+        bandwidth:
+          description: Specifies the bandwidth that each resource can consume while backing up data to the CloudCache.
+          type: integer
+          format: int32
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        bandwidthUnit:
+          description: The unit of the bandwidth.
+          type: string
+          x-go-name: Unit
+        daysOfWeek:
+          description: List of days, this sync schedule will run.
+          type: array
+          items:
+            type: string
+          x-go-name: DaysOfWeek
+        scheduleDuration:
+          description: Sync schedule time duration in Hrs.
+          type: integer
+          format: int32
+          x-go-name: Duration
+        startTime:
+          description: It's start timing of cloudcahe sync schedule.
+          type: string
+          x-go-name: StartTime
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    CacheDeviceResponse:
+      description: CacheDeviceResponse is the response schema for Device
+      type: object
+      properties:
+        activationTime:
+          description: The activation time of the cloudcache.
+          type: string
+          x-go-name: ActivationTime
+        cacheVersion:
+          description: The version of the cloudcache build currently installed on the cloudcache server.
+          type: string
+          x-go-name: Version
+        fqdn:
+          description: The FQDN of the cloudcache server.
+          type: string
+          x-go-name: FQDN
+        isUpgradable:
+          description: The status of the cloudcache build that indicates wheather it is upgradable or not.
+          type: boolean
+          x-go-name: IsUpgradable
+        lastUpgradeTime:
+          description: The time indicates the last upgrade of the cloudcache server build.
+          type: string
+          x-go-name: LastUpgradeTime
+        os:
+          description: The OS type of the cloudcache server.
+          type: string
+          x-go-name: OS
+        osVersion:
+          description: The OS version of the cloudcache server.
+          type: string
+          x-go-name: OSVersion
+        timezone:
+          description: The timezone of the cloudcache server.
+          type: string
+          x-go-name: Timezone
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+    CacheConfigResponse:
+      description: CacheConfigResponse is the response schema for Cache config
+      type: object
+      properties:
+        cacheServerInfo:
+          $ref: '#/components/schemas/CacheDeviceResponse'
+        cloudFallback:
+          description: The status that indicates whether you selected an option to back up to the cloud is unable to back up to the CloudCache.
+          type: boolean
+          x-go-name: CloudFallback
+        name:
+          description: The name of the cloudcache.
+          type: string
+          x-go-name: Name
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        schedules:
+          description: List of cloudcache sync schedule info.
+          type: array
+          items:
+            $ref: '#/components/schemas/CacheScheduleResponse'
+          x-go-name: Schedules
+        state:
+          description: The current state of cloudcache.
+          type: string
+          x-go-name: State
+        volumes:
+          description: List of cloudcache volume info.
+          type: array
+          items:
+            $ref: '#/components/schemas/CacheVolumeResponse'
+          x-go-name: Volumes
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+    GetAllCacheConfigResponse:
+      description: GetAllCacheConfigResponse is the response schema for GetAllCacheConfigResponse
+      type: object
+      properties:
+        cacheConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/CacheConfigResponse'
+          x-go-name: CacheConfig
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+    CacheVolumeResponse:
+      description: CacheVolumeResponse is the response schema for CacheVolume
+      type: object
+      properties:
+        allocatedSize:
+          description: Specifies the maximum size of the CloudCache volume.
+          type: string
+          x-go-name: AllocatedSize
+        allocatedSizeInBytes:
+          description: Specifies the maximum size of the CloudCache volume in bytes.
+          type: integer
+          format: uint64
+          x-go-name: AllocatedSizeInBytes
+        usedSize:
+          description: Specifies the size currently being used of the CloudCache volume.
+          type: string
+          x-go-name: UsedSize
+        usedSizeInBytes:
+          description: Specifies the size in bytes currently being used of the CloudCache volume.
+          type: integer
+          format: uint64
+          x-go-name: UsedSizeInBytes
+        volumePath:
+          description: The volume path of the cloudcache volume on cloudcache server.
+          type: string
+          x-go-name: Path
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

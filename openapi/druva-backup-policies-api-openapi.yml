@@ -1,0 +1,1600 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Backup Policies API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Backup Policies specific API functions
+  name: Backup Policies
+paths:
+  /organizations/{organization_id}/policies:
+    get:
+      description: Return policies by organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsPoliciesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get All Backup Policies
+      tags:
+      - Backup Policies
+      operationId: getOrganizationsByOrganizationIdPolicies
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}:
+    delete:
+      description: Delete Policy by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      - description: What would you like to do with the backups created by this policy?
+        in: query
+        name: action
+        required: true
+        schema:
+          enum:
+          - delete
+          - detach
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsPoliciesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete a Backup Policy
+      tags:
+      - Backup Policies
+      operationId: deleteOrganizationsByOrganizationIdPoliciesByPolicyId
+      x-operation-id-source: derived
+    get:
+      description: Return policy by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsPoliciesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get One Backup Policy
+      tags:
+      - Backup Policies
+      operationId: getOrganizationsByOrganizationIdPoliciesByPolicyId
+      x-operation-id-source: derived
+    put:
+      description: Update policy by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsPoliciesByIdRequest'
+        description: Policies Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsPoliciesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update A Backup Policy
+      tags:
+      - Backup Policies
+      operationId: putOrganizationsByOrganizationIdPoliciesByPolicyId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}/backups/count:
+    get:
+      description: Return count of backup by policy
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsPoliciesBackupsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Count Policies Managed Backups
+      tags:
+      - Backup Policies
+      operationId: getOrganizationsByOrganizationIdPoliciesByPolicyIdBackupsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}/execute:
+    post:
+      description: Execute policy by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsPoliciesExecuteRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsPoliciesExecuteResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Execute Backup Policy
+      tags:
+      - Backup Policies
+      operationId: postOrganizationsByOrganizationIdPoliciesByPolicyIdExecute
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}/import:
+    post:
+      description: Create new backup import for a policy
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsPoliciesImportRequest'
+        description: Import Backups Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsPoliciesImportResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Import Backups to Backup Policy
+      tags:
+      - Backup Policies
+      operationId: postOrganizationsByOrganizationIdPoliciesByPolicyIdImport
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}/rules:
+    post:
+      description: Create Backup Policy Rules for the specified policy
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsPoliciesRulesRequest'
+        description: Policy Rules Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsPoliciesRulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create Backup Policy Rule
+      tags:
+      - Backup Policies
+      operationId: postOrganizationsByOrganizationIdPoliciesByPolicyIdRules
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/{policy_id}/rules/{rule_id}:
+    delete:
+      description: Delete policy rule by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the backup policy rule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies/:policy_id which returns a single policy with its associated rules
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsPoliciesRulesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete rule
+      tags:
+      - Backup Policies
+      operationId: deleteOrganizationsByOrganizationIdPoliciesByPolicyIdRulesByRuleId
+      x-operation-id-source: derived
+    put:
+      description: Update Policy rule by id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the backup policy that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies which returns all policies inside an organization '
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the backup policy rule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies/:policy_id which returns a single policy with its associated rules
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsPoliciesRulesByIdRequest'
+        description: Policy Rules Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsPoliciesRulesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Backup Policy Rule
+      tags:
+      - Backup Policies
+      operationId: putOrganizationsByOrganizationIdPoliciesByPolicyIdRulesByRuleId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/rules/count:
+    post:
+      description: Get the count of rules per policy
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsPoliciesRulesCountRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsPoliciesRulesCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Count Resources from Rule
+      tags:
+      - Backup Policies
+      operationId: postOrganizationsByOrganizationIdPoliciesRulesCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/policies/rules/kmskeys:
+    post:
+      description: Return kmskeys by organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                copies:
+                  properties:
+                    cross_account_id:
+                      type: string
+                    cross_account_region:
+                      type: string
+                    first_region:
+                      type: string
+                    interval:
+                      type: integer
+                    policy_id:
+                      type: integer
+                    policyId:
+                      type: integer
+                    retention_amount:
+                      type: integer
+                    retention_type:
+                      type: string
+                    retention_unit:
+                      type: string
+                  type: object
+                rules:
+                  items:
+                    properties:
+                      accounts:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            rule_id:
+                              type: integer
+                          type: object
+                        type: array
+                      all_accounts:
+                        type: boolean
+                      all_regions:
+                        type: boolean
+                      all_resource_types:
+                        type: boolean
+                      created_at:
+                        type: string
+                      exclude:
+                        type: boolean
+                      id:
+                        type: integer
+                      matches:
+                        properties:
+                          tags:
+                            items:
+                              properties:
+                                Key:
+                                  type: string
+                                Value:
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      policy_id:
+                        type: integer
+                      regions:
+                        items:
+                          type: string
+                        type: array
+                      resource_types:
+                        items:
+                          type: string
+                        type: array
+                      resources:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            region:
+                              type: string
+                            resource_id:
+                              type: string
+                            resource_name:
+                              type: string
+                            rule_id:
+                              type: integer
+                            type:
+                              type: string
+                          type: object
+                        type: array
+                      rule_id:
+                        type: integer
+                      rule_type:
+                        type: string
+                      updated_at:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+        description: Accounts Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsPoliciesRulesKmskeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get KMS Keys for Servers
+      tags:
+      - Backup Policies
+      operationId: postOrganizationsByOrganizationIdPoliciesRulesKmskeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/tasks/policies:
+    get:
+      description: Get the policies for tasks belonging to organizations
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsTasksPoliciesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: List Policies
+      tags:
+      - Backup Policies
+      operationId: getOrganizationsByOrganizationIdTasksPolicies
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsPoliciesRulesResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              rule_id:
+                type: integer
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        exclude:
+          type: boolean
+        id:
+          type: integer
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              rule_id:
+                type: integer
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          type: string
+      type: object
+    PostOrganizationsPoliciesRulesRequest:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        exclude:
+          type: boolean
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            enum:
+            - EC2Instance
+            - EC2Volume
+            - RDSInstance
+            - RedshiftInstance
+            - DynamoDBTable
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          enum:
+          - tags
+          - resource_id
+          - location
+          type: string
+      type: object
+    PostOrganizationsPoliciesImportRequest:
+      properties:
+        accounts:
+          items:
+            type: string
+          type: array
+        all_accounts:
+          type: boolean
+        regions:
+          items:
+            type: string
+          type: array
+        types:
+          items:
+            type: string
+          type: array
+      type: object
+    DeleteOrganizationsPoliciesByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    DeleteOrganizationsPoliciesRulesByIdResponse:
+      type: object
+    GetOrganizationsPoliciesBackupsCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    GetOrganizationsPoliciesRulesKmskeysResponse:
+      properties:
+        kmsKeys:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsPoliciesByIdResponse:
+      properties:
+        copies:
+          properties:
+            cross_account_id:
+              type: string
+            cross_account_region:
+              type: string
+            first_region:
+              type: string
+            interval:
+              type: integer
+            policy_id:
+              type: integer
+            retention_amount:
+              type: integer
+            retention_type:
+              type: string
+            retention_unit:
+              type: string
+            second_region:
+              type: string
+          type: object
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        encryption_mappings:
+          items:
+            type: string
+          type: array
+        fls_index_freq:
+          type: string
+        id:
+          type: integer
+        inherit_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        is_fls_indexed:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        resource_options:
+          properties:
+            ami_reboot:
+              type: boolean
+            ec2_amis:
+              type: boolean
+            policy_id:
+              type: integer
+            scripts:
+              type: boolean
+            vss:
+              type: boolean
+          type: object
+        retention:
+          properties:
+            backups_count:
+              type: string
+            policy_id:
+              type: integer
+            tiered_amount:
+              type: integer
+            tiered_monthly_amount:
+              type: string
+            tiered_monthly_enabled:
+              type: boolean
+            tiered_unit:
+              type: string
+            tiered_weekly_amount:
+              type: string
+            tiered_weekly_enabled:
+              type: boolean
+            tiered_yearly_amount:
+              type: string
+            tiered_yearly_enabled:
+              type: boolean
+            type:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: object
+                type: array
+              rule_type:
+                type: string
+              tags:
+                items:
+                  type: string
+                type: array
+              updated_at:
+                type: string
+            type: object
+          type: array
+        s3_archive:
+          properties:
+            monthly_enabled:
+              type: boolean
+            monthly_storage_class:
+              type: string
+            policy_id:
+              type: integer
+            weekly_enabled:
+              type: boolean
+            weekly_storage_class:
+              type: string
+            yearly_enabled:
+              type: boolean
+            yearly_storage_class:
+              type: string
+          type: object
+        schedule_cron:
+          type: string
+        tag_with:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsPoliciesImportResponse:
+      type: object
+    PutOrganizationsPoliciesByIdRequest:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        encryption_mappings:
+          items:
+            type: string
+          type: array
+        fls_index_freq:
+          type: string
+        id:
+          type: integer
+        inherit_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        is_fls_indexed:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        resource_options:
+          properties:
+            ami_reboot:
+              type: boolean
+            ec2_amis:
+              type: boolean
+            policy_id:
+              type: integer
+            scripts:
+              type: boolean
+            vss:
+              type: boolean
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              editable:
+                type: boolean
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    region:
+                      type: string
+                    resource_id:
+                      type: string
+                    resource_name:
+                      type: string
+                    rule_id:
+                      type: integer
+                    type:
+                      type: string
+                  type: object
+                type: array
+              rule_type:
+                type: string
+              tags:
+                items:
+                  type: string
+                type: array
+              updated_at:
+                type: string
+            type: object
+          type: array
+        schedule_cron:
+          type: string
+        timezone_location:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsPoliciesRulesCountRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+                rule_id:
+                  type: integer
+              type: object
+            type: array
+          all_accounts:
+            type: boolean
+          all_regions:
+            type: boolean
+          all_resource_types:
+            type: boolean
+          created_at:
+            type: string
+          editable:
+            type: boolean
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          policy_id:
+            type: integer
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              properties:
+                account_id:
+                  type: string
+                region:
+                  type: string
+                resource_id:
+                  type: string
+                resource_name:
+                  type: string
+                rule_id:
+                  type: integer
+                type:
+                  type: string
+              type: object
+            type: array
+          rule_type:
+            type: string
+          tags:
+            items:
+              type: string
+            type: array
+          updated_at:
+            type: string
+        type: object
+      type: array
+    PutOrganizationsPoliciesRulesByIdRequest:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        exclude:
+          type: boolean
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            enum:
+            - EC2Instance
+            - EC2Volume
+            - RDSInstance
+            - RedshiftInstance
+            - DynamoDBTable
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          enum:
+          - tags
+          - resource_id
+          - location
+          type: string
+        tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsPoliciesRulesCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    PostOrganizationsPoliciesExecuteRequest:
+      type: object
+    GetOrganizationsPoliciesResponse:
+      properties:
+        hits:
+          properties:
+            created_at:
+              format: date-time
+              type: string
+            created_by:
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            fls_index_freq:
+              type: string
+            id:
+              type: integer
+            inherit_tags:
+              type: boolean
+            is_active:
+              type: boolean
+            is_fls_indexed:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            retention:
+              properties:
+                backups_count:
+                  type: string
+                policy_id:
+                  type: integer
+                tiered_amount:
+                  type: integer
+                tiered_monthly_amount:
+                  type: integer
+                tiered_monthly_enabled:
+                  type: boolean
+                tiered_unit:
+                  type: string
+                tiered_weekly_amount:
+                  type: integer
+                tiered_weekly_enabled:
+                  type: boolean
+                tiered_yearly_amount:
+                  type: integer
+                tiered_yearly_enabled:
+                  type: boolean
+                type:
+                  type: string
+              type: object
+            schedule_cron:
+              type: string
+            stats:
+              properties:
+                resource_count:
+                  type: integer
+              type: object
+            timezone_location:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsTasksPoliciesResponse:
+      properties:
+        deleted_at:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+      type: object
+    PutOrganizationsPoliciesRulesByIdResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              rule_id:
+                type: string
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        created_at:
+          type: string
+        exclude:
+          type: boolean
+        id:
+          type: string
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            type: string
+          type: array
+        resources:
+          items:
+            type: string
+          type: array
+        rule_type:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        updated_at:
+          type: string
+      type: object
+    PostOrganizationsPoliciesExecuteResponse:
+      properties:
+        job_ids:
+          items:
+            type: string
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PutOrganizationsPoliciesByIdResponse:
+      properties:
+        id:
+          type: integer
+        resource_count:
+          type: integer
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

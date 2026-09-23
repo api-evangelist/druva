@@ -1,0 +1,828 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to view details and manage IOC Sets in the IOC library.
+  version: 3.0.0
+  title: Cyber Resilience Threat Intel API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Threat Intel
+  description: List of APIs to view details and manage IOC Sets in the IOC library.
+paths:
+  /threatintel/v1/ioc-sets:
+    get:
+      description: Provides a list of all the existing IOC Sets created in the IOC library.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Listing of IOC Sets
+      operationId: ListIocSetRequest
+      parameters:
+      - name: IocType
+        in: query
+        description: Details of the IOC type. It can be either file hash or file extension.
+        required: true
+        schema:
+          type: string
+          enum:
+          - hash
+          - ext
+      - name: PageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        required: false
+        description: Maximum number of records to be fetched and displayed.
+        schema:
+          type: integer
+      - name: SortBy
+        description: Specify the parameter by which you intend to sort the listed results. Sorting can be done on the basis of 'IOC Set name', 'totalIOCs', and 'lastModifiedOn' parameters.
+        required: false
+        in: query
+        schema:
+          type: string
+          enum:
+          - name
+          - totalIOCs
+          - lastModifiedOn
+      - name: SortOrder
+        in: query
+        description: Specify the order you intend to sort and list the results. Sorting can be done in ascending or descending order.
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: PublishedBy
+        in: query
+        required: false
+        description: Specify the IOC Set publisher detail to list and view IOC Sets created and added by a specific publisher.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Displays the list of all IOC Sets.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ListIocSetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+    post:
+      description: Creates a new IOC Set.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Creates a new IOC Set
+      operationId: CreateIOCSetRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIOCSetRequestBody'
+        required: true
+      responses:
+        '200':
+          description: IOC Set created successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IOCSetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+  /threatintel/v1/ioc-sets/iocs:
+    get:
+      description: Lists all the IOCs that matches the specified parameters.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Lists all the IOCs that matches the specified parameters
+      operationId: GetIOCsRequest
+      parameters:
+      - name: IOCSetIDs
+        in: query
+        required: false
+        description: Lists all the IOC Sets for the specified IDs to view their IOCs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: PublisherType
+        in: query
+        required: false
+        description: List IOC Sets based on the Publisher administrator.
+        schema:
+          type: string
+      - name: IOCSetName
+        in: query
+        required: false
+        description: Lists IOCs based on the IOC Set name.
+        schema:
+          type: string
+      - name: IOCSetType
+        in: query
+        required: false
+        description: File hashes or file extensions to be fetched and displayed.
+        schema:
+          type: string
+          enum:
+          - hash
+          - ext
+      - name: SortOrder
+        in: query
+        description: Specify the order you intend to sort and list the results. Sorting can be done in ascending or descending order.
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: PageSize
+        in: query
+        required: false
+        description: Maximum number of records to be fetched and displayed.
+        schema:
+          type: integer
+      - name: PageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetIOCsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+  /threatintel/v1/ioc-sets/{iocsetid}:
+    get:
+      description: Details of a specific IOC Set.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Details of IOC Set
+      operationId: IocSetDetailsRequest
+      parameters:
+      - name: iocsetid
+        in: path
+        required: true
+        description: Specify the IOC Set ID to view the details.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IocSetDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+    delete:
+      description: Allows you to delete an existing IOC Set and also all the IOCs in it.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Delete an existing IOC Set
+      operationId: DeleteIocSetRequest
+      parameters:
+      - name: iocsetid
+        in: path
+        required: true
+        description: Specify the IOC Set ID to delete its details.
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteIocSetBody'
+        required: true
+      responses:
+        '200':
+          description: Ioc set deleted successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeleteIocSetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+    patch:
+      description: Allows you to update the details of the existing IOC Sets and also to add new IOCs to IOC Sets.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Updates existing IOC Set
+      operationId: UpdateIocSetRequest
+      parameters:
+      - name: iocsetid
+        in: path
+        required: true
+        description: Specify the IOC set ID to update the details.
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIocSetRequestBody'
+      responses:
+        '200':
+          description: IOC Set updated successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IOCSetResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+  /threatintel/v1/ioc-sets/{iocsetid}/iocs:
+    delete:
+      description: Delete IOCs from the specified IOC Set.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Deletes IOCs from IOC Set
+      operationId: DeleteIocsRequest
+      parameters:
+      - name: iocsetid
+        in: path
+        required: true
+        description: Specify the IOC set ID whose IOCs needs to be deleted.
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteIocsRequestBody'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeleteIocsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+  /threatintel/v1/ioc/lookup:
+    get:
+      description: Check if the specified IOC exists in any of the existing IOC Sets.
+      tags:
+      - Threat Intel
+      security:
+      - Bearer: []
+      summary: Check if the specified IOC exists in any of the existing IOC Sets
+      operationId: IocLookupRequest
+      parameters:
+      - name: IocValue
+        in: query
+        required: true
+        description: The IOC that needs to be searched in the IOC Sets.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IocLookupResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_404'
+        '500':
+          description: Internal error.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TI_HTTP_500'
+components:
+  schemas:
+    DeleteIocsRequestBody:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Outdated IOCs
+          description: Reasion for deletion.
+        iocIDs:
+          type: array
+          items:
+            type: integer
+            example: 23
+          description: IOC ID that needs to be deleted. A maximum of 10 IOCs can be deleted in one delete request.
+    IocSetForLookup:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocSetType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Type of IOC, can be either hash or extension.
+        lastModifiedOn:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which this IOC set was last updated.
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of IOC set.
+        publishDate:
+          type: string
+          example: Jan 07, 2025 07:08:40
+          description: Time at which this IOC set was published.
+        publishedBy:
+          type: string
+          example: Jane Doe
+          description: Name of admin who published this IOC set.
+    TI_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - TIMaster-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    CreateIOCSetRequestBody:
+      type: object
+      required:
+      - name
+      - iocType
+      - iocs
+      properties:
+        description:
+          type: string
+          example: IOC set decription
+          description: IOC set description.
+        iocType:
+          type: string
+          example: hash
+          description: IOc set type, can be either hash / extension.
+          enum:
+          - hash
+          - ext
+        iocs:
+          type: array
+          items:
+            type: string
+            example: 077eb3024604928da9a5c70c0efefd805819e7da
+          description: IOCs that needs to be added in IOC set.
+        name:
+          type: string
+          example: Black cat IOCs
+          description: IOC set name
+        source:
+          type: string
+          example: IOCs of black cat ramsomware
+          description: Source of IOC set.
+    ListIocSetDetails:
+      type: object
+      properties:
+        createdTime:
+          type: string
+          example: Jan 07, 2025 07:08:40
+          description: Time at which this IOC set was created.
+        description:
+          type: string
+          example: IOC set decription
+          description: IOC set description.
+        id:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Type of IOC set, can be either hash or extension.
+        isDruvaIOC:
+          type: boolean
+          example: true
+          description: Indicates that IOC set is published by Druva, only for customers with Threat Intel Premium License.
+        lastModifiedOn:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which this IOC set was last updated.
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of IOC set.
+        nonConvertedIOCs:
+          type: integer
+          example: 12
+          description: Count to IOC that were non SHA1 and there corresponding SHA1 was not found.
+        publishedBy:
+          type: string
+          example: Jane Doe
+          description: Name of admin who published this IOC set.
+        source:
+          type: string
+          example: IOCs of black cat ramsomware
+          description: Source of IOC set.
+        totalIOCs:
+          type: integer
+          example: 35
+          description: Total number of IOCs in the IOC set.
+    IocLookupResponse:
+      type: object
+      properties:
+        iocSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/IocSetForLookup'
+    ListIocSetResponse:
+      type: object
+      properties:
+        allPublishers:
+          type: array
+          items:
+            type: string
+            example: John Doe
+          description: Name of all the administrators who published IOC Set.
+        iocSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListIocSetDetails'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalRecords:
+          type: integer
+          example: 27
+          description: Total number of IOC sets.
+    DeleteIocSetBody:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Outdated IOCs
+          description: Reasion for deletion.
+    IocSetDetailsResponse:
+      type: object
+      properties:
+        Source:
+          type: string
+          example: IOCs of black cat ramsomware
+          description: Source of IOC set.
+        description:
+          type: string
+          example: IOC set decription
+          description: IOC set description.
+        id:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocSetType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Details of the IOC type. It can be either file hash or file extension.
+        isDruvaIOCSet:
+          type: boolean
+          example: true
+          description: Indicates that IOC set is published by Druva. This is displayed only for customers with Threat Intel Premium license.
+        lastModifiedOn:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which the IOC Set was last modified or updated.
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of IOC set.
+        publishDate:
+          type: string
+          example: Jan 07, 2025 07:08:40
+          description: Time at which the IOC Set was published.
+        publishedBy:
+          type: string
+          example: Jane Doe
+          description: Name of admin who published this IOC set.
+    UpdateIocSetRequestBody:
+      description: UpdateIocSetRequestBody is the request structure to handle IOC set create request
+      type: object
+      properties:
+        description:
+          type: string
+          example: IOC set decription
+          description: IOC Set description.
+        iocs:
+          type: array
+          items:
+            type: string
+            example: 077eb3024604928da9a5c70c0efefd805819e7da
+          description: IOCs that needs to be added in IOC set
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of the IOC Set.
+        source:
+          type: string
+          example: IOCs of black cat ramsomware
+          description: Source of IOC Set.
+    DeleteIocSetResponse:
+      type: object
+    TI_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - TIMaster-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    DeleteIocsResponse:
+      type: object
+    TI_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - TIMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    IOCSetResponse:
+      description: IOCSetResponse is the response structure of successful ioc create request
+      type: object
+      properties:
+        countAdded:
+          type: integer
+          example: 12
+          description: Number of IOCs that got added in IOC set.
+        countDuplicate:
+          type: integer
+          example: 3
+          description: Number of IOCs that were duplicate and not added to IOC set.
+        countSkipped:
+          type: integer
+          example: 2
+          description: Number of IOCs that were invalid and not added to IOC set.
+        countTotal:
+          type: integer
+          example: 17
+          description: Total number of IOCs that were provided by administrator.
+        iocSetID:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+    GetIOCsResponse:
+      type: object
+      properties:
+        iocs:
+          type: array
+          items:
+            $ref: '#/components/schemas/IOCDetails'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=.
+          example: eyJpZCI6NTY1NX0=
+        totalIocs:
+          type: integer
+          example: 38
+          description: Total number of IOCs present in the specified IOC set.
+    IOCDetails:
+      type: object
+      properties:
+        addedBy:
+          type: string
+          example: John Doe
+          description: Name of administrator who added the IOC.
+        addedTime:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which this IOC was added.
+        convertedIoc:
+          type: string
+          example: .wfwhr
+          description: Corresponding SHA1 of SHA256 and MD5 hash or empty if not converted, else same as user input
+        id:
+          type: integer
+          example: 25
+          description: Unique ID of the IOC.
+        iocSetID:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Details of the IOC type. It can be either file hash or file extension.
+        iocValue:
+          type: string
+          example: .wfwhr
+          description: IOC value added by the administrator.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

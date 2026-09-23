@@ -1,0 +1,1336 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads AHV API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: AHV
+paths:
+  /ahv/v1/orgs/{OrgID}/reports/backupsets:
+    get:
+      description: Returns all backup sets
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all backup sets
+      operationId: AHVGetBackupsetsRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: VMNames
+        description: Specify the name of the virtual machine. Specify multiple virtual machine names by separating names with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: BackupEnable
+        description: Specify whether the backup is enabled or disabled for the virtual machine.
+        name: backupEnable
+        in: query
+        schema:
+          type: boolean
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetBackupsetsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/jobs:
+    get:
+      description: Returns all jobs
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all jobs
+      operationId: AHVGetAllJobsInfoRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: JobType
+        description: Specify the type of the job. Set this value as "Backup", "Restore", or "Log Request". Specify multiple job types by separating them with commas.
+        name: jobType
+        in: query
+        schema:
+          type: string
+      - x-go-name: Status
+        description: Specify the status of the job. Set this value as "Queued", "Running", "Successful", "Successful with errors", or "Failed". Specify multiple status values by separating them with commas.
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMName
+        description: Specify the name of the VM. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetAllJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/jobs/backups:
+    get:
+      description: Returns all backup jobs
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all backup jobs
+      operationId: AHVGetAllBackupJobsInfoRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: Status
+        description: Specify the status of the job. Set this value as "Queued", "Running", "Successful", "Successful with errors", or "Failed". Specify multiple job statuses by separating the values with commas.
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the VM. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetAllBackupJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/jobs/restores:
+    get:
+      description: Returns all restore jobs
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all restore jobs
+      operationId: AHVGetAllRestoreJobsInfoRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: Status
+        description: Specify the status of the job. Set the status as "Queued", "Running", "Successful", "Successful with errors", or "Failed". Specify multiple job statuses by separating the values with commas.
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the virtual machine. Specify multiple virtual machine names by separating names with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetAllRestoreJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/jobs/uploadlogs:
+    get:
+      description: Returns all upload log jobs
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all upload log jobs
+      operationId: AHVGetAllUploadLogsJobsInfoRequest
+      parameters:
+      - description: Organization ID of the organization under which your ahv hosts are registered. Set it to "0" to select all organizations
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: Status
+        description: Specify the status of the job. Set the values to "Queued", "Running", "Successful", "Successful with errors", or "Failed". Specify multiple job statuses by separating the values with commas.
+        name: status
+        in: query
+        schema:
+          type: string
+      - x-go-name: VMNameList
+        description: Specify the name of the VM. Specify multiple VM names by separating them with commas.
+        name: vmName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetAllUploadLogsJobsInfoResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/policies:
+    get:
+      description: Returns all backup policies
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all policies
+      operationId: AHVGetPoliciesRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetPoliciesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+  /ahv/v1/orgs/{OrgID}/reports/proxies:
+    get:
+      description: Returns all backup proxies
+      tags:
+      - AHV
+      security:
+      - Bearer: []
+      summary: List all backup proxies
+      operationId: AHVGetBackupProxiesRequest
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ClusterNames
+        description: Specify the name of the cluster registered with Druva. Specify multiple cluster names by separating them with commas.
+        name: clusterName
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/AHVGetBackupProxiesResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    AHVEstimationDetailsStruct:
+      description: The estimation details of the job.
+      type: object
+      properties:
+        dataScanned:
+          description: Total data scanned during the job.
+          type: integer
+          format: uint64
+          x-go-name: DataScanned
+        disksAdded:
+          description: Number of VM Disks added at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksAdded
+        disksModified:
+          description: Number of VM Disks changed at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksModified
+        disksRemoved:
+          description: Number of VM Disks removed at source during the job.
+          type: integer
+          format: int64
+          x-go-name: DisksRemoved
+        sourceDataScanned:
+          description: The data scanned in megabytes at the source for backup.
+          type: string
+          x-go-name: SourceDataScanned
+        sourceDataScannedInBytes:
+          description: The data scanned in bytes at the source for backup.
+          type: integer
+          format: uint64
+          x-go-name: SourceDataScannedInBytes
+      x-go-name: EstimationDetailsStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetUploadLogsJobsReport:
+      description: Details of upload log jobs.
+      type: object
+      properties:
+        environmentDetails:
+          $ref: '#/components/schemas/AHVUploadLogsEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/AHVUploadLogsExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the operation.
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        vmName:
+          description: The name of the VM.
+          type: string
+          x-go-name: VMName
+      x-go-name: GetUploadLogsJobsReport
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetPolicies:
+      description: Details of backup policies.
+      type: object
+      properties:
+        automaticRetry:
+          description: Indicates whether automatic retry is enabled or disabled for the job.
+          type: boolean
+          x-go-name: AutomaticRetry
+        dataLock:
+          description: Indicates whether Data Lock is enabled in the backup policy.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        description:
+          description: The policy description.
+          type: string
+          x-go-name: Description
+        ignoreFirstBackupDuration:
+          description: Indicates whether the first backup duration is to be ignored or not.
+          type: boolean
+          x-go-name: IgnoreBackupDuration
+        maxRetryCount:
+          description: The maximum number of retries.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryCount
+        maxRetryDuration:
+          description: The wait interval before the job is retried.
+          type: string
+          x-go-name: MaxRetryDuration
+        maxRetryDurationInSeconds:
+          description: The wait interval in seconds before the job is retried.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryDurationInSeconds
+        policyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: PolicyID
+        policyName:
+          description: The name of the policy.
+          type: string
+          x-go-name: PolicyName
+        policyType:
+          description: The type of the policy.
+          type: string
+          x-go-name: PolicyType
+        retention:
+          $ref: '#/components/schemas/AHVRetentionPolicy'
+        schedules:
+          description: Schedules for the backup.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVSchedules'
+          x-go-name: Schedules
+      x-go-name: GetPolicies
+      x-go-package: phoenix/ahv/cloud/report/spec/policies
+    AHVGetBackupProxiesResponse:
+      description: List all backup proxies response.
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        proxies:
+          description: The list of the backup proxies deployed and the information of each backup proxy.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVBackupProxyInfo'
+          x-go-name: BackupProxies
+      x-go-name: GetBackupProxiesResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/proxies
+    AHVSchedules:
+      description: Details of schedules for the backup.
+      type: object
+      properties:
+        bandwidth:
+          description: The maximum bandwidth allowed for the backup.
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: The maximum bandwidth allowed for the backup in KBps.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          description: The duration after which you want the backup jobs to stop.
+          type: string
+          x-go-name: Duration
+        durationInSeconds:
+          description: The duration in seconds after which you want the backup jobs to stop.
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          $ref: '#/components/schemas/JSONStringList'
+        startAt:
+          description: The scheduled start time.
+          type: string
+          x-go-name: StartAt
+      x-go-name: Schedules
+      x-go-package: phoenix/ahv/cloud/report/spec/policies
+    AHVUploadLogsExecutionDetailsStruct:
+      description: The execution details of the job.
+      type: object
+      properties:
+        endTime:
+          description: The time when the job completes.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "The error code for the failed jobs. The possible values are:\n\n \\\"0\\\": If the job is successful\n\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        logsExpiryTime:
+          description: Expiry time of the uploaded logs.
+          type: string
+          x-go-name: LogsExpiryTime
+        logsSize:
+          description: The size of the extracted log files.
+          type: string
+          x-go-name: LogsSize
+        logsSizeInBytes:
+          description: The size of the extracted log files in bytes.
+          type: integer
+          format: uint64
+          x-go-name: LogsSizeInBytes
+        sourceJobID:
+          description: The job for which logs are requested.
+          type: integer
+          format: int32
+          x-go-name: SourceJobID
+        sourceJobLogType:
+          description: The job type for which logs are requested.
+          type: string
+          x-go-name: SourceJobLogType
+        startTime:
+          description: The time when the job starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: The status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: UploadLogsExecutionDetailsStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVJobResponse:
+      description: Details of all jobs.
+      type: object
+      properties:
+        endTime:
+          description: The time when the job completes.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "The error code for the failed jobs. The possible values are:\n\n \\\"0\\\": If the job is successful\n\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of job.
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        startTime:
+          description: The time when the job starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+        vmName:
+          description: The name of VM.
+          type: string
+          x-go-name: VMName
+      x-go-name: JobResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVDataTransferStruct:
+      description: The data transfer details of the job.
+      type: object
+      properties:
+        backupDuration:
+          description: The total time taken to upload data to the Druva Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: string
+          x-go-name: BackupDuration
+        backupDurationInSeconds:
+          description: The total time taken in seconds to upload data to the Druva Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time
+          type: integer
+          format: int64
+          x-go-name: BackupDurationInSeconds
+        backupSpeed:
+          description: The rate at which the source data is backed up to the Druva Cloud.
+          type: string
+          x-go-name: BackupSpeed
+        backupSpeedInKBps:
+          description: The rate in kilobytes per second at which the source data is backed up to the Druva Cloud.
+          type: number
+          format: double
+          x-go-name: BackupSpeedInKBps
+        bandwidthConsumed:
+          description: The bit rate to transfer data from the Druva Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: The bit rate in kilobytes per second to transfer data from the Druva Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        dataTransferCache:
+          description: The incremental data that is uploaded to CloudCache after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCache
+        dataTransferCacheInBytes:
+          description: The incremental data in bytes that is uploaded to CloudCache after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCacheInBytes
+        dataTransferCloud:
+          description: The incremental data that is uploaded to the Druva Cloud after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCloud
+        dataTransferCloudInBytes:
+          description: The incremental data in bytes that is uploaded to the Druva Cloud after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCloudInBytes
+      x-go-name: DataTransferStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetAllRestoreJobsInfoResponse:
+      description: List all restore jobs response.
+      type: object
+      properties:
+        jobs:
+          description: List of all restore jobs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVGetRestoreJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllRestoreJobsInfoResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetAllBackupJobsInfoResponse:
+      description: List all backup jobs response.
+      type: object
+      properties:
+        jobs:
+          description: List of all backup jobs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVGetBackupJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllBackupJobsInfoResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVRetentionPolicy:
+      description: Details of the retention policy.
+      type: object
+      properties:
+        allSnapshots:
+          description: The number of days for which daily backup recovery points are to be retained.
+          type: string
+          x-go-name: Daily
+        ltrEnabled:
+          description: Indicates whether the backup is enabled for long term retention.
+          type: boolean
+          x-go-name: LTREnabled
+        monthly:
+          description: The number of months for which monthly backup recovery points are to be retained.
+          type: string
+          x-go-name: Monthly
+        warmTierDuration:
+          description: The duration in days for which the snapshot resides in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+        weekly:
+          description: The number of weeks for which weekly backup recovery points are to be retained.
+          type: string
+          x-go-name: Weekly
+        yearly:
+          description: The number of years for which yearly backup recovery points are to be retained.
+          type: string
+          x-go-name: Yearly
+      x-go-name: RetentionPolicy
+      x-go-package: phoenix/ahv/cloud/report/spec/policies
+    AHVUploadLogsEnvironmentStruct:
+      description: The environment details of the job.
+      type: object
+      properties:
+        diskWriteRate:
+          description: Disk write rate during the job.
+          type: string
+          x-go-name: DiskWriteRate
+        networkRetries:
+          description: The number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: The duration of network retries during the job.
+          type: string
+          x-go-name: NetworkRetryDuration
+      x-go-name: UploadLogsEnvironmentStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVLastBackupDetailsStruct:
+      description: The last backup details of the backup set.
+      type: object
+      properties:
+        jobID:
+          description: The unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: LastBackupDetailsStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/backupsets
+    AHVRestoreExecutionDetailsStruct:
+      description: The execution details of the job.
+      type: object
+      properties:
+        bandwidthConsumed:
+          description: The bit rate to transfer data from the Druva Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: The bit rate in kilobytes per second to transfer data from the Druva Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        endTime:
+          description: The time when the job completes.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "The error code for the failed jobs. The possible values are:\n\n \\\"0\\\": If the job is successful\n\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        restoredData:
+          description: The total amount of data restored.
+          type: string
+          x-go-name: RestoredData
+        restoredDataInBytes:
+          description: The total amount of data restored in bytes.
+          type: integer
+          format: uint64
+          x-go-name: RestoredDataInBytes
+        restoredItems:
+          description: Data items restored.
+          type: string
+          x-go-name: RestoredItems
+        startTime:
+          description: The time when the job starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: The status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: RestoreExecutionDetailsStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetPoliciesResponse:
+      description: List all policies response.
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        policies:
+          description: List of all backup policies.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVGetPolicies'
+          x-go-name: Policies
+      x-go-name: GetPoliciesResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/policies
+    AHVEnvironmentStruct:
+      description: The environment details of the job.
+      type: object
+      properties:
+        diskReadRate:
+          description: The bit rate for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: string
+          x-go-name: DiskReadRate
+        diskReadRateInKBps:
+          description: The bit rate in kilobytes per second for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
+          type: number
+          format: double
+          x-go-name: DiskReadRateInKBps
+        networkRetries:
+          description: The number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: The total time spent in the network retries. It is the cumulative of all network session durations.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: The total time spent in seconds in the network retries. It is the cumulative of all network session durations.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: EnvironmentStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVBackupProxyPoolStruct:
+      description: The details of the backup proxy pool.
+      type: object
+      properties:
+        name:
+          description: The name of the backup proxy pool.
+          type: string
+          x-go-name: Name
+        timezone:
+          description: The time zone for the backup proxy pool. Druva triggers backup of the VMs mapped to the proxy pool in this time zone.
+          type: string
+          x-go-name: TimeZone
+      x-go-name: BackupProxyPoolStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/proxies
+    AHVGetBackupJobsReport:
+      description: Details of backup jobs.
+      type: object
+      properties:
+        backupPolicyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int32
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy.
+          type: string
+          x-go-name: BackupPolicyName
+        backupProxyName:
+          description: The name of Backup Proxy.
+          type: string
+          x-go-name: BackupProxyName
+        backupsetID:
+          description: The ID of your backup set.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        dataTransfer:
+          $ref: '#/components/schemas/AHVDataTransferStruct'
+        environmentDetails:
+          $ref: '#/components/schemas/AHVEnvironmentStruct'
+        estimationDetails:
+          $ref: '#/components/schemas/AHVEstimationDetailsStruct'
+        executionDetails:
+          $ref: '#/components/schemas/AHVExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of job.
+          type: string
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          type: integer
+          format: int32
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        vmName:
+          description: The name of VM.
+          type: string
+          x-go-name: VMName
+      x-go-name: GetBackupJobsReport
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVExecutionDetailsStruct:
+      description: The execution details of the job.
+      type: object
+      properties:
+        endTime:
+          description: The time when the job completes.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "The error code for the failed jobs. The possible values are:\n\n \\\"0\\\": If the job is successful\n\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        startTime:
+          description: The time when the job starts.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          x-go-name: Status
+      x-go-name: ExecutionDetailsStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetAllUploadLogsJobsInfoResponse:
+      description: List all upload log jobs response.
+      type: object
+      properties:
+        jobs:
+          description: List of all upload log jobs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVGetUploadLogsJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllUploadLogsJobsInfoResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    AHVRestoreEnvironmentStruct:
+      description: The environment details of the job.
+      type: object
+      properties:
+        diskWriteRate:
+          description: Indicates the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: string
+          x-go-name: DiskWriteRate
+        diskWriteRateInKBps:
+          description: Indicates the bit rate in kilobytes per second for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: number
+          format: double
+          x-go-name: DiskWriteRateInKBps
+        networkRetries:
+          description: The number of network retries during the job.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Indicates the total time spent in the network retries. It represents the cumulative of all network session durations.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Indicates the total time spent in seconds in the network retries. It represents the cumulative of all network session durations.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: RestoreEnvironmentStruct
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetRestoreJobsReport:
+      description: Details of restore jobs.
+      type: object
+      properties:
+        backupProxyName:
+          description: The name of the backup proxy on which the job is processed.
+          type: string
+          x-go-name: BackupProxyName
+        backupsetID:
+          description: The ID of your backup set.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        destinationVMName:
+          description: The name of the VM on which the restore was initiated.
+          type: string
+          x-go-name: DestinationVMName
+        environmentDetails:
+          $ref: '#/components/schemas/AHVRestoreEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/AHVRestoreExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the operation.
+          type: string
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          type: integer
+          format: int32
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        restoreType:
+          description: Type of restore.
+          type: string
+          x-go-name: RestoreType
+        sourceVMName:
+          description: The name of the VM for which the restore was initiated.
+          type: string
+          x-go-name: SourceVMName
+      x-go-name: GetRestoreJobsReport
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVBackupProxyInfo:
+      description: The details of backup proxies.
+      type: object
+      properties:
+        cluster:
+          description: The name of the Cluster.
+          type: string
+          x-go-name: ClusterName
+        backupProxyPool:
+          $ref: '#/components/schemas/AHVBackupProxyPoolStruct'
+        maxConcurrentBackups:
+          description: The maximum number of concurrent backup jobs supported by the backup proxy.
+          type: integer
+          format: int32
+          x-go-name: MaxConcurrentBackups
+        name:
+          description: The name of the backup proxy.
+          type: string
+          x-go-name: Name
+      x-go-name: BackupProxyInfo
+      x-go-package: phoenix/ahv/cloud/report/spec/proxies
+    JSONStringList:
+      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
+      type: array
+      items:
+        type: string
+      x-go-package: phoenix/pkg/dlutil
+    AHVBackupsetInfo:
+      description: Details of backup sets.
+      type: object
+      properties:
+        backupEnabled:
+          description: Indicates whether the backup is enabled for the virtual machine.
+          type: boolean
+          x-go-name: BackupEnabled
+        backupPolicyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy attached to the backup set.
+          type: string
+          x-go-name: BackupPolicyName
+        backupsetID:
+          description: The ID of your backup set.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        clusterID:
+          description: The ID of your cluster.
+          type: integer
+          format: int64
+          x-go-name: ClusterID
+        clusterName:
+          description: The name of the cluster.
+          type: string
+          x-go-name: ClusterName
+        dataLock:
+          description: Indicates whether data lock is enabled for the backup set.
+          type: boolean
+          x-go-name: ImmutabilityEnabled
+        lastBackupDetails:
+          $ref: '#/components/schemas/AHVLastBackupDetailsStruct'
+        ltrEnabled:
+          description: Indicates whether the backup is enabled for long term retention.
+          type: boolean
+          x-go-name: LTREnabled
+        name:
+          description: The name of your VM.
+          type: string
+          x-go-name: VMName
+        organizationID:
+          description: The ID of your organization.
+          type: integer
+          format: int32
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        vmID:
+          description: The ID of your virtual machine.
+          type: integer
+          format: int64
+          x-go-name: VMID
+        warmTierDuration:
+          description: The duration in days for which the snapshot resides in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+      x-go-name: BackupsetInfo
+      x-go-package: phoenix/ahv/cloud/report/spec/backupsets
+    AHVGetAllJobsInfoResponse:
+      description: List all jobs response.
+      type: object
+      properties:
+        jobs:
+          description: List of all jobs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVJobResponse'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllJobsInfoResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/jobs
+    AHVGetBackupsetsResponse:
+      description: List all backup sets response.
+      type: object
+      properties:
+        backupsets:
+          description: List of backup sets.
+          type: array
+          items:
+            $ref: '#/components/schemas/AHVBackupsetInfo'
+          x-go-name: Backupsets
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupsetsResponse
+      x-go-package: phoenix/ahv/cloud/report/spec/backupsets
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

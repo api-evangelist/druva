@@ -1,0 +1,200 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Event Management API
+  description: Lists the APIs to get information about the events generated in Druva inSync.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Event Management
+  description: Lists the APIs to get information about the events generated in Druva inSync.
+paths:
+  /eventmanagement/v2/events:
+    get:
+      tags:
+      - Event Management
+      summary: List all events
+      description: Returns the list of all the events generated in Druva inSync. You can also get Events API response in CEF and Syslog formats. For more information, see Events API to export inSync events.
+      security:
+      - Bearer: []
+      parameters:
+      - name: tracker
+        in: query
+        required: false
+        description: "Each Events API request returns a response that contains a maximum of 500 inSync events. If there are more than 500 events, the response also contains a Tracker, an identifier that contains inSync database reference and identifies the next set of unique events when a successive Events API call is made.\nTracker is valid for the next 48 hours after a response is generated.\nYou must include the Tracker in your subsequent request to fetch the next unique list of inSync events. Do not include the Tracker in the first Events API request.\n > ℹ️ **Info** \n > If you do not specify the Tracker in the successive request, inSync returns the same list of events in response that you received in the first Event API request. <br /><br /> **Ensure that you encode the tracker when you pass it as a query param**."
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getEventmanagementV2Events
+      x-operation-id-source: derived
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        eventID:
+          type: integer
+          format: int64
+          description: The unique id of the event in inSync.
+          example: 101
+        initiator:
+          type: string
+          description: The initiator of the event. In case of a user generated event or an administrator generated event the corresponding email address is displayed. In case of System event, the initiator will always be the name of the system.
+          example: ernie.carter@druva.com
+        inSyncDataSourceID:
+          type: integer
+          description: The inSync assigned identifier of the user device on which the event occurred.
+          example: 2
+        inSyncDataSourceName:
+          type: string
+          description: The device name on which the event occurred.
+          example: DDSPL1111
+        clientVersion:
+          type: string
+          description: The inSync Client version on the user device.
+          example: 6.1.1r73332
+        clientOS:
+          type: string
+          description: The OS on which the inSync Client is installed.
+          example: win32
+        inSyncUserID:
+          type: integer
+          description: inSync assigned identifier of the user associated with the event.
+          example: 11
+        inSyncUserName:
+          type: string
+          description: The name of the inSync user associated with the event.
+          example: sagard
+        inSyncUserEmail:
+          type: string
+          description: The email of the inSync user associated with the event.
+          example: ernie.carter@druva.org
+        profileID:
+          type: integer
+          description: inSync assigned identifier of the inSync profile to which the user, associated with the occurred event is linked to.
+          example: 3
+        profileName:
+          type: string
+          description: The name of the inSync profile to which the user, associated with the occurred event is linked to.
+          example: document_desktop_profile
+        eventType:
+          type: string
+          description: Type of Event, <a href=https://developer.druva.com/docs/event-apis> List of Supported events</a>
+          example: API Login
+        eventState:
+          type: string
+          description: State of Event
+          example: Success
+        eventDetails:
+          type: string
+          description: Displays the details of multiple events within a single activity. For instance, a backup activity provides details such as the number of files backed up, number of files missed, total time taken for the backup activity. And for auto-delete user or user device, it provides the userIdentifierCustomAttribute and userIdentifierCustomAttributeValue, if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI.
+          example: Total Backup Size:0, Files Backed up:0, Files Missed:0, System and App Settings:Yes, Total Bytes Transferred:0, eventsGroupId:2, userIdentifierCustomAttribute:custom attribute label, userIdentifierCustomAttributeValue:custom attribute value
+        timeStamp:
+          type: string
+          description: "The date and time when the event was generated. Format - YYYY-MM-DDTHH:MM:SSZ \n Example - 2019-10-25T00:00:00Z"
+          example: '2019-05-28T07:07:00Z'
+        severity:
+          type: string
+          description: The severity level of the event as defined in Druva inSync.
+          example: 6
+        ip:
+          type: string
+          description: The IP address of the device on which the event occurred. In case of an admin event, IP address of the device on which the administrator logged on to perform inSync activity is displayed.
+          example: 114.143.238.10
+        facility:
+          type: string
+          description: The facility number as defined in inSync Management Console Events API settings. Default value is 23.
+          example: 23
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    EventList:
+      type: object
+      properties:
+        tracker:
+          type: string
+          description: "Tracker is valid for the next 48 hours after a response is generated. \n > ℹ️ **Info** \n > If you do not specify the Tracker in the successive request, inSync returns the same list of events in response that you received in the first Event API request. <br /><br /> **Ensure that you encode the tracker when you pass it as a query param**."
+          example: MTExMQ==
+        nextPageExists:
+          type: boolean
+          description: The flag to know if next page of result exists.
+          example: true
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

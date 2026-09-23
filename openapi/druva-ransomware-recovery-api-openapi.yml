@@ -1,0 +1,1477 @@
+openapi: 3.2.0
+info:
+  description: List of APIs to get information and perform operations on ransomware affected resources managed in Druva Cloud.
+  version: 3.0.0
+  title: Cyber Resilience Ransomware Recovery API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Ransomware Recovery
+  description: List of APIs to get information and perform operations on ransomware affected resources managed in Druva Cloud.
+paths:
+  /ransomwarerecovery/v1/search/resource:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Search for infected resources
+      description: Search for an infected resource like a device or any data source like NAS, File Server, and so on using the name of the resource.
+      security:
+      - Bearer: []
+      parameters:
+      - name: hostname
+        in: query
+        description: Specify the complete name or a prefix from the device name, hostname, or server name by which you intend to search and list the devices, hostname, or servers. Example - “My” is the prefix in the device name “MyDevice123”.
+        required: true
+        schema:
+          type: string
+      - name: orgName
+        in: query
+        description: Specify the complete name of an Organization
+        required: false
+        schema:
+          type: string
+      - name: resourceType
+        in: query
+        description: Specify Resource Type for filtering.
+        required: false
+        schema:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: getRansomwarerecoveryV1SearchResource
+      x-operation-id-source: derived
+  /ransomwarerecovery/v1/quarantineranges/resource/{resourceID}:
+    post:
+      tags:
+      - Ransomware Recovery
+      summary: Quarantine snapshots on a resource - v1
+      description: 'Quarantine all snapshots, or snapshots within a date range on a resource.
+
+        :fa-info-circle: Users and administrators cannot restore or download data from the quarantined snapshots.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the resource on which the snapshots should be quarantined. \nGet the ID of a device using the ‘List all devices’ API. \nFor data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quarantineRangeCreateRequest'
+        description: Required parameters for a quarantine range to be created.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quarantineRangeCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: postRansomwarerecoveryV1QuarantinerangesResourceByResourceID
+      x-operation-id-source: derived
+  /ransomwarerecovery/v1/quarantineranges:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Lists all quarantine ranges - v1
+      description: 'Returns the list of all the defined quarantined ranges for resources along with their details.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: searchString
+        in: query
+        required: false
+        description: Specify the complete name or a prefix from the resource name by which you intend to search and list the resources. Example - “My” is the prefix in the resource name “MyResource123”.
+        schema:
+          type: string
+      - name: resourceParent
+        in: query
+        required: false
+        description: Specify the complete name or a prefix from the resource parent's name by which you intend to search and list the resources. Example - “My” is the prefix in the resource parent's name “MyParent123”.
+        schema:
+          type: string
+      - name: fromDate
+        in: query
+        required: false
+        description: 'Specify a date from which you want to list all the quarantined resources. Format - YYYY-MM-DD
+
+          Example - 2020-10-25.
+
+          :fa-info-circle: If you do not specify a date this will list all quarantined resources from January 06, 2020 (a system-defined limit).
+
+          Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates.'
+        schema:
+          type: string
+      - name: toDate
+        in: query
+        required: false
+        description: 'Specify a date till which you want to list all the quarantined resources. Format - YYYY-MM-DD
+
+          Example - 2020-10-25.
+
+          :fa-info-circle: If you do not specify a date this will list all quarantined resources till date.
+
+          Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates.'
+        schema:
+          type: string
+      - name: resourceType[]
+        in: query
+        required: false
+        description: This can be used to filter Quarantine ranges based on Resource Type. Multiple resource types can be selected at once.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Endpoint
+            - File Server
+            - NAS
+            - VMware
+            - OneDrive
+            - Google Drive
+            - SharePoint
+            - Shared Drive
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: integer
+      - name: orgID
+        in: query
+        required: false
+        description: The unique identifier of the Phoenix organization for the resource. Not applicable for Endpoints.
+        schema:
+          type: integer
+      - name: resourceName
+        in: query
+        required: false
+        description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+        schema:
+          type: string
+      - name: resourceID
+        in: query
+        required: false
+        description: "The unique ID of the quarantined resource on which the snapshots range needs to be updated. \n  Get the ID of a device using the ‘List all devices’ API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quarantineRangeListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: getRansomwarerecoveryV1Quarantineranges
+      x-operation-id-source: derived
+  /ransomwarerecovery/v1/quarantineranges/resource/{resourceID}/range/{rangeID}:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Get details of a quarantine range - v1
+      description: 'Returns information about a quarantine range on an infected resource using the rangeID.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the resource on which you seek the quarantine range information. \n  Get the ID of a device using the ‘List all devices’ API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      - name: rangeID
+        in: path
+        required: true
+        description: "The unique quarantine range ID for which you need the details. \nGet the quarantine range ID using the 'List all quarantine ranges' API."
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quarantineRangeGetResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: getRansomwarerecoveryV1QuarantinerangesResourceByResourceIDRangeByRangeID
+      x-operation-id-source: derived
+    put:
+      tags:
+      - Ransomware Recovery
+      summary: Update the quarantine range - v1
+      description: 'Use this API to update the quarantine range for an infected resource.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the quarantined resource on which the snapshots range needs to be updated. \n  Get the ID of a device using the ‘List all devices’ API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      - name: rangeID
+        in: path
+        required: true
+        description: "The unique quarantine range ID which needs the update. \nGet the quarantine range ID using the 'List all quarantine ranges' API."
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quarantineRangeUpdateRequest'
+        description: Required parameters for a quarantine range to be created.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quarantineRangeCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: putRansomwarerecoveryV1QuarantinerangesResourceByResourceIDRangeByRangeID
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Ransomware Recovery
+      summary: Delete a quarantine range - v1
+      description: 'Deletes the quarantine range for an infected resource. When you delete a quarantine range, all the snapshots on the resource are again available for restore and download.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the resource on which the quarantine range should be deleted. \n  Get the ID of a device using the ‘List all devices’ API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      - name: rangeID
+        in: path
+        required: true
+        description: "The unique quarantine range ID which needs to be deleted. \nGet the quarantine range ID using the 'List all quarantine ranges' API."
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: deleteRansomwarerecoveryV1QuarantinerangesResourceByResourceIDRangeByRangeID
+      x-operation-id-source: derived
+  /ransomwarerecovery/v1/snapshots/resource/{resourceID}/range/{rangeID}:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: List all snapshots - v1
+      description: 'Lists all the quarantined snapshots within a specified range on the resource.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the resource on which you want to list the quarantine snapshots. \n  Get the ID of a device using the 'List all devices' API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      - name: rangeID
+        in: path
+        required: true
+        description: "The unique Quarantine range ID for which you need to list the quarantined snapshots. \n  Get the quarantine range ID using the 'List all quarantine ranges' API."
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        required: false
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/snapshotListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: getRansomwarerecoveryV1SnapshotsResourceByResourceIDRangeByRangeID
+      x-operation-id-source: derived
+  /ransomwarerecovery/v1/snapshots/resource/{resourceID}/range/{rangeID}/snapshot/{snapshotID}:
+    delete:
+      tags:
+      - Ransomware Recovery
+      summary: Delete a snapshot - v1
+      description: 'Delete an infected snapshot using the snapshot ID.
+
+        :fa-info-circle: Both v1 and v2 Quarantine APIs are supported for Endpoints, File Server, NAS, VMware, OneDrive, Google Drive, SharePoint, and Shared Drive. However, only v2 Quarantine APIs are supported for Azure Virtual Machines.'
+      security:
+      - Bearer: []
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: "The unique ID of the resource on which you want to delete a quarantined snapshot. \n  Get the ID of a device using the 'List all devices' API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        schema:
+          type: integer
+      - name: rangeID
+        in: path
+        required: true
+        description: "The unique ID of the quarantine range that includes the snapshot that you want to delete. \n  Get the quarantine range ID using the 'List all quarantine ranges' API."
+        schema:
+          type: integer
+      - name: snapshotID
+        in: path
+        required: true
+        description: The unique snapshot ID which needs to be deleted.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deleteSnapshotSchema'
+        description: The reason for deletion of the snapshot.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RR_HTTP_500'
+      operationId: deleteRansomwarerecoveryV1SnapshotsResourceByResourceIDRangeByRangeIDSnapshotBySnapshotID
+      x-operation-id-source: derived
+  /ransomwarerecovery/v2/quarantineranges:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Lists all resources with at least one quarantined snapshot, filtered by query…
+      description: Lists all resources which have at least one quarantined snapshot and satisfy the filter criteria given by query parameters
+      parameters:
+      - name: searchString
+        in: query
+        description: Search string for filtering resources
+        schema:
+          type: string
+      - name: fromDate
+        in: query
+        description: Start date of quarantine range (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: End date of quarantine range (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: resourceTypes[]
+        in: query
+        description: List of resource types
+        schema:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+          - AzureVM
+      - name: pageToken
+        in: query
+        description: Token for pagination
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listQuarantinedResourcesResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getRansomwarerecoveryV2Quarantineranges
+      x-operation-id-source: derived
+  /ransomwarerecovery/v2/quarantineranges/resource/{resourceID}:
+    post:
+      tags:
+      - Ransomware Recovery
+      summary: Creates provided quarantine ranges - v2
+      description: Creates provided quarantine ranges for resources. While creating quarantine ranges, the API checks for overlapping ranges and displays an error if the overlapping ranges are present.
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: The unique ID of the resource for which you want to create a quarantine range.
+        schema:
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/createQuarantineRangeV2RequestSchema'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createQuarantineRangeV2ResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: postRansomwarerecoveryV2QuarantinerangesResourceByResourceID
+      x-operation-id-source: derived
+    put:
+      tags:
+      - Ransomware Recovery
+      summary: Creates / Updates / Deletes provided quarantine ranges - v2
+      description: This API replaces all existing quarantine ranges for a resource with the provided ranges. To preserve existing ranges, retrieve them via a GET (/ransomwarerecovery/v2/quarantineranges) request before using this API. If no ranges are provided in the input, all existing ranges for the resource are deleted.
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: The unique ID of the resource that you want to quarantine.
+        schema:
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/createQuarantineRangeV2RequestSchema'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createQuarantineRangeV2ResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: putRansomwarerecoveryV2QuarantinerangesResourceByResourceID
+      x-operation-id-source: derived
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Lists details of specific resource ID which is present in quarantine bay - v2
+      description: Retrieves detailed information for specific resource IDs within the quarantine Bay.
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: The unique ID of the resource that you want to retrieve.
+        schema:
+          type: string
+      - name: resourceType
+        in: query
+        required: true
+        description: Type of the resource (e.g., Endpoint)
+        schema:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+          - AzureVM
+      - name: orgID
+        in: query
+        description: This API allows you to filter the Organization list based on the unique Organization ID.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listDetailsOfQuarantinedResourceResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getRansomwarerecoveryV2QuarantinerangesResourceByResourceID
+      x-operation-id-source: derived
+  /ransomwarerecovery/v2/snapshots/resource/{resourceID}:
+    get:
+      tags:
+      - Ransomware Recovery
+      summary: Lists all snapshots quarantined for a given resource - v2
+      description: Lists all snapshots quarantined for a given resource.
+      parameters:
+      - name: resourceID
+        in: path
+        required: true
+        description: This API allows you to retrieve a snapshot list based on the unique ID of the resource.
+        schema:
+          type: string
+      - name: resourceType
+        in: query
+        required: true
+        description: Type of the resource. For example, Endpoint.
+        schema:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+          - AzureVM
+      - name: orgId
+        in: query
+        description: The unique ID of the organization. To view a list of all the organizations, enter -1.
+        schema:
+          type: integer
+          format: int32
+      - name: fromDate
+        in: query
+        description: Start date of the snapshot (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: End date of the snapshot (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: udaImpact
+        in: query
+        description: Indicates whether the resource is impacted by a Data Anomaly (UDA). True signifies impact, False indicates no impact.
+        schema:
+          type: boolean
+      - name: quarantineType[]
+        in: query
+        required: false
+        description: 'The filters to list and view details based on the quarantine type. Example: manual or auto.'
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - auto
+            - manual
+      - name: airGapType
+        in: query
+        required: false
+        description: 'The filters to list and view details based on the backup type. Example: airgapped or nonairgapped.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listAllQuarantinedSnapshotsForResourceResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getRansomwarerecoveryV2SnapshotsResourceByResourceID
+      x-operation-id-source: derived
+components:
+  schemas:
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    snapshotListResponse:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              snapshotID:
+                type: integer
+                description: Unique ID of the snapshot. Example - Mjk4OC1GcmkgTm9Tk=XXXX
+                example: Mjk4OC1GcmkgTm92IDIyIDExOjEzOjU5IDIwMTk=
+              status:
+                type: string
+                description: "The current status of the snapshot. Status can be one of the following - \nSnapshot Quarantined - Data cannot be downloaded or restored from the snapshot. \nSnapshot Available - Data is available for download or restore from the snapshot."
+                example: Snapshot Quarantined
+                enum:
+                - Snapshot Quarantined
+                - Snapshot Available
+              snapshotName:
+                type: string
+                description: The snapshot's name is the date and time it was created.If no data anomaly details are present,the snapshot name may be empty. Example - Nov 21 2019, 14:39
+                example: Nov 21 2019, 14:39
+              name:
+                type: string
+                description: Name of the snapshot. Snapshot name is the date and the time on which it was created. Example - Nov 21 2019, 14:39
+                example: Nov 21 2019, 14:39
+              alertTypes:
+                type: array
+                description: "The type of Data Anomalies alert for the snapshot. Value can be any of the following -\nCreation - A large number of files created in a short span \nModification - A large number of files edited or modified.\nDeletion - Several files got deleted from the snapshot.\nEncryption - Files encrypted and are inaccessible."
+                items:
+                  type: string
+                  enum:
+                  - Creation
+                  - Deletion
+                  - Modification
+                  - Encryption
+                  example: Creation
+              createdFiles:
+                type: integer
+                description: The total number of files created in the snapshot.
+                example: 0
+              deletedFiles:
+                type: integer
+                description: The total number of files deleted in the snapshot.
+                example: 0
+              updatedFiles:
+                type: integer
+                description: The total number of files modified in the snapshot.
+                example: 0
+              encryptedFiles:
+                type: integer
+                description: The total number of files encrypted in the snapshot. Displays 100+ if the number of encrypted files is more than 100.
+                example: 0
+              totalFilesImpacted:
+                type: integer
+                description: The total number of files created, deleted or modified in the snapshot.
+                example: 0
+              snapshotSize:
+                type: integer
+                description: Snapshot size, in bytes.
+                example: 0
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: '20'
+        isLast:
+          type: boolean
+          description: An identifier to identify if the returned page is the last page of results. Value can be one of the following - True - Is last page of results. False - There are more results available. Use 'nextPageToken' value to get the next list of results.
+    listDetailsOfQuarantinedResourceResponseSchema:
+      type: object
+      properties:
+        resourceID:
+          type: integer
+          format: int64
+        rangeIDs:
+          type: array
+          items:
+            type: object
+            properties:
+              rangeID:
+                type: integer
+                format: int64
+              fromDate:
+                type: string
+                format: date
+              toDate:
+                type: string
+                format: date
+              quarantineType:
+                type: integer
+        orgID:
+          type: integer
+          format: int32
+        resourceName:
+          type: string
+        resourceParent:
+          type: string
+        resourcePlatform:
+          type: string
+        resourceType:
+          type: string
+        addedTime:
+          type: string
+          format: date-time
+        lastUpdatedTime:
+          type: string
+          format: date-time
+        dataLock:
+          type: array
+          description: Provides information related to the Data Lock status of the snapshot.
+          items:
+            type: object
+            properties:
+              storageID:
+                description: Storage ID where the snapshots are backed up
+                type: integer
+                format: int64
+              csetID:
+                description: CSET ID where the snapshots are backed up
+                type: integer
+                format: int64
+              isDataLockEnabled:
+                type: boolean
+    quarantineRangeCreateResponse:
+      type: object
+      properties:
+        rangeID:
+          type: integer
+          description: The unique identifier of the quarantine range which is created or updated for the resource.
+          example: 101
+    listAllQuarantinedSnapshotsForResourceResponseSchema:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              snapshotID:
+                type: string
+              snapshotName:
+                type: string
+              createdFiles:
+                type: integer
+                format: int32
+              deletedFiles:
+                type: integer
+                format: int32
+              updatedFiles:
+                type: integer
+                format: int32
+              encryptedFiles:
+                type: integer
+                format: int32
+              totalFilesImpacted:
+                type: integer
+                format: int32
+              snapshotSize:
+                type: integer
+                format: int64
+              quarantineType:
+                type: integer
+                enum:
+                - 1
+                - 2
+              snapshotEpoch:
+                type: integer
+                format: int64
+              rangeID:
+                type: integer
+                format: int64
+              storageID:
+                type: integer
+                format: int64
+                description: Provides information about the Storage ID where the snapshot is backed up.
+              csetID:
+                type: integer
+                format: int64
+                description: Provides information about the CSET ID where the snapshot is backed up.
+              isAirGapped:
+                type: boolean
+                description: Indicates if the snapshot is backed up to Druva Cloud.
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1001
+          - RealizeUda-1001
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    RR_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    quarantineRangeListResponse:
+      type: object
+      properties:
+        quarantineRanges:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101.
+                example: 101
+              rangeID:
+                type: integer
+                description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
+                example: 101
+              orgID:
+                type: integer
+                description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
+                example: -1
+              resourceName:
+                type: string
+                description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
+                example: Ernie Carter's Macbook.
+              resourceParent:
+                type: string
+                description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+                example: Ernie Carter
+              resourcePlatform:
+                type: string
+                description: The operating system on the quarantined resource. Example - linux
+                example: linux
+              resourceType:
+                type: string
+                description: "The type of resource. A resource can be one of the following types:\nEndpoint \nFile Server \nNAS, and so on"
+                example: Endpoint
+              workload:
+                type: string
+                description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
+                example: endpoints
+              fromDate:
+                type: string
+                format: date
+                description: Lists the start date of the quarantine range. Example - 2020-01-25
+                example: '2020-10-25'
+              toDate:
+                type: string
+                format: date
+                description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
+                example: '2020-10-25'
+        errorMessage:
+          type: string
+          description: Error Message if any.
+          example: Message of the error seen while listing quarantined range.
+        nextPageToken:
+          type: integer
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: 20
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
+          example: true
+    createQuarantineRangeV2ResponseSchema:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            type: object
+            properties:
+              fromDate:
+                type: string
+                description: from date
+                example: '2020-10-25'
+              toDate:
+                type: string
+                description: to date
+                example: '2021-10-25'
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1002
+          - RealizeUda-1002
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    createQuarantineRangeV2RequestSchema:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+          - AzureVM
+        orgID:
+          type: integer
+          description: This applies to Enterprise Workloads resource types only.
+          example: -1
+        ranges:
+          type: array
+          items:
+            type: object
+            properties:
+              fromDate:
+                type: string
+                description: from date
+                example: '2020-10-25'
+              toDate:
+                type: string
+                description: Leaving the field 'toDate' empty quarantines all snapshots created after the 'fromDate', including future snapshots.
+                example: '2021-10-25'
+              quarantineType:
+                type: integer
+                description: Indicates the type of Quarantine enabled for the resource. The value 2 refers to Auto Quarantine type while 1 indicates Manual Quarantine.
+                example: 1
+    quarantineRangeUpdateRequest:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          format: date
+          description: "Specify a date from which you want to quarantine all the snapshots. Format - YYYY-MM-DD\n  Example - 2020-10-25.\n:fa-info-circle: If you do not specify a date Druva will quarantine all the snapshots after November 10, 2019 (a system-defined limit).\n    Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates."
+          example: '2020-09-25'
+        toDate:
+          type: string
+          format: date
+          description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD.\n  Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
+          example: '2020-10-25'
+    RR_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1111
+          - RansomwareRR-1102
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          - Invalid Resource Type
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    searchResponse:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                description: The unique ID of the resource in Druva Cloud.
+                example: 101
+              orgID:
+                type: integer
+                description: The unique identifier of the Enterprise Workloads organization for the resource. Not applicable for Endpoints.
+                example: -1
+              resourceName:
+                type: string
+                description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+                example: DOMAIN1234
+              resourceParent:
+                type: string
+                description: Name of the user in case of a device or Server Name in case of a backup set which is quarantined. Example for Devices - Ernie Carter
+                example: Ernie Carter
+              resourceType:
+                type: string
+                description: "The type of resource. A resource can be one of the following types - \nEndpoint \nFile Server \nNAS."
+                enum:
+                - Endpoint
+                - File Server
+                - NAS
+              resourceStatus:
+                type: string
+                description: "The backup status of the resource in Druva Cloud. Status can be one of the following -\nEnabled - The resource is enabled for backup. \nDisabled - The resource is disabled for backup."
+                enum:
+                - Enabled
+                - Disabled
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: 20
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
+    quarantineRangeCreateRequest:
+      type: object
+      required:
+      - resourceType
+      properties:
+        orgID:
+          type: integer
+          description: Specify unique ID of the Enterprise Workloads organization to which the backup set belongs. For Endpoints, specify -1.
+          example: -1
+        resourceType:
+          type: string
+          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+        fromDate:
+          type: string
+          format: date
+          description: "Specify a date from which you want to quarantine all the snapshots. Format - YYYY-MM-DD \n Example - 2020-10-25. \n:fa-info-circle: If you do not specify a date Druva will quarantine all the snapshots after November 10, 2019 (a system-defined limit). \n Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates."
+          example: '2020-10-25'
+        toDate:
+          type: string
+          format: date
+          description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD. \n Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
+          example: '2020-10-25'
+    quarantineRangeGetResponse:
+      type: object
+      properties:
+        resourceID:
+          type: integer
+          description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101
+          example: 101
+        rangeID:
+          type: integer
+          description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
+          example: 101
+        orgID:
+          type: integer
+          description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
+          example: 101
+        resourceName:
+          type: string
+          description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
+          example: Ernie Carter's Macbook
+        resourceParent:
+          type: string
+          description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+          example: Ernie Carter
+        resourcePlatform:
+          type: string
+          description: The operating system on the quarantined resource. Example - linux
+          example: linux
+        resourceType:
+          type: string
+          description: "The type of resource. A resource can be one of the following types:\n - Endpoint \n - File Server \n - NAS, and so on"
+          example: Endpoint
+        workload:
+          type: string
+          description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
+          example: endpoints
+        fromDate:
+          type: string
+          format: date
+          description: Lists the start date of the quarantine range. Example - 2020-01-25.
+          example: '2020-10-25'
+        toDate:
+          type: string
+          format: date
+          description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
+          example: '2020-10-25'
+        addedTime:
+          type: string
+          format: date
+          description: "The date and time when the quarantine range was created. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z"
+          example: '2020-01-02T15:04:05Z'
+        dataLock:
+          type: boolean
+          description: Resource is data locked or not, if true, cannot delete the quarantined snapshots
+          example: 'false'
+    listQuarantinedResourcesResponseSchema:
+      type: object
+      properties:
+        quarantinedResources:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                format: int64
+              rangeIDs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    rangeID:
+                      type: integer
+                      format: int64
+                    fromDate:
+                      type: string
+                      format: date
+                    toDate:
+                      type: string
+                      format: date
+                    quarantineType:
+                      type: integer
+                      description: Indicates the type of Quarantine enabled for the resource. The value 2 refers to Auto Quarantine type while 1 indicates Manual Quarantine.
+                      example: 1
+              resourceName:
+                type: string
+              resourceType:
+                type: string
+              orgID:
+                type: integer
+                format: int32
+        nextPageToken:
+          type: string
+    RR_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1003
+          - RansomwareRR-1101
+          - RansomwareRR-1122
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+          - The requested resource ID was invalid.
+          - The requested quarantine range was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    deleteSnapshotSchema:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Probable infection point
+  requestBodies:
+    createQuarantineRangeV2RequestSchema:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createQuarantineRangeV2RequestSchema'
+      required: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

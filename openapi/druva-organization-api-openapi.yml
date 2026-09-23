@@ -1,0 +1,1060 @@
+openapi: 3.2.0
+info:
+  title: Druva Organization API
+  version: '1.0'
+  description: 'Operations tagged Organization across 2 of this provider''s published API definitions: druva-cloudranger-openapi-original.json, druva-enterprise-workloads-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.cloudranger.com/202004
+- url: //apis.druva.com/phoenix
+tags:
+- description: Your CloudRanger Organization and how to authenticate API Calls
+  name: Organization
+paths:
+  /organizations:
+    get:
+      description: Returns the all organizations
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get organizations
+      tags:
+      - Organization
+      operationId: getOrganizations
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}:
+    put:
+      description: Update the organization details using the information specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsByIdRequest'
+        description: Organization Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update organization details
+      tags:
+      - Organization
+      operationId: putOrganizationsByOrganizationId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/accessible_accounts/{access_type}:
+    get:
+      description: Return accounts that have the specified level of access under the given organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The CloudRanger access type you want to perform the request against. This can be admin, write or read.
+        in: path
+        name: access_type
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccessible_accountsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Available Accounts
+      tags:
+      - Organization
+      operationId: getOrganizationsByOrganizationIdAccessibleAccountsByAccessType
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/aws/connection/test:
+    post:
+      description: Perform a test assume role to verify the connection to the AWS account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAwsConnectionTestRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAwsConnectionTestResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Perform test assume role
+      tags:
+      - Organization
+      operationId: postOrganizationsByOrganizationIdAwsConnectionTest
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/credential:
+    post:
+      description: Generate cloludformation template for organization account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsCredentialRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsCredentialResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: generate cloudformation template
+      tags:
+      - Organization
+      operationId: postOrganizationsByOrganizationIdCredential
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/members:
+    get:
+      description: Returns the members of the associated organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsMembersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns the members of associated organization
+      tags:
+      - Organization
+      operationId: getOrganizationsByOrganizationIdMembers
+      x-operation-id-source: derived
+    post:
+      description: Creates the members of associated organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsMembersRequest'
+        description: Members Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsMembersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Creates members
+      tags:
+      - Organization
+      operationId: postOrganizationsByOrganizationIdMembers
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/members/{member_id}:
+    delete:
+      description: Deletes the specific member associated to an organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the member that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/members which returns all members inside an organization '
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsMembersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete member
+      tags:
+      - Organization
+      operationId: deleteOrganizationsByOrganizationIdMembersByMemberId
+      x-operation-id-source: derived
+    put:
+      description: Updates the specific member associated to an organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the member that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/members which returns all members inside an organization '
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsMembersByIdRequest'
+        description: Member Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsMembersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Updates organization member
+      tags:
+      - Organization
+      operationId: putOrganizationsByOrganizationIdMembersByMemberId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/members/admin_accounts:
+    get:
+      description: Return admin account members within the specified organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsMembersAdmin_accountsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return admin account members
+      tags:
+      - Organization
+      operationId: getOrganizationsByOrganizationIdMembersAdminAccounts
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organization/v1/orgs:
+    get:
+      description: Returns a list of all organizations.
+      tags:
+      - Organization
+      summary: List all organizations
+      operationId: ListOrgRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrgResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+    servers:
+    - url: //apis.druva.com/phoenix
+components:
+  schemas:
+    PutOrganizationsMembersByIdResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsMembersAdmin_accountsResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsCredentialRequest:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    GetOrganizationsAccessible_accountsResponse:
+      type: string
+    PutOrganizationsMembersByIdRequest:
+      properties:
+        account_access:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsByIdResponse:
+      type: object
+    GetOrganizationsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsByIdRequest:
+      properties:
+        avatar_url:
+          type: string
+        name:
+          type: string
+      type: object
+    PostOrganizationsAwsConnectionTestResponse:
+      properties:
+        state:
+          type: string
+      type: object
+    DeleteOrganizationsMembersByIdResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsCredentialResponse:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAwsConnectionTestRequest:
+      properties:
+        access_role_arn:
+          type: string
+        external_id:
+          type: string
+        organization_id:
+          type: string
+      type: object
+    GetOrganizationsByIdResponse:
+      properties:
+        avatar_url:
+          type: string
+        aws_marketplace_customer_id:
+          type: string
+        billing:
+          properties:
+            adr_enabled:
+              type: boolean
+            api_access_enabled:
+              type: boolean
+            auditing_enabled:
+              type: boolean
+            category:
+              type: string
+            consistent_backups_enabled:
+              type: boolean
+            cross_account_backups:
+              type: boolean
+            cross_region_backups:
+              type: boolean
+            file_level_restore_enabled:
+              type: boolean
+            file_level_search_enabled:
+              type: boolean
+            id:
+              type: integer
+            interval:
+              type: string
+            is_current:
+              type: boolean
+            legal_hold_enabled:
+              type: boolean
+            max_accounts:
+              type: integer
+            max_managed_adr_servers:
+              type: integer
+            max_managed_servers:
+              type: integer
+            max_policies:
+              type: integer
+            max_savings:
+              type: integer
+            max_schedules:
+              type: integer
+            max_spend:
+              type: integer
+            max_users:
+              type: integer
+            name:
+              type: string
+            phone_support_enabled:
+              type: boolean
+            price:
+              type: integer
+            recurly_plan_id:
+              type: string
+            recurly_uses_add_ons:
+              type: boolean
+            reporting_enabled:
+              type: boolean
+            salesforce_sku:
+              type: string
+            slack_enabled:
+              type: boolean
+            sso_enabled:
+              type: boolean
+            support_enabled:
+              type: boolean
+            webhooks_enabled:
+              type: boolean
+          type: object
+        billing_id:
+          type: integer
+        created_at:
+          format: date-time
+          type: string
+        current_spend:
+          type: string
+        customer_id:
+          type: string
+        deleted_at:
+          type: string
+        has_principal_logged_in:
+          type: boolean
+        id:
+          type: string
+        is_active:
+          type: boolean
+        is_trial:
+          type: boolean
+        members:
+          items:
+            properties:
+              account_access:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              email:
+                type: string
+              first_name:
+                type: string
+              id:
+                type: integer
+              invited_at:
+                format: date-time
+                type: string
+              last_name:
+                type: string
+              organization_id:
+                type: string
+              status:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        mfa_enabled:
+          type: boolean
+        name:
+          type: string
+        new_adr_enabled:
+          type: boolean
+        overrides:
+          properties:
+            auditing_enabled:
+              type: string
+            consistent_backups_enabled:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cross_account_backups:
+              type: string
+            cross_region_backups:
+              type: string
+            file_level_restore_enabled:
+              type: string
+            file_level_search_enabled:
+              type: string
+            max_accounts:
+              type: string
+            max_managed_servers:
+              type: integer
+            max_policies:
+              type: string
+            max_savings:
+              type: string
+            max_schedules:
+              type: string
+            max_spend:
+              type: string
+            max_users:
+              type: string
+            organization_id:
+              type: string
+            phone_support_enabled:
+              type: string
+            plan_managed_adr_servers:
+              type: integer
+            plan_managed_servers:
+              type: integer
+            reporting_enabled:
+              type: string
+            slack_enabled:
+              type: string
+            sso_enabled:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            webhooks_enabled:
+              type: string
+          type: object
+        principal_email:
+          type: string
+        recurly_account_id:
+          type: string
+        recurly_plan_code:
+          type: string
+        sf_account_id:
+          type: string
+        subscription_began_at:
+          format: date-time
+          type: string
+        subscription_expires_at:
+          format: date-time
+          type: string
+        trial_expires_at:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsMembersRequest:
+      properties:
+        account_access:
+          enum:
+          - admin
+          - view
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+      type: object
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    OrgResponse:
+      description: OrgResponse is the response schema for ListOrg
+      type: object
+      properties:
+        id:
+          description: The ID of the organization.
+          type: integer
+          format: int32
+          x-go-name: ID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+      x-go-package: phoenix/customerconfig/report/spec/site
+    ListOrgResponse:
+      description: ListOrgResponse is the response schema for ListOrg
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        orgs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgResponse'
+          x-go-name: Orgs
+      x-go-package: phoenix/customerconfig/report/spec/site
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- druva-cloudranger-openapi-original.json
+- druva-enterprise-workloads-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

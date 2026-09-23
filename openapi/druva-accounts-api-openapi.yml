@@ -1,0 +1,1626 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Accounts API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Accounts in your CloudRanger Organization
+  name: Accounts
+paths:
+  /organizations/{organization_id}/accounts:
+    get:
+      description: Returns the account details of the associated organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request. Default is 30
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch. Default is 0 to fetch the first page.
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Accounts
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccounts
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}:
+    delete:
+      description: Delete account details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsAccountsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete account
+      tags:
+      - Accounts
+      operationId: deleteOrganizationsByOrganizationIdAccountsByAccountId
+      x-operation-id-source: derived
+    get:
+      description: Get account details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get account details
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountId
+      x-operation-id-source: derived
+    put:
+      description: update account details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsByIdRequest'
+        description: Accounts Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Account
+      tags:
+      - Accounts
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/accessible_accounts:
+    get:
+      description: Return accessible accounts by account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAccessible_accountsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Accessible Accounts
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAccessibleAccounts
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/credential:
+    post:
+      description: Creates a new credential record
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsCredentialRequest'
+        description: Account Credentials Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsCredentialResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create Credential
+      tags:
+      - Accounts
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdCredential
+      x-operation-id-source: derived
+    put:
+      description: Updates the credentials of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsCredentialRequest'
+        description: Credential Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsCredentialResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Credential
+      tags:
+      - Accounts
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdCredential
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/credential/test:
+    post:
+      description: Test the accounts credentials by attempting to assume the role
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsCredentialTestResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Test Credentials
+      tags:
+      - Accounts
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdCredentialTest
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/ip:
+    get:
+      description: Return ip by account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsIpResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get IP
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdIp
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/members:
+    get:
+      description: Returns the members of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsMembersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Account Members
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdMembers
+      x-operation-id-source: derived
+    post:
+      description: Creates the members of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsMembersRequest'
+        description: Account Members Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsMembersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Creates members
+      tags:
+      - Accounts
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdMembers
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/members/{member_id}:
+    delete:
+      description: Deletes the specific member of the account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the member that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/members which returns all members inside an organization '
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationsAccountsMembersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Delete account member
+      tags:
+      - Accounts
+      operationId: deleteOrganizationsByOrganizationIdAccountsByAccountIdMembersByMemberId
+      x-operation-id-source: derived
+    put:
+      description: Updates the specific member of the account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: 'The ID of the member that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/members which returns all members inside an organization '
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsMembersByIdRequest'
+        description: Account Access
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsMembersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Member
+      tags:
+      - Accounts
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdMembersByMemberId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/synchronization:
+    post:
+      description: Start a syncronization that will reach out to AWS and describe all of the instance, backup and network entity data. This data will be stored by CloudRanger for fast access.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsSynchronizationResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Start Syncronization
+      tags:
+      - Accounts
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSynchronization
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/synchronization/{synchronization_id}:
+    get:
+      description: Returns the specific synchronization detail of an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the syncronization event. Used To poll the API for current syncronization status.
+        in: path
+        name: synchronization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsSynchronizationByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Sync Progress
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSynchronizationBySynchronizationId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/weekly_savings:
+    get:
+      description: Returns the weekly savings of an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsWeekly_savingsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Weekly Savings
+      tags:
+      - Accounts
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdWeeklySavings
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsAccountsCredentialTestResponse:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsIpResponse:
+      properties:
+        ip:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsMembersByIdResponse:
+      type: object
+    PostOrganizationsAccountsCredentialResponse:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsResponse:
+      properties:
+        avatar_image:
+          type: string
+        color:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        credential:
+          properties:
+            access_role_arn:
+              type: string
+            account_id:
+              type: string
+            cloudformation_s3_url:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            external_id:
+              type: string
+            has_agreed:
+              type: boolean
+            state:
+              type: string
+            state_reason:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        default_timezone_location:
+          type: string
+        deleted_at:
+          type: string
+        id:
+          type: string
+        initials:
+          type: string
+        is_active:
+          type: boolean
+        is_legal_hold_account:
+          type: boolean
+        name:
+          type: string
+        organization:
+          properties:
+            avatar_url:
+              type: string
+            aws_marketplace_customer_id:
+              type: string
+            billing_id:
+              type: integer
+            created_at:
+              format: date-time
+              type: string
+            current_spend:
+              type: string
+            customer_id:
+              type: string
+            deleted_at:
+              type: string
+            has_principal_logged_in:
+              type: boolean
+            id:
+              type: string
+            is_active:
+              type: boolean
+            is_trial:
+              type: boolean
+            mfa_enabled:
+              type: boolean
+            name:
+              type: string
+            new_adr_enabled:
+              type: boolean
+            principal_email:
+              type: string
+            recurly_account_id:
+              type: string
+            recurly_plan_code:
+              type: string
+            sf_account_id:
+              type: string
+            subscription_began_at:
+              format: date-time
+              type: string
+            subscription_expires_at:
+              format: date-time
+              type: string
+            trial_expires_at:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        organization_id:
+          type: string
+        settings:
+          properties:
+            account_id:
+              type: string
+            backup_recipients_json:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            failure_recipients_json:
+              type: string
+            filedownload_recipients_json:
+              type: string
+            fls_bucket:
+              type: string
+            fls_enabled:
+              type: boolean
+            fls_index_setting:
+              type: string
+            send_backup_notifications:
+              type: boolean
+            send_download_notifications:
+              type: boolean
+            send_failure_notifications:
+              type: boolean
+            send_server_notifications:
+              type: boolean
+            send_warning_notifications:
+              type: boolean
+            server_recipients_json:
+              type: string
+            sync_schedule:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            warning_recipients_json:
+              type: string
+          type: object
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsCredentialResponse:
+      type: object
+    PutOrganizationsAccountsByIdRequest:
+      properties:
+        account_id:
+          type: string
+        avatar_image:
+          type: string
+        color:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        credential:
+          properties:
+            access_role_arn:
+              type: string
+            account_id:
+              type: string
+            cloudformation_s3_url:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            external_id:
+              type: string
+            has_agreed:
+              type: boolean
+            state:
+              type: string
+            state_reason:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        default_timezone_location:
+          type: string
+        deleted_at:
+          type: string
+        id:
+          type: string
+        initials:
+          type: string
+        is_active:
+          type: boolean
+        is_legal_hold_account:
+          type: boolean
+        members:
+          items:
+            type: object
+          type: array
+        name:
+          type: string
+        organization_id:
+          type: string
+        settings:
+          properties:
+            account_id:
+              type: string
+            backup_recipients_json:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            failure_recipients_json:
+              type: string
+            filedownload_recipients_json:
+              type: string
+            fls_enabled:
+              type: boolean
+            fls_index_setting:
+              type: string
+            fls_network_settings:
+              items:
+                type: string
+              type: array
+            s3_archival_bucket_prefix:
+              type: string
+            send_backup_notifications:
+              type: boolean
+            send_download_notifications:
+              type: boolean
+            send_failure_notifications:
+              type: boolean
+            send_server_notifications:
+              type: boolean
+            send_warning_notifications:
+              type: boolean
+            server_recipients_json:
+              type: string
+            sync_schedule:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            warning_recipients_json:
+              type: string
+          type: object
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsCredentialRequest:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsByIdResponse:
+      properties:
+        avatar_image:
+          type: string
+        color:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        credential:
+          properties:
+            access_role_arn:
+              type: string
+            account_id:
+              type: string
+            cloudformation_s3_url:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            external_id:
+              type: string
+            has_agreed:
+              type: boolean
+            state:
+              type: string
+            state_reason:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        default_timezone_location:
+          type: string
+        deleted_at:
+          type: string
+        id:
+          type: string
+        initials:
+          type: string
+        is_active:
+          type: boolean
+        is_legal_hold_account:
+          type: boolean
+        members:
+          items:
+            properties:
+              account_access:
+                type: string
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              email:
+                type: string
+              first_name:
+                type: string
+              id:
+                type: integer
+              invited_at:
+                format: date-time
+                type: string
+              last_name:
+                type: string
+              status:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        name:
+          type: string
+        organization_id:
+          type: string
+        settings:
+          properties:
+            account_id:
+              type: string
+            backup_recipients_json:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            failure_recipients_json:
+              type: string
+            filedownload_recipients_json:
+              type: string
+            fls_bucket:
+              type: string
+            fls_enabled:
+              type: boolean
+            fls_index_setting:
+              type: string
+            fls_network_settings:
+              items:
+                type: string
+              type: array
+            s3_archival_bucket_prefix:
+              type: string
+            send_backup_notifications:
+              type: boolean
+            send_download_notifications:
+              type: boolean
+            send_failure_notifications:
+              type: boolean
+            send_server_notifications:
+              type: boolean
+            send_warning_notifications:
+              type: boolean
+            server_recipients_json:
+              type: string
+            sync_schedule:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            warning_recipients_json:
+              type: string
+          type: object
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsMembersByIdResponse:
+      properties:
+        account_access:
+          type: string
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsAccessible_accountsResponse:
+      properties:
+        accounts:
+          items:
+            type: object
+          type: array
+      type: object
+    DeleteOrganizationsAccountsByIdResponse:
+      type: object
+    GetOrganizationsAccountsWeekly_savingsResponse:
+      properties:
+        Friday:
+          type: integer
+        Monday:
+          type: integer
+        Saturday:
+          type: integer
+        Sunday:
+          type: integer
+        Thursday:
+          type: integer
+        Tuesday:
+          type: integer
+        Wednesday:
+          type: integer
+      type: object
+    PostOrganizationsAccountsMembersRequest:
+      properties:
+        account_access:
+          enum:
+          - admin
+          - view
+          type: string
+        account_id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        status:
+          type: string
+      type: object
+    PostOrganizationsAccountsCredentialRequest:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsMembersByIdRequest:
+      properties:
+        account_access:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsSynchronizationResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        extract_log:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        percent_complete:
+          type: integer
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsSynchronizationByIdResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        extract_log:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        percent_complete:
+          type: number
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsByIdResponse:
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

@@ -1,0 +1,526 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Customers API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get information and perform operations on customers managed.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Customers
+  description: Lists the APIs to get information and perform operations on customers managed.
+paths:
+  /msp/v3/customers:
+    get:
+      tags:
+      - Customers
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: pageSize
+        description: "Specify the number of records you wish to receive in API response. Example - 30. \n Note: Maximum allowed page size is 100. \n pageSize and pageToken are mutually exclusive options."
+        schema:
+          type: string
+        in: query
+      - name: pageToken
+        description: "- The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'. \n- Keep this field blank in the first request.\n"
+        schema:
+          type: string
+        in: query
+      - name: includeFeatures
+        description: "Specify whether customer features should be included in the response. \n includeFeatures and pageToken are mutually exclusive options."
+        schema:
+          type: boolean
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomersV3Response'
+              examples:
+                ListCustomers Sample1:
+                  value: "{\n  \"customers\": [\n    {\n      \"id\": \"bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198\",\n      \"accountName\": \"Druva\",\n      \"address\": \"213 Derrick Street Boston, MA 02130 USA\",\n      \"phone\": \"12345678910\",\n      \"customerName\": \"Druva\",\n      \"features\": [\n        {\n          \"name\": \"Security Posture and Observability\"\n        }\n      ],\n      \"tenantAdmins\": [\n        1,\n        2,\n        3\n      ],\n      \"status\": 1,\n      \"createdOn\": \"2022-10-25T00:00:00Z\",\n      \"activeSince\": \"2022-10-25T00:00:00Z\",\n      \"attributes\": [\n        {\n          \"name\": \"licenseManagementAllowed\",\n          \"value\": \"1\"\n        },\n        {\n          \"name\": \"dataAccessAllowed\",\n          \"value\": \"1\"\n        }\n      ],\n      \"cloud\": 0\n    },\n\t{\n      \"id\": \"bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-199\",\n      \"accountName\": \"Druvas\",\n      \"address\": \"214 Derrick Street Boston, MA 02130 USA\",\n      \"phone\": \"12345678911\",\n      \"customerName\": \"Druva-Customer\",\n      \"features\": [\n        {\n          \"name\": \"Security Posture and Observability\"\n        }\n      ],\n      \"tenantAdmins\": [\n        1,\n        3\n      ],\n      \"status\": 1,\n      \"createdOn\": \"2022-10-21T00:00:00Z\",\n      \"activeSince\": \"2022-10-21T00:00:00Z\",\n      \"attributes\": [\n        {\n          \"name\": \"licenseManagementAllowed\",\n          \"value\": \"0\"\n        },\n        {\n          \"name\": \"dataAccessAllowed\",\n          \"value\": \"0\"\n        }\n      ],\n      \"cloud\": 2\n    }\n  ],\n  \"nextPageToken\": \"eyJwYWdlU2l6ZSI6IDEwMH0=\"\n}"
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetCustomersV3
+      summary: List all customers
+      description: Returns the list of all customers.
+    post:
+      requestBody:
+        description: Specify the details for a new customer.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerV3Request'
+      tags:
+      - Customers
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: CreateCustomerV3
+      summary: Create a new customer
+      description: '- The API supports the creation of Druva Provisioned customers.
+
+        - If no attributes are specified, an MSC Provisioned managed customer is created by default.
+
+        - The only supported attributes are licenseManagedAllowed and dataAccessAllowed. Providing any other attributes will result in an error.
+
+        - For dataAccessAllowed, the only supported value is 1 (Managed).
+
+        - This is an asynchronous operation. Upon initiation, a taskID is generated and can be retrieved from the success response. Use this taskID with the ''Get Task Details'' API to track the progress of the operation.'
+  /msp/v3/customers/{customerID}:
+    get:
+      tags:
+      - Customers
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the unique ID of the customer you wish to update. Get the ID of the customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: includeFeatures
+        description: Specify whether customer features should be included in the response.
+        schema:
+          type: boolean
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerV3Response'
+              examples:
+                GetCustomer Sample1:
+                  value: "{\n  \"id\": \"bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198\",\n  \"accountName\": \"Druva\",\n  \"address\": \"213 Derrick Street Boston, MA 02130 USA\",\n  \"phone\": \"12345678910\",\n  \"customerName\": \"Druva\",\n  \"features\": [\n    {\n      \"name\": \"Security Posture and Observability\"\n    }\n  ],\n  \"tenantAdmins\": [\n    1,\n    2,\n    3\n  ],\n  \"status\": 1,\n  \"createdOn\": \"2022-10-25T00:00:00Z\",\n  \"activeSince\": \"2022-10-25T00:00:00Z\",\n  \"attributes\": [\n    {\n      \"name\": \"licenseManagementAllowed\",\n      \"value\": \"1\"\n    },\n    {\n      \"name\": \"dataAccessAllowed\",\n      \"value\": \"1\"\n    }\n  ],\n  \"cloud\": 0\n}"
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetCustomerV3
+      summary: Get customer details
+      description: Returns information about a customer using Customer ID.
+    put:
+      tags:
+      - Customers
+      parameters:
+      - description: Authorization header should contain the Bearer access token.
+        name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - description: Specify the unique ID of the customer you wish to update. Get the unique ID of the customer using the 'List all customers' API.
+        name: customerID
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Specify the details to update the customer.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomerV3Request'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      operationId: UpdateCustomerV3ForDoc
+      summary: Update customer details
+      description: 'Update existing customer details.
+
+        - The only supported attributes are licenseManagedAllowed and dataAccessAllowed. Providing any other attributes will result in an error.
+
+        - For dataAccessAllowed, the existing value cannot be changed.
+
+        - Refer this page for supported attributes: https://developer.druva.com/docs/msp-product-and-attribute-values.
+
+        - After you initiate the operation, it is queued and a task ID is generated. You can get the task ID from the success response. Use this task ID in the ''Get Task Details'' API to track the operation''s progress.
+
+        - You must provide existing information in all the fields that do not require an update.'
+  /msp/v2/customers/{customerID}/token:
+    post:
+      requestBody:
+        description: Generate API Access Token for a customer.
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GenerateTokenRequest'
+      tags:
+      - Customers
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the unique ID of the customer for whom you wish to generate the API access token. Get the ID of the customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateTokenResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: Generate API access token
+      summary: Generate API access token for a customer
+      description: Use this API to generate an API access token that is unique to the customer. Use this token for accessing Druva APIs relevant to the specific customer.
+components:
+  schemas:
+    CustomerAttributes:
+      description: The Customer-level attributes for a customer
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          description: "- The name of the customer attribute\n - For valid attributes and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values"
+          type: string
+          example: licenseManagementAllowed
+        value:
+          description: "- The value of the customer attribute\n - For valid attributes and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values"
+          type: string
+          example: '1'
+    GenerateTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: API access token for specified customer.
+          example: MWFkOTdjNzFkMmI2ZTEwZjc1ZTlDMjY2Njp2Y1NZeTN3azdCaVgzUHlZNjNZMzFBPT06MA==
+        token_type:
+          type: string
+          description: Type of the token. This will always be a bearer token.
+          example: bearer
+        expires_in:
+          type: integer
+          description: The token expiry time in seconds.
+          example: 1800
+    TaskCreatedResponse:
+      type: object
+      properties:
+        task:
+          type: object
+          properties:
+            id:
+              description: The task ID of the operation, and can be used to track the progress. Use this task ID in the 'Get Task Details' API to track the operation's progress. Example - 'c8b54819-486a-497a-b86e-5b93f2422711'.
+              type: string
+              example: c8b54819-486a-497a-b86e-5b93f2422711
+    GenerateTokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          default: client_credentials
+          description: Provide **client_credentials** as the value in this field.
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    CreateCustomerV3Request:
+      description: Specify the details for a new customer.
+      required:
+      - accountName
+      - address
+      - phone
+      - customerName
+      type: object
+      properties:
+        accountName:
+          description: Specify the account name for the customer. Account name cannot be changed after creation. Example - 'Druva'
+          type: string
+          example: Druva
+        address:
+          description: Specify the address for the customer. Example - '213 Derrick Street Boston, MA 02130 USA'
+          type: string
+          example: 213 Derrick Street Boston, MA 02130 USA
+        customerName:
+          description: Specify the organization name for the customer. It should be unique across all customers of Druva. Example - 'Druva'
+          type: string
+          example: Druva
+        phone:
+          description: "- Specify the phone number for the customer. Example - '12345678910'\n    - Maximum length can be 30.\n    - The country code must be prefixed with a '+' sign.\n"
+          type: string
+          example: '12345678910'
+        tenantAdmins:
+          description: Specify the IDs of tenant admins assigned to the customers. You can get tenant admin IDs using 'List admins' API. Example - [1]
+          type: array
+          items:
+            format: int64
+            type: integer
+          example:
+          - 1
+          - 2
+          - 3
+        features:
+          description: Specify the features supported at Druva MSP customer level.
+          type: array
+          items:
+            type: object
+          example:
+          - name: Security Posture and Observability
+        attributes:
+          description: Specify the attributes supported at Druva MSP customer level.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAttributes'
+          example:
+          - name: licenseManagementAllowed
+            value: '1'
+    GetCustomersV3Response:
+      type: object
+      properties:
+        customers:
+          description: The list of returned customers.
+          type: array
+          items:
+            $ref: '#/components/schemas/GetCustomerV3Response'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
+          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    UpdateCustomerV3Request:
+      type: object
+      required:
+      - customerName
+      - attributes
+      properties:
+        accountName:
+          description: "- Specify the account name for the customer. Account name cannot be changed in updation. Example - 'Druva'. \n- If account name is different than existing, it will return error.\n - If account name is empty then it will return success"
+          type: string
+          example: Druva
+        address:
+          description: Specify the address for the customer. This field can be left empty only for Druva Provisioned customers.
+          type: string
+          example: 213 Derrick Street Boston, MA 02130 USA
+        customerName:
+          description: Specify the customer name for the customer.
+          type: string
+          example: Druva
+        features:
+          description: Specify the features supported at Druva MSP customer level.
+          type: array
+          items:
+            type: object
+          example:
+          - name: Security Posture and Observability
+        phone:
+          description: "- Specify the phone number for the customer.\n    - This field can be left empty only for Druva Provisioned customers.\n    - Maximum length can be 30.\n    - The country code must be prefixed with a '+' sign.\n"
+          type: string
+          example: '12345678910'
+        tenantAdmins:
+          type: array
+          items:
+            type: integer
+            format: int64
+          example:
+          - 1
+          - 2
+          - 3
+          description: '- Specify the unique IDs of tenant administrators who should manage the tenant for the customer. Get the list of tenant administrators IDs using the ''List all administrators'' API.
+
+            - If you want to remove a tenant administrator from this customer, simply do not specify the unique ID of the administrator.
+
+            - If tenant admin list is empty then all tenant admins will be removed'
+        attributes:
+          description: 'Specify the attributes supported at Druva MSP customer level.
+
+            - Refer this page for supported attributes: https://developer.druva.com/docs/msp-product-and-attribute-values'
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAttributes'
+          example:
+          - name: licenseManagementAllowed
+            value: '1'
+          - name: dataAccessAllowed
+            value: '1'
+    GetCustomerV3Response:
+      type: object
+      properties:
+        id:
+          description: The unique ID of the customer. Example - 'bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198'
+          type: string
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: The Account name of the customer. Example - Druva
+          type: string
+          example: Druva
+        address:
+          description: The postal address of the customer. Example - '213 Derrick Street Boston, MA 02130 USA'.
+          type: string
+          example: 213 Derrick Street Boston, MA 02130 USA
+        phone:
+          description: The contact number of the customer. Example - '12345678910'.
+          type: string
+          example: '12345678910'
+        customerName:
+          description: The name of the customer. Example - 'Druva'
+          type: string
+          example: Druva
+        features:
+          description: The features subscribed by the customer.
+          type: array
+          items:
+            type: object
+          example:
+          - name: Security Posture and Observability
+        tenantAdmins:
+          description: The unique IDs of the tenant admins assigned to the customer. Example - [1]
+          type: array
+          items:
+            format: int64
+            type: integer
+          example:
+          - 1
+          - 2
+          - 3
+        status:
+          format: int64
+          description: 'The current status of the customer account creation in the MSP Console. Example - 1
+
+            - 0 - Creation pending
+
+            - 1 - Ready
+
+            - 2 - Tenant processing
+
+            '
+          type: integer
+          example: 1
+        createdOn:
+          format: date-time
+          description: The date and time when the customer was created in the MSP Console. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        activeSince:
+          format: date-time
+          description: The date and time since the customer is in Active state in MSP Console. Example - '2022-10-25T00:00:00Z'.
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        attributes:
+          description: The attributes of the given customer
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAttributes'
+          example:
+          - name: licenseManagementAllowed
+            value: '1'
+        cloud:
+          format: int64
+          description: 'The cloud where customer account is present. Example - 1
+
+            - 0 - Public
+
+            - 1 - FIPS
+
+            - 2 - FedRamp
+
+            '
+          type: integer
+          example: 1
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

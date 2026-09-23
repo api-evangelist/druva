@@ -1,0 +1,1024 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Chargeback and Telemetry Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get reports for Chargeback and Telemetry.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Chargeback and Telemetry Reports
+  description: Lists the APIs to get reports for Chargeback and Telemetry.
+paths:
+  /msp/reporting/v2/reports/mspChargebackLicenseStateReport:
+    post:
+      tags:
+      - Chargeback and Telemetry Reports
+      summary: Get Customer and License Daily Report
+      description: Returns detailed daily data on licenses, add-ons, and feature details for all customers managed by the MSP. This data is available for any date within the last 60 days.
+      operationId: GetCustomerAndLicenseDailyReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the page size and filters to retrieve the Customer and License Daily Report. \n **Please note:** Sorting by column is not currently supported."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCustomerAndLicenseDailyReportRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerAndLicenseDailyReportResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /msp/reporting/v2/reports/mspChargebackLicenseStateMonthlyReport:
+    post:
+      tags:
+      - Chargeback and Telemetry Reports
+      summary: Get Customer and License Monthly Report
+      description: Returns comprehensive monthly report detailing license, feature, and add-on information for all MSP customers. This data represents a snapshot as of the first day of the month and is available for the past 18 months.
+      operationId: GetCustomerAndLicenseMonthlyReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Specify the page size and filters to retrieve the Customer and License Monthly Report. **Please note:** Sorting by column is not currently supported.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCustomerAndLicenseMonthlyReportRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerAndLicenseMonthlyReportResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /msp/reporting/v2/reports/mspChargebackTenantConsumptionReport:
+    post:
+      tags:
+      - Chargeback and Telemetry Reports
+      summary: Get MSP Chargeback Tenant Consumption Report
+      description: Provides daily insights into customer product modules, including their consumption patterns and license-level details.
+      operationId: GetMSPChargebackTenantConsumptionReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the desired page size or filters to be applied to generate a detailed report of MSP Chargeback tenant consumption. \n **Please note:** Sorting by column is not currently supported."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMSPChargebackTenantConsumptionReportRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MSPChargebackTenantConsumptionReportResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /msp/reporting/v2/reports/mspChargebackTenantConsumptionMonthlyReport:
+    post:
+      tags:
+      - Chargeback and Telemetry Reports
+      summary: Get MSP Chargeback Tenant Consumption Monthly Report
+      description: Provides a monthly overview of customer product modules, focusing on usage trends and license-level details.
+      operationId: GetMSPChargebackTenantConsumptionMonthlyReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the desired page size or filters to be applied to generate a monthly overview of customer product modules, focusing on usage trends and license-level details. \n **Please note:** Sorting by column is not currently supported."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMSPChargebackTenantConsumptionMonthlyReportRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MSPChargebackTenantConsumptionMonthlyReportResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    FilterTypeForChargebackTenantConsumptionReport:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n **Please note:** If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForChargebackTenantConsumptionReport'
+    CustomerAndLicenseDailyReportData:
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: The account name of the customer.
+          example: Example customer
+        addonName:
+          type: string
+          description: The name of the addon. For valid addons and their names, refer - https://developer.druva.com/docs/customer-and-license-details-daily-report/
+          example: Sensitive Data Governance
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        date:
+          type: string
+          description: Date indicates the date of license features/addons. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2025-01-11T00:00:00.000Z'
+        edition:
+          type: string
+          enum:
+          - business
+          - enterprise
+          - elite
+          description: The name of the edition.
+          example: business
+        instanceId:
+          type: integer
+          description: The ID of the instance.
+          example: 1234567890
+        licenseExpiry:
+          type: string
+          description: The expiry date of the license.
+          format: date
+          example: '2026-01-11T00:00:00.000Z'
+        licenseType:
+          type: string
+          enum:
+          - Commercial
+          - Evaluation
+          - Sandbox
+          description: Type of the tenant. Right now stats for only commercial customers are reported.
+          example: Commercial
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productModule:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          - D365
+          - SFDC
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: abcd1234pqrs567890
+    GetMSPChargebackTenantConsumptionReportRequest:
+      description: Specify the parameters for getting MSP Chargeback tenant consumption report details.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForChargebackTenantConsumptionReport'
+    GetCustomerAndLicenseMonthlyReportResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains details about a customer's license features/addons as on the 1st day of the every month for the last 18 months.
+          example:
+          - accountName: Example customer
+            addonName: Sensitive Data Governance
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            customerName: Example customer
+            date: '2025-02-01T00:00:00.000Z'
+            edition: elite
+            instanceId: 1234567890
+            isEnabled: 'true'
+            licenseExpiry: '2026-02-01T00:00:00.000Z'
+            licenseType: Commercial
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModule: Endpoints
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            dcpUniqueKey: abcd1234pqrs567890
+          - accountName: Example customer
+            addonName: Security Posture and Observability
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            customerName: Example customer
+            date: '2025-02-01T00:00:00.000Z'
+            edition: enterprise
+            instanceId: 1234567890
+            isEnabled: 'false'
+            licenseExpiry: '2026-02-01T00:00:00.000Z'
+            licenseType: Commercial
+            productId: 1
+            productName: Enterprise Workloads
+            productModule: Enterprise Workloads
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            dcpUniqueKey: abcd1234pqrs567890
+          items:
+            $ref: '#/components/schemas/CustomerAndLicenseMonthlyReportData'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeForChargebackLicenseStateReport'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-02-01T00:00:00.000Z'
+    GetCustomerAndLicenseDailyReportRequest:
+      description: Specify the details for getting customer and license daily report details.
+      type: object
+      properties:
+        pageToken:
+          description: The token that points to the next page of results. This value is returned in the 'nextPageToken' field of a previous response. If this is your first request for the data, leave this field empty.
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForChargebackLicenseStateReport'
+    GetMSPChargebackTenantConsumptionMonthlyReportRequest:
+      description: Specify the parameters for getting MSP Chargeback tenant consumption monthly report details.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForChargebackTenantConsumptionMonthlyReport'
+    FilterTypeForChargebackTenantConsumptionMonthlyReport:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n **Please note:** If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForChargebackTenantConsumptionMonthlyReport'
+    MSPChargebackTenantConsumptionMonthlyReportData:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date on which the consumption was recorded. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2025-01-11T00:00:00.000Z'
+        accountName:
+          type: string
+          description: The account name of the customer.
+          example: Example customer
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        productModule:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        productModuleId:
+          type: integer
+          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          example: 1
+        instanceId:
+          type: integer
+          description: A unique identifier assigned to a specific product instance.
+          example: 1234567890
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        entityName:
+          type: string
+          description: The name of the entity associated with the product module. For valid entities, refer - https://developer.druva.com/docs/customer-consumption-telemetry-monthly-report/
+          example: Total Licensed Active Users
+        units:
+          type: string
+          description: The units of the entity.
+          enum:
+          - Count
+          - TB
+          example: Count
+        maxValueForMonth:
+          type: number
+          description: The maximum value of the entity for the month.
+          example: 123456
+        lastDayOfMonth:
+          type: number
+          description: The data for the entity for the last day of the month.
+          example: 123456
+        averageValueForMonth:
+          type: number
+          description: The average value of the data for the entity for the month.
+          example: 123456
+        sumOfValuesForMonth:
+          type: number
+          description: The sum of the data for the entity for the month.
+          example: 123456
+        dcpUniqueKey:
+          type: string
+          description: A key which is used to uniquely identify each record in the report.
+          example: abcd1234pqrs567890
+    CustomerAndLicenseMonthlyReportData:
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: The account name of the customer.
+          example: Example customer
+        addonName:
+          type: string
+          description: The name of the addon. For valid addons and their names, refer - https://developer.druva.com/docs/customer-and-license-details-monthly-report/
+          example: Sensitive Data Governance
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        date:
+          type: string
+          description: Date indicates the date of license features/addons. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2025-02-01T00:00:00.000Z'
+        edition:
+          type: string
+          enum:
+          - business
+          - enterprise
+          - elite
+          description: The name of the edition.
+          example: business
+        instanceId:
+          type: integer
+          description: The ID of the instance.
+          example: 1234567890
+        licenseExpiry:
+          type: string
+          description: The expiry date of the license.
+          format: date
+          example: '2026-02-01T00:00:00.000Z'
+        licenseType:
+          type: string
+          enum:
+          - Commercial
+          - Evaluation
+          - Sandbox
+          description: Type of the tenant. Right now stats for only commercial customers are reported.
+          example: Commercial
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productModule:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          - D365
+          - SFDC
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: abcd1234pqrs567890
+    FilterAttributeForChargebackTenantConsumptionReport:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - date
+          - customerName
+          - accountName
+          - customerGlobalId
+          - productId
+          - productName
+          - productModule
+          - productModuleId
+          - instanceId
+          - servicePlanId
+          - servicePlanName
+          - entityName
+          - units
+          - data
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    GetCustomerAndLicenseDailyReportResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains details about a customer's license features/addons per day for the last 60 days.
+          example:
+          - accountName: Example customer
+            addonName: Sensitive Data Governance
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            customerName: Example customer
+            date: '2025-01-11T00:00:00.000Z'
+            edition: elite
+            instanceId: 1234567890
+            isEnabled: 'true'
+            licenseExpiry: '2026-01-11T00:00:00.000Z'
+            licenseType: Commercial
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModule: Endpoints
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            dcpUniqueKey: abcd1234pqrs567890
+          - accountName: Example customer
+            addonName: Security Posture and Observability
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            customerName: Example customer
+            date: '2025-01-11T00:00:00.000Z'
+            edition: enterprise
+            instanceId: 1234567890
+            isEnabled: 'false'
+            licenseExpiry: '2026-01-11T00:00:00.000Z'
+            licenseType: Commercial
+            productId: 1
+            productName: Enterprise Workloads
+            productModule: Enterprise Workloads
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            dcpUniqueKey: abcd1234pqrs567890
+          items:
+            $ref: '#/components/schemas/CustomerAndLicenseDailyReportData'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeForChargebackLicenseStateReport'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    GetCustomerAndLicenseMonthlyReportRequest:
+      description: Specify the details for getting customer and license monthly report details.
+      type: object
+      properties:
+        pageToken:
+          description: The token that points to the next page of results. This value is returned in the 'nextPageToken' field of a previous response. If this is your first request for the data, leave this field empty.
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForChargebackLicenseStateReport'
+    FilterTypeForChargebackLicenseStateReport:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForChargebackLicenseStateReport'
+    MSPChargebackTenantConsumptionMonthlyReportResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains a monthly overview of customer product modules, focusing on usage trends and license-level details.
+          example:
+          - date: '2025-02-01T00:00:00.000Z'
+            customerName: Example customer
+            accountName: Example customer
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModule: Endpoints
+            productModuleId: 3
+            instanceId: 1234567890
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            entityName: Total Licensed Active Users
+            units: Count
+            maxValueForMonth: 123456
+            lastDayOfMonth: 123456
+            averageValueForMonth: 123456
+            sumOfValuesForMonth: 123456
+            dcpUniqueKey: abcd1234pqrs567890
+          - date: '2025-02-01T00:00:00.000Z'
+            customerName: Example customer
+            accountName: Example customer
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            productId: 1
+            productName: Enterprise Workloads
+            productModule: Enterprise Workloads
+            productModuleId: 1
+            instanceId: 1234567890
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            entityName: Frontend Source Storage
+            units: TB
+            maxValueForMonth: 12.345678
+            lastDayOfMonth: 12.345678
+            averageValueForMonth: 12.345678
+            sumOfValuesForMonth: 12.345678
+            dcpUniqueKey: abcd1234pqrs567890
+          items:
+            $ref: '#/components/schemas/MSPChargebackTenantConsumptionMonthlyReportData'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeForChargebackTenantConsumptionMonthlyReport'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    FilterAttributeForChargebackLicenseStateReport:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - addonName
+          - customerGlobalId
+          - customerName
+          - date
+          - edition
+          - instanceId
+          - isEnabled
+          - licenseExpiry
+          - licenseType
+          - productId
+          - productName
+          - productModule
+          - servicePlanId
+          - servicePlanName
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    MSPChargebackTenantConsumptionReportResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains daily insights of customer product modules, including their consumption patterns and license-level details.
+          example:
+          - date: '2025-02-01T00:00:00.000Z'
+            customerName: Example customer
+            accountName: Example customer
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModule: Endpoints
+            productModuleId: 3
+            instanceId: 1234567890
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            entityName: Total Licensed Active Users
+            units: Count
+            data: 1234
+            dcpUniqueKey: abcd1234pqrs567890
+          - date: '2025-02-01T00:00:00.000Z'
+            customerName: Example customer
+            accountName: Example customer
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            productId: 1
+            productName: Enterprise Workloads
+            productModule: Enterprise Workloads
+            productModuleId: 1
+            instanceId: 1234567890
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            entityName: Frontend Source Storage
+            units: TB
+            data: 12.345678
+            dcpUniqueKey: abcd1234pqrs567890
+          items:
+            $ref: '#/components/schemas/MSPChargebackTenantConsumptionReportData'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeForChargebackTenantConsumptionReport'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    FilterAttributeForChargebackTenantConsumptionMonthlyReport:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - date
+          - customerName
+          - accountName
+          - customerGlobalId
+          - productId
+          - productName
+          - productModule
+          - productModuleId
+          - instanceId
+          - servicePlanId
+          - servicePlanName
+          - entityName
+          - units
+          - maxValueForMonth
+          - lastDayOfMonth
+          - averageValueForMonth
+          - sumOfValuesForMonth
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    MSPChargebackTenantConsumptionReportData:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date on which the consumption was recorded. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2025-01-11T00:00:00.000Z'
+        accountName:
+          type: string
+          description: The account name of the customer.
+          example: Example customer
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        productModule:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        productModuleId:
+          type: integer
+          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          example: 1
+        instanceId:
+          type: integer
+          description: A unique identifier assigned to a specific product instance.
+          example: 1234567890
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        entityName:
+          type: string
+          description: The name of the entity associated with the product module. For valid entities, refer - https://developer.druva.com/docs/customer-consumption-telemetry-daily-report/
+          example: Total Licensed Active Users
+        units:
+          type: string
+          enum:
+          - Count
+          - TB
+          description: The units of the entity.
+          example: Count
+        data:
+          type: number
+          description: The data associated with the entity.
+          example: 123456
+        dcpUniqueKey:
+          type: string
+          description: A key which is used to uniquely identify each record in the report.
+          example: abcd1234pqrs567890
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

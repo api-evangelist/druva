@@ -1,0 +1,1068 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Scripts API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- name: Scripts
+paths:
+  /organizations/{organization_id}/scripts:
+    get:
+      description: Get scripts imported within an organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsScriptsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get scripts
+      tags:
+      - Scripts
+      operationId: getOrganizationsByOrganizationIdScripts
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scripts/{script_id}:
+    put:
+      description: Update the specified script version to use
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The script identifier which can be used to return information about a script which has been imported to CloudRanger within your organization. You can get all script_ids by using the GET call /organizations/:organization_id/scripts which will return all of the scripts which have been imported within your organization
+        in: path
+        name: script_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                use_latest_version:
+                  type: boolean
+              type: object
+        description: Script Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsScriptsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update script version
+      tags:
+      - Scripts
+      operationId: putOrganizationsByOrganizationIdScriptsByScriptId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scripts/{script_id}/rules:
+    post:
+      description: Create script rule to associate the specified script with resources.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The script identifier which can be used to return information about a script which has been imported to CloudRanger within your organization. You can get all script_ids by using the GET call /organizations/:organization_id/scripts which will return all of the scripts which have been imported within your organization
+        in: path
+        name: script_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                accounts:
+                  items:
+                    properties:
+                      account_id:
+                        type: string
+                      rule_id:
+                        type: integer
+                    type: object
+                  type: array
+                all_accounts:
+                  type: boolean
+                all_regions:
+                  type: boolean
+                all_resource_types:
+                  type: boolean
+                exclude:
+                  type: boolean
+                id:
+                  type: integer
+                regions:
+                  items:
+                    type: string
+                  type: array
+                resource_types:
+                  items:
+                    type: string
+                  type: array
+                resources:
+                  items:
+                    properties:
+                      account_id:
+                        type: string
+                      region:
+                        type: string
+                      resource_id:
+                        type: string
+                      resource_name:
+                        type: string
+                      rule_id:
+                        type: integer
+                      type:
+                        type: string
+                    type: object
+                  type: array
+                rule_type:
+                  type: string
+                tags:
+                  items:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+        description: Script Resource Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsScriptsRulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create script rule
+      tags:
+      - Scripts
+      operationId: postOrganizationsByOrganizationIdScriptsByScriptIdRules
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scripts/{script_id}/rules/{rule_id}:
+    put:
+      description: Update script rule to associate the specified script with resources.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The script identifier which can be used to return information about a script which has been imported to CloudRanger within your organization. You can get all script_ids by using the GET call /organizations/:organization_id/scripts which will return all of the scripts which have been imported within your organization
+        in: path
+        name: script_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the backup policy rule that you want to perform the request against. These can be found by the GET call /organizations/:organization_id/policies/:policy_id which returns a single policy with its associated rules
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                accounts:
+                  items:
+                    properties:
+                      account_id:
+                        type: string
+                      rule_id:
+                        type: integer
+                    type: object
+                  type: array
+                all_accounts:
+                  type: boolean
+                all_regions:
+                  type: boolean
+                all_resource_types:
+                  type: boolean
+                exclude:
+                  type: boolean
+                id:
+                  type: integer
+                regions:
+                  items:
+                    type: string
+                  type: array
+                resource_types:
+                  items:
+                    type: string
+                  type: array
+                resources:
+                  items:
+                    properties:
+                      account_id:
+                        type: string
+                      region:
+                        type: string
+                      resource_id:
+                        type: string
+                      resource_name:
+                        type: string
+                      rule_id:
+                        type: integer
+                      type:
+                        type: string
+                    type: object
+                  type: array
+                rule_type:
+                  type: string
+                tags:
+                  items:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+        description: Script Resource Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsScriptsRulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update script rule
+      tags:
+      - Scripts
+      operationId: putOrganizationsByOrganizationIdScriptsByScriptIdRulesByRuleId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scripts/tags/keys:
+    get:
+      description: Get all script tag keys currently in use
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsScriptsTagKeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get script tag keys
+      tags:
+      - Scripts
+      operationId: getOrganizationsByOrganizationIdScriptsTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scripts/tags/keys/{key}/values:
+    get:
+      description: Get all script tag values for the specified script tag
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsScriptsTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get script tag values
+      tags:
+      - Scripts
+      operationId: getOrganizationsByOrganizationIdScriptsTagsKeysByKeyValues
+      x-operation-id-source: derived
+  /organizations/{organization_id}/scriptscache:
+    get:
+      description: Get scripts residing in your aws accounts that are available for import within an organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsScriptscacheResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get scripts available for import
+      tags:
+      - Scripts
+      operationId: getOrganizationsByOrganizationIdScriptscache
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsScriptsResponse:
+      properties:
+        hits:
+          properties:
+            accounts:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  model:
+                    properties:
+                      account_id:
+                        type: string
+                      script_id:
+                        type: integer
+                      scriptId:
+                        type: integer
+                    type: object
+                  script_id:
+                    type: integer
+                type: object
+              type: array
+            cachedId:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            model:
+              properties:
+                accounts:
+                  items:
+                    properties:
+                      account_id:
+                        type: string
+                      script_id:
+                        type: integer
+                      scriptId:
+                        type: integer
+                    type: object
+                  type: array
+                cached_id:
+                  type: string
+                createdAt:
+                  format: date-time
+                  type: string
+                deletedAt:
+                  type: string
+                description:
+                  type: string
+                id:
+                  type: integer
+                name:
+                  type: string
+                organization_id:
+                  type: string
+                owner:
+                  type: string
+                region:
+                  type: string
+                rules:
+                  items:
+                    properties:
+                      accounts:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                          type: object
+                        type: array
+                      all_accounts:
+                        type: boolean
+                      all_regions:
+                        type: boolean
+                      createdAt:
+                        format: date-time
+                        type: string
+                      execution_type:
+                        type: string
+                      id:
+                        type: integer
+                      regions:
+                        items:
+                          type: string
+                        type: array
+                      resources:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            region:
+                              type: string
+                            resource_id:
+                              type: string
+                            resource_name:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                            type:
+                              type: string
+                          type: object
+                        type: array
+                      rule_type:
+                        type: string
+                      script_id:
+                        type: integer
+                      tags:
+                        items:
+                          type: string
+                        type: array
+                      updatedAt:
+                        format: date-time
+                        type: string
+                    type: object
+                  type: array
+                type:
+                  type: string
+                updatedAt:
+                  format: date-time
+                  type: string
+                usage:
+                  type: string
+                use_latest_version:
+                  type: boolean
+              type: object
+            name:
+              type: string
+            organization_id:
+              type: string
+            owner:
+              type: string
+            region:
+              type: string
+            rules:
+              items:
+                properties:
+                  accounts:
+                    items:
+                      properties:
+                        account_id:
+                          type: string
+                        model:
+                          properties:
+                            account_id:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                          type: object
+                        rule_id:
+                          type: integer
+                      type: object
+                    type: array
+                  all_accounts:
+                    type: boolean
+                  all_regions:
+                    type: boolean
+                  execution_type:
+                    type: string
+                  id:
+                    type: integer
+                  model:
+                    properties:
+                      accounts:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                          type: object
+                        type: array
+                      all_accounts:
+                        type: boolean
+                      all_regions:
+                        type: boolean
+                      createdAt:
+                        format: date-time
+                        type: string
+                      execution_type:
+                        type: string
+                      id:
+                        type: integer
+                      regions:
+                        items:
+                          type: string
+                        type: array
+                      resources:
+                        items:
+                          properties:
+                            account_id:
+                              type: string
+                            region:
+                              type: string
+                            resource_id:
+                              type: string
+                            resource_name:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                            type:
+                              type: string
+                          type: object
+                        type: array
+                      rule_type:
+                        type: string
+                      script_id:
+                        type: integer
+                      tags:
+                        items:
+                          type: string
+                        type: array
+                      updatedAt:
+                        format: date-time
+                        type: string
+                    type: object
+                  regions:
+                    items:
+                      type: string
+                    type: array
+                  resources:
+                    items:
+                      properties:
+                        account_id:
+                          type: string
+                        model:
+                          properties:
+                            account_id:
+                              type: string
+                            region:
+                              type: string
+                            resource_id:
+                              type: string
+                            resource_name:
+                              type: string
+                            rule_id:
+                              type: integer
+                            ruleId:
+                              type: integer
+                            type:
+                              type: string
+                          type: object
+                        region:
+                          type: string
+                        resource_id:
+                          type: string
+                        resource_name:
+                          type: string
+                        rule_id:
+                          type: integer
+                        type:
+                          type: string
+                      type: object
+                    type: array
+                  rule_type:
+                    type: string
+                  script_id:
+                    type: integer
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              type: array
+            type:
+              type: string
+            usage:
+              type: string
+            useLatestVersion:
+              type: boolean
+          type: object
+        total:
+          type: integer
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsScriptsByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsScriptsTagKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsScriptscacheResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: string
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                __OrganizationId:
+                  type: string
+                Description:
+                  type: string
+                DocumentFormat:
+                  type: string
+                DocumentType:
+                  type: string
+                DocumentVersion:
+                  type: string
+                Hash:
+                  type: string
+                HashType:
+                  type: string
+                Id:
+                  type: string
+                LatestVersion:
+                  type: string
+                Name:
+                  type: string
+                ObjectType:
+                  type: string
+                Owner:
+                  type: string
+                PlatformTypes:
+                  items:
+                    type: string
+                  type: array
+                postDate:
+                  format: date-time
+                  type: string
+                Region:
+                  type: string
+                SchemaVersion:
+                  type: string
+                Source:
+                  type: string
+                Status:
+                  type: string
+                Tags:
+                  items:
+                    type: string
+                  type: array
+                TagStrings:
+                  items:
+                    type: string
+                  type: array
+                Type:
+                  type: string
+              type: object
+            _type:
+              type: string
+            sort:
+              items:
+                type: string
+              type: array
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsScriptsRulesResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                type: object
+              rule_id:
+                type: integer
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        execution_type:
+          type: string
+        id:
+          type: integer
+        model:
+          properties:
+            accounts:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                type: object
+              type: array
+            all_accounts:
+              type: boolean
+            all_regions:
+              type: boolean
+            createdAt:
+              format: date-time
+              type: string
+            execution_type:
+              type: string
+            id:
+              type: integer
+            regions:
+              items:
+                type: string
+              type: array
+            resources:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  region:
+                    type: string
+                  resource_id:
+                    type: string
+                  resource_name:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                  type:
+                    type: string
+                type: object
+              type: array
+            rule_type:
+              type: string
+            script_id:
+              type: integer
+            tags:
+              items:
+                type: string
+              type: array
+            updatedAt:
+              format: date-time
+              type: string
+          type: object
+        regions:
+          items:
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  region:
+                    type: string
+                  resource_id:
+                    type: string
+                  resource_name:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                  type:
+                    type: string
+                type: object
+              region:
+                type: string
+              resource_id:
+                type: string
+              resource_name:
+                type: string
+              rule_id:
+                type: integer
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          type: string
+        script_id:
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsScriptsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

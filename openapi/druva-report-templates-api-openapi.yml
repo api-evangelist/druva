@@ -1,0 +1,179 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Report Templates API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- name: Report Templates
+paths:
+  /organizations/{organization_id}/reporttemplates:
+    get:
+      description: Returns a list of all CloudRanger report template
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsReportTemplatesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get report templates
+      tags:
+      - Report Templates
+      operationId: getOrganizationsByOrganizationIdReporttemplates
+      x-operation-id-source: derived
+  /organizations/{organization_id}/reporttemplates/{report_template_id}:
+    get:
+      description: Returns a CloudRanger report template which can be used to generate report
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The template identifier of the Report type. There are a number of report templates which can be used to generate reports from. You can get the report_template_id using the GET call /organizations/:organization_id/reporttemplates which will return info about all of the possible templates including the ids
+        in: path
+        name: report_template_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsReporttemplatesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get report template
+      tags:
+      - Report Templates
+      operationId: getOrganizationsByOrganizationIdReporttemplatesByReportTemplateId
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsReportTemplatesResponse:
+      properties:
+        description:
+          type: string
+        fields:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsReporttemplatesByIdResponse:
+      properties:
+        description:
+          type: string
+        fields:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

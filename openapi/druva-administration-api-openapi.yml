@@ -1,0 +1,185 @@
+openapi: 3.2.0
+info:
+  title: Platform Administration API
+  description: Platform Public APIs
+  version: 1.0.0
+servers:
+- url: https://apis.druva.com/platform
+security:
+- Bearer: []
+tags:
+- name: Administration
+paths:
+  /auth/v3/customers/safemode/activate:
+    post:
+      tags:
+      - Administration
+      summary: Activate Safe mode
+      description: 'This API initiates Safe Mode on your Cloud Console, imposing critical restrictions to mitigate active threats. It enables granular control by restricting administrator logins, blocking specified API credentials, and halting all backup operations, restores, and downloads.
+
+        * This operation requires API credentials with the Druva Cloud Administrator role.
+
+        * Safe Mode is activated immediately upon successful API call.'
+      operationId: CreateSafeModeActivationSettings
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                activationInfo:
+                  type: object
+                  description: Configuration details for activating Safe Mode.
+                  properties:
+                    activationFor:
+                      type: object
+                      description: Defines the specific restrictions to enforce when Safe Mode is activated. At least one restriction must be set to 'true'.
+                      properties:
+                        restrictAdminLogin:
+                          type: boolean
+                          description: If 'true', restricts administrator login access to the Cloud Console. Only administrators specified in allowedAdminIds will be permitted to log in.
+                        restrictApiCredentials:
+                          type: boolean
+                          description: If 'true', restricts all API credential access. Only client credentials specified in allowedClientCredentialIds will be able to authenticate.
+                        stopBackup:
+                          type: boolean
+                          description: If 'true', halts all scheduled backup operations across the customer environment.
+                        stopRestoreDownload:
+                          type: boolean
+                          description: If 'true', prevents all data restore and download operations.
+                      required:
+                      - restrictAdminLogin
+                      - restrictApiCredentials
+                      - stopBackup
+                      - stopRestoreDownload
+                      additionalProperties: false
+                    allowedAdminIds:
+                      type: array
+                      description: "List of administrator global IDs that will retain login access when restrictAdminLogin is 'true'.\n * Get the global Admin ID of the administrator using the [List all administrators](/reference/listadminsrequest) API.\n * This parameter is required only if restrictAdminLogin is 'true'."
+                      items:
+                        type: string
+                        description: Global admin ID
+                      uniqueItems: true
+                    allowedClientCredentialIds:
+                      type: array
+                      description: "List of client credential IDs that will retain API access when restrictApiCredentials is 'true'.\n * You can get the Client Credential ID from Integration Center > API Credentials > Client ID column.\n * This parameter is required only if restrictApiCredentials is 'true'."
+                      items:
+                        type: string
+                        description: Client credential ID
+                      uniqueItems: true
+                    notificationEmailRecipients:
+                      type: array
+                      description: A list of email addresses to notify about Safe Mode activation. Druva Cloud Administrator emails are included by default (no need to provide in input). Maximum of 20 recipients allowed.
+                      items:
+                        type: string
+                        format: email
+                        description: Email address of notification recipient
+                      maxItems: 20
+                      uniqueItems: true
+                  required:
+                  - activationFor
+                  - allowedAdminIds
+                  - allowedClientCredentialIds
+                  - notificationEmailRecipients
+                  additionalProperties: false
+              required:
+              - activationInfo
+              additionalProperties: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSafeModeActivationSettingsResponse'
+        '403':
+          description: User is not authorized to access this resource with an explicit deny
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '422':
+          description: "Could be one of: \n - Password does not match password policy. Please check password policy. \n - Incorrect current password."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
+    CreateSafeModeActivationSettingsResponse:
+      title: CreateSafeModeActivationSettingsResponse
+      type: object
+      description: Response returned after safe mode activation request
+      properties:
+        operationId:
+          type: string
+          description: A unique identifier for this specific Safe Mode activation operation. Used by Support to track the request internally if a case is raised.
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          description: Status of the safe mode activation operation.
+        warning:
+          type: string
+          description: An optional warning message indicating any non-critical issues encountered during activation. For example, some specified allowedAdminIds or allowedClientCredentialIds may be disabled or deleted, but the activation proceeded successfully for the valid entries.
+      required:
+      - operationId
+      - status
+  securitySchemes:
+    BearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

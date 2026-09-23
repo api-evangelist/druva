@@ -1,0 +1,657 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Tenants API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get information and perform operations on tenants managed.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Tenants
+  description: Lists the APIs to get information and perform operations on tenants managed.
+paths:
+  /msp/v3/customers/{customerID}/tenants:
+    post:
+      requestBody:
+        description: Specify the details for a new tenant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantV3Request'
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the unique ID of the customer for whom you wish to create a new tenant. Get the ID of the customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: CreateTenantV3
+      summary: Create a new tenant
+      description: '- Creates a new tenant for a customer.
+
+        - After you initiate the operation, it is queued and a task ID is generated. You can get the task ID from the success response. Use this task ID in the ''Get Task Details'' API to track the operation''s progress.
+
+        - Note
+
+        - This API does not support the creation of a Sandbox tenant.
+
+        - Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.
+
+        - Storage Regions once added, cannot be removed.
+
+        - For SaaS Apps & Endpoint and Enterprise Workloads with Business Edition, any one storage region is supported.
+
+        - The AWS and Azure storage regions must be in the same geographic location for ‘Business’ edition.
+
+        - At least one AWS storage region is required for Enterprise Workloads.
+
+        - All features enabled in the associated Service plan will be enabled compulsorily for the tenant. Need to send those feature attributes in the API.
+
+        - Feature Endpoints, D365 and Okta do not support business edition.
+
+        - Premium Security is only supported for Enterprise Workloads.
+
+        - If ''Premium Security'' needs to be enabled for a tenant, Security Posture & Observability and Enterprise Workloads Accelerated Ransomware Recovery features both should be enabled for that tenant.
+
+        - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+        - View all supported storage regions here - https://help.druva.com/en/articles/15162912-aws-region-availability-matrix
+
+        .'
+  /msp/v3/tenants:
+    get:
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: pageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+        in: query
+      - name: customerIds
+        description: Specify the unique customer id for which you want to retrieve the tenant information.
+        schema:
+          type: string
+        in: query
+      - name: pageSize
+        description: Specify the number of records you wish to receive in API response. Example - 30. Maximum allowed 'pageSize' value is 100.
+        schema:
+          type: string
+        in: query
+      - name: includeFeatures
+        description: Specify whether you wish to receive the features list in the API response. Example - true. Default 'includeFeatures' value is false.
+        schema:
+          type: boolean
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantsV3Response'
+              examples:
+                ListTenant Sample 1:
+                  value: "{\n  \"tenants\": [\n    {\n      \"id\": \"e293b4c7-a984-4813-8fba-526d5b0edc80\",\n      \"customerID\": \"78ccbc1c-0ca0-4077-ad94-a74479c299b8\",\n      \"productID\": 2,\n      \"licenseExpiryDate\": \"2022-10-25T00:00:00Z\",\n      \"quota\": 1.5,\n      \"quotaEndDate\": \"2022-10-25T00:00:00Z\",\n      \"quotaStartDate\": \"2022-10-25T00:00:00Z\",\n      \"servicePlanID\": 1,\n \"edition\": \"enterprise\",\n     \"storageRegions\": [\n        {\n              \"name\": \"us-east-1\",\n              \"storageProvider\": 1\n            }\n      \n],\n      \"features\": [\n        {\n          \"name\": \"M365\",\n          \"attrs\": [\n            {\n              \"name\": \"userCount\",\n              \"value\": 100\n            }\n          ]\n        }\n      ],\n      \"tenantType\": 2,\n      \"status\": 1,\n      \"createdOn\": \"2022-10-25T00:00:00Z\",\n      \"activeSince\": \"2022-10-25T00:00:00Z\",\n      \"deleteDate\": \"2022-10-25T00:00:00Z\"\n    },\n\t{\n      \"id\": \"e433b4c7-a984-4813-8fba-526d5b0edc81\",\n      \"customerID\": \"91ccbc1c-0ca0-4077-ad94-a74479c299b8\",\n      \"productID\": 2,\n      \"licenseExpiryDate\": \"2022-10-25T00:00:00Z\",\n      \"quota\": 1.5,\n      \"quotaEndDate\": \"2022-10-25T00:00:00Z\",\n      \"quotaStartDate\": \"2022-10-25T00:00:00Z\",\n      \"servicePlanID\": 1,\n  \n      \"edition\": \"enterprise\",\n     \"storageRegions\": [\n        {\n              \"name\": \"us-east-1\",\n              \"storageProvider\": 1\n            }\n      ],\n      \"features\": [\n        {\n          \"name\": \"M365\",\n          \"attrs\": [\n            {\n              \"name\": \"userCount\",\n              \"value\": 100\n            }\n          ]\n        }\n      ],\n      \"tenantType\": 2,\n      \"status\": 1,\n      \"createdOn\": \"2022-10-25T00:00:00Z\",\n      \"activeSince\": \"2022-10-25T00:00:00Z\",\n      \"deleteDate\": \"2022-10-25T00:00:00Z\"\n    }\n  ],\n  \"nextPageToken\": \"eyJwYWdlU2l6ZSI6IDEwMH0=\"\n}"
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetTenantsV3
+      summary: Get tenants list
+      description: Returns list of tenants.
+  /msp/v2/customers/{customerID}/tenants/{tenantID}/suspend:
+    post:
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the ID of a customer whose tenant you wish to suspend . Get the ID of a customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: tenantID
+        description: Specify the ID of a tenant which you wish to suspend . Get the ID of a tenant using the 'List all tenants' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: SuspendTenant
+      summary: Suspend a customer tenant
+      description: 'Suspend a customer''s tenant.
+
+        - Note
+
+        - After the tenant or product is suspended, you cannot access the tenant''s console.
+
+        - After you initiate the operation, it is queued and a task ID is generated. You can get the task ID from the success response. Use this task ID in the ''Get Task Details'' API to track the operation''s progress.'
+  /msp/v2/customers/{customerID}/tenants/{tenantID}/unsuspend:
+    post:
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the ID of a customer whose tenant you wish to un-suspend . Get the ID of a customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: tenantID
+        description: Specify the ID of a tenant which you wish to un-suspend . Get the ID of a tenant using the 'List all tenants' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: UnsuspendTenant
+      summary: Unsuspend a customer tenant
+      description: '- Unsuspends specified customer''s tenant.
+
+        - After you initiate the operation, it is queued and a task ID is generated. You can get the task ID from the success response. Use this task ID in the ''Get Task Details'' API to track the operation''s progress.'
+  /msp/v3/customers/{customerID}/tenants/{tenantID}:
+    get:
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the unique ID of a customer in MSP. Get the ID of a customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: tenantID
+        description: Specify the unique ID of a tenant in MSP. Get the ID of a tenant using the 'List all tenants' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: includeFeatures
+        description: Specify whether you wish to receive the features list in the API response. Example - true. Default 'includeFeatures' value is false.
+        schema:
+          type: boolean
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantV3Response'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include a valid access token. Provide a valid token to proceed.
+        '404':
+          description: The requested resource was not found.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request could not be processed due to an internal error. Try again later. If the error persists, contact Druva Support.
+      security:
+      - Bearer: []
+      operationId: GetTenantV3
+      summary: Get tenant details
+      description: Returns information about a particular customer's tenant.
+    patch:
+      requestBody:
+        description: Specify the details for a new customer.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchTenantRequest'
+      tags:
+      - Tenants
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: customerID
+        description: Specify the ID of a customer for which you wish to update tenant. Get the ID of a customer using the 'List all customers' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: tenantID
+        description: Specify the ID of a tenant for which you wish to update. Get the ID of a tenant using the 'List all tenants' API.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreatedResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: PatchTenant
+      summary: Patch an existing tenant
+      description: '- Patches existing tenant for given customer for the MSP with given details.
+
+        - After you initiate the operation, it is queued and a task ID is generated. You can get the task ID from the success response. Use this task ID in the ''Get Task Details'' API to track the operation''s progress.
+
+        - Notes
+
+        - Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.
+
+        - Storage Regions once added, will not be removed.
+
+        - The AWS and Azure storage regions must be in the same geographic location for ‘Business’ edition.
+
+        - Feature Endpoints, D365 and Okta do not support business edition.
+
+        - For business edition, there will be only 1 storage region supported.
+
+        - If a feature is enabled/disabled in service plan it can not be overridden via this API call.
+
+        - IsEnabled is a required field while specifying tenant features.
+
+        - All the supported attributes are required while updating any feature.
+
+        - Premium Security is only supported for Enterprise Workloads.
+
+        - If ''Premium Security'' needs to be enabled for a tenant, Security Posture & Observability and Enterprise Workloads Accelerated Ransomware Recovery features both should be enabled for that tenant.
+
+        - For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+        - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+        - View all supported storage regions here - https://help.druva.com/en/articles/15162912-aws-region-availability-matrix
+
+        .'
+components:
+  schemas:
+    TaskCreatedResponse:
+      type: object
+      properties:
+        task:
+          type: object
+          properties:
+            id:
+              description: The task ID of the operation, and can be used to track the progress. Use this task ID in the 'Get Task Details' API to track the operation's progress. Example - 'c8b54819-486a-497a-b86e-5b93f2422711'.
+              type: string
+              example: c8b54819-486a-497a-b86e-5b93f2422711
+    PatchTenantRequest:
+      description: Specify the details for patching existing tenant.
+      type: object
+      properties:
+        licenseExpiryDate:
+          format: date-time
+          description: Specify the new date on which the license of the tenant will expire. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quota:
+          format: double
+          description: Specify the new value of Druva Consumption Units that should be allocated to the customer. If the customer is close to breaching this limit, an alert is sent to the configured email address based on the severity of the breach. Example - 1.5
+          type: number
+          example: 1.5
+        quotaStartDate:
+          format: date-time
+          description: Specify the new date from when the Quota limit is applicable to the customer and the storage consumption begins. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-15T00:00:00Z'
+          type: string
+          example: '2022-10-15T00:00:00Z'
+        quotaEndDate:
+          format: date-time
+          description: Specify the new date when the allocated Quota limit will expire. After the Quota limit expires, the customer cannot back up the data. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-15T00:00:00Z'
+          type: string
+          example: '2022-10-15T00:00:00Z'
+        servicePlanID:
+          format: int64
+          description: '- Specify the unique ID of the Service Plan that you wish to associate with the tenant.
+
+            - Get the Service Plan ID using the ''List Service Plans'' API.
+
+            '
+          type: integer
+          example: 1
+        tenantType:
+          $ref: '#/components/schemas/TenantTypeForV3'
+        storageRegions:
+          description: "- Specify the storage regions where you want to store the tenant data specifying the 'name' of storage region and its associated storage provider.\n- Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageRegions'
+        features:
+          description: Specify the new list of features that needs to be enabled/disabled for the tenant. All the supported attributes are required while updating any feature.
+          type: array
+          items:
+            $ref: '#/components/schemas/PatchTenantFeatures'
+    GetTenantV3Response:
+      type: object
+      properties:
+        id:
+          description: The unique ID of the tenant. Example - 'e293b4c7-a984-4813-8fba-526d5b0edc80'
+          type: string
+          example: e293b4c7-a984-4813-8fba-526d5b0edc80
+        customerID:
+          description: The unique ID of the MSP customer. Example - '8ccbc1c-0ca0-4077-ad94-a74479c299b8'
+          type: string
+          example: 78ccbc1c-0ca0-4077-ad94-a74479c299b8
+        productID:
+          format: int64
+          description: "The ID of the product tenant.\n- For Enterprise Workloads, it is '1'. \n- For SaaS Apps and Endpoints, it is '2'.\n"
+          type: integer
+          example: 1
+        licenseExpiryDate:
+          format: date-time
+          description: The date on which the license of tenant will expire. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quota:
+          format: double
+          description: The quota limit for the tenant. It is a soft limit affecting only quota alerts and reporting. Example - 1.5
+          type: number
+          example: 1.5
+        quotaEndDate:
+          format: date-time
+          description: The quota end date for the tenant. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quotaStartDate:
+          format: date-time
+          description: The quota start date for the tenant. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        servicePlanID:
+          format: int64
+          description: The unique ID of the service plan associated with the tenant. Example - 1
+          type: integer
+          example: 1
+        edition:
+          description: "The product license edition associated with the tenant. The edition can have one of the following values - \n - business \n - enterprise \n - elite\n"
+          type: string
+          example: enterprise
+        storageRegions:
+          description: "The 'name' of storage region and its associated storage provider where the data is stored for the tenant.\n- Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageRegions'
+        features:
+          description: The list of features enabled for the tenant.
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantFeaturesV3'
+        tenantType:
+          $ref: '#/components/schemas/TenantTypeForV3'
+        status:
+          format: int64
+          description: "- The current status of the tenant.\n    - 0  Creation Pending - Creation is pending of the tenant.\n    - 1 Ready - The tenant is created and associated with the customer.\n    - 2 Suspended - The tenant is suspended.\n    - 3 Soft deleted - The deletion of the tenant is initiated.\n    - 4 Being migrated - Migration of the tenant is in progress.\n    - 5 Updating - Tenant updation in under progress.\n"
+          type: integer
+          example: 1
+        createdOn:
+          format: date-time
+          description: The date and time on which the tenant was created. Example -  '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        activeSince:
+          format: date-time
+          description: The date and time since the tenant is active for the customer. Example -  '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        deleteDate:
+          format: date-time
+          description: The date and time on which the tenant assigned to the customer will be deleted. If the tenant is not marked for deletion, no value is displayed. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetTenantsV3Response:
+      type: object
+      properties:
+        tenants:
+          description: The list of tenants and their information.
+          type: array
+          items:
+            $ref: '#/components/schemas/GetTenantV3Response'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
+          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    StorageRegions:
+      description: Storage Regions that needs to enabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the storage region. Example - ''us-east-1'''
+          type: string
+          example: us-east-1
+        storageProvider:
+          description: "- Storage Provider (AWS/Azure) that is associated with the storage region. \n Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: integer
+          example: 1
+    FeatureAttributeForV3:
+      type: object
+      properties:
+        name:
+          description: Specify the name of the attribute. Example - 'userCount', 'preservedUserCount'
+          type: string
+          example: userCount
+        value:
+          description: Specify the value of the attribute. Example - 100
+          type: object
+          example: 100
+    TenantFeaturesV3:
+      description: Features that needs to enabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the feature. Example - ''M365''
+
+            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+            '
+          type: string
+          example: M365
+        attrs:
+          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAttributeForV3'
+    TenantTypeForV3:
+      format: int64
+      description: "Specify the tenant type for the product.\n - Specify '1' if it is a Sandbox.\n - Specify '2' if it is Evaluation. This is a trial plan with a validity of 30 days. If you select this tenant type, the product license will be active until 30 days. After 30 days, you must change the tenant type to Commercial.\n - Specify '3' if it is Commercial. For this tenant type, a Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.\n"
+      type: integer
+      example: 2
+    PatchTenantFeatures:
+      description: Features that needs to enabled/disabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the feature. Example - ''M365''
+
+            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+            '
+          type: string
+          example: M365
+        isEnabled:
+          description: "- Feature state for tenant. \n- isEnabled can be true or false. Example - true\n"
+          type: boolean
+          example: true
+        attrs:
+          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAttributeForV3'
+    CreateTenantV3Request:
+      description: "- Specify the details for a new tenant. \n"
+      required:
+      - licenseExpiryDate
+      - servicePlanID
+      - storageRegions
+      - tenantType
+      - productID
+      - features
+      type: object
+      properties:
+        licenseExpiryDate:
+          format: date-time
+          description: Specify the date on which the tenant will expire. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quota:
+          format: double
+          description: Specify the Druva Consumption Units to be allocated to this customer. If the customer is close to breaching this limit, an alert is sent to the configured email address based on the severity of the breach. Example - 1.5
+          type: number
+          example: 1.5
+        quotaStartDate:
+          format: date-time
+          description: Specify the Start date from when the quota limit will be applicable to the customer account and the storage consumption usage begins. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quotaEndDate:
+          format: date-time
+          description: Specify the End date on which the quota limit will end for the customer account. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        servicePlanID:
+          format: int64
+          description: "- Specify the unique ID of the Service Plan that you wish to associate with the tenant. \n- Get the Service Plan ID using the 'List Service Plans' API.\n"
+          type: integer
+          example: 1
+        storageRegions:
+          description: "- Specify the storage regions where you want to store the tenant data specifying the 'name' of storage region and its associated storage provider.\n- Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageRegions'
+        tenantType:
+          $ref: '#/components/schemas/TenantTypeForV3'
+        productID:
+          format: int64
+          description: "Specify the ID of the product for which the tenant is being created.\n - To create the tenant for Enterprise Workloads, specify '1'.\n - To create the tenant for SaaS Apps and Endpoints, specify '2'\n"
+          type: integer
+          example: 1
+        features:
+          description: Specify the list of features that must be enabled for the tenant. It cannot be empty.
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantFeaturesV3'
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

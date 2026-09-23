@@ -1,0 +1,333 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Storage Management API
+  description: Lists the APIs to get information about the storages and inSync CloudCache Servers configured in Druva inSync.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Storage Management
+  description: Lists the APIs to get information about the storages and inSync CloudCache Servers configured in Druva inSync.
+paths:
+  /storagemanagement/v1/storages:
+    get:
+      tags:
+      - Storage Management
+      summary: List all storages
+      description: Returns the list of all the storages configured for your account in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getStoragemanagementV1Storages
+      x-operation-id-source: derived
+  /storagemanagement/v1/storages/{storageID}:
+    get:
+      tags:
+      - Storage Management
+      summary: Get storage information
+      description: Returns information about a particular storage using storageID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: storageID
+        in: path
+        description: Specify the unique storage ID to get its detailed information. Get the ID of a storage using the 'List all storages' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Storage'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getStoragemanagementV1StoragesByStorageID
+      x-operation-id-source: derived
+  /storagemanagement/v1/cloudcaches:
+    get:
+      tags:
+      - Storage Management
+      summary: List all CloudCache Servers
+      description: Returns the list of CloudCache Servers configured in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudCacheList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getStoragemanagementV1Cloudcaches
+      x-operation-id-source: derived
+  /storagemanagement/v1/cloudcaches/{cloudCacheID}:
+    get:
+      tags:
+      - Storage Management
+      summary: Get CloudCache Server information
+      description: Returns information about a particular CloudCache Server using storageID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: cloudCacheID
+        in: path
+        description: Specify the unique CloudCache Server ID to get its detailed information. Get the ID of a storage using the 'List all CloudCache Servers' API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudCache'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getStoragemanagementV1CloudcachesByCloudCacheID
+      x-operation-id-source: derived
+components:
+  schemas:
+    CloudCacheList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of CloudCache Servers listed on the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        cloudcaches:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudCache'
+    Storage:
+      type: object
+      properties:
+        StorageID:
+          type: integer
+          format: int64
+          description: The unique identifier of the storage in Druva inSync.
+          example: 1
+        storageName:
+          type: string
+          description: The name of the storage in Druva inSync.
+          example: Druva3_local
+        storageUsage:
+          type: string
+          description: The storage space consumed on the storage.
+          example: 225.04 MB
+        totalSizeOfBackedUpFiles:
+          type: string
+          description: The total size of the files backed up on this storage.
+          example: 1.29 GB
+    CloudCache:
+      type: object
+      properties:
+        cloudCacheID:
+          type: integer
+          format: int64
+          description: The inSync assigned unique identifier of the CloudCache Server.
+          example: 1
+        cloudCacheName:
+          type: string
+          description: The name of the CloudCache Server.
+          example: Druva_cloudcache
+        status:
+          type: string
+          description: The current status of the CloudCache Server.
+          enum:
+          - Not Active
+          - Active
+          - Decommissioned
+          example: Active
+        cacheUsage:
+          type: string
+          description: The total disk space that the cache data consumed until date.
+          example: 1.29 GB
+        totalCacheSize:
+          type: string
+          description: The total disk space available for cache data.
+          example: 1 TB
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    StorageList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of storage listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        storages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Storage'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

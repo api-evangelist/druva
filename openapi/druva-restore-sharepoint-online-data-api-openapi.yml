@@ -1,0 +1,886 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Microsoft 365 Restore SharePoint Online data API
+  description: This document lists M365 APIs for data protection using Druva inSync.
+servers:
+- url: https://apis.druva.com
+tags:
+- name: Restore SharePoint Online data
+paths:
+  /insync/sharepointmaster/v3/sites:
+    get:
+      tags:
+      - Restore SharePoint Online data
+      summary: List All SharePoint Site Collections
+      description: Retrieve the list of SharePoint site collections.
+      operationId: getSites
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: lastBackupStatus
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Backup Failed
+            - Backed Up With Errors
+            - Backed Up Successfully
+            - Never Backed Up
+            - Backup Cancelled
+          description: 'Specify the backup status of the SharePoint site for filtering. Set this value to one of the following: `Backup Failed`, `Backed Up With Errors`, `Backed Up Successfully`, `Successful with errors`, `Never Backed Up`, or `Backup Cancelled`. Leave empty to return all sites.'
+      - in: query
+        name: searchTerm
+        required: false
+        schema:
+          type: string
+          description: Specify the title or URL of the SharePoint site for filtering.
+      - in: query
+        name: sortOrder
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Specify the sorting order for the results. Use `asc` for ascending or `desc` for descending.
+      - in: query
+        name: sortByColumn
+        required: false
+        schema:
+          type: string
+          enum:
+          - siteCollectionId
+          - title
+          - siteStatus
+          - lastBackupStatus
+          - statusDetails
+          - siteType
+          - bulkExportStatus
+          - lastBulkExportStatus
+          - lastCompletedBulkExport
+          - lastSync
+          - backupData
+          - siteCollectionUrl
+          - configurationStatus
+          - appState
+          description: 'Specify the column name to sort the results. Example: Choose `lastSync` to arrange the results based on the last synchronization time of the SharePoint site.'
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          description: 'Specify the number of records to retrieve per request.
+
+            For example, if you want to retrieve 100 records in each request, set the `pageSize` as `100`.'
+      - in: query
+        name: nextPageToken
+        required: false
+        schema:
+          type: string
+          description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+      - in: query
+        name: appState
+        required: false
+        schema:
+          type: string
+          enum:
+          - Enabled
+          - Disabled
+          description: 'Specify the status of the SharePoint site for filtering. Set this value to one of the following: `Enabled` or `Disabled`.'
+      - in: query
+        name: configurationStatus
+        required: false
+        schema:
+          type: string
+          enum:
+          - Configured
+          - Not Configured
+          description: 'Specify the configuration status of the SharePoint site for filtering. Set this value to one of the following: `Configured` or `Not Configured`'
+      - in: query
+        name: siteType
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - MS Teams Site
+            - M365 Groups Site
+            - MS Teams Private Channel Site
+            - Other Site
+          description: 'Specify the type of SharePoint site for filtering.
+
+            Set this value to one of the following: `MS Teams Site`, `M365 Groups Site`, `MS Teams Private Channel Site` or `Other Site.`'
+      - in: query
+        name: bulkExportStatus
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Enabled
+            - Disabled
+          description: 'Specify the Bulk Export Status of the SharePoint site for filtering.
+
+            Set this value to one of the following: `Enabled` or `Disabled`.'
+      - in: query
+        name: lastBulkExportStatus
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Completed Successfully
+            - Failed
+            - Completed With Errors
+            - Never Exported
+          description: 'Specify the Last Bulk Export Status of the SharePoint site for filtering. Set this value to one of the following: `Completed Successfully`, `Failed`, `Completed With Errors` or `Never Exported.`'
+      - in: query
+        name: pageNumber
+        required: false
+        schema:
+          type: integer
+          description: "Specify the `pageNumber` parameter to indicate the page of results to retrieve in paginated API requests.\n\n For example, when initially calling the API with a `pageSize` of `100`, the first request returns records 1 to 100. Subsequent pages can be fetched using either the `nextPageToken` or `pageNumber` parameter.\n\n This parameter allows you to directly retrieve records from a specific page (e.g., records `401` to `500`) by providing the desired page number (e.g., `5`)."
+      - in: query
+        name: errors
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - MS-01
+            - MS-247
+            - MS-11
+            - MS-17
+            - MS-10
+            - MS-22
+            - MS-70
+            - MS-135
+            - MS-75
+            - SPO-01
+            - SPO-02
+            - SPO-03
+            - SPO-04
+            - SPO-05
+            - SPO-06
+            - SPO-07
+            - SPO-09
+            - SPO-11
+            - SPO-12
+            - SPO-13
+            - SPO-15
+            - SPO-16
+            - SPO-17
+            - SPO-18
+            - SPO-19
+            - SPO-20
+            - SPO-21
+            - SPO-22
+            - SPO-23
+            - SPO-24
+            - SPO-25
+            - SPO-26
+            - SPO-27
+            - SPO-28
+            - SPO-29
+            - SPO-31
+            - SPO-32
+            - SPO-35
+          example:
+          - MS-01
+          - SPO-22
+          description: 'Specify a comma-separated list of specific error codes to filter the results.
+
+            Example: use codes like `SPO-01`, `SPO-02`, and so on.'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_list_sites'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+  /insync/sharepointmaster/v2/siteCollections/{site_collection_id}/restorePoints:
+    get:
+      tags:
+      - Restore SharePoint Online data
+      summary: List All SharePoint Site Restore Points
+      description: Retrieve the list of restore points for SharePoint sites protected by Druva.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: site_collection_id
+        in: path
+        description: Specify the unique identifier associated with a specific SharePoint site collection for filtering. Get the ID of a site using the `List all SharePoint Site Collections` API.
+        required: true
+        schema:
+          type: integer
+      - name: include_virtual
+        in: query
+        description: Specify the flag indicating whether to include a curated snapshot in the result. Use `true` to include or `false` to exclude the curated snapshot.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_list_spo_restore_points'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+      operationId: getInsyncSharepointmasterV2SiteCollectionsBySiteCollectionIdRestorePoints
+      x-operation-id-source: derived
+  /insync/sharepointmaster/v2/restores:
+    post:
+      tags:
+      - Restore SharePoint Online data
+      summary: Restore a SharePoint Site
+      description: Performs a restore of a SharePoint site to a new or existing site.
+      operationId: restorePoints
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                site_collection_id:
+                  type: integer
+                  example: 123
+                  required:
+                  - site_collection_id
+                  description: "Specify the unique identifier associated with a specific SharePoint site collection for filtering. \n\nGet the ID of a site using the `List all SharePoint Site Collections` API."
+                path:
+                  type: string
+                  example: '[{"minor_type": 1, "handle": "/Thu Mar  7 13:18:43 2024/shan_dl_restore", "parent": "root"}]'
+                  required:
+                  - path
+                  description: "Specify the list of paths to be restored, including the minor type, handle, and root for each path. \n\n The format for each path is as follows: \n `{\"minor_type\": 1,\n\"handle\": \"/Thu Mar 7 13:18:43 2024/shan_dl_restore\",\n\"parent\": \"root\"}` \n\n - **Minor Type**: The minor type represents the type of item being restored. The possible values are:`0-Folder`, `1-File`, `2-Document List`, `9-Settings File`, `10-List`, `11-Subsite`\n\n - **Handle**: The handle is the path to the specific item being restored relative to the snapshot. It follows this format: `</snapshot_name/snapshot_title/item_to_restore>`\n\n - **Parent/Root**: The root specifies the parent directory or root context for the item being restored. Multiple paths can be provided as a comma-separated list. It follows this format: `</snapshot_name/snapshot_title/parent_dir>`"
+                in_place:
+                  type: boolean
+                  example: true/false
+                  description: "Specify the flag indicating if the restore operation is an in-place restore. \n\n - If param `restore_to` is set to `new` then `<in_place>` should be `false`. \n\n - If param `restore_to` is set to `existing`, then `in_place` should be `true`."
+                  required:
+                  - in_place
+                sid:
+                  type: integer
+                  example: 1
+                  required:
+                  - sid
+                  description: "Specify the ID of the storage assigned to the site collection. \nGet the ID of storage using the `List all storages API`. This API returns the list of all storage that the customer is using. \n\nThe list will provide the ID - Storage name mapping for each region that the customer is using. To know a SharePoint site's storage name, customers can see a SharePoint site's summary."
+                restore_to:
+                  type: string
+                  example: new
+                  description: "Specify the flag indicating if the data should be restored to a new or an existing site. \nUse `new` to restore data to a new site collection or `existing` to restore data to an existing site collection.\n\nⓘ Note: If param `restore_to` is set to `new`, then `in_place` should be `false`. If param `restore_to` is set to `existing` then `in_place` should be `true`."
+                destination_site_url:
+                  type: string
+                  example: /sites/example
+                  description: Specify the URL of the destination site to be used in case of restoring data to an existing site.
+                destination_site_title:
+                  type: string
+                  example: Hello
+                  description: Specify the title of the destination site to be used in case of restoring data to an existing site.
+                use_source_site_params:
+                  type: boolean
+                  example: false
+                  description: "Specify the flag indicating if the parameters from the source site should be used when restoring data to a new or existing site. \n\n - When set to `true`, the restore operation will apply the site configuration parameters (e.g., site templates, language settings, regional settings, etc.) from the original source site to the destination site. \n\n - If set to `false`, the operation will use the default site configuration parameters for the destination site, ignoring the source site's settings."
+                new_site_params:
+                  type: string
+                  description: "Specify the site title and description containing the details for the new site to be created during a restore operation to a new site.\n\n `{\"new_site_title\": Title of the new site,\"new_site_description\": Description of the new site}` \n\nⓘNote: If param `restore_to` is set to an `existing`, the `new_site_params` is not required."
+                  example: '{"new_site_title":"RestoreNewprasadtestsite824","new_site_description":"Whole site restore to a new site with site settings"}'
+                spo_settings_restore_option:
+                  type: integer
+                  example: 1
+                  description: "Specify whether the SharePoint Online settings need to be restored or not during the restore operation. \n\n - Set it to `1` to include SharePoint Online settings in the restore process. These settings may include site configurations, regional settings, language settings, and other SharePoint Online-specific settings. \n\n - Set it to `0` to skip restoring SharePoint Online settings and only restore the content and data."
+                teams_restore_params:
+                  type: string
+                  example: ''
+                  description: "Specify the parameters required for restoring a team. \n\n `{\"destination_site_collection_url\": \"/sites/example\", \"restore_to\": \"new\", \"restore_paths\": \"[{\"minor_type\": 1, \"handle\": \"/Thu Mar  7 13:18:43 2024/shan_dl_restore\", \"parent\": \"root\"}]\", \"is_wiki_restore\": \"false\"}`\n\n ⓘ Note: This is required only if `is_team_triggered` parameter is set to `true`"
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200_trigger_spo_restore_resp'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/Unauthorized'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Forbidden:
+                  $ref: '#/components/examples/Forbidden'
+                GARError:
+                  $ref: '#/components/examples/GARError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema: {}
+              examples:
+                NotFound:
+                  $ref: '#/components/examples/NotFound'
+        '500':
+          description: The request was not processed due to an internal error on server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotImplemented:
+                  $ref: '#/components/examples/NotImplemented'
+components:
+  examples:
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
+        data:
+          status: 1
+          message: Failed to get Customer License
+  schemas:
+    200_list_sites:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 0
+          description: SharePoint site status eg. 0-Disabled, 1-Enabled
+        nextPageToken:
+          type: string
+          example: Mg==
+          description: Token to be used in next request to fetch next page data.
+        totalResult:
+          type: integer
+          example: 3500
+          description: Total no of SharePoint sites available with provided filter criteria.
+        pageSize:
+          type: integer
+          example: 1000
+          description: Current page size i.e no of records to fetched per page
+        siteCollections:
+          type: array
+          items:
+            type: object
+            properties:
+              lastSync:
+                type: integer
+                example: 1712909603
+                description: Datetime on which the last backup of SharePoint Site was done. 0 in case of Never Backed Up.
+              siteType:
+                type: string
+                example: M365 Groups Site
+                description: Type of SharePoint site. eg. MS Teams Site, M365 Groups Site, MS Teams Private Channel Site, Other Site
+              siteCollectionId:
+                type: integer
+                example: 123
+                description: SharePoint site collection id
+              siteCollectionUrl:
+                type: string
+                example: https://druvaglobalind.sharepoint.com/sites/SC_V
+                description: SharePoint site collection URL
+              backupData:
+                type: integer
+                example: 19745050
+                description: Backed up data in bytes.
+              storageid:
+                type: integer
+                example: 0
+                description: Id of storage attached to SharePoint site collection.
+              backupDataStr:
+                type: string
+                example: 18.83 MB
+                description: Backed up data in human readable text format.
+              guid:
+                type: string
+                example: a0de3f5a-e0b8-41ce-9bc2-446932c5420f
+                description: Unique id of SharePoint site collection provided by Microsoft.
+              useDefaultSettings:
+                type: boolean
+                example: true
+                description: Boolean flag indicating whether the SharePoint site collection is using default backup settings or not.
+              errors:
+                type: array
+                items:
+                  type: string
+                example:
+                - MS-01
+                - SPO-22
+                description: List of new error codes occurred in recent backup activity of SharePoint sites
+              titleUrl:
+                type: string
+                example: https://insync-prasadp.drtst.in/admin/app/#/cloudapps/office365/sharepoint/1/summary
+                description: Url of the summary page of the SharePoint site collection
+              lastBackupJob:
+                type: integer
+                example: 1712909603
+                description: Datetime when the last backup job was run for SharePoint site
+              title:
+                type: string
+                example: SC_V
+                description: Title of SharePoint site collection
+              bulkExportStatus:
+                type: string
+                example: Disabled
+                description: Staus indicating if the Bulk Export is Enabled or Disabled for SharePoint site collection.
+              totalErrorsCount:
+                type: integer
+                example: 0
+                description: Total count of errors occured during the backup of SharePoint site collection.
+              lastActivityId:
+                type: integer
+                example: 0
+                description: Id of the last backup activity for SharePoint site collection.
+              parentId:
+                type: integer
+                example: 0
+                description: Id of the parent MS Team or MS Group if SharePoint site belongs to any MS Team or MS Group. Default is 0.
+              filescurrent:
+                type: integer
+                example: 471
+                description: Total no of files backed up currenly.
+              lastSyncTime:
+                type: integer
+                example: 1712909603
+                description: Datetime on which the last backup of SharePoint Site was done. 0 in case of Never Backed Up.
+              cloudappBackupStatus:
+                type: integer
+                example: 0
+                description: Error code indicating the last error occured in last failed back up. 0 if none of the backups are failed.
+              enabled:
+                type: integer
+                example: 1
+                description: No indicating if SharePoint site collection is enabled or disabled for backup. 0-Disabled, 1-Enable.
+              lastBackupStatus:
+                type: string
+                example: Backed Up Successfully
+                description: Status of last backup of SharePoint site collection. Eg. Backed Up Successfully, Backed Up With Errors, Never Backed Up, Backup Cancelled, Backup Failed
+              parentType:
+                type: integer
+                example: 0
+                description: Value indicating the type of parent of site if the SharePoint site belongs to any MS Team or Ms Group. Eg. 5-MS Team, 10-MS Group
+              configured:
+                type: boolean
+                example: true
+                description: Flag indicating if the site is configured for backup or not.
+              missedFiles:
+                type: integer
+                example: 0
+                description: Number of files missed during the last backup.
+              currentBackupData:
+                type: integer
+                example: 19745050
+                description: Current backed up data in bytes.
+              totalFiles:
+                type: integer
+                example: 0
+                description: Total number of files in SharePoint site collection.
+              geoLocation:
+                type: string
+                example: IND
+                description: Geo location code to which the SharePoint site belongs.
+              workload:
+                type: string
+                example: SharePoint
+                description: Workload of SharePoint site collection. Default SharePoint.
+              createdOn:
+                type: integer
+                example: 1710165704
+                description: Datetime of SharePoint site collection creation
+              lastSyncFailed:
+                type: boolean
+                example: false
+                description: Flag indicating if the last backup failed. True if last backup failed else False
+              useDefaultExportSettings:
+                type: boolean
+                example: true
+                description: Flag indicating whether to use default bulk export settings.
+              lastSuccessfullBackup:
+                type: integer
+                example: 0
+                description: Datetime of last successful backup of SharePoint site collection
+              siteStatusStr:
+                type: string
+                example: Not Configured
+                description: SharePoint site collection configuration status string Eg. Configured, Not Configured.
+              customerId:
+                type: integer
+                example: 2
+                description: Druva Customer Id of SharePoint site collection
+              internalTitle:
+                type: string
+                example: SC_V_Main
+                description: System-defined title of the SharePoint site collection, primarily used for backend processes such as restore.
+          description: List of SharePoint Site Collections
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_trigger_spo_restore_resp:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Restore triggered successfully.
+          description: Message indicating the restore trigger status if restore is triggered successfully or restore trigger failed.
+        restore_status:
+          type: integer
+          example: 0
+          description: Restore status code. Eg. 0-Success, 1-Failure
+        restore_task:
+          type: boolean
+          example: true
+          description: flag indicating if restore task was created successfuly. Eg. True-Success, False-Failure
+        task_id:
+          type: integer
+          example: '3458'
+          description: A unique identifier for the restore task.
+    200_list_spo_restore_points:
+      type: array
+      items:
+        type: object
+        properties:
+          isAnomalous:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is anomalous.
+          ls_name:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot name.
+          filesMissed:
+            type: integer
+            example: 0
+            description: Number of files missed in the snapshot.
+          ls_rpxattrs:
+            type: object
+            example: {}
+            description: Dict containing the restore point extra attributes.
+          display_name:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot display name
+          ls_virtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot on storage
+          filesSynced:
+            type: integer
+            example: 221
+            description: Number files backed up in snapshot
+          ls_stat:
+            type: object
+            example:
+              st_blocksz: 0
+              st_flags: 0
+              st_mtime: 1710236576
+              st_links: 1
+              st_mdattrs: null
+              st_ver: 18
+              st_method: -1
+              st_deleted: false
+              st_mode: 16384
+              st_acl_handle: 0
+              st_size: 40041770
+              st_ino: 5
+              st_valid: true
+              st_readsz: 0
+              st_cver: 17
+            description: Object containg the storage stats of the snapshot.
+          is_virtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot
+          sysState:
+            type: integer
+            example: 0
+            description: System state of the snapshot
+          sid:
+            type: integer
+            example: 1000002
+            description: Storage id of snapshot
+          ls_softdel:
+            type: object
+            properties:
+              deleted:
+                type: boolean
+                example: false
+                description: Flahg indicating if the snashot is deleted
+              softdeleted:
+                type: boolean
+                example: false
+                description: Flag indicating if the snapshot is soft deleted
+            example:
+              deleted: false
+              softdeleted: false
+            description: Object containing the info if the snapshot is deleted or soft deleted.
+          latestUnquarantined:
+            type: boolean
+            example: true
+            description: Flag indicating if the snapshot is latest unquarantined snapshot
+          isQuarantined:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is quarantined snapshot
+          ls_locked:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked
+          ignFilesMissed:
+            type: integer
+            example: 0
+            description: Number of ignored files missed.
+          bmr:
+            type: boolean
+            example: false
+            description: Flag indicating if the meeting recordings are backed up in snapshot
+          ectime:
+            type: integer
+            example: 1709726041
+            description: Snapshot exact creation datetime
+          ls_ino:
+            type: integer
+            example: 5
+            description: Snapshot number
+          ls_type:
+            type: integer
+            example: 5
+            description: Snapshot type. Default 5
+          ls_rplckowns:
+            type: array
+            items:
+              type: string
+            example: []
+            description: List of rplc knowns
+          ls_dver:
+            type: integer
+            example: 2147483632
+            description: Snapshot data version
+          ctime:
+            type: integer
+            example: 1709726040
+            description: Snapshot creation detetime
+          totalSize:
+            type: integer
+            example: 23903222
+            description: Total size of snapshot in bytes
+          ls_cver:
+            type: integer
+            example: 17
+            description: Snapshot version number
+          ls_cseq:
+            type: integer
+            example: 5
+            description: Snapshot sequence number
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,0 +1,1893 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Oracle DTC API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: OracleDTC
+paths:
+  /oraclesbt/v1/orgs/{OrgID}/reports/databases:
+    get:
+      description: Returns all databases
+      tags:
+      - OracleDTC
+      summary: List all databases
+      operationId: ListDatabaseRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host registered with Enterprise Workloads. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DBName
+        description: The name of the database. Specify multiple names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Token
+        description: The token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatabaseReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/servers:
+    get:
+      description: Returns all servers
+      tags:
+      - OracleDTC
+      summary: List all servers
+      operationId: ListServerRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host registered with Enterprise Workloads. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Token
+        description: The token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListServerReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/policies:
+    get:
+      description: Returns all backup polices
+      tags:
+      - OracleDTC
+      summary: List all backup polices
+      operationId: ListPolicyRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: Token
+        description: The token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPolicyReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/backupsets:
+    get:
+      description: Returns all backup sets
+      tags:
+      - OracleDTC
+      summary: List all backup sets
+      operationId: ListBackupsetReportRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host registered with Enterprise Workloads. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DBName
+        description: The name of the database. Specify multiple names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Token
+        description: The token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBackupsetReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/jobs:
+    get:
+      description: Returns all jobs
+      tags:
+      - OracleDTC
+      summary: List all jobs
+      operationId: OracleSBTGetAllJobsReportRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: JobType
+        description: 'The type of he job. This parameter can be set to one or more of the following values: Backup, Restore, and Log Request. Specify multiple job types by separating them with commas. For more information, see <a href=https://help.druva.com/en/articles/8651576-view-oracle-jobs>Job Types.</a>'
+        name: jobType
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: JobSubType
+        description: 'The subtype of the job. This parameter can be set to one or more of the following values: Full Backup, Incremental Backup, and Log Backup. Specify multiple job subtypes by separating them with commas.'
+        name: jobSubType
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host for which the job is initiated. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DatabaseName
+        description: The name of the database for which the job is initiated. Specify multiple database names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Status
+        description: 'Status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful and Failed. Specify multiple status values by separating them with commas. For more information, see <a href=https://help.druva.com/en/articles/8651576-view-oracle-jobs>Job Types.</a>'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: StartTime
+        description: Specifies the lower bound value of the filter range. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specifies the upper bound value of the filter range. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: The token to access the next page of results. Keep this field blank in the first request.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OracleSBTGetAllJobsReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/jobs/backups:
+    get:
+      description: Returns all backup jobs
+      tags:
+      - OracleDTC
+      summary: List all backup jobs
+      operationId: OracleSBTGetBackupJobReportRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host for which the job is initiated. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DatabaseName
+        description: The name of the database for which the job is initiated. Specify multiple names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: JobSubType
+        description: 'The subtype of the job. This parameter can be set to one or more of the following values: Full Backup, Incremental Backup, and Log Backup. Specify multiple job subtypes by separating them with commas.'
+        name: jobSubType
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: Status
+        description: 'Status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: StartTime
+        description: Specifies the lower bound value of the filter range. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specifies the upper bound value of the filter range. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: The token to access the next page of results. Keep this field blank in the first request.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OracleSBTGetBackupJobReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/jobs/restores:
+    get:
+      description: Returns all restore jobs
+      tags:
+      - OracleDTC
+      summary: List all restore jobs
+      operationId: OracleSBTGetRestoreJobReportRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: SourceServerName
+        description: The name of the Oracle server host whose database is backed up when a backup job is initiated. Specify multiple server names by separating them with commas.
+        name: sourceServerName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DestServerName
+        description: The name of the Oracle server host on which the backup data is downloaded when the restore job completes. Specify multiple server names by separating them with commas.
+        name: destServerName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DatabaseName
+        description: The name of the database for which the job is initiated. Specify multiple names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Status
+        description: 'Status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: StartTime
+        description: Specifies the lower bound value of the filter range. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specifies the upper bound value of the filter range. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: The token to access the next page of results. Keep this field blank in the first request.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OracleSBTGetRestoreJobReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{OrgID}/reports/jobs/uploadlogs:
+    get:
+      description: Returns all upload logs jobs
+      tags:
+      - OracleDTC
+      summary: List all upload logs jobs
+      operationId: OracleSBTGetUploadLogJobReportRequest
+      parameters:
+      - description: The organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: ServerName
+        description: The name of the Oracle server host for which the job is initiated. Specify multiple server names by separating them with commas.
+        name: serverName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: DatabaseName
+        description: The name of the database for which the job is initiated. Specify multiple database names by separating them with commas.
+        name: dbName
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - x-go-name: Status
+        description: 'Status of the job. This parameter can be set to one or more of the following values: Queued, Running, Successful and Failed. Specify multiple status values by separating them with commas.'
+        name: status
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - x-go-name: StartTime
+        description: Specifies the lower bound value of the filter range. The time should be specified in the UTC format and must be greater than the value of (current time - 6 months). The format of this parameter is YYYY-MM-DDTHH:MM:SSZ.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specifies the upper bound value of the filter range. The time should be specified in the UTC format and must be lesser than the current date. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Sort the API results by the scheduled time of the job, either in ascending or descending order. Set the sortOrder value to ASC or DESC. The default value is ASC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: The token to access the next page of results. Keep this field blank in the first request.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OracleSBTGetUploadLogJobReportResponse'
+        '400':
+          description: Bad Request
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+  /oraclesbt/v1/orgs/{orgID}/jobs/backupNow:
+    post:
+      description: Initiates an on-demand backup for an Oracle Direct To Cloud backup set.
+      tags:
+      - OracleDTC
+      summary: On-demand backup
+      operationId: BackupJobBackupNow
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OracleDTCBackupNowRequestParams'
+        description: The inputs to the BackupNow job request
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/OracleDTCBackupNowResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /oraclesbt/v1/orgs/{orgID}/jobs/cancel:
+    post:
+      description: Cancels the specified job.
+      tags:
+      - OracleDTC
+      summary: Cancel a job
+      operationId: AllJobCancelJob
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OracleDTCCancellationParams'
+        description: Body parameters
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/OracleDTCCancelJobResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /oraclesbt/v1/orgs/{orgID}/backupsets/{backupsetID}/snapshots:
+    get:
+      description: Returns snapshots for the specified backup set.
+      tags:
+      - OracleDTC
+      summary: List all snapshots
+      operationId: OracleDTCGetSnapshotsRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: BackupSetID
+        description: Specify the ID of your backup set. Get the ID of your backup set using the 'List all backup sets' API.
+        name: backupsetID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: SnapshotTypes
+        description: Specify the type of snapshot. Set it to "HOT", "WARM", or "COLD" to display all snapshots of the specified type. Specify multiple snapshot types by separating the values with commas.
+        name: snapshotTypes
+        in: query
+        schema:
+          type: string
+      - x-go-name: FromTime
+        description: Specify a date and time in the UTC format YYYY-MM-DDTHH:MM:SSZ to display all snapshots created after this date and time.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: ToTime
+        description: Specify a date and time in the UTC format YYYY-MM-DDTHH:MM:SSZ to display all snapshots created before this date and time.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: SortOrder
+        description: Specify whether to sort the returned snapshots in ascending or descending order of the snapshot creation time. Set it to "ASC" or "DESC" to sort the list in ascending or descending order respectively. The default value is DESC.
+        name: sortOrder
+        in: query
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+      - x-go-name: PageToken
+        description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/OracleDTCGetSnapshotsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+  /oraclesbt/v1/orgs/{orgID}/jobs/restores/original:
+    post:
+      description: Automatically restores the specified database to the original server.
+      tags:
+      - OracleDTC
+      summary: Full database restore to original
+      operationId: OracleDTCRestoreOriginalRequest
+      security:
+      - Bearer: []
+      parameters:
+      - x-go-name: OrgID
+        description: Specify the ID of your organization. Get the ID of an organization using the 'List all organizations' API.
+        name: orgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OracleDTCRestoreOriginalParams'
+        description: Body parameters
+        required: true
+        x-go-name: Params
+      responses:
+        '200':
+          description: Successfully triggered restore job
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/OracleDTCRestoreOriginalResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+components:
+  schemas:
+    OracleSBTGetRestoreJobsReport:
+      description: GetRestoreJobsReport struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        dbName:
+          description: Name of the database
+          type: string
+          x-go-name: DatabaseName
+        destinationServerName:
+          description: Name of the oracle server to which the restore was initiated.
+          type: string
+          x-go-name: DestinationServerName
+        environmentDetails:
+          $ref: '#/components/schemas/OracleSBTRestoreEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/OracleSBTRestoreExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the job.
+          type: string
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          - Defreeze
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        sourceServerName:
+          description: Name of the oracle server on which the backup was initiated.
+          type: string
+          x-go-name: SourceServerName
+      x-go-name: GetRestoreJobsReport
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleDTCCancellationParams:
+      description: OracleDTCCancellationParams is job cancellation request inputs
+      type: object
+      properties:
+        jobID:
+          description: Specify the ID of the job that you want to cancel. Get the ID of the job using the 'List all jobs' API.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    ListServerReportResponse:
+      description: ListServerReportResponse is the response schema for ListServerReport
+      type: object
+      properties:
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerResponse'
+          x-go-name: Servers
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/topology
+    OracleSBTGetRestoreJobReportResponse:
+      description: GetRestoreJobReportResponse is the response schema for GetRestoreJobReport
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OracleSBTGetRestoreJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetRestoreJobReportResponse
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    Retention:
+      description: Retention represents data model for Retention Policy
+      type: object
+      properties:
+        daily:
+          type: string
+          x-go-name: Daily
+        monthly:
+          type: string
+          x-go-name: Monthly
+        weekly:
+          type: string
+          x-go-name: Weekly
+        yearly:
+          type: string
+          x-go-name: Yearly
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/policy
+    OracleDTCBackupNowRequestParams:
+      description: OracleDTCBackupNowRequestParams is the input to the BackupNow job request
+      type: object
+      properties:
+        backupType:
+          description: 'Specify the type of backup. Set this parameter to one of the following values: FULL, INCR, LOG.'
+          type: string
+          enum:
+          - FULL
+          - INCR
+          - LOG
+          x-go-name: BackupType
+        backupsetID:
+          description: Specify the ID of your backup set. Get the ID of your backup set using the 'List all backup sets' API.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    Backupset:
+      description: Backupset info
+      type: object
+      properties:
+        backupEnabled:
+          description: Specifies whether the backupset is enabled for backup operation.
+          type: boolean
+          x-go-name: BackupEnabled
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int32
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: Name of the backup policy attached to the backupset.
+          type: string
+          x-go-name: BackupPolicyName
+        backupsetID:
+          description: The ID of your backupset.
+          format: int32
+          type: integer
+          x-go-name: ID
+        backupsetName:
+          description: The name of the backupset
+          type: string
+          x-go-name: BackupsetName
+        dataLock:
+          description: The status indicating if Data Lock is enabled for the backup set.
+          type: boolean
+          x-go-name: Immutability
+        dbName:
+          description: The name of the oracle database.
+          type: string
+          x-go-name: DBName
+        lastBackupDetails:
+          $ref: '#/components/schemas/OracleSBTLastBackupDetailsStruct'
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        resourceGroupName:
+          description: The name of the resource group the oracle server is part of.
+          type: string
+          x-go-name: GroupName
+        clusterName:
+          description: The name of the oracle rac cluster.
+          type: string
+          x-go-name: ClusterName
+        configuredNodes:
+          description: The SID and name of an instance of a RAC database backup set
+          type: object
+          additionalProperties:
+            type: string
+          x-go-name: ConfiguredNodes
+        isRAC:
+          description: Specifies if the backupset belongs to a RAC database
+          type: boolean
+          x-go-name: IsRAC
+        primaryNode:
+          description: The name of the primary node in a RAC database backup set
+          type: string
+          x-go-name: PrimaryNode
+        serverName:
+          description: The name of the oracle server.
+          type: string
+          x-go-name: ServerName
+        storageName:
+          description: The name of the storage.
+          type: string
+          x-go-name: StorageName
+        isDeactivated:
+          description: The state indicating whether the backup set is deactivated.
+          type: boolean
+          x-go-name: IsDeactivated
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/backupset
+    OracleDTCBackupNowResponse:
+      description: OracleDTCBackupNowResponse is the response to the BackupNow job request
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    OracleSBTRestoreEnvironmentStruct:
+      type: object
+      title: 'RestoreEnvironmentStruct : Environment details of the job.'
+      properties:
+        diskWriteRate:
+          description: Disk write rate during the job.
+          type: string
+          x-go-name: DiskWriteRate
+        diskWriteRateInKBps:
+          description: Disk write rate during the job in KBps.
+          type: number
+          format: double
+          x-go-name: DiskWriteRateInKBps
+        networkRetries:
+          description: Number of retries during the job due to network issues.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Total duration of retries during the job due to network issues.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Total duration of retries during the job due to network issues in seconds.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: RestoreEnvironmentStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleSBTUploadLogExecDetailsStruct:
+      type: object
+      title: 'UploadLogExecDetailsStruct : Execution details of the job.'
+      properties:
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'The error code for the failed jobs. The possible values are:\n\"0\": If the job is successful\n<error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        logsExpiryTime:
+          description: Expiry time of the uploaded logs. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: LogsExpiryTime
+        logsSize:
+          description: Size of the logs.
+          type: string
+          x-go-name: LogsSize
+        logsSizeInBytes:
+          description: Size of the logs in bytes.
+          type: integer
+          format: uint64
+          x-go-name: LogsSizeInBytes
+        sourceJobID:
+          description: The ID of the job for which logs are being requested.
+          type: integer
+          format: int32
+          x-go-name: SourceJobID
+        sourceJobType:
+          description: The job type for which logs are being requested.
+          type: string
+          x-go-name: SourceJobLogType
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-name: UploadLogExecDetailsStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    TransactionLog:
+      description: TransactionLog represents data model for Transaction Logs schedule table
+      type: object
+      properties:
+        bandwidth:
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        deleteLogs:
+          type: boolean
+          x-go-name: DeleteLogs
+        logbkpFreq:
+          type: integer
+          format: int32
+          x-go-name: Logbkpfreq
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/policy
+    ListPolicyReportResponse:
+      description: ListPolicyReportResponse is the response schema for ListPolicyReport
+      type: object
+      properties:
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupPolicy'
+          x-go-name: Policies
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/policy
+    BackupSchedule:
+      description: BackupSchedule represents data model for BackupSchedule entry
+      type: object
+      properties:
+        backupType:
+          type: string
+          x-go-name: BackupType
+        bandwidth:
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          type: string
+          x-go-name: WindowDuration
+        durationInSeconds:
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          $ref: '#/components/schemas/JSONStringList'
+        startAt:
+          type: string
+          x-go-name: WindowStartTime
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/policy
+    BackupPolicy:
+      description: BackupPolicy represents data model for BackupPolicy entry
+      type: object
+      properties:
+        dataLock:
+          description: The status indicating if Data Lock is enabled in the backup policy.
+          type: boolean
+          x-go-name: Immutability
+        description:
+          type: string
+          x-go-name: Description
+        ignoreFirstBackupWindow:
+          type: boolean
+          x-go-name: IgnoreFirstBackupWindow
+        maxRetryCount:
+          type: integer
+          format: int32
+          x-go-name: MaxRetryCount
+        maxRetryDuration:
+          type: string
+          x-go-name: MaxRetryDuration
+        maxRetryDurationInSeconds:
+          type: integer
+          format: int32
+          x-go-name: MaxRetryDurationInSeconds
+        organizationName:
+          type: string
+          x-go-name: OrganizationName
+        policyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: PolicyID
+        policyName:
+          type: string
+          x-go-name: Name
+        retention:
+          $ref: '#/components/schemas/Retention'
+        retryEnabled:
+          type: boolean
+          x-go-name: RetryEnabled
+        rmanParams:
+          type: string
+          x-go-name: RmanParams
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupSchedule'
+          x-go-name: Schedules
+        transactionLog:
+          $ref: '#/components/schemas/TransactionLog'
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/policy
+    OracleSBTGetBackupJobReportResponse:
+      description: GetBackupJobReportResponse is the response schema for GetBackupJobReport
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OracleSBTGetBackupJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupJobReportResponse
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleDTCSnapshot:
+      description: OracleDTCSnapshot struct holds the response for List all snapshots API
+      type: object
+      properties:
+        createdAt:
+          description: The creation date and time of the snapshot.
+          type: string
+          x-go-name: SnapshotCreationTime
+        isWalletBackedUp:
+          description: The value is set to TRUE if the wallet files are backed up in the snapshot.
+          type: boolean
+          x-go-name: IsWalletBackedUp
+        name:
+          description: The name of the snapshot.
+          type: string
+          x-go-name: SnapshotName
+        snapshotType:
+          description: The type of the snapshot. The snapshot type can be "HOT", "WARM", or "COLD".
+          type: string
+          x-go-name: SnapshotType
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/backupset
+    OracleSBTDataTransferStruct:
+      type: object
+      title: 'DataTransferStruct : Data transfer details of the job.'
+      properties:
+        backupDuration:
+          description: Duration of the backup job.
+          type: string
+          x-go-name: BackupDuration
+        backupDurationInSeconds:
+          description: Duration of the backup job in seconds.
+          type: integer
+          format: int64
+          x-go-name: BackupDurationInSeconds
+        backupSpeed:
+          description: Speed of the backup job.
+          type: string
+          x-go-name: BackupSpeed
+        backupSpeedInKBps:
+          description: Speed of the backup job in KBps.
+          type: number
+          format: double
+          x-go-name: BackupSpeedInKBps
+        bandwidthConsumed:
+          description: Bandwidth consumed during the backup job.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Bandwidth consumed during the backup job.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        dataTransferCache:
+          description: Data transferred to the Cache server.
+          type: string
+          x-go-name: DataTransferCache
+        dataTransferCacheInBytes:
+          description: Data transferred to the Cache server in bytes.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCacheInBytes
+        dataTransferCloud:
+          description: Data transferred to the Cloud.
+          type: string
+          x-go-name: DataTransferCloud
+        dataTransferCloudInBytes:
+          description: Data transferred to the Cloud in bytes.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCloudInBytes
+      x-go-name: DataTransferStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    ListDatabaseReportResponse:
+      description: ListDatabaseReportResponse is the response schema for ListDatabaseReport
+      type: object
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseResponse'
+          x-go-name: Databases
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/topology
+    OracleSBTGetUploadLogJobsReport:
+      description: GetUploadLogJobsReport struct holds the response for GetUploadLogJobsReport api
+      type: object
+      properties:
+        dbName:
+          description: The name of database
+          type: string
+          x-go-name: DatabaseName
+        executionDetails:
+          $ref: '#/components/schemas/OracleSBTUploadLogExecDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: Type of the job.
+          type: string
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        serverName:
+          description: Name of the server on which the backup was initiated.
+          type: string
+          x-go-name: ServerName
+      x-go-name: GetUploadLogJobsReport
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleSBTGetAllJobsReport:
+      description: GetAllJobsReport struct holds the response for GetAllJobsReport api
+      type: object
+      properties:
+        dbName:
+          description: The name of database
+          type: string
+          x-go-name: DatabaseName
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'The error code for the failed jobs. The possible values are:\n\"0\": If the job is successful\n<error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobSubType:
+          description: Subtype of job
+          type: string
+          x-go-name: JobSubType
+        jobType:
+          description: The type of the job.
+          type: string
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        serverName:
+          description: The name of oracle database server
+          type: string
+          x-go-name: ServerName
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-name: GetAllJobsReport
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleSBTGetAllJobsReportResponse:
+      description: GetAllJobsReportResponse is the response schema for GetAllJobsReport
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OracleSBTGetAllJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetAllJobsReportResponse
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleDTCRestoreOriginalParams:
+      description: OracleDTCRestoreOriginalParams is the restore to original job request inputs.
+      type: object
+      properties:
+        backupsetID:
+          description: Specify the ID of your backup set. Get the ID of your backup set using the 'List all backup sets' API.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        cancelRunningJob:
+          description: Specify if you want to cancel the ongoing backup jobs running on the database.
+          type: boolean
+          x-go-name: CancelRunningJob
+        restoreWallet:
+          description: Specify if you want to restore the wallet files present (if any) in the snapshot mentioned.
+          type: boolean
+          x-go-name: RestoreWallet
+        rmanChannels:
+          description: Specify the number of RMAN Channels to use for restore. You cannot provide more than 32 RMAN Channels.
+          type: integer
+          format: int32
+          x-go-name: RmanChannels
+        snapshotName:
+          description: Specify the name of the snapshot. Get the name of the snapshot using the 'List all snapshots' API.
+          type: string
+          x-go-name: SnapshotName
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    OracleSBTGetUploadLogJobReportResponse:
+      description: GetUploadLogJobReportResponse is the response schema for GetUploadLogJobReport
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OracleSBTGetUploadLogJobsReport'
+          x-go-name: Jobs
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetUploadLogJobReportResponse
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    ServerResponse:
+      description: ServerResponse is the response part of the  schema for ListServerReport
+      type: object
+      properties:
+        activationTime:
+          description: The time at which the oracle server was activated for Enterprise Workloads.
+          type: string
+          x-go-name: ActivationTime
+        agentVersion:
+          description: The version of the agent installed on the oracle server.
+          type: string
+          x-go-name: AgentVersion
+        oracleVersion:
+          description: The version of the oracle server.
+          type: array
+          items:
+            type: string
+          x-go-name: OracleVersion
+        organizationName:
+          description: The name of the organization the oracle server is part of.
+          type: string
+          x-go-name: OrganizationName
+        platform:
+          description: The platform of the oracle server.
+          type: string
+          x-go-name: Platform
+        serverConnectionStatus:
+          description: The connection status of the oracle server.
+          type: boolean
+          x-go-name: IsServerConnected
+        serverName:
+          description: The name of the oracle server.
+          type: string
+          x-go-name: ServerName
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/topology
+    OracleDTCCancelJobResponse:
+      description: OracleDTCCancelJobResponse is response to cancel job API
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: CancelledJobID
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    OracleSBTGetBackupJobsReport:
+      description: GetBackupJobsReport struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        backupsetID:
+          description: The ID of your backup set.
+          format: int32
+          type: integer
+          x-go-name: BackupsetID
+        backupPolicyID:
+          description: The ID of your backup policy.
+          format: int32
+          type: integer
+          x-go-name: BackupPolicyID
+        backupPolicyName:
+          description: The name of the backup policy.
+          type: string
+          x-go-name: BackupPolicyName
+        dataTransfer:
+          $ref: '#/components/schemas/OracleSBTDataTransferStruct'
+        dbName:
+          description: The name of database
+          type: string
+          x-go-name: DatabaseName
+        environmentDetails:
+          $ref: '#/components/schemas/OracleSBTEnvironmentStruct'
+        executionDetails:
+          $ref: '#/components/schemas/OracleSBTExecutionDetailsStruct'
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobSubType:
+          description: Subtype of job
+          type: string
+          x-go-name: JobSubType
+        jobType:
+          description: The type of the job.
+          type: string
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          - Defreeze
+          x-go-name: JobType
+        organizationID:
+          description: The ID of your organization.
+          format: int32
+          type: integer
+          x-go-name: OrgID
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        serverName:
+          description: The name of oracle server.
+          type: string
+          x-go-name: ServerName
+      x-go-name: GetBackupJobsReport
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    OracleDTCGetSnapshotsResponse:
+      description: OracleDTCGetSnapshotsResponse is the response schema for List all snapshots API
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: NextPageToken
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/OracleDTCSnapshot'
+          x-go-name: OracleDTCSnapshot
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/backupset
+    DatabaseResponse:
+      description: DatabaseResponse is the response part of the  schema for ListDatabaseReport
+      type: object
+      properties:
+        authType:
+          type: string
+          x-go-name: AuthType
+        backupsetCount:
+          type: integer
+          format: int32
+          x-go-name: BackupSetCount
+        cdb:
+          type: boolean
+          x-go-name: CDB
+        connectionStatus:
+          type: boolean
+          x-go-name: ConnStatus
+        dbName:
+          type: string
+          x-go-name: Name
+        manual:
+          type: boolean
+          x-go-name: Manual
+        oracleHome:
+          type: string
+          x-go-name: OracleHome
+        organizationName:
+          type: string
+          x-go-name: OrganizationName
+        rac:
+          type: boolean
+          x-go-name: RAC
+        server:
+          $ref: '#/components/schemas/ServerResponse'
+        size:
+          type: integer
+          format: int64
+          x-go-name: Size
+        version:
+          type: string
+          x-go-name: Version
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/topology
+    OracleSBTLastBackupDetailsStruct:
+      type: object
+      title: 'LastBackupDetailsStruct : Details of last backup job.'
+      properties:
+        jobID:
+          description: A unique identification number associated with the job. This parameter will be skipped if the value is NULL.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        status:
+          description: Status of the job. This parameter will be skipped if the value is NULL.
+          type: string
+          x-go-name: Status
+      x-go-name: LastBackupDetailsStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/backupset
+    OracleDTCRestoreOriginalResponse:
+      description: OracleDTCRestoreOriginalResponse is response to the Restore to original job request.
+      type: object
+      properties:
+        jobID:
+          description: The unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-name: RestoreOriginalResponse
+      x-go-package: phoenix/oraclesbt/cloud/configserver/spec/job
+    OracleSBTExecutionDetailsStruct:
+      type: object
+      title: 'ExecutionDetailsStruct : Execution details of the job.'
+      properties:
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'The error code for the failed jobs. The possible values are:\n\"0\": If the job is successful\n<error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-name: ExecutionDetailsStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
+    OracleSBTEnvironmentStruct:
+      type: object
+      title: 'EnvironmentStruct : Environment details of the job.'
+      properties:
+        diskReadRate:
+          description: Disk read rate during the job.
+          type: string
+          x-go-name: DiskReadRate
+        diskReadRateInKBps:
+          description: Disk read rate during the job in KBps.
+          type: number
+          format: double
+          x-go-name: DiskReadRateInKBps
+        networkRetries:
+          description: Number of retries during the job due to network issues.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Total duration of retries during the job due to network issues.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Total duration of retries during the job due to network issues in seconds.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: EnvironmentStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    JSONStringList:
+      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
+      type: array
+      items:
+        type: string
+      x-go-package: phoenix/pkg/dlutil
+    OracleSBTRestoreExecutionDetailsStruct:
+      type: object
+      title: 'RestoreExecutionDetailsStruct : Execution details of the job.'
+      properties:
+        bandwidthConsumed:
+          description: Bandwidth consumed during the restore job.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Bandwidth consumed during the restore job in KBps.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'The error code for the failed jobs. The possible values are:\n\"0\": If the job is successful\n<error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        restoredData:
+          description: Total amount of data restored.
+          type: string
+          x-go-name: RestoredData
+        restoredDataInBytes:
+          description: Total amount of data restored in bytes.
+          type: integer
+          format: uint64
+          x-go-name: RestoredDataInBytes
+        restoredItems:
+          description: Files/folders restored on the server.
+          type: string
+          x-go-name: RestoredItems
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: Status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-name: RestoreExecutionDetailsStruct
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/jobs
+    ListBackupsetReportResponse:
+      description: ListBackupsetReportResponse is the response schema for ListBackupsetReport
+      type: object
+      properties:
+        backupsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Backupset'
+          x-go-name: Backupsets
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/oraclesbt/cloud/report/spec/backupset
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

@@ -1,0 +1,2075 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Endpoints Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get MSP Endpoints reports data.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Endpoints Reports
+  description: Lists the APIs to get MSP Endpoints reports data.
+paths:
+  /msp/reporting/v1/reports/mspEPAlert:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View Alert Report
+      description: 'This report provides details about all alerts generated for MSP customers. Specify the status of the alert to narrow down the data in your report. This filter parameter can have one of the following values:
+
+
+        **Yes:** To retrieve data for active alerts only. It lists the currently triggered alerts that require your attention.
+
+
+        **No:** To retrieve data for resolved or deleted alerts only.
+
+
+        This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.'
+      operationId: GetAlertReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: lastOccurance
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - entity
+                            - alertDetails
+                            - firstOccurrence
+                            - lastOccurrence
+                            - active
+                            - severity
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: LT
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '2023-01-03T13:50:35.369Z'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAlertReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPUsers:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View Users Report
+      description: This report provides count of users added, deleted, and preserved for a specified period of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetUsersReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: usersPreserved
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - fromDate
+                            - toDate
+                            - totalUsers
+                            - totalPreservedUsers
+                            - usersAdded
+                            - usersDeleted
+                            - usersPreserved
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPLicenseUsage:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View License Usage Report
+      description: This report provides details of total users added and deleted, total Endpoints active and preserve licenses allocated for MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetLicenseUsageReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: fromDate
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - fromDate
+                            - toDate
+                            - usersAdded
+                            - usersDeleted
+                            - totalActiveLicense
+                            - activeLicenseUsed
+                            - totalPreservedLicense
+                            - preservedLicenseUsed
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '2022-06-03T14:34:11.532Z'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLicenseUsageReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPUserProvisioning:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View User Provisioning Report
+      description: The User Provisioning report provides information about the users provisioned in Endpoints for MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetUserProvisioningReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: userName
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - userName
+                            - userEmail
+                            - profile
+                            - userStatus
+                            - endpointsLicense
+                            - endpointsUsageMB
+                            - isDeleted
+                            - createdOn
+                            - managedBy
+                            - customAttributeValue
+                            - customAttributeName
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: user1
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserProvisioningReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPUserRollout:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View User Rollout Report
+      description: This report provides user devices, their activation date, and the status of first backup of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetUserRolloutReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: profileName
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - userName
+                            - userEmail
+                            - customAttributeValue
+                            - customAttributeName
+                            - addedOn
+                            - profileName
+                            - licenseData
+                            - source
+                            - activatedOn
+                            - systemSettings
+                            - lastBackupStatus
+                            - lastBackupTime
+                            - firstBackupStatus
+                            - isDeleted
+                            - firstBackupSizeMB
+                            - bytesTransferredMB
+                            - timeTakenHhMm
+                            - clientVersion
+                            - osPlatform
+                            - lastUpgradedOn
+                            - upgradeState
+                            - deviceOS
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: profileC
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserRolloutReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPLastBackupStatus:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View Last Backup Status Report data
+      description: The Last Backup Status report provides details of the last backup of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetLastBackupStatusReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: status
+                            enum:
+                            - lastUpdatedTime
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - userName
+                            - userEmailID
+                            - device
+                            - profile
+                            - clientVersion
+                            - osPlatform
+                            - deviceStatus
+                            - startTime
+                            - endTime
+                            - filesBackedUp
+                            - filesMissed
+                            - isDeleted
+                            - status
+                            - bytesTransferredMB
+                            - deviceConnectivity
+                            - timeTakenMinutes
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: Success
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLastBackupStatusReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPStorageStatistics:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View storage statistics of MSP customers
+      description: This report provides storage details of customers of MSP. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetStorageStatisticsDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: storageName
+                            enum:
+                            - lastUpdatedTime
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - storageName
+                            - totalUsers
+                            - additionalDataUsageMB
+                            - totalUsageMB
+                            - totalSizeOfBackedupFilesMB
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: druva_us-east-1
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorageStatisticsReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPStorageAlert:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View storage alerts of MSP customers
+      description: This report provides storage alert details of customers of MSP. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetStorageAlertsDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: entity
+                            enum:
+                            - lastUpdatedTime
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - entity
+                            - alertDetails
+                            - firstOccurrence
+                            - latestOccurrence
+                            - active
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: Administrator
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorageAlertReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPCloudCacheStatistics:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View cloud cache statistics of MSP customers
+      description: This report provides cloud cache statistics details of customers of MSP. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetCloudCacheDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: cloudCacheName
+                            enum:
+                            - lastUpdatedTime
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - cloudCacheName
+                            - totalUsers
+                            - usersForRestore
+                            - totalCacheSizeMB
+                            - cacheUsageMB
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: cache--cloud
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCloudCacheReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPRestoreActivity:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View Restore Activity Report
+      description: This report provides details of all the restore activities performed during a specified period. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetEPRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - startTime
+                            - endTime
+                            - userName
+                            - userEmailID
+                            - dataSource
+                            - profile
+                            - mode
+                            - systemSettingRestore
+                            - files
+                            - filesSkipped
+                            - restoreSize
+                            - cplatform
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEPRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEPPreservedUsersDataSources:
+    post:
+      tags:
+      - Endpoints Reports
+      summary: View Preserved Users Datasources Report
+      description: This report provides information about the workloads that consumed preserve licenses, the date on which they were preserved, and the mode that was used to preserve them. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetEPPreservedUsersDataSourcesReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - isDeleted
+                            - userName
+                            - userEmailID
+                            - profileName
+                            - endpointsLicense
+                            - preservedOn
+                            - mode
+                            - autoDeleteOn
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEPPreservedUsersDataSourcesReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    EPPreservedUsersDataSourcesReportData:
+      title: EPPreservedUsersDataSourcesReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        isDeleted:
+          type: integer
+          description: The deletion status for users and Endpoint devices. This parameter will be 1 when entity is deleted, else will be 0.
+          example: 0
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user whose device is restored.
+          example: user1
+        userEmailID:
+          type: string
+          description: The email address of the user whose device is restored.
+          example: user1@d.in
+        profileName:
+          type: string
+          description: The profile name assigned to the preserved user.
+          example: profileC
+        endpointsLicense:
+          type: string
+          description: The Endpoints license status of the user. For example, preserved or "-" where "-" indicates as unlicensed state.
+          example: Preserved
+        preservedOn:
+          type: string
+          description: The date on which the user was preserved. The time is in the UTC time zone. Example - 2019-10-25
+          format: date-time
+          example: '2023-06-03T15:03:30.412Z'
+        mode:
+          type: string
+          description: The mode through which the user is preserved.
+          example: Manual
+        autoDeleteOn:
+          type: string
+          description: The system calculated date on which the user will be deleted if endpoints are configured to auto-delete preserved users.
+          format: date-time
+          example: '2023-06-03T15:03:30.412Z'
+    GetLastBackupStatusReportDataResponse:
+      title: GetLastBackupStatusReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LastBackupStatusReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetStorageAlertReportDataResponse:
+      title: GetStorageAlertReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageAlertReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    UserRolloutReportData:
+      title: UserRolloutReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-02T15:03:30.412Z'
+        userName:
+          type: string
+          description: Displays the user name to whom the device belongs.
+          example: user1
+        userEmail:
+          type: string
+          description: Displays the email ID of the user to whom the device belongs.
+          example: usr1@d.in
+        customAttributeValue:
+          type: string
+          description: The value of the attribute in the AD server.
+          example: cust-attr-val
+        customAttributeName:
+          type: string
+          description: Name of the attribute in the AD server.
+          example: cust-attr-name
+        addedOn:
+          type: string
+          description: The date and time when the user was added. The time is in the UTC time zone.
+          format: date-time
+          example: '2023-04-03T15:03:30.412Z'
+        profileName:
+          type: string
+          description: Displays the name of the profile with which the user is associated.
+          example: profileC
+        licenseData:
+          type: string
+          description: The status of the license of the workload, the data source belongs to. For example, active, preserve or "-", where "-" indicates unlicensed state.
+          example: Active
+        source:
+          type: string
+          description: The name of the device which the user is associated with.
+          example: DESKTOP-514PMN2
+        activatedOn:
+          type: string
+          description: The date and time when the device was activated.
+          example: '2023-04-03T16:47:36.000Z'
+        systemSettings:
+          type: string
+          description: The status of whether the device's system settings were backed up.
+          example: Not Backed Up
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup operation.
+          example: Backed Up Successfully
+        isDeleted:
+          type: integer
+          description: 'Indicates the current status of the user account.
+
+            1- The user account is deleted.
+
+            0- The user account is active.'
+          example: 0
+        lastBackupTime:
+          type: string
+          description: The time taken(Unix format) for the last backup operation to complete in hours and minutes.
+          example: '1685424078'
+        firstBackupStatus:
+          type: string
+          description: The status of the first backup operation.
+          example: Complete
+        firstBackupSizeMB:
+          type: string
+          description: The size of the files in MB that were backed up during the last backup operation.
+          example: '128515'
+        bytesTransferredMB:
+          type: string
+          description: The number of bytes transferred during backup.
+          example: '77240'
+        timeTakenHhMm:
+          type: string
+          description: The time taken for the backup operation to complete in hours and minutes.
+          example: 0:00
+        clientVersion:
+          type: string
+          description: The version of inSync Client on the user device.
+          example: 6.2.0
+        osPlatform:
+          type: string
+          description: The operating system platform on the user device.
+          example: Windows
+        lastUpgradedOn:
+          type: string
+          description: The date and time when the inSync Client on the user device was last upgraded. Example - 2019-10-25T00:00:00Z.
+          example: ''
+        upgradeState:
+          type: string
+          description: The upgrade state of inSync Client on the user device. This field shows one of the following values- UPGRADEABLE, NOT UPGRADABLE, UPTODATE
+          example: NOT UPGRADABLE
+        deviceOS:
+          type: string
+          description: The operating system platform on the user device.
+          example: Win 10
+    GetLicenseUsageReportDataResponse:
+      title: GetLicenseUsageReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LicenseUsageReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    UserProvisioningReportData:
+      title: UserProvisioningReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+        userName:
+          type: string
+          description: Displays the user name of the Endpoints user provisioned using the IdP.
+          example: user1
+        userEmail:
+          type: string
+          description: Displays the email address of the user.
+          example: user1@d.in
+        profile:
+          type: string
+          description: Displays the name of the profile the user is associated with in Endpoints.
+          example: Default
+        userStatus:
+          type: string
+          description: Displays the user status in Endpoints.
+          example: Active
+        endpointsLicense:
+          type: string
+          description: Displays the Endpoints license status. For example, active, preserved or -, wherein - represents the unlicensed state.
+          example: Active
+        endpointsUsageMB:
+          type: integer
+          description: The amount of data backed up by the user.
+          example: 30520
+        isDeleted:
+          type: integer
+          description: 'Indicates the current status of the user account.
+
+            1- The user account is deleted.
+
+            0- The user account is active.'
+          example: 0
+        createdOn:
+          type: string
+          description: Displays the user account creation date in Endpoints. The time is in the UTC time zone.
+          format: date-time
+          example: '2022-08-03T13:21:27.960Z'
+        managedBy:
+          type: string
+          description: Displays the name of IdP which is managing the user in Endpoints.
+          example: Manually
+        customAttributeValue:
+          type: string
+          description: The value of the attribute in the AD server.
+          example: attributeVal
+        customAttributeName:
+          type: string
+          description: Name of the attribute in the AD server.
+          example: attributeName
+    EPRestoreActivityReportData:
+      title: EPRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        startTime:
+          type: string
+          description: The date and time on which the restore operation started. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2024-10-29T05:33:54.000Z'
+        endTime:
+          type: string
+          description: The date and time on which the restore operation was completed. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2024-10-29T05:33:54.000Z'
+        userName:
+          type: string
+          description: The name of the user whose device is restored.
+          example: user1
+        userEmailID:
+          type: string
+          description: The email address of the user whose device is restored.
+          example: user1@d.in
+        dataSource:
+          type: string
+          description: The name of the device that is registered for the user.
+          example: ''
+        profile:
+          type: string
+          description: The profile that is assigned to the user.
+          example: Default
+        mode:
+          type: string
+          description: The type of restore operation based on its origin. For example, Admin, Web, self, or mobile.
+          example: Admin
+        systemSettingRestore:
+          type: string
+          description: If the restore is performed with system settings this field will display the value as Yes, if not it will display as No.
+          example: 'No'
+        files:
+          type: integer
+          description: The number of files that were selected for the restore operation.
+          example: 1
+        filesSkipped:
+          type: integer
+          description: The number of files that were missed from the restore activity.
+          example: 0
+        restoreSize:
+          type: integer
+          description: The number of bytes in MB that were restored.
+          example: 1
+        cplatform:
+          type: string
+          description: The operating system of the device.
+          example: win32
+    GetCloudCacheReportDataResponse:
+      title: GetCloudCacheReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudCacheReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    AlertReportData:
+      title: AlertReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        entity:
+          type: string
+          description: The username and device of the user.
+          example: user_iobvl:DESKTOP-514PMN2
+        alertDetails:
+          type: string
+          description: The details about the alert generated.
+          example: Misconfigured Backup Folder
+        firstOccurrence:
+          type: string
+          description: The date and time when the alert was generated for the first time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2022-12-01T13:50:35.369Z'
+        lastOccurrence:
+          type: string
+          description: The date and time when the alert was generated for the last time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-01-01T13:50:35.369Z'
+        active:
+          type: string
+          description: Displays information whether the alert generated is active or not.
+          example: 'No'
+        severity:
+          type: string
+          description: Displays the severity type of the alert. Example:- critical, high, warning.
+          example: Warning
+    GetUserRolloutReportDataResponse:
+      title: GetUserRolloutReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRolloutReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetAlertReportDataResponse:
+      title: GetAlertReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetStorageStatisticsReportDataResponse:
+      title: GetStorageStatisticsReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageStatisticsReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetUserProvisioningReportDataResponse:
+      title: GetUserProvisioningReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProvisioningReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetEPRestoreActivityReportDataResponse:
+      title: GetEPRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EPRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetUsersReportDataResponse:
+      title: GetUsersReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    LicenseUsageReportData:
+      title: LicenseUsageReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        fromDate:
+          type: string
+          description: For Weekly report- The start date of the weekly report. For the Monthly report- The start date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2022-06-03T14:34:11.532Z'
+        toDate:
+          type: string
+          description: For Weekly report- The end date of the weekly report. For the Monthly report- The end date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2023-09-03T14:34:11.532Z'
+        usersAdded:
+          type: integer
+          description: For Weekly report- The total number of users added for a given week. For the Monthly report- The total number of users added to Endpoints for a given month.
+          example: 10
+        usersDeleted:
+          type: integer
+          description: For Weekly report- The total number of users deleted for a given week. For the Monthly report- The total number of users deleted from Endpoints for a given month.
+          example: 3
+        totalActiveLicense:
+          type: integer
+          description: For Weekly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given month.
+          example: 2
+        activeLicenseUsed:
+          type: integer
+          description: For Weekly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given month.
+          example: 1
+        totalPreservedLicense:
+          type: integer
+          description: For Weekly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given month.
+          example: 1
+        preservedLicenseUsed:
+          type: integer
+          description: For Weekly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given month.
+          example: 1
+    UsersReportData:
+      title: UsersReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        fromDate:
+          type: string
+          description: For Weekly report- The start date of the weekly report. For the Monthly report- The start date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2022-06-03T14:34:11.532Z'
+        toDate:
+          type: string
+          description: For Weekly report- The end date of the weekly report. For the Monthly report- The end date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2023-09-03T14:34:11.532Z'
+        totalUsers:
+          type: integer
+          description: The total number of users available in Endpoints for a given week or month.
+          example: 7
+        totalPreservedUsers:
+          type: integer
+          description: The total number of users that are preserved in Endpoints to date for a given week or month.
+          example: 3
+        usersAdded:
+          type: integer
+          description: The number of users that are added to Endpoints for a given week or month.
+          example: 10
+        usersDeleted:
+          type: integer
+          description: The number of users that are deleted from Endpoints for a given week or month.
+          example: 3
+        usersPreserved:
+          type: integer
+          description: The number of users that are preserved in Endpoints for a given week or month.
+          example: 3
+    LastBackupStatusReportData:
+      title: LastBackupStatusReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        userName:
+          type: string
+          description: The name of the user.
+          example: user1
+        userEmailID:
+          type: string
+          description: The email address of the user.
+          example: user1@d.in
+        device:
+          type: string
+          description: The name of the device registered for the user.
+          example: DESKTOP-SM857S52
+        profile:
+          type: string
+          description: The profile that is assigned to the user.
+          example: profileC
+        clientVersion:
+          type: string
+          description: The version of inSync client installed on the user's device.
+          example: 6.2.0
+        osPlatform:
+          type: string
+          description: The name, version, and platform details of the operating system running on the user's device.
+          example: Windows
+        deviceStatus:
+          type: string
+          description: The backup status of the device. For example, Enabled.
+          example: Enabled
+        startTime:
+          type: string
+          description: The date and time on which the backup started. Example - 2019-10-25T00:00:00Z
+          example: '2023-06-01T13:30:41.951Z'
+        endTime:
+          type: string
+          description: The date and time on which the backup was completed. Example - 2019-10-25T00:00:00Z
+          example: '2023-06-01T16:30:41.951Z'
+        filesBackedUp:
+          type: integer
+          description: The number of files and folders that are backed up.
+          example: 105
+        filesMissed:
+          type: integer
+          description: The number of files and folders that Endpoints was not able to back up.
+          example: 2
+        isDeleted:
+          type: integer
+          description: 'Indicates the status of the device.
+
+            1- The device is deleted
+
+            0- The device is active'
+          example: 0
+        status:
+          type: string
+          description: The status of the backup operation. A device can have the following backup statuses-Backup Failed, Never Backed Up, Backed Up With Errors, Backed Up Successfully.
+          example: Success
+        bytesTransferredMB:
+          type: integer
+          description: The number of bytes transferred during backup.
+          example: 12778
+        deviceConnectivity:
+          type: string
+          description: Displays information about the device connectivity status - active or inactive.
+          example: Active
+        timeTakenMinutes:
+          type: integer
+          description: Displays the total time taken for the backup.
+          example: 18
+    CloudCacheReportData:
+      title: CloudCacheReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        cloudCacheName:
+          description: Name of the cloud cache
+          type: string
+          example: cache--cloud
+        totalUsers:
+          type: integer
+          description: Total number of users.
+          example: 25
+        usersForRestore:
+          type: integer
+          description: Total number of users for restore.
+          example: 2
+        totalCacheSizeMB:
+          type: integer
+          description: Total cache size in MB.
+          example: 500
+        'cacheUsageMB ':
+          type: integer
+          description: Total cache usage in MB.
+          example: 345
+    GetEPPreservedUsersDataSourcesReportDataResponse:
+      title: GetEPPreservedUsersDataSourcesReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EPPreservedUsersDataSourcesReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    StorageStatisticsReportData:
+      title: StorageStatisticsReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        storageName:
+          description: Name of the storage
+          type: string
+          example: druva_us-east-1
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        totalUsers:
+          type: integer
+          description: Total number of users.
+          example: 100
+        additionalDataUsageMB:
+          type: integer
+          description: Additional data used in MB.
+          example: 12
+        totalUsageMB:
+          type: integer
+          description: Total usage in MB.
+          example: 20
+        totalSizeOfBackedupFilesMB:
+          type: integer
+          description: Total backed up files size in MB.
+          example: 50
+    StorageAlertReportData:
+      title: StorageAlertReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        entity:
+          description: Name of the entity
+          type: string
+          example: Administrator
+        alertDetails:
+          type: string
+          description: Details of the alert.
+          example: Low Storage Space Available
+        firstOccurrence:
+          type: string
+          description: First occurrence date of the alert.
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        latestOccurrence:
+          type: string
+          description: Last occurrence date of the alert.
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        active:
+          type: string
+          description: Defines alert is active or not.
+          example: 'Yes'
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -1,0 +1,109 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Audit Trail Management API
+  description: Lists the APIs to get information about the Audit Trails generated in the Druva Console.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Audit Trail Management
+  description: Lists the APIs to get information about the Audit Trails generated in the Druva Console.
+paths:
+  /audittrailmanagement/v1/auditTrailSettings:
+    get:
+      tags:
+      - Audit Trail Management
+      summary: Get admin audit trail retention settings
+      description: Preserving Audit Trails is useful for governance and compliance purposes in a business. This API returns the duration that your Druva Cloud Administrator has configured to retain the Administrator Audit Trails.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditTrailRetentionSettings'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getAudittrailmanagementV1AuditTrailSettings
+      x-operation-id-source: derived
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    AuditTrailRetentionSettings:
+      type: object
+      properties:
+        adminAuditTrailRetentionPolicy:
+          type: integer
+          description: "The Audit Trail Retention settings in the duration of seconds. Example - 2592000 \n Here are the observed values and translation in days/months/year. \n- 2592000 → 30 days\n- 7776000 → 3 months\n- 15552000 → 6 months\n- 31536000 → 1 year \n- -1 → Ever"
+          example: '2592000'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

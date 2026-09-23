@@ -1,0 +1,189 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Profile Management API
+  description: Lists the APIs to get information about the profiles configured in Druva inSync.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Profile Management
+  description: Lists the APIs to get information about the profiles configured in Druva inSync.
+paths:
+  /profilemanagement/v1/profiles:
+    get:
+      tags:
+      - Profile Management
+      summary: List all profiles
+      description: Returns a list of all the profiles configured in Druva inSync.
+      security:
+      - Bearer: []
+      parameters:
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileList'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getProfilemanagementV1Profiles
+      x-operation-id-source: derived
+  /profilemanagement/v1/profiles/{profileID}:
+    get:
+      tags:
+      - Profile Management
+      summary: Get profile information
+      description: Returns the profile configuration details using the profileID.
+      security:
+      - Bearer: []
+      parameters:
+      - name: profileID
+        in: path
+        description: The unique ID of a profile in inSync. Get the ID of a profile using the ‘List all profiles’ API.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403'
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in inSync Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Requested HTTP method is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getProfilemanagementV1ProfilesByProfileID
+      x-operation-id-source: derived
+components:
+  schemas:
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    Profile:
+      type: object
+      properties:
+        profileID:
+          type: integer
+          format: int64
+          description: The unique id of the profile in inSync. Example - 1
+          example: 1
+        profileName:
+          type: string
+          description: The name assigned to the profile in inSync. Example - Default
+          example: profile1
+        profileDescription:
+          type: string
+          description: Description of the profile. Example - Default profile with pre-configured values
+          example: dummy
+    ProfileList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of profiles listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Profile'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

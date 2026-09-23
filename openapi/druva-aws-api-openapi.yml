@@ -1,0 +1,3111 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Aws API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: AWS Account specific functions
+  name: Aws
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions:
+    get:
+      description: Get AWS region details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get AWS regions
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegions
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/azs:
+    get:
+      description: Get amazon availibility zone details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsAzsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get AZ details for the specified account
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionAzs
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/dbclusterparametergroups:
+    get:
+      description: Return db cluster parameter groups by the region specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsDbclusterparametergroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return db cluster parameter groups by region
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionDbclusterparametergroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/dboptiongroups:
+    post:
+      description: Return the dboptiongroups that match the specified information
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsAwsRegionsDboptiongroupsRequest'
+        description: DB Option Groups
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsAwsRegionsDboptiongroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return the dboptiongroups
+      tags:
+      - Aws
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionDboptiongroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/dbparametergroups:
+    get:
+      description: Return db parameter groups by region and account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsDbparametergroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return DB parameter groups by the region and account specified
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionDbparametergroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/dbsubnetgroups:
+    get:
+      description: Return db subnet groups by the specified region
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsDbsubnetgroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return db subnet groups
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionDbsubnetgroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/dbsubnets:
+    get:
+      description: Return db subnets by region and account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsDbsubnetsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return db subnets
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionDbsubnets
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/instanceprofiles:
+    get:
+      description: Return instance profiles by the specified region
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsInstanceprofilesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return instance profiles
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionInstanceprofiles
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/instancetypes:
+    get:
+      description: Return instance types by region
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      - description: AWS Service Name
+        in: query
+        name: service
+        required: true
+        schema:
+          enum:
+          - ec2
+          - rds
+          type: string
+      - description: Architecture type
+        in: query
+        name: architecture
+        required: true
+        schema:
+          enum:
+          - arm64
+          - i386
+          - x86_64
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsInstancetypesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return instance types
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionInstancetypes
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/kmskeys:
+    get:
+      description: Return kmskeys by region and account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsKmskeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return kmskeys
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionKmskeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/securitygroups:
+    get:
+      description: Get amazon secutiy groups details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsSecuritygroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get amazon secutiy groups
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionSecuritygroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/serverinstanceprofiles:
+    post:
+      description: Return server instance profiles by the specified region
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsAwsRegionsServerinstanceprofilesRequest'
+        description: Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsAwsRegionsServerinstanceprofilesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return server instance profiles
+      tags:
+      - Aws
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionServerinstanceprofiles
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/sshkeys:
+    get:
+      description: Get amazon ssh keys details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsSshkeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get amazon ssh keys
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionSshkeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/subnets:
+    get:
+      description: Get subnets details of specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsSubnetsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get subnets details
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionSubnets
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/networkinterfaces:
+    get:
+      description: Return NetworkInterfaces
+      summary: Get available network interfaces for a subnet
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsNetworkInterfacesResponse'
+          description: 200 response
+        '201':
+          description: 201 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+        '401':
+          description: 401 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 403 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 404 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - name: organization_id
+        in: path
+        description: Organization Id
+        required: true
+        schema:
+          type: string
+      - name: account_id
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      - name: region
+        in: path
+        description: Region
+        required: true
+        schema:
+          type: string
+      - name: subnetId
+        in: query
+        description: Subnet ID to filter network interfaces
+        required: true
+        schema:
+          type: string
+      - name: is_windows
+        in: query
+        description: Flag to indicate if this is a Windows backup
+        required: false
+        schema:
+          enum:
+          - 'true'
+          - 'false'
+          type: string
+      - name: isBTDC
+        in: query
+        description: Flag to indicate if this is a BTDC backup
+        required: false
+        schema:
+          enum:
+          - 'true'
+          - 'false'
+          type: string
+      tags:
+      - Aws
+      security:
+      - API_Authorizer: []
+        api_key: []
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionNetworkinterfaces
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/vpcs:
+    get:
+      description: Return vpcs by region and by account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsVpcsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return vpcs
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionVpcs
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/vpcs/{vpc_id}/securitygroups:
+    get:
+      description: Return security groups for the specified vpc id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      - description: The VPC that you want to perform the request against. This can be found by checking which VPC your resource is located in from the CloudRanger console or the AWS console
+        in: path
+        name: vpc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsVpcsSecuritygroupsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return security groups by vpc id
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionVpcsByVpcIdSecuritygroups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/vpcs/{vpc_id}/subnets:
+    get:
+      description: Return subnets for the account by vpc id specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      - description: The VPC that you want to perform the request against. This can be found by checking which VPC your resource is located in from the CloudRanger console or the AWS console
+        in: path
+        name: vpc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsVpcsSubnetsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return subnets by vpc id
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionVpcsByVpcIdSubnets
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/regions/{region}/vpcs/{vpc_id}/subnets/{subnet_id}/gateways:
+    get:
+      description: Return gateways for the specified subnet id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      - description: The VPC that you want to perform the request against. This can be found by checking which VPC your resource is located in from the CloudRanger console or the AWS console
+        in: path
+        name: vpc_id
+        required: true
+        schema:
+          type: string
+      - description: The subnet that you want to perform the request against. This can be found by checking which subnet your resource is located in from the CloudRanger console or the AWS console
+        in: path
+        name: subnet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsRegionsVpcsSubnetsGatewaysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return gateways by subnet id
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsRegionsByRegionVpcsByVpcIdSubnetsBySubnetIdGateways
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/aws/s3location/{bucketName}:
+    get:
+      description: Return bucket location by the name specified
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The name of the S3 bucket that you want to run the request against. This can be found by checking the S3 service in the AWS console
+        in: path
+        name: bucketName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAwsS3locationByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return bucket location (region)
+      tags:
+      - Aws
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAwsS3locationByBucketName
+      x-operation-id-source: derived
+  /organizations/{organization_id}/aws/accountalias:
+    post:
+      description: Get alias for the account using the specified ARN and external ID
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAwsAccountaliasRequest'
+        description: Access Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAwsAccountaliasResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get account alias
+      tags:
+      - Aws
+      operationId: postOrganizationsByOrganizationIdAwsAccountalias
+      x-operation-id-source: derived
+  /organizations/{organization_id}/onboarding/cloudformation:
+    post:
+      description: Get Cloudformation S3 UR
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsOnboardingCloudformationRequest'
+        description: CloudFormation Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsOnboardingCloudformationResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return Cloudformation S3 URL
+      tags:
+      - Aws
+      operationId: postOrganizationsByOrganizationIdOnboardingCloudformation
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsAwsRegionsDbparametergroupsResponse:
+      properties:
+        DBParameterGroups:
+          items:
+            properties:
+              DBParameterGroupArn:
+                type: string
+              DBParameterGroupFamily:
+                type: string
+              DBParameterGroupName:
+                type: string
+              Description:
+                type: string
+            type: object
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+              type: object
+            type: array
+          all_resource_types:
+            type: boolean
+          createdAt:
+            format: date-time
+            type: string
+          dr_plan_id:
+            type: integer
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          match:
+            type: integer
+          matches:
+            properties:
+              tags:
+                items:
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                type: array
+            type: object
+          protectedStatus:
+            type: string
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              properties:
+                account_id:
+                  type: string
+                region:
+                  type: string
+                resource_id:
+                  type: string
+                resource_name:
+                  type: string
+                rule_id:
+                  type: string
+                type:
+                  type: string
+            type: array
+          rule_type:
+            type: string
+          updatedAt:
+            format: date-time
+            type: string
+        type: object
+      type: array
+    GetOrganizationsAccountsAwsRegionsVpcsSubnetsGatewaysResponse:
+      properties:
+        NatGateways:
+          items:
+            type: string
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbsubnetgroupsResponse:
+      properties:
+        DBSubnetGroupArn:
+          type: string
+        DBSubnetGroupDescription:
+          type: string
+        DBSubnetGroupName:
+          type: string
+        SubnetGroupStatus:
+          type: string
+        Subnets:
+          items:
+            properties:
+              SubnetAvailabilityZone:
+                properties:
+                  Name:
+                    type: string
+                type: object
+              SubnetIdentifier:
+                type: string
+              SubnetStatus:
+                type: string
+            type: object
+          type: array
+        VpcId:
+          type: string
+      type: object
+    PostOrganizationsAccountsAwsRegionsDboptiongroupsResponse:
+      properties:
+        OptionGroupsList:
+          items:
+            type: string
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsAwsRegionsSecuritygroupsResponse:
+      properties:
+        SecurityGroups:
+          items:
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsSshkeysResponse:
+      properties:
+        KeyPairs:
+          items:
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesResponse:
+      properties:
+        InstanceProfileArns:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsVpcsResponse:
+      properties:
+        Vpcs:
+          items:
+            properties:
+              CidrBlock:
+                type: string
+              CidrBlockAssociationSet:
+                items:
+                  properties:
+                    AssociationId:
+                      type: string
+                    CidrBlock:
+                      type: string
+                    CidrBlockState:
+                      properties:
+                        State:
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              DhcpOptionsId:
+                type: string
+              InstanceTenancy:
+                type: string
+              Ipv6CidrBlockAssociationSet:
+                items:
+                  type: string
+                type: array
+              IsDefault:
+                type: boolean
+              OwnerId:
+                type: string
+              State:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsSubnetsResponse:
+      properties:
+        Subnets:
+          items:
+            properties:
+              AssignIpv6AddressOnCreation:
+                type: boolean
+              AvailabilityZone:
+                type: string
+              AvailabilityZoneId:
+                type: string
+              AvailableIpAddressCount:
+                type: integer
+              CidrBlock:
+                type: string
+              DefaultForAz:
+                type: boolean
+              Ipv6CidrBlockAssociationSet:
+                items:
+                  type: string
+                type: array
+              MapPublicIpOnLaunch:
+                type: boolean
+              OwnerId:
+                type: string
+              State:
+                type: string
+              SubnetArn:
+                type: string
+              SubnetId:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbsubnetsResponse:
+      properties:
+        DBSubnetGroups:
+          items:
+            properties:
+              DBSubnetGroupArn:
+                type: string
+              DBSubnetGroupDescription:
+                type: string
+              DBSubnetGroupName:
+                type: string
+              SubnetGroupStatus:
+                type: string
+              Subnets:
+                items:
+                  properties:
+                    SubnetAvailabilityZone:
+                      properties:
+                        Name:
+                          type: string
+                      type: object
+                    SubnetIdentifier:
+                      type: string
+                    SubnetStatus:
+                      type: string
+                  type: object
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsAwsS3locationByIdResponse:
+      properties:
+        Region:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsKmskeysResponse:
+      items:
+        properties:
+          Alias:
+            type: string
+          KeyId:
+            type: string
+          KeyState:
+            enum:
+            - AccessDenied
+            - Creating
+            - Enabled
+            - Disabled
+            - PendingDeletion
+            - PendingImport
+            - PendingReplicaDeletion
+            - Unavailable
+            - Updating
+            type: string
+        type: object
+      type: array
+    PostOrganizationsAwsAccountaliasResponse:
+      properties:
+        AccountAliases:
+          items:
+            type: string
+          type: array
+        IsTruncated:
+          type: boolean
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    PostOrganizationsAccountsAwsRegionsDboptiongroupsRequest:
+      properties:
+        EngineName:
+          type: string
+        MajorEngineVersion:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsResponse:
+      properties:
+        Endpoint:
+          type: string
+        OptInStatus:
+          type: string
+        RegionName:
+          type: string
+      type: object
+    PostOrganizationsOnboardingCloudformationRequest:
+      properties:
+        credential:
+          properties:
+            external_id:
+              type: string
+          type: object
+        id:
+          type: string
+        settings:
+          properties:
+            fls_bucket:
+              type: string
+          type: object
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsAwsRegionsVpcsSubnetsResponse:
+      properties:
+        Subnets:
+          items:
+            properties:
+              AssignIpv6AddressOnCreation:
+                type: boolean
+              AvailabilityZone:
+                type: string
+              AvailabilityZoneId:
+                type: string
+              AvailableIpAddressCount:
+                type: integer
+              CidrBlock:
+                type: string
+              DefaultForAz:
+                type: boolean
+              Ipv6CidrBlockAssociationSet:
+                items:
+                  type: string
+                type: array
+              MapPublicIpOnLaunch:
+                type: boolean
+              OwnerId:
+                type: string
+              State:
+                type: string
+              SubnetArn:
+                type: string
+              SubnetId:
+                type: string
+              Tags:
+                items:
+                  properties:
+                    Key:
+                      type: string
+                    Value:
+                      type: string
+                  type: object
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsInstanceprofilesResponse:
+      properties:
+        InstanceProfiles:
+          items:
+            properties:
+              Arn:
+                type: string
+              CreateDate:
+                format: date-time
+                type: string
+              InstanceProfileId:
+                type: string
+              InstanceProfileName:
+                type: string
+              Path:
+                type: string
+              Roles:
+                items:
+                  properties:
+                    Arn:
+                      type: string
+                    AssumeRolePolicyDocument:
+                      type: string
+                    CreateDate:
+                      format: date-time
+                      type: string
+                    Path:
+                      type: string
+                    RoleId:
+                      type: string
+                    RoleName:
+                      type: string
+                    Tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbclusterparametergroupsResponse:
+      properties:
+        DBClusterParameterGroups:
+          items:
+            properties:
+              DBClusterParameterGroupArn:
+                type: string
+              DBClusterParameterGroupName:
+                type: string
+              DBParameterGroupFamily:
+                type: string
+              Description:
+                type: string
+            type: object
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsAwsRegionsNetworkInterfacesResponse:
+      type: object
+      properties:
+        NetworkInterfaces:
+          type: array
+          description: Description of the ENI'.
+          items:
+            type: object
+            properties:
+              NetworkInterfaceId:
+                type: string
+                description: The ID of the network interface
+              Status:
+                type: string
+                description: The status of the network interface
+                enum:
+                - available
+                - in-use
+              InterfaceType:
+                type: string
+                description: The type of network interface.
+                enum:
+                - interface
+                - efa
+                - efa-only
+              SecurityGroups:
+                type: array
+                description: The security groups associated with the network interface
+                items:
+                  type: object
+                  properties:
+                    GroupId:
+                      type: string
+                      description: The ID of the security group
+                    GroupName:
+                      type: string
+                      description: The name of the security group
+              PrivateIpAddress:
+                type: string
+                description: The primary private IP address of the network interface
+              PrivateIpAddresses:
+                type: array
+                description: The private IP addresses associated with the network interface
+                items:
+                  type: object
+                  properties:
+                    PrivateIpAddress:
+                      type: string
+                      description: The private IP address
+                    Primary:
+                      type: boolean
+                      description: Indicates whether this IP address is the primary private IP address
+                    Association:
+                      type: object
+                      description: The association information for an Elastic IP address
+                      properties:
+                        PublicIp:
+                          type: string
+                          description: The public IP address
+                        AllocationId:
+                          type: string
+                          description: The allocation ID for the Elastic IP address
+              SubnetId:
+                type: string
+                description: The ID of the subnet in which the network interface is located
+              VpcId:
+                type: string
+                description: The ID of the VPC in which the network interface is located
+              AvailabilityZone:
+                type: string
+                description: The Availability Zone of the network interface
+              Description:
+                type: string
+                description: The description of the network interface.
+    PostOrganizationsAwsAccountaliasRequest:
+      properties:
+        access_role_arn:
+          type: string
+        external_id:
+          type: string
+        state:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsVpcsSecuritygroupsResponse:
+      properties:
+        SecurityGroups:
+          items:
+            properties:
+              Description:
+                type: string
+              GroupId:
+                type: string
+              GroupName:
+                type: string
+              IpPermissions:
+                items:
+                  properties:
+                    IpProtocol:
+                      type: string
+                    IpRanges:
+                      items:
+                        type: string
+                      type: array
+                    Ipv6Ranges:
+                      items:
+                        type: string
+                      type: array
+                    PrefixListIds:
+                      items:
+                        type: string
+                      type: array
+                    UserIdGroupPairs:
+                      items:
+                        properties:
+                          GroupId:
+                            type: string
+                          UserId:
+                            type: string
+                        type: object
+                      type: array
+                  type: object
+                type: array
+              IpPermissionsEgress:
+                items:
+                  properties:
+                    IpProtocol:
+                      type: string
+                    IpRanges:
+                      items:
+                        properties:
+                          CidrIp:
+                            type: string
+                        type: object
+                      type: array
+                    Ipv6Ranges:
+                      items:
+                        type: string
+                      type: array
+                    PrefixListIds:
+                      items:
+                        type: string
+                      type: array
+                    UserIdGroupPairs:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              OwnerId:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsInstancetypesResponse:
+      type: string
+    GetOrganizationsAccountsAwsRegionsAzsResponse:
+      properties:
+        GroupName:
+          type: string
+        Messages:
+          items:
+            type: string
+          type: array
+        NetworkBorderGroup:
+          type: string
+        OptInStatus:
+          type: string
+        RegionName:
+          type: string
+        State:
+          type: string
+        ZoneId:
+          type: string
+        ZoneName:
+          type: string
+      type: object
+    PostOrganizationsOnboardingCloudformationResponse:
+      properties:
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        cloudformationTemplate:
+          properties:
+            Outputs:
+              properties:
+                ARN:
+                  properties:
+                    Description:
+                      type: string
+                    Value:
+                      properties:
+                        Fn::GetAtt:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                  type: object
+                Name:
+                  properties:
+                    Description:
+                      type: string
+                    Value:
+                      properties:
+                        Ref:
+                          type: string
+                      type: object
+                  type: object
+              type: object
+            Resources:
+              properties:
+                CloudRanger:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        AssumeRolePolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Condition:
+                                    properties:
+                                      StringEquals:
+                                        properties:
+                                          sts:ExternalId:
+                                            type: string
+                                        type: object
+                                    type: object
+                                  Effect:
+                                    type: string
+                                  Principal:
+                                    properties:
+                                      AWS:
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
+                        Path:
+                          type: string
+                        Policies:
+                          items:
+                            type: object
+                          type: array
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRConsistentSnapshotInstanceProfile:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        InstanceProfileName:
+                          type: string
+                        Roles:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRConsistentSnapshotPolicy:
+                  properties:
+                    Properties:
+                      properties:
+                        ManagedPolicyName:
+                          type: string
+                        PolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Resource:
+                                    type: string
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRConsistentSnapshotRole:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        AssumeRolePolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Principal:
+                                    properties:
+                                      Service:
+                                        items:
+                                          type: string
+                                        type: array
+                                    type: object
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                        ManagedPolicyArns:
+                          items:
+                            properties:
+                              Ref:
+                                type: string
+                            type: object
+                          type: array
+                        Path:
+                          type: string
+                        RoleName:
+                          type: string
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRFileLevelSearchBucket:
+                  properties:
+                    DeletionPolicy:
+                      type: string
+                    Properties:
+                      properties:
+                        BucketName:
+                          type: string
+                        CorsConfiguration:
+                          properties:
+                            CorsRules:
+                              items:
+                                properties:
+                                  AllowedHeaders:
+                                    items:
+                                      type: string
+                                    type: array
+                                  AllowedMethods:
+                                    items:
+                                      type: string
+                                    type: array
+                                  AllowedOrigins:
+                                    items:
+                                      type: string
+                                    type: array
+                                  MaxAge:
+                                    type: integer
+                                type: object
+                              type: array
+                          type: object
+                        NotificationConfiguration:
+                          properties:
+                            TopicConfigurations:
+                              items:
+                                properties:
+                                  Event:
+                                    type: string
+                                  Topic:
+                                    properties:
+                                      Fn::Join:
+                                        items:
+                                          type: string
+                                        type: array
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRFileLevelSearchInstanceProfile:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        InstanceProfileName:
+                          type: string
+                        Roles:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRFileLevelSearchPolicy:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        ManagedPolicyName:
+                          type: string
+                        PolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Resource:
+                                    items:
+                                      type: string
+                                    type: array
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRFileLevelSearchRole:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        AssumeRolePolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Principal:
+                                    properties:
+                                      Service:
+                                        items:
+                                          type: string
+                                        type: array
+                                    type: object
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                        ManagedPolicyArns:
+                          items:
+                            properties:
+                              Ref:
+                                type: string
+                            type: object
+                          type: array
+                        Path:
+                          type: string
+                        RoleName:
+                          type: string
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRS3ArchiveBatchPolicy:
+                  properties:
+                    Properties:
+                      properties:
+                        ManagedPolicyName:
+                          type: string
+                        PolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Resource:
+                                    type: string
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRS3ArchiveBatchRole:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        AssumeRolePolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    type: string
+                                  Effect:
+                                    type: string
+                                  Principal:
+                                    properties:
+                                      Service:
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                        ManagedPolicyArns:
+                          items:
+                            properties:
+                              Ref:
+                                type: string
+                            type: object
+                          type: array
+                        Path:
+                          type: string
+                        RoleName:
+                          type: string
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRS3ArchiveUploadInstanceProfile:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        InstanceProfileName:
+                          type: string
+                        Roles:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRS3ArchiveUploadPolicy:
+                  properties:
+                    Properties:
+                      properties:
+                        ManagedPolicyName:
+                          type: string
+                        PolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Resource:
+                                    type: string
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+                CRS3ArchiveUploadRole:
+                  properties:
+                    DependsOn:
+                      items:
+                        type: string
+                      type: array
+                    Properties:
+                      properties:
+                        AssumeRolePolicyDocument:
+                          properties:
+                            Statement:
+                              items:
+                                properties:
+                                  Action:
+                                    items:
+                                      type: string
+                                    type: array
+                                  Effect:
+                                    type: string
+                                  Principal:
+                                    properties:
+                                      Service:
+                                        items:
+                                          type: string
+                                        type: array
+                                    type: object
+                                type: object
+                              type: array
+                            Version:
+                              format: date
+                              type: string
+                          type: object
+                        ManagedPolicyArns:
+                          items:
+                            properties:
+                              Ref:
+                                type: string
+                            type: object
+                          type: array
+                        Path:
+                          type: string
+                        RoleName:
+                          type: string
+                      type: object
+                    Type:
+                      type: string
+                  type: object
+              type: object
+          type: object
+        external_id:
+          type: string
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

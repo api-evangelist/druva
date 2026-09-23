@@ -1,0 +1,276 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Audit API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Audit specific API functions
+  name: Audit
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/audits/count:
+    get:
+      description: Get count of audit records for an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsAuditsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Audit Count For Account
+      tags:
+      - Audit
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAuditsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/audits:
+    get:
+      description: Returns the audits of accounts associated to organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAuditsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Audit Records For Organization
+      tags:
+      - Audit
+      operationId: getOrganizationsByOrganizationIdAudits
+      x-operation-id-source: derived
+  /organizations/{organization_id}/audits/count:
+    get:
+      description: Get count of audit records for an organisation
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAuditsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Audit Count For Organization
+      tags:
+      - Audit
+      operationId: getOrganizationsByOrganizationIdAuditsCount
+      x-operation-id-source: derived
+components:
+  schemas:
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAuditsResponse:
+      properties:
+        hits:
+          properties:
+            account:
+              properties:
+                color:
+                  type: string
+                initials:
+                  type: string
+                name:
+                  type: string
+                type:
+                  type: string
+              type: object
+            account_id:
+              type: string
+            body:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            http_code_result:
+              type: integer
+            id:
+              type: integer
+            identity_email:
+              type: string
+            log_group_name:
+              type: string
+            log_stream_name:
+              type: string
+            message:
+              type: string
+            operation:
+              type: string
+            organization_id:
+              type: string
+            route:
+              type: string
+            success:
+              type: boolean
+            target_id:
+              type: string
+            target_resource:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            verb:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAuditsCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    GetOrganizationsAccountsAuditsCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

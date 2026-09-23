@@ -1,0 +1,1118 @@
+openapi: 3.2.0
+info:
+  title: Druva Tasks API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Tasks across 2 of this provider''s published API definitions: druva-cloudranger-openapi-original.json, druva-msp-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.cloudranger.com/202004
+- url: https://apis.druva.com/
+tags:
+- description: Task specific API functions
+  name: Tasks
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/tasks/{task_id}/stop:
+    post:
+      description: Send a stop event to SQS in an attempt to stop the task from executing
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the task table. This is also a foreign key for jobs and steps.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsTasksStopRequest'
+        description: Task Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsTasksStopResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Stop A Task
+      tags:
+      - Tasks
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdTasksByTaskIdStop
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/tasks:
+    get:
+      description: Return tasks by Organization id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The object type you want to perform the request against.
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'Filter Object containing  keys that can be one or more OPTIONAL values which must be an array of strings. For EG: {"region":["ca-west-1","us-east-1"],"account_id":["hmzGN2gY","i8bMxmkB"],"created_at":"2025-12-24T13:59:30Z"} depending on the type. if type is backup, filter :[account_id, action, air_gap, created_at, generated_by, is_success, object_id, region, resource_type], if type is restore, filter :[account_id, action, air_gap, created_at, is_success, region, resource_type], if type is retention or  disasterrecovery, filter :[account_id, action, created_at, is_success, object_id, region, resource_type], if type is scheduling, filter :[account_id, action, created_at, is_success, object_id, region, resource_type, all-schedules].'
+        required: true
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: limit
+        required: true
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      - description: The  you want to order the result set in.
+        in: query
+        name: order
+        required: true
+        schema:
+          enum:
+          - created_at
+          - resource_id
+          - resource_type
+          - resource_name
+          - is_success
+          - action
+          - region
+          - id
+          type: string
+      - description: The direction you want to order the result set in.
+        in: query
+        name: direction
+        required: true
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsTasksResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tasks
+      tags:
+      - Tasks
+      operationId: getOrganizationsByOrganizationIdTasks
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/tasks/{task_id}:
+    get:
+      description: Return tasks by task id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the task table. This is also a foreign key for jobs and steps.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsTasksByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get A Task
+      tags:
+      - Tasks
+      operationId: getOrganizationsByOrganizationIdTasksByTaskId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/tasks/{task_id}/stop:
+    post:
+      description: Send a stop event to SQS in an attempt to stop the task from executing
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the task table. This is also a foreign key for jobs and steps.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsTasksStopRequest'
+        description: Policy Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsTasksStopResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Stop A Task
+      tags:
+      - Tasks
+      operationId: postOrganizationsByOrganizationIdTasksByTaskIdStop
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /msp/v2/tasks/{taskID}:
+    get:
+      tags:
+      - Tasks
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      - name: taskID
+        description: Specify the unique ID of the task for which you want to know the current status. Task ID is received in response to the API calls made to Create a Customer, Create a Tenant, and so on.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTaskResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: The request was not processed due to an internal error in MSP Portal Service.
+      security:
+      - Bearer: []
+      operationId: GetTask
+      summary: Get task details
+      description: Returns the status and additional information about a particular task using the Task ID.
+    servers:
+    - url: https://apis.druva.com/
+components:
+  schemas:
+    PostOrganizationsTasksStopResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsTasksResponse:
+      properties:
+        hits:
+          properties:
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            halt:
+              type: boolean
+            id:
+              type: string
+            is_success:
+              type: boolean
+            job:
+              properties:
+                account:
+                  properties:
+                    avatar_image:
+                      type: string
+                    color:
+                      type: string
+                    created_at:
+                      format: date-time
+                      type: string
+                    default_timezone_location:
+                      type: string
+                    deleted_at:
+                      type: string
+                    id:
+                      type: string
+                    initials:
+                      type: string
+                    is_active:
+                      type: boolean
+                    is_legal_hold_account:
+                      type: boolean
+                    name:
+                      type: string
+                    organization_id:
+                      type: string
+                    type:
+                      type: string
+                    updated_at:
+                      format: date-time
+                      type: string
+                  type: object
+                account_id:
+                  type: string
+                action:
+                  type: string
+                backup_policy:
+                  properties:
+                    name:
+                      type: string
+                  type: object
+                created_at:
+                  format: date-time
+                  type: string
+                cron:
+                  type: string
+                cron_location:
+                  type: string
+                event_at:
+                  format: date-time
+                  type: string
+                event_type:
+                  type: string
+                halt:
+                  type: string
+                id:
+                  type: string
+                object_id:
+                  type: integer
+                organization_id:
+                  type: string
+                seq:
+                  type: integer
+                total_fail:
+                  type: integer
+                total_success:
+                  type: integer
+                total_tasks:
+                  type: integer
+                type:
+                  type: string
+                updated_at:
+                  format: date-time
+                  type: string
+              type: object
+            job_id:
+              type: string
+            region:
+              type: string
+            resource_id:
+              type: string
+            resource_name:
+              type: string
+            resource_type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsTasksStopRequest:
+      properties:
+        copies:
+          properties:
+            cross_account_id:
+              type: string
+            cross_account_region:
+              type: string
+            first_region:
+              type: string
+            interval:
+              type: integer
+            retention_amount:
+              type: integer
+            retention_type:
+              type: string
+            retention_unit:
+              type: string
+            second_region:
+              type: string
+          type: object
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        encryption_mappings:
+          items:
+            type: string
+          type: array
+        fls_index_freq:
+          type: string
+        inherit_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        is_fls_indexed:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        resource_options:
+          properties:
+            ami_reboot:
+              type: boolean
+            ec2_amis:
+              type: boolean
+            scripts:
+              type: boolean
+            vss:
+              type: boolean
+          type: object
+        retention:
+          properties:
+            backups_count:
+              type: string
+            tiered_amount:
+              type: integer
+            tiered_monthly_amount:
+              type: integer
+            tiered_monthly_enabled:
+              type: boolean
+            tiered_unit:
+              type: string
+            tiered_weekly_amount:
+              type: integer
+            tiered_weekly_enabled:
+              type: boolean
+            tiered_yearly_amount:
+              type: integer
+            tiered_yearly_enabled:
+              type: boolean
+            type:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              tags:
+                items:
+                  properties:
+                    key:
+                      type: string
+                    rule_id:
+                      type: integer
+                    value:
+                      type: string
+                  type: object
+                type: array
+              updated_at:
+                type: string
+            type: object
+          type: array
+        s3_archive:
+          properties:
+            monthly_enabled:
+              type: boolean
+            monthly_storage_class:
+              type: string
+            weekly_enabled:
+              type: boolean
+            weekly_storage_class:
+              type: string
+            yearly_enabled:
+              type: boolean
+            yearly_storage_class:
+              type: string
+          type: object
+        schedule_cron:
+          type: string
+        tag_with:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsAccountsTasksStopRequest:
+      properties:
+        copies:
+          properties:
+            cross_account_id:
+              type: string
+            cross_account_region:
+              type: string
+            first_region:
+              type: string
+            interval:
+              type: integer
+            retention_amount:
+              type: integer
+            retention_type:
+              type: string
+            retention_unit:
+              type: string
+            second_region:
+              type: string
+          type: object
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        encryption_mappings:
+          items:
+            type: string
+          type: array
+        fls_index_freq:
+          type: string
+        inherit_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        is_fls_indexed:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        resource_options:
+          properties:
+            ami_reboot:
+              type: boolean
+            ec2_amis:
+              type: boolean
+            scripts:
+              type: boolean
+            vss:
+              type: boolean
+          type: object
+        retention:
+          properties:
+            backups_count:
+              type: string
+            tiered_amount:
+              type: integer
+            tiered_monthly_amount:
+              type: integer
+            tiered_monthly_enabled:
+              type: boolean
+            tiered_unit:
+              type: string
+            tiered_weekly_amount:
+              type: integer
+            tiered_weekly_enabled:
+              type: boolean
+            tiered_yearly_amount:
+              type: integer
+            tiered_yearly_enabled:
+              type: boolean
+            type:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              tags:
+                items:
+                  properties:
+                    key:
+                      type: string
+                    rule_id:
+                      type: integer
+                    value:
+                      type: string
+                  type: object
+                type: array
+              updated_at:
+                type: string
+            type: object
+          type: array
+        s3_archive:
+          properties:
+            monthly_enabled:
+              type: boolean
+            monthly_storage_class:
+              type: string
+            weekly_enabled:
+              type: boolean
+            weekly_storage_class:
+              type: string
+            yearly_enabled:
+              type: boolean
+            yearly_storage_class:
+              type: string
+          type: object
+        schedule_cron:
+          type: string
+        tag_with:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsTasksStopResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsTasksByIdResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account:
+              properties:
+                avatar_image:
+                  type: string
+                color:
+                  type: string
+                created_at:
+                  format: date-time
+                  type: string
+                default_timezone_location:
+                  type: string
+                deleted_at:
+                  type: string
+                id:
+                  type: string
+                initials:
+                  type: string
+                is_active:
+                  type: boolean
+                is_legal_hold_account:
+                  type: boolean
+                name:
+                  type: string
+                organization_id:
+                  type: string
+                type:
+                  type: string
+                updated_at:
+                  format: date-time
+                  type: string
+              type: object
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        steps:
+          items:
+            type: object
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetTaskResponse:
+      type: object
+      properties:
+        id:
+          description: The unique ID of the task. Example - 'c8b54819-486a-497a-b86e-5b93f2422711'
+          type: string
+          example: c8b54819-486a-497a-b86e-5b93f2422711
+        name:
+          description: The name of the task for which this activity was initiated. Example - 'customerCreate'
+          type: string
+          example: customerCreate
+        entityType:
+          description: '- The entity type of the task. Example - ''MSP''
+
+            - This field contains information to be consumed by MSP services, caller should not interpret, use or depend on its presence in response.
+
+            '
+          type: string
+          example: MSP
+        entityId:
+          description: '- The unique entity ID of the task. Example - MSP:25a2d3d0-3e17-40f4-945e-66fff6c6e853
+
+            - This field contains information to be consumed by MSP services, caller should not interpret, use or depend on its presence in response.
+
+            '
+          type: string
+          example: MSP:25a2d3d0-3e17-40f4-945e-66fff6c6e853
+        status:
+          format: int64
+          description: "- The status of the task.\n    - 1 - Queued \n    - 2 - InProgress \n    - 3 - Paused\n    - 4 - Finished\n"
+          type: integer
+          example: 4
+        output:
+          type: object
+          description: output will only contain successResp or errorResp
+          properties:
+            failed:
+              format: int64
+              description: "The status of the output. Example - 0\n- 0 - Success\n- 1 - Failed \n- -1 - Internal use\n"
+              type: integer
+              example: 0
+            successResp:
+              type: object
+              properties:
+                entityId:
+                  description: The unique ID of the entity created using this task. Example - '1e9b6464-69ac-47d8-b97b-7f595d47504c'
+                  type: string
+                  example: 1e9b6464-69ac-47d8-b97b-7f595d47504c
+            errorResp:
+              type: object
+              properties:
+                code:
+                  format: int64
+                  description: If an error has occurred and the task has failed, an error code is displayed. Example - 2304
+                  type: integer
+                  example: 2304
+                message:
+                  description: Error message. Example - 'Customer name already exists'
+                  type: string
+                  example: Customer name already exists
+        createdOn:
+          format: date-time
+          description: The date and time on which the MSP task was created. Example - '2022-10-15T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        updatedOn:
+          format: date-time
+          description: The date and time on which the MSP task was last updated. Example - '2022-10-15T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- druva-cloudranger-openapi-original.json
+- druva-msp-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

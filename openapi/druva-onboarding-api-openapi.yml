@@ -1,0 +1,270 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Onboarding API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- name: Onboarding
+paths:
+  /organizations/{organization_id}/onboarding:
+    post:
+      description: initialize onboarding of AWS account into CloudRanger
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PostOrganizationsOnboardingByIdRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsOnboardingByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Initialize AWS Account in CloudRanger
+      tags:
+      - Onboarding
+      operationId: postOrganizationsByOrganizationIdOnboarding
+      x-operation-id-source: derived
+    put:
+      description: Update Initialization onboarding of AWS account into CloudRanger
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsOnboardingByIdRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsOnboardingByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Initialization AWS Account in CloudRanger
+      tags:
+      - Onboarding
+      operationId: putOrganizationsByOrganizationIdOnboarding
+      x-operation-id-source: derived
+  /organizations/{organization_id}/onboarding/{stack_id}:
+    post:
+      description: Finalize onboarding of AWS account into CloudRanger
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The stack identifier representing the cloudformation stack used for CloudRanger onboarding finalization.
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PostOrganizationsOnboardingByIdRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsOnboardingByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Finalize AWS Account in CloudRanger
+      tags:
+      - Onboarding
+      operationId: postOrganizationsByOrganizationIdOnboardingByStackId
+      x-operation-id-source: derived
+components:
+  schemas:
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsOnboardingByIdRequest:
+      properties:
+        AccountId:
+          type: string
+        CRTemplateVersion:
+          type: integer
+        Event:
+          type: string
+        Region:
+          type: string
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
+          type: string
+      type: object
+    PutOrganizationsOnboardingByIdRequest:
+      properties:
+        AccountId:
+          type: string
+        CRTemplateVersion:
+          type: integer
+        Event:
+          type: string
+        Region:
+          type: string
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PutOrganizationsOnboardingByIdResponse:
+      properties:
+        AccountId:
+          type: string
+        ExternalId:
+          type: string
+        FLSBucketName:
+          type: string
+        Name:
+          type: string
+      type: object
+    PostOrganizationsOnboardingByIdResponse:
+      properties:
+        AccountId:
+          type: string
+        ExternalId:
+          type: string
+        FLSBucketName:
+          type: string
+        Name:
+          type: string
+      type: object
+  requestBodies:
+    PostOrganizationsOnboardingByIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostOrganizationsOnboardingByIdRequest'
+      required: true
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

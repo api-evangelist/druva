@@ -1,0 +1,5330 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger File Level Search API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: File Level Search specific API functions
+  name: FileLevelSearch
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/backups/{backup_id}/file_tree:
+    get:
+      description: Return file tree by file search backup id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsFilelevelsearchBackupsFile_treeResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get File Tree
+      tags:
+      - FileLevelSearch
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchBackupsByBackupIdFileTree
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/download_files:
+    post:
+      description: Request the download of a file
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchDownloadFilesRequest'
+        description: Download Files Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchDownloadFilesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Download File
+      tags:
+      - FileLevelSearch
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchDownloadFiles
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/indexes:
+    post:
+      description: Query an individual backup
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchIndexesRequest'
+        description: Search Indexes Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchIndexesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Search Indexes
+      tags:
+      - FileLevelSearch
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchIndexes
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/networksettings:
+    get:
+      description: Return network settings for file level searches by account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsFilelevelsearchNetworksettingsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Network Settings
+      tags:
+      - FileLevelSearch
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchNetworksettings
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/networksettings/{region}:
+    put:
+      description: Update a region in network settings of FLS
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdRequest'
+        description: Network Settings Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Network Settings
+      tags:
+      - FileLevelSearch
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchNetworksettingsByRegion
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/searches:
+    post:
+      description: Start File Level Search
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchSearchesRequest'
+        description: Start Search Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsFilelevelsearchSearchesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Start FLS
+      tags:
+      - FileLevelSearch
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchSearches
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/searches/{search_id}:
+    get:
+      description: Return file search by search id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the search performed by the File Level Search function. This can be used in the GET call /organizations/:organization_id/accounts/:account_id/filelevelsearch/searches/:search_id to poll the progress of a search.
+        in: path
+        name: search_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsFilelevelsearchSearchesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Poll search
+      tags:
+      - FileLevelSearch
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchSearchesBySearchId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/searches/{search_id}/files:
+    get:
+      description: Return files by file search id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The ID of the search performed by the File Level Search function. This can be used in the GET call /organizations/:organization_id/accounts/:account_id/filelevelsearch/searches/:search_id to poll the progress of a search.
+        in: path
+        name: search_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsFilelevelsearchSearchesFilesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Results
+      tags:
+      - FileLevelSearch
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchSearchesBySearchIdFiles
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsFilelevelsearchSearchesByIdResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        files_found:
+          type: integer
+        number_complete:
+          type: integer
+        number_parts:
+          type: integer
+        owner:
+          type: string
+        search_id:
+          type: string
+        state:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdRequest:
+      properties:
+        newAddition:
+          type: boolean
+        noAvailableSubnets:
+          type: boolean
+        region:
+          type: string
+        s3Access:
+          type: string
+        subnet_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsFilelevelsearchSearchesFilesResponse:
+      properties:
+        _shards:
+          properties:
+            failed:
+              type: integer
+            successful:
+              type: integer
+            total:
+              type: integer
+          type: object
+        hits:
+          properties:
+            hits:
+              items:
+                properties:
+                  _id:
+                    type: string
+                  _index:
+                    type: string
+                  _routing:
+                    type: string
+                  _score:
+                    type: string
+                  _source:
+                    type: object
+                  _type:
+                    type: string
+                  sort:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              type: array
+            max_score:
+              type: string
+            total:
+              type: integer
+          type: object
+        timed_out:
+          type: boolean
+        took:
+          type: integer
+      type: object
+    PostOrganizationsAccountsFilelevelsearchSearchesResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        number_parts:
+          type: integer
+        owner:
+          type: string
+        search_id:
+          type: string
+        state:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsFilelevelsearchNetworksettingsResponse:
+      properties:
+        ap-east-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-6ee00707:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-northeast-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-01753e64:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-02a052727ed1ce58c:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-795a881e:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-f85a889f:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-northeast-2:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-041df4a4e1079794c:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0b31b8881d76083a3:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-4c802325:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-northeast-3:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-012e2fedbb9fcb0df:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-6609ff0f:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-south-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-020b56c94384b2741:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-southeast-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-044568d3ad508f59c:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0aebb66f:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ap-southeast-2:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-0169b8f42f391293d:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-064de24c9c84d09d3:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0741b6ea8589ed4f3:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0a7e7a15b194bfa95:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-d87337bd:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        ca-central-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-002a676f9ed3479f7:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0bcdf2cc2cecb539d:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: string
+                  type: array
+              type: object
+            vpc-0c61da5750d20079c:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-54dc283d:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        eu-central-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-05e9765fe5c365c0a:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-08248be7cde3173da:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0db9a9bc42817fb75:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-e4f0bc8d:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        eu-north-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-03afac93a459268c4:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0704aab6247fa2db2:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-08ddac80255e86eeb:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-783ed311:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        eu-west-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-02fc721fef2150505:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0b86defefb6b60dcc:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0f450b37015cd1392:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-610e1004:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-cb9128ac:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        eu-west-2:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-0128c49e378ce7319:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0509b2d7237fa77ae:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0cfad9cfa5e679714:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-62c42c0b:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        eu-west-3:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-05872867237a6c280:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-06dcb1af186e8f835:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-08642c07f7dbebaee:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-699c6400:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        me-south-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-f06c8999:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        sa-east-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-05761cb0bc40ef9ca:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0ccd9e1b05c8b12d6:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0d6b3f218adbf5de8:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-64f1f601:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        us-east-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-0410fb037e1e243e5:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0adc5f883c8459518:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: string
+                  type: array
+              type: object
+            vpc-0ae0a085f563842d3:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0cb18275:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-0da78eb2fdcef223b:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-0ecaa069:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-4abdc62e:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-8f2854e9:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+          type: object
+        us-east-2:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-0071bfecd0814f941:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-007f045f860154074:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: string
+                  type: array
+              type: object
+            vpc-044263a2f99a2d531:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-06118de91265c1907:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-f3ac459a:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        us-west-1:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-03586d5b1c210b839:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-08a922d88660c3b5b:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-0ee6730e9c2e87db4:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-ba6c01df:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+        us-west-2:
+          properties:
+            hasServers:
+              type: boolean
+            vpc-0336b63ef240b7c91:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-04762578f3d3cb7f1:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-071c9fdd42a1ceff0:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: string
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    type: object
+                  type: array
+              type: object
+            vpc-0ec52a8969ca3883b:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      IsPublic:
+                        type: boolean
+                      NatGatewayAccess:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: object
+                        type: array
+                    type: object
+                  type: array
+              type: object
+            vpc-a8808bcd:
+              properties:
+                isDefault:
+                  type: boolean
+                RouteTables:
+                  items:
+                    properties:
+                      Associations:
+                        items:
+                          properties:
+                            AssociationState:
+                              properties:
+                                State:
+                                  type: string
+                              type: object
+                            Main:
+                              type: boolean
+                            RouteTableAssociationId:
+                              type: string
+                            RouteTableId:
+                              type: string
+                          type: object
+                        type: array
+                      OwnerId:
+                        type: string
+                      PropagatingVgws:
+                        items:
+                          type: string
+                        type: array
+                      Routes:
+                        items:
+                          properties:
+                            DestinationCidrBlock:
+                              type: string
+                            GatewayId:
+                              type: string
+                            Origin:
+                              type: string
+                            State:
+                              type: string
+                          type: object
+                        type: array
+                      RouteTableId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                      VpcId:
+                        type: string
+                    type: object
+                  type: array
+                s3Endpoint:
+                  type: boolean
+                Subnets:
+                  items:
+                    properties:
+                      AvailableIpAddressCount:
+                        type: integer
+                      DefaultForAz:
+                        type: boolean
+                      s3Endpoint:
+                        type: boolean
+                      SubnetId:
+                        type: string
+                      Tags:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  type: array
+              type: object
+          type: object
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        organization_id:
+          type: string
+        region:
+          type: string
+        subnet_id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsFilelevelsearchBackupsFile_treeResponse:
+      properties:
+        fileTreeUrl:
+          type: string
+      type: object
+    PostOrganizationsAccountsFilelevelsearchDownloadFilesRequest:
+      properties:
+        files:
+          items:
+            properties:
+              bucketName:
+                type: string
+              fileName:
+                type: string
+              filePath:
+                type: string
+              fileRestoreData:
+                type: integer
+              region:
+                type: string
+              snapshot:
+                properties:
+                  backupTime:
+                    format: date-time
+                    type: string
+                  id:
+                    type: string
+                  region:
+                    type: string
+                type: object
+            type: object
+          type: array
+        fls_bucket:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsFilelevelsearchIndexesResponse:
+      properties:
+        files:
+          items:
+            type: string
+          type: array
+        snapshots_searched:
+          type: integer
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsFilelevelsearchDownloadFilesResponse:
+      type: object
+    PostOrganizationsAccountsFilelevelsearchIndexesRequest:
+      properties:
+        backupIds:
+          items:
+            type: string
+          type: array
+        dateModified:
+          type: string
+        exactMatch:
+          type: boolean
+        filename:
+          type: string
+        filetypesList:
+          items:
+            type: string
+          type: array
+        location:
+          type: string
+        maxDateModified:
+          type: string
+        maxFileSize:
+          type: string
+        maxFileSizeUnits:
+          type: string
+        minDateModified:
+          type: string
+        minFileSize:
+          type: string
+        minFileSizeUnits:
+          type: string
+      type: object
+    PostOrganizationsAccountsFilelevelsearchSearchesRequest:
+      properties:
+        backupIds:
+          items:
+            type: string
+          type: array
+        backupTags:
+          items:
+            type: string
+          type: array
+        dateModified:
+          type: string
+        email:
+          type: string
+        exactMatch:
+          type: boolean
+        filename:
+          type: string
+        filetypesList:
+          items:
+            type: string
+          type: array
+        maxDateModified:
+          type: string
+        maxFileSize:
+          type: integer
+        maxFileSizeUnits:
+          type: string
+        minDateModified:
+          type: string
+        minFileSize:
+          type: integer
+        minFileSizeUnits:
+          type: string
+        serverIds:
+          items:
+            type: string
+          type: array
+        serverTags:
+          items:
+            type: string
+          type: array
+        snapshotInfo:
+          items:
+            properties:
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              id:
+                type: integer
+              indexer_instance_id:
+                type: string
+              instance_id:
+                type: string
+              organization_id:
+                type: string
+              policy_id:
+                type: string
+              snapshot_created_at:
+                format: date-time
+                type: string
+              snapshot_files_count:
+                type: integer
+              snapshot_filesystem:
+                type: string
+              snapshot_id:
+                type: string
+              snapshot_region:
+                type: string
+              snapshot_size:
+                type: integer
+              state:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+              volume_id:
+                type: string
+            type: object
+          type: array
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

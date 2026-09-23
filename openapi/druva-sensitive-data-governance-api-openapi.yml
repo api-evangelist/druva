@@ -1,0 +1,732 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: inSync Cloud Sensitive Data Governance API
+  description: Lists of APIs to get information and perform operations on Sensitive Data Governance.
+servers:
+- url: https://apis.druva.com/insync
+tags:
+- name: Sensitive Data Governance
+  description: Lists of APIs to get information and perform operations on Sensitive Data Governance.
+paths:
+  /sdg/v1/datatypes:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List all data types
+      description: Get the list of all data types available.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatatypeListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1Datatypes
+      x-operation-id-source: derived
+  /sdg/v1/policyTemplates:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List all policy templates
+      security:
+      - Bearer: []
+      description: Get the list of all SDG policy templates.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyTemplateListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1PolicyTemplates
+      x-operation-id-source: derived
+  /sdg/v1/policies:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List all configured policies
+      description: Get the list of all SDG policies.
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1Policies
+      x-operation-id-source: derived
+  /sdg/v1/whitelistKeywords:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List all whitelisted keywords
+      security:
+      - Bearer: []
+      description: Get the list of all whitelisted keywords.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhitelistKeywordsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1WhitelistKeywords
+      x-operation-id-source: derived
+  /sdg/v1/settings:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List Sensitive Data Governance settings
+      security:
+      - Bearer: []
+      description: Get the SDG settings for the customer.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSetingsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1Settings
+      x-operation-id-source: derived
+  /sdg/v1/fileViolations:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List file violations
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyID
+        in: query
+        description: Filter the file violations by policy. Specify the unique ID of the Sensitive Data Governance policy. Get the ID of the policy using the 'List all configured policies' API.
+        schema:
+          type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'pageToken'.
+        schema:
+          type: string
+      - name: violationType
+        in: query
+        description: 'Filter and list the file violations by the following violation type:
+
+
+          All - List all, critical and non critical violations.
+
+          critical - List only critical violations.
+
+          nonCritical - List only non critical violations.'
+        schema:
+          type: string
+          enum:
+          - all
+          - critical
+          - nonCritical
+      - name: violationStatus
+        in: query
+        description: 'Filter and list the file violations by the following violation status:
+
+
+          pendingOnAdmin - List all file violations on which admin action is pending.
+
+          pendingOnUser - List all file violations on which user action is pending.'
+        schema:
+          type: string
+          enum:
+          - pendingOnAdmin
+          - pendingOnUser
+      - name: searchQuery
+        in: query
+        description: Filter and list all file violations for a user with matching user name or email address.
+        schema:
+          type: string
+      - name: resolutionType
+        in: query
+        description: 'Filter and list the file violations based on their resolution type as follows:
+
+
+          active - List all active file violations.
+
+          resolved - List all file violations that are resolved.
+
+          quarantined - List all file violations which are quarantined.'
+        schema:
+          type: string
+          enum:
+          - active
+          - resolved
+          - quarantined
+      description: Get the list of file violations.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileViolationsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+        '500':
+          description: An internal error occurred on the server. For more information, check server logs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+      operationId: getSdgV1FileViolations
+      x-operation-id-source: derived
+  /sdg/v1/emailViolations:
+    get:
+      tags:
+      - Sensitive Data Governance
+      summary: List email violations
+      security:
+      - Bearer: []
+      parameters:
+      - name: policyID
+        in: query
+        description: Filter the email violations by policy. Specify the unique ID of the Sensitive Data Governance policy. Get the ID of the policy using the 'List all configured policies' API.
+        schema:
+          type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'pageToken'.
+        schema:
+          type: string
+      - name: violationType
+        in: query
+        description: 'Filter and list the email violations by the following violation type:
+
+
+          All - List all, critical and non critical violations.
+
+          critical - List only critical violations.
+
+          nonCritical - List only non critical violations.'
+        schema:
+          type: string
+          enum:
+          - all
+          - critical
+          - nonCritical
+      - name: violationStatus
+        in: query
+        description: 'Filter and list the email violations by the following violation status:
+
+
+          pendingOnAdmin - List all email violations on which admin action is pending.
+
+          pendingOnUser - List all email violations on which user action is pending.'
+        schema:
+          type: string
+          enum:
+          - pendingOnAdmin
+          - pendingOnUser
+      - name: resolutionType
+        in: query
+        description: 'FiFilter and list the email violations based on their resolution type as follows:
+
+
+          active - List all active email violations.
+
+          resolved - List all email violations that are resolved.
+
+          quarantined - List all email violations which are quarantined.'
+        schema:
+          type: string
+          enum:
+          - active
+          - resolved
+          - quarantined
+      description: Get the list of email violations.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailViolationsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: 'Access denied: Insufficient permissions. User requires specific access rights and minimum permissions. Details: https://help.druva.com/en/articles/15069296'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_403_SDG'
+      operationId: getSdgV1EmailViolations
+      x-operation-id-source: derived
+components:
+  schemas:
+    HTTP_403_SDG:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - InsyncSdg-1027
+          example: InsyncSdg-1027
+        message:
+          type: string
+          enum:
+          - You do not have permissions for the action.
+          example: You do not have permissions for the action.
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+        data:
+          type: object
+    DatatypeListResponse:
+      type: object
+      properties:
+        datatypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Datatype'
+          description: List of sensitive data types.
+    WhitelistKeywordsResponse:
+      type: object
+      properties:
+        whitelistKeywords:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: The whitelisted keyword/regular expression.
+              isRegex:
+                type: boolean
+                description: Indicates if it is a whitelisted keyword or a regular expression.
+          description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
+    HttpError:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - sdg-1001
+        message:
+          type: string
+          example: Error Description
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    Policy:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the Sensitive Data Governance (SDG) policy.
+        name:
+          type: string
+          description: The name of the SDG policy.
+        createdBy:
+          type: integer
+          description: The unique ID of the administrator who created the SDG policy.
+        description:
+          type: string
+          description: The description of the SDG policy.
+        endUserAccess:
+          type: boolean
+          description: Flag describing whether end user access is enabled to the policy.
+        lastUpdated:
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the SDG policy was last updated.
+        attachedPolicyTemplate:
+          type: integer
+          description: The unique ID of the SDG policy template associated with the policy.
+    EmailViolation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the email violation.
+        emailReceivedFrom:
+          type: string
+          description: The sender of the email for which violation was reported.
+        mailTime:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time of the violated email.
+        emailSubject:
+          type: string
+          description: The subject of the email for which the violation was reported.
+        resourceParentID:
+          type: integer
+          description: The unique ID of the user associated with the violated email.
+        violatedPolicies:
+          type: array
+          items:
+            type: integer
+          description: List of ID(s) of the Sensitive Data Governance policy(s) using which the violation was reported.
+        violatedDatatypes:
+          type: array
+          items:
+            type: integer
+          description: List of ID(s) of the sensitive data type(s) using which the violation was reported.
+        versionCount:
+          type: integer
+          description: The total version count of the email for which the violation was reported.
+        lastUpdated:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the email violation was last reported.
+        datatypeCount:
+          type: integer
+          description: The total count of the sensitive data type(s) using which the violation was reported.
+        version:
+          type: integer
+          description: The exact version of the email for which the violation was reported.
+        resourceID:
+          type: integer
+          description: The unique ID of the device associated with the email for which violation was reported.
+        violationStatus:
+          type: string
+          example: Pending on user
+          description: The current violation status of the email, that is whether it is Pending on User or Pending on Admin.
+        severity:
+          type: string
+          example: Critical
+          description: The severity of the email violation, whether it critical or non-critical.
+    Datatype:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the sensitive data type.
+        name:
+          type: string
+          description: Name of the sensitive data type.
+        category:
+          type: string
+          description: Category of the sensitive data type.
+        description:
+          type: string
+          description: Description of the sensitive data type.
+        expressionType:
+          type: string
+          example: Keyword And
+          enum:
+          - Keyword And
+          - Keyword Or
+          - RegEx
+          description: Expression type of the Sensitive data type. Example - 'Keyword And', 'Keyword Or', 'RegEx'.
+        region:
+          type: string
+          example: Global
+          description: Region in which the data type is declared sensitive.
+        isCustom:
+          type: boolean
+          description: Flag to determine if it is a custom data type.
+        query:
+          type: array
+          items:
+            type: string
+          description: Query run to identify the sensitive data type.
+    GetSetingsResponse:
+      type: object
+      properties:
+        isAutoResolveViolations:
+          type: boolean
+          description: Flag describing whether auto resolution of violations is enabled or not.
+        daysToResolveNonCriticalViolations:
+          type: integer
+          description: The number of days after which non critical violations will be auto resolved.
+        daysToResolveCriticalViolations:
+          type: integer
+          description: The number of days after which critical violations will be auto resolved.
+        isArchiveScan:
+          type: boolean
+          description: Flag describing whether archive files will be scanned for generating violations.
+        isAutoArchiveResolvedViolations:
+          type: boolean
+          description: Flag describing whether resolved violations will be automatically archived or not.
+        daysToResolveArchivedViolations:
+          type: integer
+          description: The number of days after which archived violations will be automatically resolved.
+    PolicyTemplateListResponse:
+      type: object
+      properties:
+        policyTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTemplate'
+          description: List of policy templates.
+    PolicyTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the policy template.
+        name:
+          type: string
+          description: The name of the policy template.
+        createdBy:
+          type: integer
+          description: The unique ID of the administrator who created the policy template.
+        description:
+          type: string
+          description: The description of the policy template.
+        includedMimetypes:
+          type: array
+          items:
+            type: string
+          description: The list of MIME type categories in the SDG policy template.
+        region:
+          type: string
+          description: The region associated with the SDG policy template.
+        isCustom:
+          type: boolean
+          description: Flag that determines whether SDG policy template is custom or not.
+        lastUpdated:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the policy template was last updated.
+        attachedDatatype:
+          type: array
+          items:
+            type: integer
+          description: The unique IDs of the attached sensitive data types in the policy template.
+    PolicyListResponse:
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+          description: List of policies.
+    EmailViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailViolation'
+          description: List of email violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    FileViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileViolation'
+          description: List of file violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    FileViolation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the file violation.
+          example: 1
+        resourceParentID:
+          type: integer
+          description: The unique User ID of the user for which the file violation is reported.
+          example: 2
+        violatedPolicies:
+          type: array
+          items:
+            type: integer
+          description: ID of the Sensitive Data Governance policy(s) based on which the violation was reported.
+          example:
+          - 1
+          - 2
+          - 3
+        violatedDatatypes:
+          type: array
+          items:
+            type: integer
+          description: List of ID(s) of the sensitive data type using which the violation was reported.
+          example:
+          - 52
+        versionCount:
+          type: integer
+          description: The total number of versions of the file which is reported as a violation.
+          example: 1
+        lastUpdated:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the file violation was last reported.
+        datatypeCount:
+          type: integer
+          description: The total count of the sensitive data type(s) using which the violation was reported.
+          example: 1
+        version:
+          type: integer
+          description: The exact file version of the file for which the violation is reported.
+          example: 16
+        resourceID:
+          type: integer
+          description: The unique ID of the device associated with the file for which violation was reported.
+          example: 1000001
+        violationStatus:
+          type: string
+          example: Pending on user
+          description: The current violation status of the file, that is whether it is Pending on User or Pending on Admin.
+        violatedFilePath:
+          type: string
+          description: The absolute path of the file for which violation was reported.
+        mimetype:
+          type: string
+          example: text/plain
+          description: Mimetype of the file against which the violation was reported.
+        severity:
+          type: string
+          example: Critical
+          description: The severity of the file violation, whether it critical or non-critical.
+        username:
+          type: string
+          example: Username
+          description: The name of the user for whom the violation is reported.
+        deviceName:
+          type: string
+          example: DDSPL2291
+          description: The name of the device on which the violation is reported.
+        fileName:
+          type: string
+          example: aadhar.txt
+          description: The name of the file in which the violation is reported.
+        violatedPoliciesName:
+          type: array
+          items:
+            type: string
+          example:
+          - aadhar_policy
+          - pan_policy
+          - credit_policy
+          description: The list of policy names for which violations are reported.
+        sensitiveDataFound:
+          type: string
+          example: aadhar_data
+          description: The type of sensitive data found.
+        resolutionDetails:
+          type: object
+          properties:
+            id:
+              type: integer
+            resolutionsText:
+              type: string
+          example:
+            '14': False Positive
+          description: The status of the resolution.
+        comments:
+          type: string
+          example: Additional Comment
+          description: The additional comment (if any) is attached to the violation.
+        violationReportedOn:
+          type: string
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the violation is reported.
+        resolvedOn:
+          type: string
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the violation is resolved.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

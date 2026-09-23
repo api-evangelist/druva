@@ -1,0 +1,785 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Volumes API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: AWS Volume specific API functions
+  name: Volumes
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/volumes:
+    get:
+      description: Returns the volumes of the servers associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsVolumesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns the volumes
+      tags:
+      - Volumes
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumes
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/volumes/{volume_id}:
+    get:
+      description: Returns the specific volume associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The volume id you want to run the request agains. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/volumes which will return all the volumes for the specified account
+        in: path
+        name: volume_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsVolumesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns the volume
+      tags:
+      - Volumes
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumesByVolumeId
+      x-operation-id-source: derived
+    put:
+      description: Update the specific volume associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The volume id you want to run the request agains. These can be found by the GET call /organizations/:organization_id/accounts/:account_id/volumes which will return all the volumes for the specified account
+        in: path
+        name: volume_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsVolumesByIdRequest'
+        description: This is a of volumes to be associated with an account. This can be found in the AWS Console
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsVolumesByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update the volume
+      tags:
+      - Volumes
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdVolumesByVolumeId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/volumes/ids:
+    get:
+      description: Returns the ids of the volumes associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsVolumesIdsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Returns the ids
+      tags:
+      - Volumes
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumesIds
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/volumes/tags/count:
+    post:
+      description: Get Volumes count by tag
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsVolumesTagsCountRequest'
+        description: Tag Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsVolumesTagsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Volumes count
+      tags:
+      - Volumes
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdVolumesTagsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/volumes/tags/keys:
+    get:
+      description: Returns the tags keys of the volumes associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsVolumesTagsKeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return the tag keys
+      tags:
+      - Volumes
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumesTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/volumes/tags/keys/{key}/values:
+    get:
+      description: Return tag values by key
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsVolumesTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return tag values
+      tags:
+      - Volumes
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumesTagsKeysByKeyValues
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsVolumesIdsResponse:
+      properties:
+        AccountId:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+        Type:
+          type: string
+        VolumeId:
+          type: string
+      type: object
+    PutOrganizationsAccountsVolumesByIdResponse:
+      type: object
+    GetOrganizationsAccountsVolumesTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsVolumesByIdResponse:
+      properties:
+        __AccountId:
+          type: string
+        __OrganizationId:
+          type: string
+        Attachments:
+          items:
+            properties:
+              AttachTime:
+                format: date-time
+                type: string
+              DeleteOnTermination:
+                type: boolean
+              Device:
+                type: string
+              InstanceId:
+                type: string
+              State:
+                type: string
+              VolumeId:
+                type: string
+            type: object
+          type: array
+        AvailabilityZone:
+          type: string
+        CreateTime:
+          format: date-time
+          type: string
+        Encrypted:
+          type: boolean
+        Id:
+          type: string
+        Iops:
+          type: integer
+        KmsKeyId:
+          type: string
+        ObjectType:
+          type: string
+        postDate:
+          format: date-time
+          type: string
+        Region:
+          type: string
+        Size:
+          type: integer
+        SnapshotId:
+          type: string
+        Source:
+          type: string
+        State:
+          type: string
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+        TagStrings:
+          items:
+            properties:
+              Combined:
+                type: string
+            type: object
+          type: array
+        Type:
+          type: string
+        VolumeId:
+          type: string
+        VolumeType:
+          type: string
+      type: object
+    GetOrganizationsAccountsVolumesResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: integer
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                __OrganizationId:
+                  type: string
+                Attachments:
+                  items:
+                    properties:
+                      AttachTime:
+                        format: date-time
+                        type: string
+                      DeleteOnTermination:
+                        type: boolean
+                      Device:
+                        type: string
+                      InstanceId:
+                        type: string
+                      State:
+                        type: string
+                      VolumeId:
+                        type: string
+                    type: object
+                  type: array
+                AvailabilityZone:
+                  type: string
+                CreateTime:
+                  format: date-time
+                  type: string
+                Encrypted:
+                  type: boolean
+                Id:
+                  type: string
+                Iops:
+                  type: integer
+                ObjectType:
+                  type: string
+                postDate:
+                  format: date-time
+                  type: string
+                Region:
+                  type: string
+                Size:
+                  type: integer
+                SnapshotId:
+                  type: string
+                Source:
+                  type: string
+                State:
+                  type: string
+                Tags:
+                  items:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  type: array
+                TagStrings:
+                  items:
+                    properties:
+                      Combined:
+                        type: string
+                    type: object
+                  type: array
+                Type:
+                  type: string
+                VolumeId:
+                  type: string
+                VolumeType:
+                  type: string
+              type: object
+            _type:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsAccountsVolumesByIdRequest:
+      properties:
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsVolumesTagsCountResponse:
+      properties:
+        hits:
+          properties:
+            hits:
+              items:
+                properties:
+                  _id:
+                    type: string
+                  _index:
+                    type: string
+                  _routing:
+                    type: string
+                  _score:
+                    type: number
+                  _source:
+                    properties:
+                      __AccountId:
+                        type: string
+                      __OrganizationId:
+                        type: string
+                      Attachments:
+                        items:
+                          properties:
+                            AttachTime:
+                              format: date-time
+                              type: string
+                            DeleteOnTermination:
+                              type: boolean
+                            Device:
+                              type: string
+                            InstanceId:
+                              type: string
+                            State:
+                              type: string
+                            VolumeId:
+                              type: string
+                          type: object
+                        type: array
+                      AvailabilityZone:
+                        type: string
+                      CreateTime:
+                        format: date-time
+                        type: string
+                      Encrypted:
+                        type: boolean
+                      Id:
+                        type: string
+                      Iops:
+                        type: integer
+                      MultiAttachEnabled:
+                        type: boolean
+                      ObjectType:
+                        type: string
+                      postDate:
+                        format: date-time
+                        type: string
+                      Region:
+                        type: string
+                      Size:
+                        type: integer
+                      SnapshotId:
+                        type: string
+                      Source:
+                        type: string
+                      State:
+                        type: string
+                      Tags:
+                        items:
+                          properties:
+                            Key:
+                              type: string
+                            Value:
+                              type: string
+                          type: object
+                        type: array
+                      TagStrings:
+                        items:
+                          properties:
+                            Combined:
+                              type: string
+                          type: object
+                        type: array
+                      Type:
+                        type: string
+                      VolumeId:
+                        type: string
+                      VolumeType:
+                        type: string
+                    type: object
+                  _type:
+                    type: string
+                type: object
+              type: array
+            total:
+              type: integer
+          type: object
+      type: object
+    PostOrganizationsAccountsVolumesTagsCountRequest:
+      properties:
+        account_ids:
+          items:
+            type: string
+          type: array
+        all:
+          type: boolean
+        Tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsVolumesTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

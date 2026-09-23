@@ -1,0 +1,298 @@
+openapi: 3.2.0
+info:
+  version: '3.0'
+  title: Enterprise Workloads Audit Trail API
+servers:
+- url: //apis.druva.com/phoenix
+tags:
+- name: Audit Trail
+paths:
+  /audittrail/v1/orgs/{OrgID}/reports/list:
+    get:
+      description: Returns audit trail based on the specified filters.
+      tags:
+      - Audit Trail
+      summary: List audit trails
+      operationId: ListAuditTrailRequest
+      security:
+      - Bearer: []
+      parameters:
+      - description: Specify the organization ID of your organization. Set it to "0" to select all organizations. Get the ID of an organization using the 'List all organizations' API.
+        name: OrgID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - x-go-name: StartTime
+        description: Specify the date and time to filter jobs that were run during the specified timestamp. Specify the date and time in UTC format (YYYY-MM-DDTHH:MM:SSZ). The timestamp must be within six months from the current date. For example, if the current date is 2020-10-02, you can specify any date between 2020-04-03 to 2020-10-02.
+        name: fromTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: EndTime
+        description: Specify the date and time to filter jobs that were run until the specified timestamp. Specify the date and time in UTC format. The format is YYYY-MM-DDTHH:MM:SSZ.
+        name: toTime
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - x-go-name: ResourceType
+        description: Filter audit trails for specific resource type. For example, Files, MS-SQL, CloudCache, VMware, and so on. Specify multiple resource type values by separating them with commas.
+        name: resourceType
+        in: query
+        schema:
+          type: string
+          enum:
+          - Configuration
+          - Storage Config
+          - CloudCache
+          - File Server
+          - MS-SQL
+          - VMWare
+          - Disaster Recovery
+          - Device Config
+          - NAS
+          - Hyper-V
+          - Billing
+          - Snowball Edge
+          - Oracle
+      - x-go-name: EntityType
+        description: Filter audit trails for specific entity type. Specify multiple entity type values by separating them with commas.
+        name: entityType
+        in: query
+        schema:
+          type: string
+          enum:
+          - Content Rule
+          - Backup Policy
+          - Backup Set
+          - Admin Group
+          - Admin
+          - Cloud Cache
+          - Seeding
+          - Snowball Edge
+          - DR Proxy
+          - DR Plan
+          - AWS Account
+          - Admin Alert
+          - Admin Report
+          - Non Admin Alert
+          - Non Admin Report
+          - Server
+          - VMWare VM
+          - Backup Proxy
+          - Backup Proxy Pool
+          - VM Auto Config Rule
+          - vCenter ESXi
+          - NAS Device
+          - NAS Proxy
+          - NAS Share
+          - HyperV VM
+          - HyperV Host
+          - HyperV FLR Proxy
+          - Billing Cost Code
+          - Billing Global Cost Allocation Rate
+          - Password Setting
+          - Oraganization
+          - SSO Setting
+          - SQL Availability Group
+          - Backup Store
+          - All Organizations Admin Report
+          - All Organizations Non Admin Report
+          - Geo Fencing
+      - x-go-name: EntityName
+        description: Filter audit trails for specific entity name. Specify multiple entity name values by separating them with commas.
+        name: entityName
+        in: query
+        schema:
+          type: string
+      - x-go-name: Action
+        description: Filter audit trails for specific entity name on which the administrator has performed the action. Specify multiple entity name values by separating them with commas.
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - Update
+          - Create
+          - Delete
+          - Backup Now
+          - Restore
+          - Restore to Original
+          - Restore to Alternate
+          - Delete Snapshot
+          - Delete Cold Snapshot
+          - Defreeze
+          - Log Request
+          - Map
+          - Unmap
+          - Login
+          - Logout
+          - Reset Password
+          - Download Report
+          - Email Report
+          - Enable Backup
+          - Disable Backup
+          - Upgrade
+          - Reconfigure
+          - Re-register
+          - Configure
+          - Unconfigure
+          - Enable DR
+          - Disable DR
+          - Regenerate Token
+          - Decommission Cache
+          - Add Cache Volume
+          - Generate Token
+          - Delete AWS Account
+          - Edit DR Failover Setting
+          - Add VM to DR Plan
+          - Remove VM from DR Plan
+          - Generate SSO Token
+          - Edit SSO Configuration
+          - Add Non Admin Subscription
+          - Update Non Admin Subscription
+          - Delete Non Admin Subscription
+          - Refresh
+          - Trigger DR Failover
+          - Update Credentials
+          - Update DR Copy
+          - Acknowledge
+          - Edit SSO Settings
+          - Reconfigure VM(s) Administrative Group
+          - Reconfigure VM(s) Backup Proxy Pool
+          - Reconfigure VM(s) Proxy Pool
+          - Reconfigure VM(s) Backup Policy
+          - Remove Token
+          - Change Password
+          - Apply Rule(s)
+          - Change Backup Proxy Pool
+          - Ship Back
+          - Snowball Request
+          - Map to Cache
+          - Unmap from Cache
+          - Map for Seeding
+          - Unmap for Seeding
+          - Change Backup Method to RCT
+          - Disable Backup Store
+          - Create Cloud Administrator
+          - Create Organization Administrator
+          - Create Group Administrator
+          - Create Data Protection Officer
+          - Delete Cloud Administrator
+          - Delete Organization Administrator
+          - Delete Group Administrator
+          - Delete Data Protection Officer
+          - Cancel DR Job
+          - DR Failover
+      - x-go-name: AdminEmail
+        description: Filter audit trails for specific action performed by the administrator. For example, Create, Update, Delete, Login, Backup Now, and so on. Specify multiple action values by separating them with commas.
+        name: adminEmail
+        in: query
+        schema:
+          type: string
+      - x-go-name: PageToken
+        description: Specify the token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'.
+        name: pageToken
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAuditTrailResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: The request did not include an authentication token or the authentication token was expired.
+        '403':
+          description: Forbidden
+        '404':
+          description: The requested resource was not found.
+        '500':
+          description: The request was not processed due to an internal error in Cloud.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+    AuditResponse:
+      description: AuditResponse struct holds the response for ListAuditTrail api
+      type: object
+      properties:
+        action:
+          description: Action performed by the administrator.
+          type: string
+          x-go-name: Action
+        actionTime:
+          description: The time of the action.
+          type: string
+          x-go-name: ActionTime
+        adminEmail:
+          description: Email of the administrator who performed the action.
+          type: string
+          x-go-name: AdminEmail
+        entityName:
+          description: Entity for which the action is performed.
+          type: string
+          x-go-name: EntityName
+        entityType:
+          description: Type of the entity.
+          type: string
+          x-go-name: EntityType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrganizationName
+        resourceType:
+          description: Type of the resource.
+          type: string
+          x-go-name: ResourceType
+      x-go-package: phoenix/audittrail/report/spec
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    ListAuditTrailResponse:
+      description: ListAuditTrailResponse is the response schema for ListAuditTrail
+      type: object
+      properties:
+        audits:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditResponse'
+          x-go-name: Audits
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/audittrail/report/spec
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-explorer-enabled: true

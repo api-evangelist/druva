@@ -1,0 +1,2011 @@
+openapi: 3.2.0
+info:
+  title: Druva Reports API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Reports across 3 of this provider''s published API definitions: druva-cloudranger-openapi-original.json, druva-msp-openapi-original.json, druva-platform-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.cloudranger.com/202004
+- url: https://apis.druva.com/
+- url: https://apis.druva.com/platform
+tags:
+- name: Reports
+paths:
+  /organizations/{organization_id}/reports:
+    post:
+      description: Generate a CloudRanger report. This will initiate a report. To check if the report has finished generating perform a GET call using the report_id returned in the response from this request and check if the status is 'complete'.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsReportsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsReportsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Generate a CloudRanger report
+      tags:
+      - Reports
+      operationId: postOrganizationsByOrganizationIdReports
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/reports/{report_id}:
+    get:
+      description: Returns information about a generated CloudRanger report. This route can be used to check the status of a newly generated Report
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The report identifier which can be used to return information about a report which has been generated within your organization. You can get all report_ids by using the GET call /organizations/:organization_id/reports which will return all of the report which have been generated within your organization
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsReportsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get information for a generated CloudRanger report
+      tags:
+      - Reports
+      operationId: getOrganizationsByOrganizationIdReportsByReportId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /organizations/{organization_id}/reports/{report_id}/download:
+    get:
+      description: Returns an AWS S3 signed url for the generated CloudRanger report. This url will expire after one week. As it takes some time to generate a report it is recommended to poll this route '/organizations/{organization_id}/reports/{report_id}' periodically until the status of the report is complete. Then this download route can be used to get the signed url
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: The report identifier which can be used to return information about a report which has been generated within your organization. You can get all report_ids by using the GET call /organizations/:organization_id/reports which will return all of the report which have been generated within your organization
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+      - description: format
+        in: query
+        name: format
+        required: true
+        schema:
+          enum:
+          - pdf
+          - csv
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsReportsDownloadResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get S3 signed url in order to download the CloudRanger report file
+      tags:
+      - Reports
+      operationId: getOrganizationsByOrganizationIdReportsByReportIdDownload
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.cloudranger.com/202004
+  /msp/reporting/v2/reports/mspCommitAndBalance:
+    post:
+      tags:
+      - Reports
+      summary: Get MSP Commit and Balance Report
+      description: Returns a detailed report on consumption units commitment, consumption, and balance for the MSP account.
+      operationId: GetMspCommitAndBalanceReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Specify the desired page size or filters to be applied to generate the MSP commit and balance report.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMspCommitAndBalanceRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMspCommitAndBalanceResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v2/reports/mspGlobalUsage:
+    post:
+      tags:
+      - Reports
+      summary: Get Global Usage Report
+      description: '⚠ **Warning**: This API version will be deprecated on August 28, 2026.
+
+        Upgrade to v3 API now to experience enhanced functionality and performance.
+
+        Returns a detailed report on consumption units usage across all customers and products.'
+      operationId: GetGlobalUsageReport
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Specify the desired page size or filters to be applied to generate the global usage report.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetGlobalUsageRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGlobalUsageResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v2/reports/consumptionItemized:
+    post:
+      tags:
+      - Reports
+      summary: Get Itemized Tenant Consumption Report v2.0
+      description: '⚠ **Warning**: This API version will be deprecated on August 28, 2026.
+
+        Upgrade to v3 API now to experience enhanced functionality and performance.
+
+        Returns a detailed daily report on consumption units consumed by MSP tenants.'
+      operationId: GetTenantConsumptionV2ItemizedV2
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the desired page size or filters to be applied to generate a detailed report of tenant consumption. \n :fa-info-circle: Sorting is currently not available for columns."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTenantItemizedReportV2Request'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantItemizedReportV2Response'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v2/reports/quotaItemized:
+    post:
+      tags:
+      - Reports
+      summary: Get Itemized Tenant Quota Report v2.0
+      description: '⚠ **Warning**: This API version will be deprecated on August 28, 2026.
+
+        Upgrade to v3 API now to experience enhanced functionality and performance.
+
+        Returns a detailed, daily, report on the quota usage by MSP tenants. It displays consumption based on the currently active quota.
+
+        If there is no active quota defined, the report will show consumption from the last active quota.
+
+        If the quota that needs to be reported is set to 0, it will be excluded from the report.'
+      operationId: GetTenantQuotaV2ItemizedV2
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the desired page size or filters to be applied to generate a report on the quota usage by MSP tenants. \n :fa-info-circle: Sorting is currently not available for columns."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTenantItemizedReportV2Request'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantItemizedReportV2Response'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v3/reports/mspGlobalUsage:
+    post:
+      tags:
+      - Reports
+      summary: Get Global Usage Report v2.0
+      description: Returns a detailed report on consumption units usage across all customers and products.
+      operationId: GetGlobalUsageReportV3
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Specify the page size and filters to generate the global usage report.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetGlobalUsageRequestV3'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGlobalUsageResponseV3'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v3/reports/consumptionItemized:
+    post:
+      tags:
+      - Reports
+      summary: Get Itemized Tenant Consumption Report v2.0
+      description: Returns a detailed daily report on consumption units consumed by MSP tenants.
+      operationId: GetTenantConsumptionV3Itemized
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the page size and filters for the tenant consumption report. \n :fa-info-circle: Column sorting is currently unavailable."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTenantItemizedReportV3Request'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantItemizedReportV3Response'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /msp/reporting/v3/reports/quotaItemized:
+    post:
+      tags:
+      - Reports
+      summary: Get Itemized Tenant Quota Report v2.0
+      description: 'Returns a detailed daily report on MSP tenant quota usage based on the currently active quota.
+
+        If no active quota exists, the report uses the last active quota.
+
+        Quotas set to 0 are excluded.'
+      operationId: GetTenantQuotaV3Itemized
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: "Specify the page size and filters for the MSP tenant quota usage report. \n :fa-info-circle: Column sorting is currently unavailable."
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTenantItemizedReportV3Request'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantQuotaItemizedReportV3Response'
+        '400':
+          description: Bad Request
+          content: {}
+        '401':
+          description: The request did not include an authentication token or an expired authentication token was supplied.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/
+  /reporting/v1/reports:
+    get:
+      tags:
+      - Reports
+      summary: List Reports
+      description: Returns the list of accessible reports for provided list of productIDs.
+      operationId: GetReportsListRequest
+      parameters:
+      - name: productIDs
+        in: query
+        description: Provide comma-separated Product IDs. Possible values are 8193 - Endpoints, 8196 - Salesforce, 8197 - Data Governance, 12289 - Enterprise Workloads, 36880 - Cyber Resilience.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          x-go-name: ProductIDs
+        x-go-name: ProductIDs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReportsListResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError_2'
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/platform
+  /reporting/{version}/reports/{reportID}:
+    post:
+      tags:
+      - Reports
+      summary: Get Report
+      description: Returns the selected report. Use the report ID field to specify the report that you want to fetch. By default the report provides the data for last 24 hours if no date/time filters are selected. For more information, see guides on the Reports API.
+      operationId: GetReportDataRequest
+      parameters:
+      - name: reportID
+        in: path
+        description: Unique ID of report.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - dgDataProtectionRisk
+          - dgRollbackActions
+          - dgUnusualDataActivityAlerts
+          - dgDataAccessEvents
+          - dgAdminLoginEvents
+          - dgQuarantineResources
+          - dgMaliciousScanJob
+          - dgCuratedSnapshots
+          - dgeDiscoveryDownloadJobsReport
+          - dgGlobalCustodianReport
+          - dgNonCompliantFileReport
+          - dgArchivedNonCompliantFileReport
+          - dgNonCompliantEmailReport
+          - dgArchivedNonCompliantEmailReport
+          - dgDefensibleDeleteForFilesReport
+          - dgDefensibleDeleteForEmailsReport
+          - epAlert
+          - epDeletedDevice
+          - epInactiveDevices
+          - epLastBackupStatus
+          - epLicenseUsage
+          - epPreservedUsersDatasources
+          - epRestoreActivity
+          - epSharedDevices
+          - epUpgradeActivity
+          - epUserProvisioning
+          - epUserRollout
+          - epUsers
+          - epStorageConsumption
+          - ewAdminAuditTrails
+          - ewAlertHistory
+          - ewBackupActivity
+          - ewDisasterRecoveryFailbackActivity
+          - ewDisasterRecoveryFailoverActivity
+          - ewDisasterRecoveryReplicationActivity
+          - ewResourceStatus
+          - ewRestoreActivity
+          - ewStorageConsumptionbyBackupSets
+          - m365SharePointSiteDiscovery
+          - m365TeamsDiscovery
+          - m365GroupsDiscovery
+          - m365Alerts
+          - m365LicenseUsage
+          - m365PreservedUsersDatasources
+          - m365StorageConsumption
+          - m365UserCountAndStatus
+          - m365UserLastBackupStatus
+          - m365UserProvisioning
+          - m365UserRestoreActivity
+          - m365UserWorkload
+          - m365SharePointBackupActivity
+          - m365SharePointRestoreActivity
+          - m365TeamsBackupActivity
+          - m365TeamsRestoreActivity
+          - m365GroupsBackupActivity
+          - m365GroupsRestoreActivity
+          - m365PublicFolderBackupActivity
+          - m365PublicFolderRestoreActivity
+          - googleAlerts
+          - googleLicenseUsage
+          - googlePreservedUsersDatasources
+          - googleStorageConsumption
+          - googleUserCountAndStatus
+          - googleUserLastBackupStatus
+          - googleUserProvisioning
+          - googleUserRestoreActivity
+          - googleUserWorkload
+          - googleSharedDriveBackupActivity
+          - googleSharedDriveRestoreActivity
+          - sfdcArchivalActivity
+          - sfdcArchivalRestoreActivity
+          - sfdcBackupActivity
+          - sfdcDataRestoreActivity
+          - sfdcSandboxSeedingActivity
+      - name: version
+        in: path
+        description: 'Version of report.
+
+          <br>Note: With API enhancements in V2, you may see additional fields in the response over time. Avoid enforcing overly strict schema enforcement to ensure smooth integration.'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          default: v2
+          enum:
+          - v1
+          - v2
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports_reportID_body'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError_2'
+      x-codegen-request-body-name: requestBody
+      security:
+      - Bearer: []
+    servers:
+    - url: https://apis.druva.com/platform
+components:
+  schemas:
+    PostOrganizationsReportsRequest:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+            type: object
+          type: array
+        all_accounts:
+          default: false
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        format:
+          enum:
+          - pdf
+          - csv
+          type: string
+        parameters:
+          properties:
+            backup_policies:
+              properties:
+                all:
+                  default: false
+                  type: boolean
+                values:
+                  default: []
+                  items:
+                    type: integer
+                  type: array
+              type: object
+            date_range:
+              properties:
+                start_time:
+                  format: date-time
+                  type: string
+                stop_time:
+                  format: date-time
+                  type: string
+              type: object
+            dr_plans:
+              properties:
+                all:
+                  default: false
+                  type: boolean
+                values:
+                  default: []
+                  items:
+                    type: integer
+                  type: array
+              type: object
+            schedules:
+              properties:
+                all:
+                  default: false
+                  type: boolean
+                values:
+                  default: []
+                  items:
+                    type: integer
+                  type: array
+              type: object
+          type: object
+        report_template_id:
+          type: string
+        s3_bucket:
+          type: string
+        s3_key:
+          type: string
+        size_in_bytes:
+          type: integer
+        status:
+          type: string
+        timezone:
+          type: string
+      type: object
+    PostOrganizationsReportsResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  report_id:
+                    type: integer
+                type: object
+              report_id:
+                type: integer
+            type: object
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        format:
+          type: string
+        id:
+          type: integer
+        organization_id:
+          type: string
+        parameters:
+          properties:
+            date_range:
+              properties:
+                start_time:
+                  format: date-time
+                  type: string
+                stop_time:
+                  format: date-time
+                  type: string
+              type: object
+            dr_plans:
+              properties:
+                values:
+                  items:
+                    type: integer
+                  type: array
+              type: object
+          type: object
+        report_template_id:
+          type: string
+        s3_bucket:
+          type: string
+        s3_key:
+          type: string
+        size_in_bytes:
+          type: integer
+        status:
+          type: string
+        timezone:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsReportsDownloadResponse:
+      properties:
+        fileUuid:
+          type: string
+        signedUrl:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsReportsByIdResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              report_id:
+                type: integer
+            type: object
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        format:
+          type: string
+        id:
+          type: integer
+        organization:
+          properties:
+            avatar_url:
+              type: string
+            aws_marketplace_customer_id:
+              type: string
+            billing_id:
+              type: integer
+            created_at:
+              format: date-time
+              type: string
+            current_spend:
+              type: string
+            customer_id:
+              type: string
+            deleted_at:
+              type: string
+            has_principal_logged_in:
+              type: boolean
+            id:
+              type: string
+            is_active:
+              type: boolean
+            is_trial:
+              type: boolean
+            mfa_enabled:
+              type: boolean
+            name:
+              type: string
+            new_adr_enabled:
+              type: boolean
+            principal_email:
+              type: string
+            recurly_account_id:
+              type: string
+            recurly_plan_code:
+              type: string
+            sf_account_id:
+              type: string
+            subscription_began_at:
+              type: string
+            subscription_expires_at:
+              type: string
+            trial_expires_at:
+              format: date-time
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        organization_id:
+          type: string
+        parameters:
+          properties:
+            date_range:
+              properties:
+                start_time:
+                  format: date-time
+                  type: string
+                stop_time:
+                  format: date-time
+                  type: string
+              type: object
+            dr_plans:
+              properties:
+                values:
+                  items:
+                    type: integer
+                  type: array
+              type: object
+          type: object
+        report_template:
+          properties:
+            description:
+              type: string
+            fields:
+              items:
+                type: string
+              type: array
+            id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+          type: object
+        report_template_id:
+          type: string
+        s3_bucket:
+          type: string
+        s3_key:
+          type: string
+        size_in_bytes:
+          type: integer
+        status:
+          type: string
+        status_reason:
+          type: string
+        subscription_id:
+          type: integer
+        timezone:
+          type: string
+      type: object
+    GetTenantItemizedReportV2Response:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains itemized details about consumption units usage.
+          example:
+          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            accountName: Example customer
+            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba4
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModuleId: 3
+            productModuleName: Endpoints
+            editionName: Elite
+            tenantType: Commercial
+            date: '2023-01-11T00:00:00.000Z'
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            usageDescription: Sensitive Data Governance
+            usageAmount: 1
+            usageUnit: Users
+            cuConsumed: 1.5
+          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            accountName: Example customer
+            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba3
+            productId: 1
+            productName: Enterprise Workloads
+            productModuleId: 1
+            productModule: Enterprise Workloads
+            editionName: Elite
+            tenantType: Commercial
+            date: '2023-01-11T00:00:00.000Z'
+            servicePlanName: Example service plan
+            usageDescription: Accelerated Ransomware Recovery
+            usageAmount: 178
+            usageUnit: Bytes
+            cuConsumed: 94
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV2'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttribute'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    GetMspCommitAndBalanceRequest:
+      description: Specify the details for getting MSP commit and balance report.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForMspCommitAndBalance'
+    GetTenantItemizedReportV3Response:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains itemized details about consumption units usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV3'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeV3'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    GetTenantQuotaItemizedReportV3Response:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains itemized details about quota usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV3'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeV3'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    FilterTypeV3:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeV3'
+    FilterAttributeForGlobalUsage:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - cuConsumption
+          - customerName
+          - edition
+          - productModule
+          - servicePlan
+          - tenantType
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: Customer_51
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    GetTenantItemizedReportV3Request:
+      description: Specify the details for getting itemized report details.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeV3'
+    GlobalUsageItemV3:
+      type: object
+      description: Global usage item details.
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Customer_51
+        cuConsumption:
+          type: number
+          description: The consumption units consumed.
+          format: double
+          example: 279.48909
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Customer_5
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 8ab1417529fa5a5c8d244db4554a163b05418b0bc8564abd47612332a9fd2d66
+        edition:
+          type: string
+          description: The product edition.
+          example: enterprise
+        mspGlobalId:
+          type: string
+          description: The global ID of the Managed Service Provider (MSP).
+          example: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+        mspName:
+          type: string
+          description: The organization name of the Managed Service Provider (MSP).
+          example: Example MSP Organization
+        productModule:
+          type: string
+          description: The name of the product module.
+          example: Google Workspace
+        servicePlan:
+          type: string
+          description: The name of the service plan.
+          example: ins_ent_plain
+        tenantType:
+          type: string
+          description: The type of tenant (Commercial/Evaluation).
+          example: Commercial
+    GetTenantItemizedReportV2Request:
+      description: Specify the details for getting itemized report details.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterType'
+    FilterType:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttribute'
+    FilterAttribute:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - customerGlobalId
+          - accountName
+          - tenantId
+          - productId
+          - productModuleId
+          - date
+          - editionName
+          - servicePlanId
+          - usageDescription
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    GetGlobalUsageRequestV3:
+      description: Specify the details required to retrieve the global usage report.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForGlobalUsageV3'
+    MspCommitAndBalanceItem:
+      type: object
+      properties:
+        cuCommit:
+          type:
+          - number
+          - 'null'
+          description: The consumption unit commitment for the period.
+          format: double
+          example: 1000
+        cuConsumption:
+          type: number
+          description: The consumption units consumed during the period.
+          format: double
+          example: 1.10326
+        cuEndingBalance:
+          type: number
+          description: The ending balance of consumption units.
+          format: double
+          example: 653.28342
+        cuStartingBalance:
+          type: number
+          description: The starting balance of consumption units.
+          format: double
+          example: 654.1408
+        date:
+          type: string
+          description: The date for this record.
+          format: date-time
+          example: '2024-12-22T00:00:00.000Z'
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 380cee0972ed3f2286c03749ffc235d0cc52250121c2d3fac6c6b4f0b14d7875
+      description: MSP commit and balance item details.
+    FilterAttributeForGlobalUsageV3:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - cuConsumption
+          - customerName
+          - edition
+          - mspGlobalId
+          - mspName
+          - productModule
+          - servicePlan
+          - tenantType
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: Customer_51
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    TenantDataItemizedV3:
+      type: object
+      description: Tenant consumption itemized records.
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        mspGlobalId:
+          type: string
+          description: Global ID of the MSP that owns the consumption data.
+          example: MSP:968cf837-0e5e-4645-a510-82b8d4b9e98d
+        mspName:
+          type: string
+          description: Organization name of the MSP that owns the consumption data.
+          example: Example MSP Organization
+        accountName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        tenantId:
+          type: string
+          description: Unique id of the tenant. This is the 'id' field defined in GET Tenant API.
+          example: 0001f138-0c37-4980-b3f2-a3342f201ba3
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints.
+          example: 1
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product.
+          example: Enterprise Workloads
+        productModuleId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace
+          example: 1
+        productModuleName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: The name of the product module.
+          example: Enterprise Workloads
+        editionName:
+          type: string
+          enum:
+          - Business
+          - Enterprise
+          - Elite
+          description: The name of the edition.
+          example: Business
+        tenantType:
+          type: string
+          enum:
+          - Commercial
+          - Evaluation
+          description: Type of the tenant.
+          example: Commercial
+        date:
+          type: string
+          description: Date indicates the date of usage. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2022-01-11T00:00:00.000Z'
+        servicePlanId:
+          type: integer
+          description: The unique ID of the MSP service plan assigned to the tenant.
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant.
+          example: Example service plan
+        usageDescription:
+          type: string
+          description: Usage description indicates the type of consumption e.g. 'Active Users', 'Sensitive Data Governance', 'Accelerated Ransomware Recovery' etc.
+          example: Accelerated Ransomware Recovery
+        usageAmount:
+          type: number
+          format: double
+          description: Usage amount indicates usage for the usage type mentioned in 'usageDescription' field.
+          example: 1
+        usageUnit:
+          type: string
+          enum:
+          - Users
+          - Bytes
+          description: Usage unit defines unit of usage. It will be 'Bytes' for productId 1 and 'Users' for productId 2.
+          example: Bytes
+        cuConsumed:
+          type: number
+          description: The amount of consumption units consumed by tenant on given day.
+          format: double
+          example: 1.5
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 380cee0972ed3f2286c03749ffc235d0cc52250121c2d3fac6c6b4f0b14d7875
+    FilterTypeForGlobalUsage:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForGlobalUsage'
+    TenantDataItemizedV2:
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        mspGlobalId:
+          type: string
+          description: Unique ID of the MSP.
+          example: MSP:968cf837-0e5e-4645-a510-82b8d4b9e98d
+        accountName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        tenantId:
+          type: string
+          description: Unique id of the tenant. This is the 'id' field defined in GET Tenant API.
+          example: 0001f138-0c37-4980-b3f2-a3342f201ba3
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        productModuleId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          description: "The ID of the product module. This field will be updated in the future for addition of new product modules as and when applicable.\n 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace"
+          example: 1
+        productModuleName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        editionName:
+          type: string
+          enum:
+          - Business
+          - Enterprise
+          - Elite
+          description: The name of the edition.
+          example: Business
+        tenantType:
+          type: string
+          enum:
+          - Commercial
+          - Evaluation
+          description: Type of the tenant. Right now stats for only commercial customers are reported.
+          example: Commercial
+        date:
+          type: string
+          description: Date indicates the date of usage. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2022-01-11T00:00:00.000Z'
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        usageDescription:
+          type: string
+          description: "Usage description indicates the type of consumption e.g. 'Active Users', 'Sensitive Data Governance', 'Accelerated Ransomware Recovery' etc.\n New values may be added for this field when new feature support is added."
+          example: Accelerated Ransomware Recovery
+        usageAmount:
+          type: number
+          format: double
+          description: Usage amount indicates usage for the usage type mentioned in 'usageDescription' field.
+          example: 1
+        usageUnit:
+          type: string
+          enum:
+          - Users
+          - Bytes
+          description: Usage unit defines unit of usage. It will be 'Bytes' for productId 1 and 'Users' for productId 2.
+          example: Bytes
+        cuConsumed:
+          type: number
+          description: The amount of consumption units consumed by tenant on given day.
+          format: double
+          example: 1.5
+    GetGlobalUsageRequest:
+      description: Specify the details for getting global usage report.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForGlobalUsage'
+    GetGlobalUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains global usage details about consumption units usage across all customers and products.
+          items:
+            $ref: '#/components/schemas/GlobalUsageItem'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 5
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date-time
+          example: '2025-10-20T04:53:06Z'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: OTdjOGM1NTYtMWYyMC00ODBhLWIxNzUtODFmOWY5YzY0MGM3
+    FilterTypeForGlobalUsageV3:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
+    FilterAttributeForMspCommitAndBalance:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - cuCommit
+          - cuConsumption
+          - cuEndingBalance
+          - cuStartingBalance
+          - date
+          example: date
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: '2024-12-22T00:00:00.000Z'
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    FilterAttributeV3:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - customerGlobalId
+          - accountName
+          - tenantId
+          - productId
+          - productModuleId
+          - date
+          - editionName
+          - servicePlanId
+          - usageDescription
+          - mspGlobalId
+          - mspName
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetMspCommitAndBalanceResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains details about MSP consumption unit commitment, consumption, and balance.
+          items:
+            $ref: '#/components/schemas/MspCommitAndBalanceItem'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 5
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date-time
+          example: '2025-10-20T04:53:06Z'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: NjEzZGJiYTctNmU4Ni00OTc0LTkzNjUtYjE4ZWNmNjFkYTRk
+    GetGlobalUsageResponseV3:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains global usage details about consumption units usage across all customers and products. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
+          items:
+            $ref: '#/components/schemas/GlobalUsageItemV3'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 5
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForGlobalUsage'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date-time
+          example: '2025-10-20T04:53:06Z'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: OTdjOGM1NTYtMWYyMC00ODBhLWIxNzUtODFmOWY5YzY0MGM3
+    FilterTypeForMspCommitAndBalance:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
+    GlobalUsageItem:
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Customer_51
+        cuConsumption:
+          type: number
+          description: The consumption units consumed.
+          format: double
+          example: 279.48909
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Customer_5
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 8ab1417529fa5a5c8d244db4554a163b05418b0bc8564abd47612332a9fd2d66
+        edition:
+          type: string
+          description: The edition of the product.
+          example: enterprise
+        productModule:
+          type: string
+          description: The product module name.
+          example: Google Workspace
+        servicePlan:
+          type: string
+          description: The service plan name.
+          example: ins_ent_plain
+        tenantType:
+          type: string
+          description: The type of tenant (Commercial/Evaluation).
+          example: Commercial
+      description: Global usage item details.
+    Report:
+      title: Report ...
+      type: object
+      properties:
+        reportID:
+          type: string
+          description: The unique ID given for the report.
+          example: dgRollbackActions
+          x-go-name: ReportID
+        reportName:
+          type: string
+          description: The name of the report.
+          example: Rollback Actions Report
+          x-go-name: ReportName
+        reportDescription:
+          type: string
+          description: The description of the report.
+          example: Details of deleted, rolled back, and permanently deleted entities.
+          x-go-name: ReportDescription
+        productName:
+          type: string
+          description: The name of the associated product.
+          example: Cyber Resilience
+          x-go-name: ProductName
+        version:
+          type: string
+          description: The version supported for the report. Example - v1
+          example: v1
+          x-g-name: Version
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+    APIError_2:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
+    reportingversionreportsreportID_filters_filterBy:
+      type: object
+      properties:
+        fieldName:
+          type: string
+          description: Specify the name of the filter. TBD
+          example: deleteRequestID
+        operator:
+          type: string
+          description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTE (less-than-or-equal), GT (greater-than), GTE (greater-than-or-equal).
+          example: EQUAL
+          enum:
+          - EQUAL
+          - GT
+          - GTE
+          - LT
+          - LTE
+          - CONTAINS
+          - NOTEQUAL
+        value:
+          description: Specify the value of the filter applied to the report.
+          example: 11ef158d-929c-4841-ab83-0ca4179c1420
+          oneOf:
+          - type: string
+            description: string
+          - type: integer
+            description: integer
+          - type: array
+            description: array of strings
+            items:
+              type: string
+          - type: array
+            description: array of integers
+            items:
+              type: integer
+    GetReportsListResponse:
+      title: GetReportsListResponse ...
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+          x-go-name: Report
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+    reportingversionreportsreportID_filters:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+          default: 100
+        filterBy:
+          type: array
+          description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+          items:
+            $ref: '#/components/schemas/reportingversionreportsreportID_filters_filterBy'
+    ReportData:
+      title: ReportData ...
+      type: object
+      additionalProperties: true
+      description: The actual data of the report. For example, if you fetch an alert report, this object contains the data of an alert.
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+    reports_reportID_body:
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/reportingversionreportsreportID_filters'
+        pageToken:
+          type: string
+          description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+          example: ''
+    GetReportDataResponse:
+      title: GetReportDataResponse ...
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp until which report data is returned in the API. The time is in the UTC time zone.
+          format: date-time
+          x-go-name: LastSyncTimestamp
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+          x-go-name: NextPageToken
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+    BearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+x-refined-from:
+- druva-cloudranger-openapi-original.json
+- druva-msp-openapi-original.json
+- druva-platform-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

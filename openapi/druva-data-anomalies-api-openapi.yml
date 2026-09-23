@@ -1,0 +1,370 @@
+openapi: 3.2.0
+info:
+  description: View a list of the resources managed in Druva Cloud detected with Data Anomalies.
+  version: 3.0.0
+  title: Cyber Resilience Data Anomalies API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Data Anomalies
+  description: View a list of the resources managed in Druva Cloud detected with Data Anomalies.
+paths:
+  /uda/v1/stats/{workload}/resources/{resourceID}:
+    get:
+      tags:
+      - Data Anomalies
+      summary: List snapshot statistics
+      description: Returns the snapshot statistics for a resource for which the Data Anomalies alert is generated. It displays the statistics for the last 30 days.
+      security:
+      - Bearer: []
+      parameters:
+      - name: workload
+        in: path
+        description: Specify the workload for which you want to view the statistics.
+        required: true
+        schema:
+          type: string
+          enum:
+          - fileserver
+          - nas
+          - endpoints
+          - sharepoint
+          - onedrive
+          - vmware
+          - azurevm
+          - ec2
+          - ebsvolume
+      - name: resourceID
+        in: path
+        description: "The unique ID of the resource for which you want to list and view all the anomalous snapshots. \n  Get the ID of a device using the 'List all devices' API. \n  For data sources like File Server, NAS, VMware and so on, refer to the respective 'List all backup sets' API."
+        required: true
+        schema:
+          type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listResourceCverStats'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+      operationId: getUdaV1StatsByWorkloadResourcesByResourceID
+      x-operation-id-source: derived
+components:
+  schemas:
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1001
+          - RealizeUda-1001
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    listResourceCverStats:
+      type: object
+      properties:
+        orgID:
+          type: integer
+          description: The unique identifier of the Phoenix organization for the resource. Example - 101. Not applicable for Endpoints.
+          example: 101
+        resourceID:
+          type: integer
+          description: The unique identifier of the resource, a device or a backup set on which Data Anomalies is detected.
+          example: 101
+        resourceName:
+          type: string
+          description: Name of the resource on which Data Anomalies are detected. Example - Ernie Carter's Macbook.
+          example: Ernie Carter's Macbook
+        resourceParentName:
+          type: string
+          description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+          example: Ernie Carter
+        resourcePlatform:
+          type: string
+          description: The operating system of the resource. Example - linux. Not applicable ("NA") for FS/NAS.
+          example: linux
+        workload:
+          type: string
+          enum:
+          - endpoints
+          - fileserver
+          - nas
+          - vmware
+          - sharepoint
+          - onedrive
+          - azurevm
+          - ec2
+          - ebsvolume
+        resourceType:
+          type: string
+          description: "The type of the resource. A resource can be one of the following types -\n  - Endpoint\n  - File Server\n  - NAS\n  - VMware\n  - SharePoint\n  - OneDrive\n  - AzureVM\n  - EC2\n  - EBS Volume."
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - SharePoint
+          - OneDrive
+          - AzureVM
+          - EC2
+          - EBS Volume
+        totalAlerts:
+          type: integer
+          description: The total number of Data Anomalies alerts occurred in the last 30 days.
+        activeAlerts:
+          type: integer
+          description: The total number of Data Anomalies alerts on which no action has been taken for the past 30 days.
+        siteType:
+          type: string
+          description: Site type for Sharepoint sites.
+        siteUrl:
+          type: string
+          description: The URL of the SharePoint site.
+        resourceUrl:
+          type: string
+          description: The url that redirects to the product user interface (UI) of the resource.
+        payload:
+          type: object
+          description: Additional resource-specific information. Present for AzureVM, EC2, and EBS Volume workloads.
+          properties:
+            subscription:
+              type: string
+              description: Azure subscription name (AzureVM only).
+            region:
+              type: string
+              description: Region of the resource (AzureVM, EC2, EBS Volume).
+            resourceGroup:
+              type: string
+              description: Azure resource group name (AzureVM only).
+            csetPolicyMap:
+              type: object
+              description: This mapping associates integer cset IDs with their corresponding backup policy names (strings). It is specific to the EC2 and EBS Volume workloads.
+              additionalProperties:
+                type: string
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              alertTime:
+                type: string
+                description: The date and time on which the Data Anomalies alert was observed in the snapshot. Example - Nov 21 2019, 14:39'
+              alertTimestamp:
+                type: string
+                description: Date and time when the alert got generated in YYYY-MM-DD'T'hh:mm:ss'Z' format.
+              snapshotTime:
+                type: string
+                description: Date and time when the snapshot got created in YYYY-MM-DD'T'hh:mm:ss'Z' format.
+              isLogAvailable:
+                type: boolean
+                description: True, if activity logs are available for download.
+              unscannedDetails:
+                type: string
+                description: The reason for the Data Anomaly scan not being performed on the selected snapshot.
+              isQuarantined:
+                type: boolean
+                description: True, if the resource is quarantined; else, false.
+              snapsphotStatus:
+                type: integer
+                description: Provides details of the status of the snapshot - 0 for Unscanned, 1 for Scanned, and 2 for Impacted snapshots.
+              alertTypes:
+                type: array
+                items:
+                  type: string
+                  description: "The type of Data Anomalies alert for the snapshot. Value can be any of the following -\nCreation - A large number of files created in a short span \nModification - A large number of files edited or modified.\nDeletion - Several files got deleted from the snapshot.\nEncryption - Files encrypted and are inaccessible."
+              snapshotID:
+                type: string
+                description: The unique ID of the snapshot. Example - Mjk4OC1GcmkgTm92IDIyIDExOjEzOjU5IDIwMTk=
+                example: Mjk4OC1GcmkgTm92IDIyIDExOjEzOjU5IDIwMTk=
+              snapshotName:
+                type: string
+                description: Name of the snapshot for which the Data Anomalies alert occurred. Snapshot name is the date and the time on which it was created. Example - Nov 21 2019, 14:39
+                example: Nov 21 2019, 14:39.
+              snapshotSize:
+                type: string
+                description: Snapshot size, in bytes, for which the Data Anomalies alert was generated.
+              totalFiles:
+                type: integer
+                description: The total number of live files in the snapshot.
+              totalFilesImpacted:
+                type: integer
+                description: The total number of files created, deleted or modified in the snapshot.
+              alertMetadata:
+                type: object
+                properties:
+                  created:
+                    type: object
+                    properties:
+                      files:
+                        type: integer
+                        description: Number of files created.
+                      baseline:
+                        type: integer
+                        description: Baseline for creation for the selected snapshot.
+                      deviation:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+20%'.
+                      filePerChange:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+5%'.
+                      isAlert:
+                        type: boolean
+                        description: True, if there is a creation alert generated for the selected snapshot.
+                  updated:
+                    type: object
+                    properties:
+                      files:
+                        type: integer
+                        description: Number of files updated.
+                      baseline:
+                        type: integer
+                        description: Baseline for updation for the selected snapshot.
+                      deviation:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+20%'.
+                      filePerChange:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+5%'.
+                      isAlert:
+                        type: boolean
+                        description: True, if there is a modification alert generated for the selected snapshot.
+                  deleted:
+                    type: object
+                    properties:
+                      files:
+                        type: integer
+                        description: Number of files deleted.
+                      baseline:
+                        type: integer
+                        description: Baseline for deletion for the selected snapshot.
+                      deviation:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+20%'.
+                      filePerChange:
+                        type: string
+                        description: Percent deviation from baseline. The format is '+5%'.
+                      isAlert:
+                        type: boolean
+                        description: True, if there is a deletion alert generated for the selected snapshot.
+                  encrpted:
+                    type: object
+                    properties:
+                      files:
+                        type: integer
+                        description: The number of files encrypted. This field is displayed only when an encryption alert gets generated.
+                      baseline:
+                        type: integer
+                      deviation:
+                        type: string
+                      filePerChange:
+                        type: string
+                      isAlert:
+                        type: boolean
+                        description: True, if there is an encryption alert generated for the selected snapshot.
+              status:
+                type: string
+                description: 'Status of the Data Anomalies alert.
+
+                  Displays as Active if the Data Anomalies are detected on a snapshot.
+
+                  Displays as Resolved if an action is taken on the Data Anomalies.'
+              actionTaken:
+                type: string
+                description: "TThe action that was taken on the Data Anomalies alert. Value can be one of the following -\n  - Quarantined\n  - Ignored\n  - No Action"
+              csetID:
+                type: integer
+                description: This snapshot includes the cset ID, but only for EC2 and EBS Volume workloads.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: '20'
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \n  True - Is last page of results.\n  False - There are more results available. Use 'nextPageToken' value to get the next list of results."
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1002
+          - RealizeUda-1002
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

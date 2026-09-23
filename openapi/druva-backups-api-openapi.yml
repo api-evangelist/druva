@@ -1,0 +1,1822 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Backups API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Backups in your CloudRanger Account
+  name: Backups
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/backups:
+    get:
+      description: Get all backups for a specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: A list of object types you want to perform the request against.
+        in: query
+        name: types
+        required: true
+        schema:
+          enum:
+          - snapshot
+          - image
+          - rdsclustersnapshot
+          - rdssnapshot
+          - dynamodbbackup
+          type: string
+      - description: 'Filter object containing keys that can be one or more of [region, tags, types, hasbackuppolicy, hasschedule, resource_id, resource_name, accounts]. Values must be a an array of strings. EG: {"region": ["us-east-1"]}'
+        in: query
+        name: filter
+        required: true
+        schema:
+          default: '{"region": ["us-east-1"]}'
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      - description: The  you want to order the result set in.
+        in: query
+        name: order
+        required: true
+        schema:
+          enum:
+          - id
+          - type
+          - region
+          - hasbackuppolicy
+          - backupsizebytes
+          - BackupTime
+          - state.Name
+          type: string
+      - description: The direction you want to order the result set in.
+        in: query
+        name: direction
+        required: true
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBackupsResponse'
+          description: 200 response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Fetch Backups For Account
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBackups
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}:
+    put:
+      description: Updates a single backup.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsBackupsByIdRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsBackupsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Backup
+      tags:
+      - Backups
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/indexdataforbackup:
+    get:
+      description: Fetch FLS index data for given snapshot
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBackupsIndexdataforbackupResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Fetch FLS Index Data
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdIndexdataforbackup
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/instancerestore:
+    post:
+      description: Restore EC2 Instance from backup
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsInstancerestoreRequest'
+        description: Instance Restore Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsInstancerestoreResponse'
+          description: 200 response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Restore EC2 Instance
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdInstancerestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/rdsclusterrestore:
+    post:
+      description: Restore an RDS DB cluster from a given cluster snapshot
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRdsclusterrestoreRequest'
+        description: RDS Cluster Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRdsclusterrestoreResponse'
+          description: 200 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Restore RDS Cluster
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdRdsclusterrestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/rdsrestore:
+    post:
+      description: Restore an RDS Snapshot to an RDS Instance
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRdsrestoreRequest'
+        description: RDS Restore Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRdsrestoreResponse'
+          description: 200 response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Restore RDS Snapshot To Instance
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdRdsrestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/restore:
+    post:
+      description: Initiates a restore using the backup_id provided
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. Example of the backup ID is {accountID__backup_id_btdc} for restoring an airgapped backup and {accountID__backup_id} for restoring a non-airgapped backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRestoreRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsRdsrestoreResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Restore a backup
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdRestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/{backup_id}/volumerestore:
+    post:
+      description: Restore a volume from a given snapshot id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique ID of an AWS backup. CloudRanger will use these through the application to locate and associate backups with policies and resources for the purpose of restore and retention.
+        in: path
+        name: backup_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsVolumerestoreRequest'
+        description: Volume Restore Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsVolumerestoreResponse'
+          description: 200 response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 422 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Restore Volume From Snapshot
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsByBackupIdVolumerestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/archive:
+    post:
+      description: Updates the backup attributes of the given backup id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PostOrganizationsAccountsBackupsArchiveRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 200 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update backup attributes
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsArchive
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/archive_check:
+    post:
+      description: Check the specified backups for S3 Archive status.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsArchive_checkRequest'
+        description: Resources Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsArchive_checkResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: S3 Archive check
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsArchiveCheck
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/count:
+    get:
+      description: Retreive a count of all backups for a specific account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBackupsCountResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Fetch Account Backup Count
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBackupsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/ebsarchive:
+    post:
+      description: Manual move EBS snapshots to archive (POLAR archive)
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/PostOrganizationsAccountsBackupsArchiveRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 200 response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 400 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Archive EBS snapshots
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsEbsarchive
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/filerestore:
+    post:
+      description: Create a new File Level Restore instance with specified snapshots attached as volumes.
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsBackupsFilerestoreRequest'
+        description: Restore Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsBackupsFilerestoreResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create File-Level Restore
+      tags:
+      - Backups
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdBackupsFilerestore
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/tags/keys:
+    get:
+      description: Returns the tag keys for backups created by the given account of the specific organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBackupsTagsKeysResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return Tag Keys For Account
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBackupsTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/backups/tags/keys/{key}/values:
+    get:
+      description: Return tag values by key
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsBackupsTagsKeysValuesResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return Tag Values By Keys
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdBackupsTagsKeysByKeyValues
+      x-operation-id-source: derived
+  /organizations/{organization_id}/backups/tags/keys:
+    get:
+      description: Returns tag keys for specified organisation
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsBackupsTagsKeysResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return Tag Keys By Org
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdBackupsTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/backups/tags/keys/{key}/values:
+    get:
+      description: Return backup tags values by keys
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsBackupsTagsKeysValuesResponse'
+          description: 200 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Return Tag Values For Keys
+      tags:
+      - Backups
+      operationId: getOrganizationsByOrganizationIdBackupsTagsKeysByKeyValues
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsBackupsIndexdataforbackupResponse:
+      properties:
+        data:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            id:
+              type: integer
+            indexer_instance_id:
+              type: string
+            instance_id:
+              type: string
+            organization_id:
+              type: string
+            policy_id:
+              type: string
+            snapshot_created_at:
+              format: date-time
+              type: string
+            snapshot_files_count:
+              type: string
+            snapshot_filesystem:
+              type: string
+            snapshot_id:
+              type: string
+            snapshot_region:
+              type: string
+            snapshot_size:
+              type: integer
+            state:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+            volume_id:
+              type: string
+          type: object
+      type: object
+    PutOrganizationsAccountsBackupsByIdResponse:
+      type: object
+    GetOrganizationsAccountsBackupsResponse:
+      properties:
+        hits:
+          properties:
+            __AccountId:
+              type: string
+            __OrganizationId:
+              type: string
+            _id:
+              type: string
+            BackupTime:
+              format: date-time
+              type: string
+            Description:
+              type: string
+            Encrypted:
+              type: boolean
+            Id:
+              type: string
+            ObjectType:
+              type: string
+            OwnerId:
+              type: string
+            postDate:
+              format: date-time
+              type: string
+            Progress:
+              type: string
+            Region:
+              type: string
+            SnapshotId:
+              type: string
+            Source:
+              type: string
+            StartTime:
+              format: date-time
+              type: string
+            State:
+              type: string
+            Tags:
+              items:
+                type: object
+              type: array
+            TagStrings:
+              items:
+                properties:
+                  Combined:
+                    type: string
+                type: object
+              type: array
+            Type:
+              type: string
+            VolumeId:
+              type: string
+            VolumeSize:
+              type: integer
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsBackupsRdsrestoreRequest:
+      properties:
+        _id:
+          type: string
+        AvailabilityZone:
+          type: string
+        DBInstanceClass:
+          type: string
+        DBInstanceIdentifier:
+          type: string
+        DBParameterGroupName:
+          type: string
+        DBSnapshotIdentifier:
+          type: string
+        DBSubnetGroupName:
+          type: string
+        Engine:
+          type: string
+        EngineVersion:
+          type: string
+        OptionGroupName:
+          type: string
+        Port:
+          type: integer
+        Region:
+          type: string
+        security_groups:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+        VpcId:
+          type: string
+      type: object
+    PostOrganizationsAccountsBackupsFilerestoreRequest:
+      properties:
+        instanceType:
+          type: string
+        ip:
+          type: string
+        minutes:
+          type: integer
+        restoreIds:
+          items:
+            type: string
+          type: array
+        size:
+          type: integer
+        subnetId:
+          type: string
+        supercharged:
+          type: boolean
+        vpcId:
+          type: string
+      type: object
+    PostOrganizationsAccountsBackupsRestoreRequest:
+      properties:
+        resource:
+          properties:
+            resource_id:
+              type: string
+            resource_name:
+              type: string
+            resource_region:
+              type: string
+            resource_source:
+              description: Examples are EBS / EC2 / RDS
+              type: string
+            resource_type:
+              description: Examples are EC2Snapshot / EC2Image / RDSSnapshot
+              type: string
+          type: object
+        restore_parameters:
+          properties:
+            BackupArn:
+              description: DynamoDB Restore
+              type: string
+            BlockDeviceMappings:
+              description: AMI Restore
+              items:
+                properties:
+                  DeviceName:
+                    type: string
+                  Ebs:
+                    properties:
+                      DeleteOnTermination:
+                        type: boolean
+                      Encrypted:
+                        type: boolean
+                      SnapshotId:
+                        type: string
+                      VolumeSize:
+                        type: integer
+                      VolumeType:
+                        type: string
+                      KmsKeyId:
+                        type: string
+                      Iops:
+                        type: integer
+                      Throughput:
+                        type: integer
+                    type: object
+                type: object
+              type: array
+            IamInstanceProfile:
+              description: AMI Restore
+              properties:
+                Arn:
+                  type: string
+              type: object
+            ImageId:
+              description: AMI Restore
+              type: string
+            InstanceType:
+              description: AMI Restore
+              type: string
+            is_windows:
+              description: AMI / Snapshot Restore
+              type: boolean
+            NetworkInterfaceId:
+              description: Network Interface ID
+              type: string
+            BootMode:
+              description: AMI / Snapshot Restore
+              type: string
+            isAwsMarketplace:
+              description: AMI Restore
+              type: boolean
+            ProductCodes:
+              description: AMI / Snapshot Restore for windows
+              items:
+                type: string
+              type: array
+            VirtualizationType:
+              description: Snapshot Restore
+              type: string
+            AvailabilityZone:
+              description: Volume Restore
+              type: string
+            Size:
+              description: Volume Restore
+              type: integer
+            TargetKmsKeyId:
+              description: Volume Restore
+              type: string
+            VolumeType:
+              description: Volume Restore
+              type: string
+            SnapshotId:
+              description: Volume Restore
+              type: string
+            encryption_mappings:
+              description: Volume restore
+              items:
+                properties:
+                  snapshot_id:
+                    type: string
+                  source_device:
+                    description: Device name of snapshot
+                    type: string
+                  source_account_id:
+                    type: string
+                  source_region:
+                    type: string
+                  source_identifier:
+                    description: Identifier of the source kmskey arn
+                    type: string
+                  target_identifier:
+                    description: Identifier of the target kmskey arn
+                    type: string
+                  target_account_id:
+                    type: string
+                  target_region:
+                    type: string
+                type: object
+              type: array
+            Architecture:
+              description: Snapshot Restore
+              type: string
+            KeyName:
+              description: AMI Restore
+              type: string
+            PrivateIpAddress:
+              description: AMI Restore
+              type: string
+            MetadataOptions:
+              description: AMI Restore
+              properties:
+                HttpTokens:
+                  description: AMI Restore
+                  type: string
+              type: object
+            SecurityGroupIds:
+              description: AMI Restore
+              items:
+                type: string
+              type: array
+            SSESpecificationOverride:
+              description: DynamoDB Restore
+              properties:
+                Enabled:
+                  type: boolean
+              type: object
+            SubnetId:
+              description: AMI Restore
+              type: string
+            TargetTableName:
+              description: DynamoDB Restore
+              type: string
+            TagSpecifications:
+              properties:
+                ResourceType:
+                  description: for Instance and Snapshot restore, type should be instance. type is volume for Volume restore
+                  type: string
+                Tags:
+                  items:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  type: array
+              type: array
+          type: object
+        target_account_id:
+          type: string
+        target_region:
+          type: string
+        type:
+          description: ami for AMI restore, instance for Snapshot restore and volume for Volume restore
+          type: string
+        origin:
+          description: ' value should be restore'
+          type: string
+        encryption_mappings:
+          description: Encryption mappings for the restore
+          items:
+            properties:
+              snapshot_id:
+                type: string
+              source_device:
+                description: Device name of snapshot
+                type: string
+              source_account_id:
+                type: string
+              source_region:
+                type: string
+              source_identifier:
+                description: Identifier of the source kmskey arn
+                type: string
+              target_identifier:
+                description: Identifier of the target kmskey arn
+                type: string
+              target_account_id:
+                type: string
+              target_region:
+                type: string
+            type: object
+          type: array
+        restore_association:
+          properties:
+            association_type:
+              type: string
+            add_to_backup_policy:
+              type: string
+            replace_backup_parent:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsBackupsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsBackupsInstancerestoreResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsBackupsArchiveRequest:
+      properties:
+        is_monthly:
+          type: boolean
+        is_weekly:
+          type: boolean
+        is_yearly:
+          type: boolean
+        policy_id:
+          type: integer
+        snapshot_ids:
+          items:
+            type: string
+          type: array
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsAccountsBackupsRdsclusterrestoreRequest:
+      properties:
+        _id:
+          type: string
+        AvailabilityZones:
+          items:
+            type: string
+          type: array
+        DBClusterIdentifier:
+          type: string
+        DBSubnetGroupName:
+          type: string
+        Engine:
+          type: string
+        EngineVersion:
+          type: string
+        instances:
+          items:
+            properties:
+              AvailabilityZone:
+                type: string
+              DBClusterIdentifier:
+                type: string
+              DBInstanceClass:
+                type: string
+              DBInstanceIdentifier:
+                type: string
+              Engine:
+                type: string
+            type: object
+          type: array
+        Region:
+          type: string
+        security_groups:
+          items:
+            type: string
+          type: array
+        SnapshotIdentifier:
+          type: string
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+        VpcId:
+          type: string
+        VpcSecurityGroupIds:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsBackupsRdsrestoreResponse:
+      properties:
+        __AccountId:
+          type: string
+        __OrganizationId:
+          type: string
+        AllocatedStorage:
+          type: integer
+        AssociatedRoles:
+          items:
+            type: string
+          type: array
+        AutoMinorVersionUpgrade:
+          type: boolean
+        AvailabilityZone:
+          type: string
+        BackupRetentionPeriod:
+          type: integer
+        CACertificateIdentifier:
+          type: string
+        CopyTagsToSnapshot:
+          type: boolean
+        DBInstanceArn:
+          type: string
+        DBInstanceClass:
+          type: string
+        DBInstanceIdentifier:
+          type: string
+        DbInstancePort:
+          type: integer
+        DBInstanceStatus:
+          type: string
+        DbiResourceId:
+          type: string
+        DBParameterGroups:
+          items:
+            properties:
+              DBParameterGroupName:
+                type: string
+              ParameterApplyStatus:
+                type: string
+            type: object
+          type: array
+        DBSecurityGroups:
+          items:
+            type: string
+          type: array
+        DBSubnetGroup:
+          properties:
+            DBSubnetGroupDescription:
+              type: string
+            DBSubnetGroupName:
+              type: string
+            SubnetGroupStatus:
+              type: string
+            Subnets:
+              items:
+                properties:
+                  SubnetAvailabilityZone:
+                    properties:
+                      Name:
+                        type: string
+                    type: object
+                  SubnetIdentifier:
+                    type: string
+                  SubnetStatus:
+                    type: string
+                type: object
+              type: array
+            VpcId:
+              type: string
+          type: object
+        DeletionProtection:
+          type: boolean
+        DomainMemberships:
+          items:
+            type: string
+          type: array
+        EnabledCloudwatchLogsExports:
+          items:
+            type: string
+          type: array
+        Engine:
+          type: string
+        EngineVersion:
+          type: string
+        IAMDatabaseAuthenticationEnabled:
+          type: boolean
+        Id:
+          type: string
+        Iops:
+          type: integer
+        LicenseModel:
+          type: string
+        MasterUsername:
+          type: string
+        MonitoringInterval:
+          type: integer
+        MultiAZ:
+          type: boolean
+        ObjectType:
+          type: string
+        OptionGroupMemberships:
+          items:
+            properties:
+              OptionGroupName:
+                type: string
+              Status:
+                type: string
+            type: object
+          type: array
+        PendingModifiedValues:
+          type: object
+        PerformanceInsightsEnabled:
+          type: boolean
+        postDate:
+          format: date-time
+          type: string
+        PreferredBackupWindow:
+          type: string
+        PreferredMaintenanceWindow:
+          type: string
+        ProcessorFeatures:
+          items:
+            type: string
+          type: array
+        PubliclyAccessible:
+          type: boolean
+        ReadReplicaDBClusterIdentifiers:
+          items:
+            type: string
+          type: array
+        ReadReplicaDBInstanceIdentifiers:
+          items:
+            type: string
+          type: array
+        Region:
+          type: string
+        Source:
+          type: string
+        StatusInfos:
+          items:
+            type: string
+          type: array
+        StorageEncrypted:
+          type: boolean
+        StorageType:
+          type: string
+        Tags:
+          items:
+            type: object
+          type: array
+        TagStrings:
+          items:
+            properties:
+              Combined:
+                type: string
+            type: object
+          type: array
+        Type:
+          type: string
+        VpcSecurityGroups:
+          items:
+            properties:
+              Status:
+                type: string
+              VpcSecurityGroupId:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsBackupsFilerestoreResponse:
+      type: object
+    GetOrganizationsAccountsBackupsCountResponse:
+      properties:
+        _shards:
+          properties:
+            failed:
+              type: integer
+            successful:
+              type: integer
+            total:
+              type: integer
+          type: object
+        count:
+          type: integer
+      type: object
+    PostOrganizationsAccountsBackupsRdsclusterrestoreResponse:
+      properties:
+        restored_db_instance:
+          properties:
+            DBCluster:
+              properties:
+                AllocatedStorage:
+                  type: integer
+                AssociatedRoles:
+                  items:
+                    type: string
+                  type: array
+                AvailabilityZones:
+                  items:
+                    type: string
+                  type: array
+                BackupRetentionPeriod:
+                  type: integer
+                ClusterCreateTime:
+                  format: date-time
+                  type: string
+                CopyTagsToSnapshot:
+                  type: boolean
+                CrossAccountClone:
+                  type: boolean
+                CustomEndpoints:
+                  items:
+                    type: string
+                  type: array
+                DatabaseName:
+                  type: string
+                DBClusterArn:
+                  type: string
+                DBClusterIdentifier:
+                  type: string
+                DBClusterMembers:
+                  items:
+                    type: string
+                  type: array
+                DBClusterOptionGroupMemberships:
+                  items:
+                    type: string
+                  type: array
+                DBClusterParameterGroup:
+                  type: string
+                DbClusterResourceId:
+                  type: string
+                DBSubnetGroup:
+                  type: string
+                DeletionProtection:
+                  type: boolean
+                DomainMemberships:
+                  items:
+                    type: string
+                  type: array
+                EnabledCloudwatchLogsExports:
+                  items:
+                    type: string
+                  type: array
+                Endpoint:
+                  type: string
+                Engine:
+                  type: string
+                EngineMode:
+                  type: string
+                EngineVersion:
+                  type: string
+                HostedZoneId:
+                  type: string
+                HttpEndpointEnabled:
+                  type: boolean
+                IAMDatabaseAuthenticationEnabled:
+                  type: boolean
+                KmsKeyId:
+                  type: string
+                MasterUsername:
+                  type: string
+                MultiAZ:
+                  type: boolean
+                Port:
+                  type: integer
+                PreferredBackupWindow:
+                  type: string
+                PreferredMaintenanceWindow:
+                  type: string
+                ReaderEndpoint:
+                  type: string
+                ReadReplicaIdentifiers:
+                  items:
+                    type: string
+                  type: array
+                Status:
+                  type: string
+                StorageEncrypted:
+                  type: boolean
+                VpcSecurityGroups:
+                  items:
+                    properties:
+                      Status:
+                        type: string
+                      VpcSecurityGroupId:
+                        type: string
+                    type: object
+                  type: array
+              type: object
+            ResponseMetadata:
+              properties:
+                RequestId:
+                  type: string
+              type: object
+          type: object
+      type: object
+    PutOrganizationsAccountsBackupsByIdRequest:
+      properties:
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsBackupsArchive_checkRequest:
+      properties:
+        resource_ids:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsBackupsTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsBackupsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsBackupsInstancerestoreRequest:
+      properties:
+        Architecture:
+          type: string
+        BlockDeviceMappings:
+          items:
+            properties:
+              DeviceName:
+                type: string
+              Ebs:
+                properties:
+                  SnapshotId:
+                    type: string
+                type: object
+            type: object
+          type: array
+        EnaSupport:
+          type: boolean
+        IamInstanceProfile:
+          properties:
+            Arn:
+              type: string
+          type: object
+        InstanceType:
+          type: string
+        KeyName:
+          type: string
+        MaxCount:
+          type: integer
+        MinCount:
+          type: integer
+        Placement:
+          type: object
+        SecurityGroupIds:
+          items:
+            type: string
+          type: array
+        SubnetId:
+          type: string
+        TagSpecifications:
+          items:
+            properties:
+              ResourceType:
+                type: string
+              Tags:
+                items:
+                  properties:
+                    Key:
+                      type: string
+                    Value:
+                      type: string
+                  type: object
+                type: array
+            type: object
+          type: array
+        VirtualizationType:
+          type: string
+      type: object
+    PostOrganizationsAccountsBackupsArchive_checkResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsBackupsVolumerestoreResponse:
+      properties:
+        Attachments:
+          items:
+            type: string
+          type: array
+        AvailabilityZone:
+          type: string
+        CreateTime:
+          format: date-time
+          type: string
+        Encrypted:
+          type: boolean
+        Iops:
+          type: integer
+        MultiAttachEnabled:
+          type: boolean
+        Size:
+          type: integer
+        SnapshotId:
+          type: string
+        State:
+          type: string
+        Tags:
+          items:
+            type: string
+          type: array
+        VolumeId:
+          type: string
+        VolumeType:
+          type: string
+      type: object
+    GetOrganizationsBackupsTagsKeysResponse:
+      type: string
+    PostOrganizationsAccountsBackupsVolumerestoreRequest:
+      properties:
+        availabilityZone:
+          type: string
+        snapshotId:
+          type: string
+        volumeName:
+          type: string
+        volumeSize:
+          type: integer
+        volumeType:
+          type: string
+      type: object
+  requestBodies:
+    PostOrganizationsAccountsBackupsArchiveRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostOrganizationsAccountsBackupsArchiveRequest'
+      required: true
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

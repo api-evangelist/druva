@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  title: Platform Admin Roles API
+  description: Platform Public APIs
+  version: 1.0.0
+servers:
+- url: https://apis.druva.com/platform
+security:
+- Bearer: []
+tags:
+- name: Admin Roles
+paths:
+  /console/v1/roles/{productID}:
+    get:
+      tags:
+      - Admin Roles
+      summary: List roles
+      description: Returns the list of Product Administrator Roles and the resources they can access.
+      operationId: ListRolesRequest
+      parameters:
+      - name: productID
+        in: path
+        description: Possible values are 8193 - Endpoints and SaaS Apps, 12289 - Enterprise Workloads
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          enum:
+          - 8193
+          - 12289
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRolesResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    ListRolesResponse:
+      title: ListRolesResponse ...
+      type: array
+      items:
+        $ref: '#/components/schemas/ListRolesResponse_inner'
+    APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
+    ListRolesResponse_inner:
+      type: object
+      properties:
+        role:
+          type: string
+          description: "The role of the administrator you want to create. \n```\nPossible Enterprise Workloads roles are :\n- Cloud Administrator\n- Cloud Administrator (View-only)\n- Data Protection Officer\n- Organization Administrator\n- Organization Administrator (View-only)\n- Group Administrator\n- Group Administrator (View-only)\nPossible inSync roles are :\n- Cloud Admin\n- Data Protection Officer\n- Help Desk Admin\n- Legal Admin\n- Profile Admin\n- Sensitive Data Governance Admin\n- View Only Admin\n- Workload Admin\n```\n"
+          example: Profile Admin
+        accessControl:
+          type: array
+          items:
+            type: object
+            properties:
+              resource:
+                type: string
+                description: Resource can be Organization or Groups for Enterprise Workloads. Resource can be Workload, Profiles or Legal Hold Types for Endpoint and SaaS Apps.
+                example: Workloads
+              collections:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    collectionID:
+                      type: integer
+                      description: 'The id of the resource for which you want to allow admin to access.
+
+                        - The id of the site or organization for Enterprise Workloads
+
+                        - The id of the Workload or Profile or Legal Hold Type for for Endpoints and SaaS Apps
+
+                        '
+                      example: 1
+                    collectionName:
+                      type: string
+                      description: 'The name of the resource for which you want to allow admin to access.
+
+                        - The name of the site or organization for Enterprise Workloads
+
+                        - The name of the Workload or Profile or Legal Hold Type for for Endpoints and SaaS Apps
+
+                        '
+                      example: Endpoints
+                    itemList:
+                      type: array
+                      description: Details of group of which admin access is provided
+                      items:
+                        type: object
+                        properties:
+                          itemID:
+                            type: integer
+                            description: Group id of the site the admin should be granted access
+                          itemName:
+                            type: string
+                            description: Group name of the site the admin should be granted access
+                      default: []
+                  description: 'Details of the resource for which administrator access is provided -
+
+                    - Organization or site for Enterprise Workloads
+
+                    - Workloads or Profiles or Legal Hold Types for Endpoints and SaaS Apps
+
+                    '
+  securitySchemes:
+    BearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

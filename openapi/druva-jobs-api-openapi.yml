@@ -1,0 +1,763 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Jobs API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Jobs in your CloudRanger Account
+  name: Jobs
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/job_count:
+    get:
+      description: Return a count of all jobs running for an organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJob_countResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Job Count
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs:
+    get:
+      description: Returns the list of jobs associated to the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJobsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get All Jobs
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobs
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/{job_id}:
+    get:
+      description: Returns the job associated with the given job id of the provided account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the job table. This is also a foreign key for tasks and steps.
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJobsByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get One Job
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobsByJobId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/{job_id}/retry:
+    post:
+      description: Retries the job of the given id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the job table. This is also a foreign key for tasks and steps.
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsJobsRetryRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsJobsRetryResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Retry Failed Job
+      tags:
+      - Jobs
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdJobsByJobIdRetry
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/{job_id}/tasks:
+    get:
+      description: Returns all the tasks associated with the given job id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the job table. This is also a foreign key for tasks and steps.
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJobsTasksByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get All Tasks
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobsByJobIdTasks
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/{job_id}/tasks/{task_id}:
+    get:
+      description: Return task by task id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the job table. This is also a foreign key for tasks and steps.
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the task table. This is also a foreign key for jobs and steps.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJobsTasksByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get One Task
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobsByJobIdTasksByTaskId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/{job_id}/tasks/{task_id}/steps/{step_id}/retry:
+    post:
+      description: Retries the specific step in the log of assocaited task of the provided job
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the job table. This is also a foreign key for tasks and steps.
+        in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the task table. This is also a foreign key for jobs and steps.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier and primary key of the step table. This is also a foreign key for tasks and jobs.
+        in: path
+        name: step_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsJobsTasksStepsRetryRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsJobsTasksStepsRetryResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Retry Failed Step
+      tags:
+      - Jobs
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdJobsByJobIdTasksByTaskIdStepsByStepIdRetry
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/jobs/tags/{tag_key}:
+    get:
+      description: Returns the tag key of the specific job of the provided account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The key of a supplied AWS tag. Used to specify and manage resources in both CloudRanger and AWS. A resource may not have duplicate tag keys.
+        in: path
+        name: tag_key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsJobsTagsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tasks From Job
+      tags:
+      - Jobs
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdJobsTagsByTagKey
+      x-operation-id-source: derived
+components:
+  schemas:
+    GetOrganizationsAccountsJobsTagsResponse:
+      type: string
+    GetOrganizationsAccountsJobsResponse:
+      properties:
+        account_id:
+          type: string
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        cron:
+          type: string
+        cron_location:
+          type: string
+        event_at:
+          format: date-time
+          type: string
+        event_type:
+          type: string
+        halt:
+          type: string
+        id:
+          type: string
+        object_id:
+          type: integer
+        organization_id:
+          type: string
+        policy:
+          type: string
+        restorepolicy:
+          type: string
+        schedule:
+          type: string
+        seq:
+          type: integer
+        tasks:
+          items:
+            properties:
+              resource_name:
+                type: string
+            type: object
+          type: array
+        total_fail:
+          type: integer
+        total_success:
+          type: integer
+        total_tasks:
+          type: integer
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsJobsByIdResponse:
+      properties:
+        account_id:
+          type: string
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        cron:
+          type: string
+        cron_location:
+          type: string
+        event_at:
+          format: date-time
+          type: string
+        event_type:
+          type: string
+        halt:
+          type: string
+        id:
+          type: string
+        object_id:
+          type: integer
+        organization_id:
+          type: string
+        policy:
+          type: string
+        schedule:
+          type: string
+        seq:
+          type: integer
+        tasks:
+          items:
+            properties:
+              action:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              halt:
+                type: boolean
+              id:
+                type: string
+              is_success:
+                type: boolean
+              job_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              resource_name:
+                type: string
+              resource_type:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        total_fail:
+          type: integer
+        total_success:
+          type: integer
+        total_tasks:
+          type: integer
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsJobsTasksByIdResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        steps:
+          items:
+            type: object
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsJob_countResponse:
+      type: integer
+    PostOrganizationsAccountsJobsRetryResponse:
+      type: object
+    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
+      type: object
+    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsJobsRetryRequest:
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

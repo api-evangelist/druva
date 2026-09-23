@@ -1,0 +1,1443 @@
+openapi: 3.2.0
+info:
+  title: Platform Administrators API
+  description: Platform Public APIs
+  version: 1.0.0
+servers:
+- url: https://apis.druva.com/platform
+security:
+- Bearer: []
+tags:
+- name: Administrators
+paths:
+  /console/v1/admins:
+    get:
+      tags:
+      - Administrators
+      summary: List all administrators
+      description: 'Returns the details of existing administrators in the Cloud Console.
+
+        > 📘 Note
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: ListAdminsRequest
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: pageSize
+        in: query
+        description: Specify the maximum number of records that should be returned in a response.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          default: 100
+      - name: pageNumber
+        in: query
+        description: Specify the desired page number
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          default: 1
+      - name: pageToken
+        in: query
+        description: "Specify the page token to access the next page of results. Keep this field blank in the first request. Use the token value received in the previous response's parameter 'nextPageToken'. \n NOTE: pageNumber and pageToken cannot be used together.</i>"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: sortBy
+        in: query
+        description: Specify the field to sort the admins on
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: adminName
+          enum:
+          - adminName
+          - email
+          - lastLogin
+      - name: sortOrder
+        in: query
+        description: Specify the order in which the admins has to be sorted
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ASC
+          enum:
+          - ASC
+          - DESC
+      - name: searchString
+        in: query
+        description: Specify the string to be searched on adminName
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: filters
+        in: query
+        description: "Specify the filters to be applied\n```json\n{\n  \"lastLogin\": 1234567,\n  \"productId\": [4097,8193,12289],\n  \"adminState\": [\n    \"ACTIVE\",\"DISABLED\"\n  ],\n  \"provisioningMode\": [\n    \"Manual\",\"AD_LDAP\"\n  ]\n}\n```\n**Filters Structure:**\n- `lastLogin` (float): Specify the last login time on which the admins has to be filtered\n- `productId` (array of integers): Specify the productID(s) on which the admins has to be filtered. Allowed values:\n  4097 - DruvaCloud admins,\n  8193 - Insync Product admins,\n  12289 - Enterprise Workloads' Product admins\n- `adminState` (array of strings): Specify the list of admin states on which the admins has to be filtered. Allowed values:\n  ACTIVE, DISABLED\n- `provisioningMode` (array of strings): Specify the list of creation modes on which the admins has to be filtered. Allowed values:\n  Manual, AD_LDAP\n"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '{   "lastLogin": 1234567,   "productId": [4097,8193,12289],   "adminState": [     "ACTIVE","DISABLED"   ],   "provisioningMode": [     "Manual","AD_LDAP"   ] }'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAdminsResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    post:
+      tags:
+      - Administrators
+      summary: Create an administrator
+      description: 'Creates an administrator in the Druva Console.
+
+        > 📘 **Note**
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: CreateAdminRequest
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_admins_body'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAdminResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /console/v1/admins/{globalAdminID}:
+    get:
+      tags:
+      - Administrators
+      summary: Get administrator details
+      description: 'Returns the details of the specified administrator.
+
+        > 📘 **Note**
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: GetAdminRequest
+      parameters:
+      - name: globalAdminID
+        in: path
+        description: The global ID of the admin on which the action has to be performed. Get the global ID of the administrator using the [List all administrators](/reference/listadminsrequest) API.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAdminResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    delete:
+      tags:
+      - Administrators
+      summary: Delete an administrator
+      description: 'Deletes the specified administrator account from the Cloud Console.
+
+        > 📘 **Note**
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: DeleteAdminRequest
+      parameters:
+      - name: globalAdminID
+        in: path
+        description: The global ID of the admin on which the action has to be performed. Get the global ID of the administrator using the [List all administrators](/reference/listadminsrequest) API.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAdminResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    patch:
+      tags:
+      - Administrators
+      summary: Update administrator details
+      description: 'Modify Administrator attributes, like Administrator Name, Timezone, and Status (either Active or Disabled).
+
+        > 📘 **Note**
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: UpdateAdminRequest
+      parameters:
+      - name: globalAdminID
+        in: path
+        description: The global ID of the admin on which the action has to be performed. Get the global ID of the administrator using the [List all administrators](/reference/listadminsrequest) API.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admins_globalAdminID_body'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAdminResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /console/v1/admins/{globalAdminID}/role:
+    put:
+      tags:
+      - Administrators
+      summary: Update administrator role
+      description: 'Change the role and product-level access control configuration for the specified administrator. The request body must contain the complete desired role configuration. Any existing role settings not included in the request will be removed.
+
+
+        **Role behavior:**
+
+
+        - **Druva Cloud** - The administrator gets full access across all products. The productAccessControls field is ignored.
+
+
+        - **Product** - The productAccessControls field is required and defines per-product role and resource-level access.
+
+
+        The available product roles and access controls applicable for a role can be fetched using the List roles API.
+
+        > 📘 **Note**
+
+        To use this API endpoint, enable the Administrator API from Druva Cloud settings.'
+      operationId: UpdateAdminRoleRequest
+      parameters:
+      - name: globalAdminID
+        in: path
+        description: The global ID of the admin on which the action has to be performed. Get the global ID of the administrator using the [List all administrators](/reference/listadminsrequest) API.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admins_globalAdminID_role_body'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAdminRoleResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /console/v1/admin/password:
+    post:
+      tags:
+      - Administrators
+      summary: Change an administrator's password
+      description: Changes an adiminstrator's password.
+      operationId: ChangeAdminPassword
+      parameters:
+      - name: Content-Type
+        in: header
+        description: Request content type header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin_password_body'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePasswordResponse'
+        '403':
+          description: User is not authorized to access this resource with an explicit deny
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: The requested resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '422':
+          description: "Could be one of: \n - Password does not match password policy. Please check password policy. \n - Incorrect current password."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    UpdateAdminRoleResponse:
+      title: UpdateAdminRoleResponse ...
+      type: object
+      properties:
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin
+          example: 5bxxxxxx-exxx-xxex-bxxx-e00xxx98xxxx-xxx7
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer
+          example: axexxxxx-1xxx-4xxx-8xxx-5xxxxxxxxxxx
+        adminEmail:
+          type: string
+          description: The email of the admin
+          example: sample@gmail.com
+        adminName:
+          type: string
+          description: The name of the admin
+          example: sample
+        role:
+          type: string
+          description: The role of the admin
+          example: Product
+        productAccessControls:
+          type: array
+          description: Product-level access control configuration with detailed rights and permissions
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_productAccessControls'
+    consolev1admins_productAccessControls_products:
+      type: object
+      properties:
+        productID:
+          type: integer
+          description: Possible values are 8193 - Insync, 12289 - Enterprise Workloads
+          example: 8193
+          default: 8193
+        productRole:
+          type: string
+          description: 'The role of the administrator you want to create. Administrator role types are available in the Cloud Console.
+
+            ```
+
+            Possible Enterprise Workloads roles are :
+
+            - Cloud Administrator
+
+            - Cloud Administrator (View-only)
+
+            - Data Protection Officer
+
+            - Organization Administrator
+
+            - Organization Administrator (View-only)
+
+            - Group Administrator
+
+            - Group Administrator (View-only)
+
+
+            Possible inSync roles are :
+
+            - Cloud Admin
+
+            - Data Protection Officer
+
+            - Help Desk Admin
+
+            - Legal Admin
+
+            - Profile Admin
+
+            - Sensitive Data Governance Admin
+
+            - View Only Admin
+
+            - Workload Admin
+
+            ```
+
+            :fa-info-circle: You can also assign any custom role that is created in the product console.
+
+            '
+          example: Profile Admin
+          default: Profile Admin
+        accessControls:
+          type: array
+          description: A list containing data about the sites and groups to which admin needs to be granted access
+          items:
+            $ref: '#/components/schemas/consolev1admins_productAccessControls_accessControls'
+    GetAdminResponse_consoleRights_customer:
+      type: object
+      properties:
+        IPFencing:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_customer_IPFencing'
+        passwordPolicy:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_customer_passwordPolicy'
+        SSOSettings:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_customer_SSOSettings'
+    consolev1admins_productAccessControls_accessControls:
+      type: object
+      properties:
+        collectionName:
+          type: string
+          description: The name of the site/organization or Workloads/Profiles/Legal Hold Types for which you want to allow admin to access
+          example: Default
+          default: Default
+        collectionID:
+          type: integer
+          description: The id of the site/organization or Workloads/Profiles/Legal Hold Types for which you want to allow admin to access
+          example: 4
+          default: 4
+        resource:
+          type: string
+          description: Resource can be Organization / Groups or Workloads/Profiles/Legal Hold Types
+          example: Profiles
+          default: Profiles
+        itemList:
+          type: array
+          description: Details of group of which admin access is provided
+          example: []
+          items:
+            $ref: '#/components/schemas/consolev1admins_productAccessControls_itemList'
+          default: []
+    GetAdminResponse_consoleRights:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_customer'
+        adminSelf:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminSelf'
+        adminOthers:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminOthers'
+      description: Console rights define which functionalities of DCP console should be accessible to admin. For example, it tells whether this admin is allowed to create other admins using DCP UI.
+    admins_globalAdminID_body:
+      type: object
+      properties:
+        adminName:
+          type: string
+          description: The name of the administrator.
+          example: sample
+        timezone:
+          type: string
+          description: The timezone of the administrator. Use IANA timezone format (e.g., UTC, Africa/Abidjan, America/Detroit, Asia/Dubai).
+          example: UTC
+        adminState:
+          type: string
+          description: Specify the new state of the admin.
+          enum:
+          - ACTIVE
+          - DISABLED
+    GetAdminResponse_collection:
+      type: object
+      properties:
+        fullAccess:
+          type: boolean
+          description: It describes whether the admin has full access to above specified resource or not
+        type:
+          type: string
+          description: Type can be Groups / Sites for Enterprise Workloads, or Workloads/Profiles/Legal Hold Types for Insync
+        itemList:
+          type: array
+          items:
+            $ref: '#/components/schemas/consolev1admins_productAccessControls_itemList'
+          default: []
+        name:
+          type: string
+          description: The name of the site/organization or Workloads/Profiles/Legal Hold Types for which your admin has access
+        collectionID:
+          type: integer
+          description: The id of the site/organization or Workloads/Profiles/Legal Hold Types for which your admin has access
+    GetAdminResponse_consoleRights_adminSelf:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminSelf_name'
+        timeZone:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminSelf_timeZone'
+        country:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminSelf_country'
+        changePassword:
+          type: boolean
+          description: This describes whether the admin is allowed to change password or not
+    GetAdminResponse_additionalProperties_rights:
+      type: object
+      properties:
+        accountDetails:
+          type: array
+          description: List of product IDs populated
+          items:
+            type: integer
+        adminManagement:
+          type: array
+          description: List of product IDs populated
+          items:
+            type: integer
+      writeOnly: true
+    adminRole_productAccessControls:
+      type: array
+      description: Product-level access control configuration for role updates.
+      items:
+        $ref: '#/components/schemas/adminRole_productAccessControls_products'
+    ListAdminsResponse:
+      title: ListAdminsResponse ...
+      type: object
+      properties:
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer
+          example: axexxxxx-1xxx-4xxx-8xxx-5xxxxxxxxxxx
+        totalSize:
+          type: integer
+          description: The total number of admins wrt to the filters applied
+          example: 57
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results.
+        admins:
+          type: array
+          items:
+            $ref: '#/components/schemas/Admin'
+    GetAdminResponse_consoleRights_adminSelf_country:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over country
+        write:
+          type: boolean
+          description: This describes whether write is allowed over country
+      description: This is the country of the admin who has logged in or using the api
+    GetAdminResponse_consoleRights_adminSelf_name:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over name
+        write:
+          type: boolean
+          description: This describes whether write is allowed over name
+      description: This is attribute of admin for displaying it's identity
+    GetAdminResponse_consoleRights_customer_passwordPolicy:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over passwordPolicy
+        write:
+          type: boolean
+          description: This describes whether write is allowed over passwordPolicy
+      description: A Password Policy is a set of rules that encourage the use of strong passwords for ensuring added data security. inSync supports password policies for the users and administrators.
+    GetAdminResponse_accessControl:
+      type: object
+      properties:
+        resource:
+          type: string
+          description: Resource can be Organization / Groups for Enterprise Workloads, or Workloads/Profiles/Legal Hold Types for Insync
+        fullAccess:
+          type: boolean
+          description: It describes whether the admin has full access to above specified resource or not
+        collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_collection'
+    v1_admins_body:
+      required:
+      - adminEmail
+      - adminName
+      - provisioningMode
+      - role
+      - timezone
+      type: object
+      properties:
+        adminEmail:
+          type: string
+          description: The email address of the administrator you want to create.
+          example: sample@gmail.com
+        adminName:
+          type: string
+          description: The name of the administrator you want to create.
+          example: sample
+        role:
+          type: string
+          description: 'Select the role of the administrator.
+
+            - Druva Cloud - Druva Cloud Administrator is a super administrator who gets all the rights of all the administrative roles across products, based on the services enabled for your account and the privileges needed to modify account settings.
+
+            - Product - Product administrator can perform all core product-related activities such as configuring, managing, and monitoring.
+
+            '
+          enum:
+          - Product
+          - Druva Cloud
+        timezone:
+          type: string
+          description: Specify the timezone of the administrator.
+          example: UTC
+        productAccessControls:
+          $ref: '#/components/schemas/consolev1admins_productAccessControls'
+        provisioningMode:
+          type: string
+          description: The mode through which the admin is being created.
+          readOnly: true
+          default: Manual
+          enum:
+          - Manual
+          - AD_LDAP
+        adminState:
+          type: string
+          description: The state of the admin to be created.
+          readOnly: true
+          default: ACTIVE
+          enum:
+          - ACTIVE
+          - DISABLED
+        adGuid:
+          type: string
+          description: The globally unique identifier
+          readOnly: true
+        adMappingId:
+          type: integer
+          description: The unique AD Mapping ID.
+          readOnly: true
+          example: 17890
+        adMappingName:
+          type: string
+          description: The AD Mapping name.
+          readOnly: true
+          example: mappingName
+        druvaDomainLegalConsent:
+          type: boolean
+          description: Setting this parameter to True indicates you consent to creating a Druva administrator account with an email address ending in druva.com or druva.org.
+          example: false
+          default: false
+    DeleteAdminResponse:
+      title: DeleteAdminResponse ...
+      type: object
+      properties:
+        adminEmail:
+          type: string
+          description: The email of the deleted admin
+          example: sample@gmail.com
+        adminState:
+          type: string
+          description: The state of the before its deletion
+          example: ACTIVE
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin before its deletion
+          example: 5bxxxxxx-exxx-xxex-bxxx-e00xxx98xxxx-xxx7
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer before its deletion
+          example: axexxxxx-1xxx-4xxx-8xxx-5xxxxxxxxxxx
+        adGuid:
+          type: string
+          description: The globally unique identifier
+        role:
+          type: integer
+          description: The role assoiated the admin before its deletion
+          example: 2
+        provisioningMode:
+          type: string
+          description: The mode through which the admin was initially created
+          example: Manual
+    GetAdminResponse_rights_1:
+      type: object
+      properties:
+        category:
+          type: string
+          description: 'Name of the category to which the rights depend or are listed under. Like
+
+            - Backup And Restore Management
+
+            - Server Management
+
+            etc
+
+            '
+        rights:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_rights'
+    GetAdminResponse_consoleRights_adminOthers_role:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over role
+        write:
+          type: boolean
+          description: This describes whether write is allowed over role
+      description: This describes the role of logged admin whether he has rights to modify role of other admin or not
+    UpdateAdminResponse:
+      title: UpdateAdminResponse ...
+      type: object
+      properties:
+        adminEmail:
+          type: string
+          description: The email of the admin
+          example: sample@gmail.com
+        adminName:
+          type: string
+          description: The name of the admin
+          example: sample
+        adminState:
+          type: string
+          description: The new modified state of the admin
+          example: ACTIVE
+        timezone:
+          type: string
+          description: The timezone of the admin
+          example: UTC
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin
+          example: 5bxxxxxx-exxx-xxex-bxxx-e00xxx98xxxx-xxx7
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer
+          example: axexxxxx-1xxx-4xxx-8xxx-5xxxxxxxxxxx
+        adGuid:
+          type: string
+          description: The globally unique identifier
+        role:
+          type: integer
+          description: The role ID of the admin
+          example: 2
+        provisioningMode:
+          type: string
+          description: The mode through which the admin was created
+          example: Manual
+    GetAdminResponse_productAccessControls:
+      type: object
+      properties:
+        accessControl:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_accessControl'
+        product:
+          type: string
+          description: The name of the licensed product
+        roleDetailsURL:
+          type: string
+          description: This url redirects you to the product page where it describes the role details for the admin
+        description:
+          type: string
+          description: Description of the role of that particular admin
+        rights:
+          type: array
+          description: These rights describe the functionalities of product should be accessible to admin. For example, it tells whether this admin is allowed to take backup of user data.
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_rights_1'
+        editAllowed:
+          type: boolean
+          description: This describes that whether the admin has edit access or not
+        role:
+          type: string
+          description: This describes the role of the admin
+        consoleRights:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights'
+        productId:
+          type: integer
+          description: The unique ID of the licensed product
+    GetAdminResponse_consoleRights_customer_SSOSettings:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over SSOSettings
+        write:
+          type: boolean
+          description: This describes whether write is allowed over SSOSettings
+      description: Single Sign-On (SSO) is a mechanism that allows users to access multiple resources using a single action of authentication and authorization.
+    GetAdminResponse_consoleRights_adminOthers:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminSelf_name'
+        timeZone:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminOthers_timeZone'
+        country:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminOthers_country'
+        role:
+          $ref: '#/components/schemas/GetAdminResponse_consoleRights_adminOthers_role'
+        passwordReset:
+          type: boolean
+          description: This describes whether passwordReset is allowed or not
+        createAdmin:
+          type: boolean
+          description: This describes whether this admin is allowed to create a admin or not
+        deleteAdmin:
+          type: boolean
+          description: This describes whether this admin is allowed to delete a admin or not
+    Admin:
+      title: Admin ...
+      type: object
+      properties:
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin
+          example: 5bxxxxxx-exxx-xxex-bxxx-e00xxx98xxxx-xxx7
+        adminEmail:
+          type: string
+          description: The email associated with the admin
+          example: sample@gmail.com
+        adminName:
+          type: string
+          description: The name of the admin
+          example: sample
+        lastLogin:
+          type: number
+          description: The last time the admin had logged-in
+          format: float
+          example: 1703570381.19192
+        role:
+          type: string
+          description: The role associated with the admin
+          example: Druva Cloud
+        provisioningMode:
+          type: string
+          description: The mode through which the admin was created
+          example: AD_LDAP
+        adminState:
+          type: string
+          description: The current state of the admin
+          example: DISABLED
+        disabledThroughMode:
+          type: string
+          description: The mode through which the admin was disabled(Applicable only if the Admin is in DISABLED state)
+          example: Manual
+        adGuid:
+          type: string
+          description: The globally unique identifier
+        deletionEpoch:
+          type: number
+          description: The deletion epoch in case the admin is marked for deletion
+          format: float
+          example: 0
+        deletionTime:
+          type: string
+          description: The deletion time in case the admin is marked for deletion. The time is in the UTC time zone. Example - 2024-01-04T09:06:02.191Z
+          format: date-time
+        customId:
+          type: string
+          description: Null in case customId is not enabled for the customer
+        adMappingId:
+          type: integer
+          description: The mapping ID for the AD created admin
+          example: 38
+        disabledOnTS:
+          type: number
+          description: The epoch time when the admin was disabled.
+          format: float
+          example: 1708675426
+    consolev1admins_productAccessControls_itemList:
+      type: object
+      properties:
+        itemID:
+          type: integer
+          description: Group id of the site the admin should be granted access
+        itemName:
+          type: string
+          description: Group name of the site the admin should be granted access
+    GetAdminResponse_consoleRights_customer_IPFencing:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over IPFencing
+        write:
+          type: boolean
+          description: This describes whether write is allowed over IPFencing
+      description: The IPFencing policy empowers you to restrict access to the Druva Cloud Platform Console from outside your corporate network. It helps you control, monitor, and protect your data from unauthorized access from outside the organization.
+    GetAdminResponse_consoleRights_adminSelf_timeZone:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over timeZone
+        write:
+          type: boolean
+          description: This describes whether write is allowed over timeZone
+      description: This is the timezone of the admin who has logged in or using the api
+    consolev1admins_productAccessControls:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/consolev1admins_productAccessControls_products'
+      description: Specify this if you are creating a 'Product' administrator.
+    CreateAdminResponse:
+      title: CreateAdminResponse ...
+      type: object
+      properties:
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer
+          example: axexxxxx-1xxx-4xxx-8xxx-5xxxxxxxxxxx
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin
+          example: 5bxxxxxx-exxx-xxex-bxxx-e00xxx98xxxx-xxx7
+        adminEmail:
+          type: string
+          description: The email associated with the admin
+          example: sample@gmail.com
+        adminName:
+          type: string
+          description: The name of the admin
+          example: sample
+        role:
+          type: string
+          description: The role of the admin
+          example: Product
+        provisioningMode:
+          type: string
+          description: The mode through which the admin was created
+          example: Manual
+        adminState:
+          type: string
+          description: The state of the created admin
+          example: ACTIVE
+        adGuid:
+          type: string
+          description: The globally unique identifier
+        disabledThroughMode:
+          type: string
+          description: The mode through which the admin was disabled(Applicable only if the Admin is in DISABLED state)
+        deletionEpoch:
+          type: number
+          description: The deletion epoch in case the admin is marked for deletion
+          format: float
+          example: 0
+        deletionTime:
+          type: string
+          description: The deletion time in case the admin is marked for deletion. The time is in the UTC time zone. Example - 2024-01-04T09:06:02.191Z
+          format: date-time
+    GetAdminResponse_additionalProperties:
+      type: object
+      properties:
+        customerName:
+          type: string
+          description: The name of the customer to which the admin is associated
+          writeOnly: true
+        allowedCustomerContextOperations:
+          $ref: '#/components/schemas/GetAdminResponse_additionalProperties_allowedCustomerContextOperations'
+        accountDeletion:
+          type: boolean
+          description: Always false
+          writeOnly: true
+        deletionEpoch:
+          type: number
+          description: The deletion epoch in case the admin is marked for deletion
+          format: float
+          writeOnly: true
+        productIds:
+          type: array
+          writeOnly: true
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_additionalProperties_productIds'
+        deletionTime:
+          type: string
+          description: The deletion time in case the admin is marked for deletion. The time is in the UTC time zone. Example - 2024-01-04T09:06:02.191Z
+          writeOnly: true
+        isReadOnly:
+          type: boolean
+          description: True in case of MSP admin
+          writeOnly: true
+        enableAlerts:
+          type: boolean
+          description: True if alerts are enabled
+          writeOnly: true
+        deploymentId:
+          type: integer
+          description: The unique ID associated with AWS region
+          writeOnly: true
+        customerAuthType:
+          type: integer
+          description: The customer's authentication scheme. 1 - Password 2 - Saml Token
+          writeOnly: true
+        accountUpgrade:
+          type: boolean
+          description: Always false
+          writeOnly: true
+        lastLoginEpoch:
+          type: number
+          description: The admin's last login time in epoch
+          format: float
+          writeOnly: true
+        rights:
+          $ref: '#/components/schemas/GetAdminResponse_additionalProperties_rights'
+        lastLoginIPAddress:
+          type: string
+          description: This is the admin's last login IP address
+          writeOnly: true
+        logoutURL:
+          type: string
+          writeOnly: true
+        lastLogin:
+          type: string
+          description: The time at which the admin had previously logged-in. The time is in the UTC time zone. Example - 2024-01-04T09:06:02.191Z
+          writeOnly: true
+        intercomUserHash:
+          type: string
+          description: The intercom user hash generated for admin
+          writeOnly: true
+    GetAdminResponse_rights:
+      type: object
+      properties:
+        right:
+          type: string
+          description: Name of the right which is to be provided
+        allotted:
+          type: boolean
+          description: Is the above right mentioned allotted or not
+      description: 'List of rights which are provided to the admin under the specified category. Like
+
+        - Configure Backup
+
+        - Perform Backup
+
+        - Delete Devices
+
+        etc
+
+        '
+    APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
+    GetAdminResponse:
+      title: GetAdminResponse ...
+      type: object
+      properties:
+        creator:
+          type: string
+          description: The admin's email who created the specified admin
+        productAccessControls:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAdminResponse_productAccessControls'
+        timezone:
+          type: string
+          description: The admin's timezone
+        customerTimezone:
+          type: string
+          description: The customer's timezone
+        phoneNumber:
+          type: string
+          description: The admin's phone number
+        lastLoginTime:
+          type: number
+          description: This is the readable time when last login was done
+          format: float
+        customId:
+          type: string
+          description: Null in case customId is not enabled for the customer
+        email:
+          type: string
+          description: The admin's email
+        adGuid:
+          type: string
+          description: The guid of AD created admin
+        adminState:
+          type: string
+          description: The admin's current state
+          enum:
+          - Active
+          - Disabled
+        disabledOnTS:
+          type: number
+          description: The epoch time when the admin was disabled.
+          format: float
+          example: 1708675426
+        disabledThroughMode:
+          type: string
+          description: The mode through which the admin was disabled(Applicable only if the Admin is in DISABLED state)
+        provisioningMode:
+          type: string
+          description: The mode through which the admin was created
+          enum:
+          - Manual
+          - AD_LDAP
+        adMappingName:
+          type: string
+          description: The mapping name for the AD created admin
+        adMappingId:
+          type: integer
+          description: The mapping ID for the AD created admin
+        globalAdminId:
+          type: string
+          description: The unique ID associated with the admin
+        globalCustomerId:
+          type: string
+          description: The unique ID associated with the customer
+        allowPasswordIfSAML:
+          type: boolean
+          description: For customer with SAML auth scheme
+        lastLoginDevice:
+          type: string
+          description: This is the Device/OS through which the last login was done
+        nextPasswordChangeTime:
+          type: number
+          description: Populated depending upon the max password age defined in the policy
+          format: float
+        role:
+          type: string
+          description: The role associated with the admin
+        adminName:
+          type: string
+          description: The name of the admin
+        customerSFDCId:
+          type: array
+          description: List of SFDC Ids
+          items:
+            type: string
+        ipAddress:
+          type: string
+          description: This is the admin's current login IP address
+        additionalProperties:
+          $ref: '#/components/schemas/GetAdminResponse_additionalProperties'
+    adminRole_productAccessControls_products:
+      type: object
+      properties:
+        productID:
+          type: integer
+          description: Possible values are 8193 - Insync, 12289 - Enterprise Workloads
+          example: 8193
+        productRole:
+          type: string
+          description: 'The role of the administrator. Administrator role types are available in the Cloud Console.
+
+            ```
+
+            Possible Enterprise Workloads roles are :
+
+            - Cloud Administrator
+
+            - Cloud Administrator (View-only)
+
+            - Data Protection Officer
+
+            - Organization Administrator
+
+            - Organization Administrator (View-only)
+
+            - Group Administrator
+
+            - Group Administrator (View-only)
+
+
+            Possible inSync roles are :
+
+            - Cloud Admin
+
+            - Data Protection Officer
+
+            - Help Desk Admin
+
+            - Legal Admin
+
+            - Profile Admin
+
+            - Sensitive Data Governance Admin
+
+            - View Only Admin
+
+            - Workload Admin
+
+            ```
+
+            :fa-info-circle: You can also assign any custom role that is created in the product console.
+
+            '
+          example: Profile Admin
+        accessControl:
+          type: array
+          description: A list containing data about the sites and groups to which admin needs to be granted access
+          items:
+            $ref: '#/components/schemas/consolev1admins_productAccessControls_accessControls'
+    GetAdminResponse_consoleRights_adminOthers_timeZone:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over timeZone
+        write:
+          type: boolean
+          description: This describes whether write is allowed over timeZone
+      description: This describes whether write is allowed over timeZone
+    GetAdminResponse_consoleRights_adminOthers_country:
+      type: object
+      properties:
+        read:
+          type: boolean
+          description: This describes whether read is allowed over country
+        write:
+          type: boolean
+          description: This describes whether write is allowed over country
+      description: This describes whether write is allowed over country
+    ChangePasswordResponse:
+      title: ChangePasswordResponse ...
+      type: object
+      properties: {}
+    GetAdminResponse_additionalProperties_productIds:
+      type: object
+      properties:
+        adminId:
+          type: integer
+          description: The admin ID
+        customerId:
+          type: integer
+          description: The customer ID
+        productId:
+          type: integer
+          description: The unique ID of the associated product
+    admin_password_body:
+      required:
+      - adminEmail
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        adminEmail:
+          type: string
+          description: The email address of the administrator whose password you want to change.
+          example: sample@gmail.com
+        currentPassword:
+          type: string
+          description: The administrator's current password.
+          example: samplePassword!2#4
+        newPassword:
+          type: string
+          description: The administrator's new password that you want to set.
+          example: NewSamplePassword@@Druva$
+    admins_globalAdminID_role_body:
+      required:
+      - role
+      type: object
+      properties:
+        role:
+          type: string
+          description: 'Select the role of the administrator.
+
+            - Druva Cloud - Druva Cloud Administrator is a super administrator who gets all the rights of all the administrative roles across products, based on the services enabled for your account and the privileges needed to modify account settings.
+
+            - Product - Product administrator can perform all core product-related activities such as configuring, managing, and monitoring.
+
+            '
+          enum:
+          - Product
+          - Druva Cloud
+        productAccessControls:
+          $ref: '#/components/schemas/adminRole_productAccessControls'
+    GetAdminResponse_additionalProperties_allowedCustomerContextOperations:
+      type: object
+      properties:
+        editAdmin:
+          type: boolean
+        resetPassword:
+          type: boolean
+        deleteAdmin:
+          type: boolean
+        changePassword:
+          type: boolean
+      description: Depicts the admin permissions
+      writeOnly: true
+  securitySchemes:
+    BearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

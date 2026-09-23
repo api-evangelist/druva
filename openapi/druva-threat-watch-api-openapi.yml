@@ -1,0 +1,901 @@
+openapi: 3.2.0
+info:
+  description: List of APIs that helps to retrieve information and perform operations on Threat Watch. Threat Watch is an automated continuous monitoring feature that scans resources for threats every 8 hours.
+  version: 3.0.0
+  title: Cyber Resilience Threat Watch API
+servers:
+- url: https://apis.druva.com/realize
+tags:
+- name: Threat Watch
+  description: List of APIs that helps to retrieve information and perform operations on Threat Watch. Threat Watch is an automated continuous monitoring feature that scans resources for threats every 8 hours.
+paths:
+  /threathunting/v1/threatwatch/config:
+    get:
+      description: Retrieves the Threat Watch auto-quarantine configuration for the authenticated organization. Returns default values if no configuration exists.
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Get Threat Watch configuration details
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchConfigResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchConfig
+      x-operation-id-source: derived
+    put:
+      description: Creates or updates the Threat Watch auto-quarantine configuration for the authenticated organization.
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Update Threat Watch configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreatWatchConfigUpdateParams'
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchConfigUpdateResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: putThreathuntingV1ThreatwatchConfig
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/devices:
+    get:
+      description: 'The Threat Watch API provides a paginated list of devices affected by matches against Indicators of Compromise (IOC) sets identified during Threat Watch scans over the past 30 days. For each impacted device, the results include: Resource type, Count of file matches, Count of impacted snapshots, Matched IOC Sets, Timestamp of the first match, and Timestamp of the last match.'
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Lists Threat Watch impacted devices
+      parameters:
+      - name: resourceTypes[]
+        in: query
+        description: 'Devices can be filtered based on their resource type (lowercase workload names: vmware, ec2, azurevm, onedrive, sharepoint, exchangeonline).'
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          enum:
+          - vmware
+          - ec2
+          - azurevm
+          - onedrive
+          - sharepoint
+          - exchangeonline
+      - name: iocSetIds[]
+        in: query
+        description: Filters devices based on IOC set IDs. You can specify multiple IOC Set IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchDevicesResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchDevices
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/devices/{deviceID}:
+    get:
+      description: Provides comprehensive details on impacted devices for Threat Watch. This API displays all details similar to the Threat Hunt API.
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Get Threat Watch device details
+      parameters:
+      - name: deviceID
+        in: path
+        description: Specify the device ID. You can obtain the device ID using the 'List Threat Watch Device Results API'.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: Specify the resource type.
+        required: true
+        schema:
+          type: string
+          enum:
+          - vmware
+          - ec2
+          - azurevm
+          - onedrive
+          - sharepoint
+          - exchangeonline
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchDeviceDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchDevicesByDeviceID
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/devices/{deviceID}/stats:
+    get:
+      description: 'Provides comprehensive, device-level statistics for a specified device. The data includes: impacted snapshot counts; Total files impacted across all snapshots; Timestamps for the first and last impacted snapshots; Indicator of Compromise (IOC) sets that matched on the device.'
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Get Threat Watch device statistics
+      parameters:
+      - name: deviceID
+        in: path
+        description: Specify the device ID. You can obtain the device ID using the 'List Threat Watch Device Results API'.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: Specify the resource type.
+        required: true
+        schema:
+          type: string
+          enum:
+          - vmware
+          - ec2
+          - azurevm
+          - onedrive
+          - sharepoint
+          - exchangeonline
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchDeviceStatsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchDevicesByDeviceIDStats
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/impacteddevices/stats:
+    get:
+      description: Get aggregated statistics for impacted devices showing breakdown by resource type and IOC set. This API provides total number of impacted resources and file matches, breakdown of impacted devices by resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, Exchange Online), and breakdown of impacted devices by IOC set name (sorted by impact count in descending order).
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Get Impacted Devices Statistics
+      parameters:
+      - name: minTime
+        in: query
+        description: The start date for the statistics query is a required parameter and must be provided in YYYY-MM-DD format.
+        required: true
+        schema:
+          type: string
+      - name: maxTime
+        in: query
+        description: The statistics query's end date should be specified in YYYY-MM-DD format. If omitted, the current time is used by default.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchImpactedDevicesStatsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchImpacteddevicesStats
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/iocs:
+    get:
+      description: 'Retrieves a paginated list of IOC Sets, including their threat impact metrics and daily trends, with a breakdown by resource type.
+
+
+        Parameters include:
+
+        - minTime (required): The start date for the data range, in YYYY-MM-DD format.
+
+        - maxTime (optional): The end date, in YYYY-MM-DD format. Defaults to the current time. Constraint: If provided, maxTime must be on or after minTime.
+
+        - pageToken (optional): Used to support pagination for navigating results.
+
+
+        Returns:
+
+        - IOC Set metadata
+
+        - Threat impact metrics
+
+        - Daily trends, broken down by resource type.'
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Lists IOC Sets and impacted details for each IOC Set
+      parameters:
+      - name: minTime
+        in: query
+        description: Specifies the start date in YYYY-MM-DD format.
+        required: true
+        schema:
+          type: string
+      - name: maxTime
+        in: query
+        description: Optional end date in YYYY-MM-DD format. If omitted, the current time is used as the default.
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        description: Used to support pagination for navigating results.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchIOCsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchIocs
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/reports/{snapshotID}:
+    get:
+      description: Allows download of Threat Watch report for only impacted snapshots. Requires snapshotID (path), deviceID (query), and resourceType (query) to identify the resource.
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: Downloads Threat Watch snapshot report
+      parameters:
+      - name: snapshotID
+        in: path
+        description: The unique snapshot identifier.
+        required: true
+        schema:
+          type: string
+      - name: deviceID
+        in: query
+        description: Device identifier for the impacted resource. Obtain from List Threat Watch Device Results API.
+        required: true
+        schema:
+          type: integer
+      - name: resourceType
+        in: query
+        description: 'Workload type (lowercase). Required with deviceID. Values: vmware, ec2, azurevm, onedrive, sharepoint, exchangeonline.'
+        required: true
+        schema:
+          type: string
+          enum:
+          - vmware
+          - ec2
+          - azurevm
+          - onedrive
+          - sharepoint
+          - exchangeonline
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchReportResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchReportsBySnapshotID
+      x-operation-id-source: derived
+  /threathunting/v1/threatwatch/scans:
+    get:
+      description: Retrieves Threat Watch automated scan details with pagination support.
+      tags:
+      - Threat Watch
+      security:
+      - Bearer: []
+      summary: List Threat Watch Scans
+      parameters:
+      - name: jobType
+        in: query
+        description: 'Filters by scan type: ''Scheduled'' or ''Retrospective''.'
+        schema:
+          type: string
+          enum:
+          - Scheduled
+          - Retrospective
+      - name: pageToken
+        in: query
+        description: The token to access the next page of results. Use the token value received in the previous response's parameter 'nextPageToken'.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatchScansResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_400'
+        '401':
+          description: The request either did not include an authentication token, or you have provided an expired authentication token.
+        '404':
+          description: The requested resource was not found.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_404'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ThreatWatch_HTTP_500'
+      operationId: getThreathuntingV1ThreatwatchScans
+      x-operation-id-source: derived
+components:
+  schemas:
+    ThreatWatchReportResponse:
+      type: object
+      properties:
+        downloadLink:
+          type: string
+          description: Download the Threat Watch snapshot report using this URL.
+    ThreatWatchConfigResponse:
+      type: object
+      properties:
+        autoQuarantineEnabled:
+          type: boolean
+          description: Indicates whether auto-quarantine is enabled for Threat Watch.
+        lastUpdated:
+          type: string
+          description: Timestamp of the last configuration update. Format - YYYY-MM-DDTHH:MM:SSZ
+          example: '2024-01-02T15:04:05Z'
+    ThreatWatchScansResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+          description: Next page pagination token.
+        threatWatchScans:
+          type: array
+          items:
+            type: object
+            properties:
+              devicesScanned:
+                type: integer
+                description: Number of devices scanned.
+              filesScanned:
+                type: integer
+                description: Total files scanned.
+              lastScannedOn:
+                type: string
+                description: ISO 8601 timestamp of scan start time.
+              nextScheduledOn:
+                type: string
+                description: ISO 8601 timestamp of next scheduled scan.
+              jobType:
+                type: string
+                description: 'Type of scan: ''Scheduled'' or ''Retrospective''.'
+                enum:
+                - Scheduled
+                - Retrospective
+              iocsUsedForScan:
+                type: integer
+                description: Number of IOCs used in the scan.
+              iocsAddedInLastSevenDays:
+                type: integer
+                description: Number of IOCs added in last 7 days.
+              scanStatus:
+                type: string
+                description: 'Status of the scan: ''Running'', ''Completed'', or ''Failed''.'
+          description: List of scan records.
+    ThreatWatch_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatWatchDeviceStatsResponse:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          description: Device identifier.
+        resourceIDs:
+          type: array
+          items:
+            type: integer
+          description: List of resource IDs associated with the device.
+        resourceType:
+          type: string
+          description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
+        impactedSnapshots:
+          type: integer
+          description: Number of impacted snapshots.
+        totalFilesImpacted:
+          type: integer
+          description: Total files impacted across all snapshots.
+        firstImpactedSnapshot:
+          type: string
+          description: ISO 8601 timestamp of first impacted snapshot.
+        lastImpactedSnapshot:
+          type: string
+          description: ISO 8601 timestamp of last impacted snapshot.
+        iocSetsMatched:
+          type: array
+          items:
+            type: object
+            properties:
+              iocSetID:
+                type: integer
+                description: IOC set identifier.
+              iocSetName:
+                type: string
+                description: IOC set name.
+          description: List of IOC sets that matched on the device.
+    ThreatWatchConfigUpdateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message indicating the result of the configuration update.
+        validationFailures:
+          type: array
+          items:
+            type: string
+          description: List of validation failures, if any.
+    ThreatWatchDeviceDetailsResponse:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          description: Device identifier.
+        resourceIDs:
+          type: array
+          items:
+            type: integer
+          description: List of resource IDs.
+        resourceName:
+          type: string
+          description: Resource name.
+        resourceURL:
+          type: string
+          description: URL to resource in console.
+        resourceType:
+          type: string
+          description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
+        orgID:
+          type: integer
+          description: Organization ID.
+        orgName:
+          type: string
+          description: Organization name.
+        resourceParentID:
+          type: integer
+          description: Parent resource ID (e.g., vCenter, AWS Account).
+        resourceParentName:
+          type: string
+          description: Parent resource name.
+        payload:
+          type: object
+          description: Additional resource metadata.
+    ThreatWatchImpactedDevicesStatsResponse:
+      type: object
+      properties:
+        totalImpactedResources:
+          type: integer
+          description: Total number of impacted resources.
+        totalFileMatches:
+          type: integer
+          description: Total number of file matches across all impacted devices.
+        impactByResourceType:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceType:
+                type: string
+                description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
+              impactedDevices:
+                type: integer
+                description: Number of impacted devices for this resource type.
+          description: Breakdown by resource type.
+        impactByIoC:
+          type: array
+          items:
+            type: object
+            properties:
+              iocSetID:
+                type: integer
+                description: IOC set identifier.
+              iocSetName:
+                type: string
+                description: IOC set name.
+              impactedDevices:
+                type: integer
+                description: Number of devices impacted by this IOC set.
+          description: Breakdown by IOC set (sorted by impact count in descending order).
+    ThreatWatchConfigUpdateParams:
+      type: object
+      required:
+      - autoQuarantineEnabled
+      properties:
+        autoQuarantineEnabled:
+          type: boolean
+          description: Enable or disable auto-quarantine for Threat Watch. Requires Premium SKU license and admin privileges.
+    ThreatWatchDevicesResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        impactedDevices:
+          type: array
+          items:
+            type: object
+            properties:
+              deviceID:
+                type: integer
+                description: Device identifier.
+              resourceIDs:
+                type: array
+                items:
+                  type: integer
+                description: List of resource IDs.
+              resourceName:
+                type: string
+                description: Resource name.
+              resourceType:
+                type: string
+                description: Resource type. The resource types can be 'VMware', 'EC2', 'AzureVM', 'OneDrive', 'SharePoint', and 'ExchangeOnline'.
+              orgID:
+                type: integer
+                description: Organization ID.
+              payload:
+                type: object
+                description: Additional resource metadata.
+              fileMatches:
+                type: integer
+                description: Total file matches for the device.
+              snapshotsImpacted:
+                type: integer
+                description: Number of infected snapshots.
+              iocSetsMatched:
+                type: array
+                items:
+                  type: string
+                description: List of IOC set names that matched.
+              firstMatchedOn:
+                type: string
+                description: ISO 8601 timestamp of first match.
+              lastMatchedOn:
+                type: string
+                description: ISO 8601 timestamp of last match.
+          description: List of impacted devices.
+        totalImpactedDevices:
+          type: integer
+          description: Total number of impacted devices.
+    ThreatWatch_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatWatchIOCsResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+          description: Token for pagination to next page.
+        iocSet:
+          type: array
+          items:
+            type: object
+            properties:
+              iocSetName:
+                type: string
+                description: IOC set name.
+              iocSetType:
+                type: string
+                description: Type of IOC set - 'hash' or 'extension'.
+              iocSetId:
+                type: integer
+                description: IOC set identifier.
+              totalIOCsInSet:
+                type: integer
+                description: Total number of IOCs in the set.
+              source:
+                type: string
+                description: Source of the IOC set (e.g., 'CISA', 'Druva', 'Custom').
+              lastUpdated:
+                type: string
+                description: ISO 8601 timestamp of last update.
+              createdBy:
+                type: string
+                description: Creator of the IOC set.
+              isDruvaPublished:
+                type: boolean
+                description: Indicates if the IOC Set is a Druva-published entity.
+              threatImpact:
+                type: object
+                properties:
+                  devicesImpacted:
+                    type: integer
+                    description: Total devices impacted by this IOC Set.
+                  snapshotsImpacted:
+                    type: integer
+                    description: Total snapshots impacted by this IOC Set.
+                  filesImpacted:
+                    type: integer
+                    description: Total files impacted by this IOC Set.
+                  uniqueIOCMatches:
+                    type: integer
+                    description: Number of unique IOCs that matched.
+                  firstMatchedOn:
+                    type: string
+                    description: ISO 8601 timestamp of first match.
+                  lastMatchedOn:
+                    type: string
+                    description: ISO 8601 timestamp of last match.
+                description: Overall threat impact metrics.
+              impactTrend:
+                type: array
+                description: Trends in daily impact over the specified period.
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      description: Use the YYYY-MM-DD format for the date.
+                    devicesImpacted:
+                      type: integer
+                      description: The devices affected as of this date.
+                    snapshotsImpacted:
+                      type: integer
+                      description: The snapshots affected as of this date.
+                    filesImpacted:
+                      type: integer
+                      description: The files affected as of this date.
+                    impactByResourceType:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          resourceType:
+                            type: string
+                            description: The resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline) affected as of this date.
+                          impactedDevices:
+                            type: integer
+                            description: The devices affected for the resource type.
+                      description: Breakdown by resource type.
+          description: The list of Indicators of Compromise (IOC) sets, along with their associated impact metrics, has been compiled.
+        totalImpactedIOCSets:
+          type: integer
+          description: The total count of affected IOC sets.
+    ThreatWatch_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1006
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://apis.druva.com/token
+          scopes:
+            read: Grants read access
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

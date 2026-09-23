@@ -1,0 +1,2623 @@
+openapi: 3.2.0
+info:
+  description: '# Welcome to CloudRanger
+
+
+    Here are some instructions on how to use the API
+
+    ## Authentication and Authorization
+
+    * Access to the API is controlled by your API key generated in the CloudRanger dashboard and token
+
+    * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
+
+    * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
+  title: CloudRanger Servers API
+  version: '2022-12-07T16:38:31.962Z'
+servers:
+- url: https://api.cloudranger.com/202004
+tags:
+- description: Servers in your CloudRanger Account
+  name: Servers
+paths:
+  /organizations/{organization_id}/accounts/{account_id}/servers:
+    get:
+      description: Returns all the servers associated to the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The number of records to be returned for a single page for the request.
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          type: integer
+      - description: Defines the offset from the first result you want to fetch.
+        in: query
+        name: offset
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServers
+      x-operation-id-source: derived
+    post:
+      description: Creates/Attaches a server to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersRequest'
+        description: Server Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServers
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers_configured:
+    get:
+      description: Return configured servers by account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServers_configuredResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Configured Servers
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersConfigured
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}:
+    put:
+      description: Updates the information related to the specific server of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOrganizationsAccountsServersByIdRequest'
+        description: Server Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutOrganizationsAccountsServersByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Update Server
+      tags:
+      - Servers
+      operationId: putOrganizationsByOrganizationIdAccountsByAccountIdServersByServerId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/backup:
+    post:
+      description: Backups the specific server associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersBackupRequest'
+        description: Backup Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersBackupResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Create Backup
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdBackup
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/policies:
+    get:
+      description: Returns the policies attached to the specific server of an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersPoliciesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Policies
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdPolicies
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/schedules:
+    get:
+      description: Returns the schedules attached to the specific server of an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersSchedulesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Server Schedules
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdSchedules
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/start:
+    post:
+      description: Starts the specific server associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersStartRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersStartResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Start Server
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdStart
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/stats:
+    get:
+      description: Returns the statistics of the specific server associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersStatsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Stats
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdStats
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/{server_id}/stop:
+    post:
+      description: Stops the specific server associated to the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS server resource.
+        in: path
+        name: server_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersStopRequest'
+        description: N/A
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersStopResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Stop Server
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersByServerIdStop
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/adr_verification:
+    post:
+      description: Create a new ADR server verification list
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersAdr_verificationRequest'
+        description: DR Plan Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersAdr_verificationResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Verify ADR Servers
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersAdrVerification
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/count:
+    get:
+      description: Returns the count of the servers associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Server Count
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/db_subnet_group/{db_subnet_group_name}:
+    get:
+      description: Return servers by DB subnet group name
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The name of the AWS Database Subnet Group resource.
+        in: path
+        name: db_subnet_group_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersDb_subnet_groupByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers By SubnetGroup
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersDbSubnetGroupByDbSubnetGroupName
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/ids:
+    get:
+      description: Returns the ids of the servers associated to an account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersIdsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Ids
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersIds
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/protection_count:
+    get:
+      description: Return count of protected servers by account id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersProtection_countResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Protected Count
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersProtectionCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/region/{region}:
+    get:
+      description: Returns the servers associated to the region of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The region that you want to perform the request against. This can be found by checking where your resource is located in the CloudRanger console or in the AWS console
+        in: path
+        name: region
+        required: true
+        schema:
+          enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - af-south-1
+          - ap-southeast-4
+          - ap-east-1
+          - ap-south-2
+          - ap-southeast-3
+          - ap-south-1
+          - ap-northeast-3
+          - ap-northeast-2
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-northeast-1
+          - ca-central-1
+          - eu-central-1
+          - eu-west-1
+          - eu-west-2
+          - eu-south-1
+          - eu-west-3
+          - eu-south-2
+          - eu-north-1
+          - eu-central-2
+          - me-south-1
+          - me-central-1
+          - il-central-1
+          - sa-east-1
+          - us-gov-west-1
+          - us-gov-east-1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersRegionByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersRegionByRegion
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/security_group/{group_id}:
+    get:
+      description: Return servers by security group id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The unique idendtifier of the AWS auto scaling group resource.
+        in: path
+        name: group_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersSecurity_groupByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers By SecurityGroup
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersSecurityGroupByGroupId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/sshkeys:
+    post:
+      description: Return SSH keys by account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersSshkeysRequest'
+        description: Rules
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersSshkeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get SSH Keys
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersSshkeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/stats:
+    get:
+      description: Returns the statistics of the servers associated to the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersStatsResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Stats
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersStats
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/subnet/{subnet_id}:
+    get:
+      description: Return servers by subnet id
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The subnet that you want to perform the request against. This can be found by checking which subnet your resource is located in from the CloudRanger console or the AWS console
+        in: path
+        name: subnet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersSubnetByIdResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Servers By Subnet
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersSubnetBySubnetId
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/tags/count:
+    post:
+      description: Returns the count of the tags that are associated with the servers of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostOrganizationsAccountsServersTagsCountRequest'
+        description: Tag Info
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOrganizationsAccountsServersTagsCountResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Count
+      tags:
+      - Servers
+      operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersTagsCount
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/tags/keys:
+    get:
+      description: Returns the tag keys associated to the servers of the given account
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: The list of CloudRanger account IDS to be used in the request. These can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: query
+        name: account_ids
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersTagsKeysResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Keys
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/accounts/{account_id}/servers/tags/keys/{key}/values:
+    get:
+      description: Return tag values by key
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Account id of the CloudRanger Account that you are managing inside an organization, these can be found by call the /organizations/{organization_id}/accounts endpoints which returns all accounts inside an Organization These are randomly generated alphanumber values
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsAccountsServersTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Values
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersTagsKeysByKeyValues
+      x-operation-id-source: derived
+  /organizations/{organization_id}/resources/tags/keys:
+    get:
+      description: Returns the tag keys associated to the servers of the given organization
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsResourcesTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Keys
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdResourcesTagsKeys
+      x-operation-id-source: derived
+  /organizations/{organization_id}/resources/tags/keys/{key}/values:
+    get:
+      description: Return tag values by key
+      parameters:
+      - description: Organization Id of the Organization that you are working with. This can be found by looking at the organization id in the URL of the dashboard. These are randomly generated alphanumber values
+        in: path
+        name: organization_id
+        required: true
+        schema:
+          type: string
+      - description: Then key of an AWS tag as used in the CloudRanger server schedules to specify managed resources.
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationsResourcesTagsKeysValuesResponse'
+          description: 200 response
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty'
+          description: 201 response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 401 response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 403 response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: 404 response
+      security:
+      - API_Authorizer: []
+        api_key: []
+      summary: Get Tag Values
+      tags:
+      - Servers
+      operationId: getOrganizationsByOrganizationIdResourcesTagsKeysByKeyValues
+      x-operation-id-source: derived
+components:
+  schemas:
+    PostOrganizationsAccountsServersStopRequest:
+      type: object
+    GetOrganizationsAccountsServersSecurity_groupByIdResponse:
+      properties:
+        instances:
+          items:
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsServersAdr_verificationRequest:
+      properties:
+        rpo:
+          properties:
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                    ruleId:
+                      type: integer
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              match:
+                type: integer
+              matches:
+                type: object
+              protectedStatus:
+                type: string
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        source_region:
+          type: string
+        target_account_id:
+          type: string
+        target_region:
+          type: string
+      type: object
+    PostOrganizationsAccountsServersStartRequest:
+      type: object
+    PostOrganizationsAccountsServersResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: object
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsServersRegionByIdResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: object
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsServersBackupResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsServersTagsCountRequest:
+      properties:
+        all:
+          type: boolean
+        Tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersIdsResponse:
+      properties:
+        AccountId:
+          type: string
+        InstanceId:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+        Type:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersCountResponse:
+      properties:
+        _shards:
+          properties:
+            failed:
+              type: integer
+            successful:
+              type: integer
+            total:
+              type: integer
+          type: object
+        count:
+          type: integer
+      type: object
+    GetOrganizationsAccountsServersResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: string
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsServersBackupRequest:
+      properties:
+        backup_type:
+          type: string
+        type:
+          type: string
+      type: object
+    GetOrganizationsResourcesTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsServersStatsResponse:
+      properties:
+        total:
+          properties:
+            count:
+              type: integer
+            protected:
+              type: integer
+            scheduled:
+              type: integer
+          type: object
+      type: object
+    GetOrganizationsAccountsServersTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsServersStopResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersSchedulesResponse:
+      properties:
+        schedules:
+          items:
+            type: string
+          type: array
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsAccountsServersRequest:
+      properties:
+        Keywords:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersSubnetByIdResponse:
+      properties:
+        instances:
+          items:
+            properties:
+              _id:
+                type: string
+              _index:
+                type: string
+              _routing:
+                type: string
+              _score:
+                type: number
+              _source:
+                type: object
+              _type:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersProtection_countResponse:
+      properties:
+        not_protected:
+          type: integer
+        protected:
+          type: integer
+      type: object
+    PostOrganizationsAccountsServersAdr_verificationResponse:
+      properties:
+        validPolicies:
+          items:
+            properties:
+              copies:
+                properties:
+                  cross_account_id:
+                    type: string
+                  cross_account_region:
+                    type: string
+                  first_region:
+                    type: string
+                  interval:
+                    type: integer
+                  policy_id:
+                    type: integer
+                  policyId:
+                    type: integer
+                  retention_amount:
+                    type: integer
+                  retention_type:
+                    type: string
+                  retention_unit:
+                    type: string
+                  second_region:
+                    type: string
+                type: object
+              created_at:
+                format: date-time
+                type: string
+              created_by:
+                type: string
+              deleted_at:
+                type: string
+              description:
+                type: string
+              fls_index_freq:
+                type: string
+              id:
+                type: integer
+              inherit_tags:
+                type: boolean
+              is_active:
+                type: boolean
+              is_fls_indexed:
+                type: boolean
+              name:
+                type: string
+              organization_id:
+                type: string
+              organizationId:
+                type: string
+              resource_options:
+                properties:
+                  ami_reboot:
+                    type: boolean
+                  ec2_amis:
+                    type: boolean
+                  policy_id:
+                    type: integer
+                  policyId:
+                    type: integer
+                  script_failback_action:
+                    type: string
+                  script_timeout_seconds:
+                    type: integer
+                  scripts:
+                    type: boolean
+                  vss:
+                    type: boolean
+                type: object
+              rules:
+                items:
+                  properties:
+                    accounts:
+                      items:
+                        properties:
+                          account_id:
+                            type: string
+                          rule_id:
+                            type: integer
+                          ruleId:
+                            type: integer
+                        type: object
+                      type: array
+                    all_accounts:
+                      type: boolean
+                    all_regions:
+                      type: boolean
+                    all_resource_types:
+                      type: boolean
+                    created_at:
+                      type: string
+                    exclude:
+                      type: boolean
+                    id:
+                      type: integer
+                    matches:
+                      type: object
+                    policy_id:
+                      type: integer
+                    policyId:
+                      type: integer
+                    regions:
+                      items:
+                        type: string
+                      type: array
+                    resource_types:
+                      items:
+                        type: string
+                      type: array
+                    resources:
+                      items:
+                        properties:
+                          account_id:
+                            type: string
+                          region:
+                            type: string
+                          resource_id:
+                            type: string
+                          type:
+                            type: string
+                        type: object
+                      type: array
+                    rule_type:
+                      type: string
+                    updated_at:
+                      type: string
+                  type: object
+                type: array
+              schedule_cron:
+                type: string
+              timezone_location:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        verifiedResources:
+          items:
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsServersSshkeysRequest:
+      properties:
+        region:
+          type: string
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              match:
+                type: integer
+              matches:
+                type: object
+              protectedStatus:
+                type: string
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsServersTagsCountResponse:
+      properties:
+        hits:
+          properties:
+            hits:
+              items:
+                type: object
+              type: array
+            total:
+              type: integer
+          type: object
+      type: object
+    PutOrganizationsAccountsServersByIdResponse:
+      type: object
+    PostOrganizationsAccountsServersSshkeysResponse:
+      properties:
+        KeyPairs:
+          items:
+            properties:
+              KeyFingerprint:
+                type: string
+              KeyName:
+                type: string
+              KeyPairId:
+                type: string
+              KeyType:
+                type: string
+              Region:
+                type: string
+              Tags:
+                items:
+                  properties:
+                    Key:
+                      type: string
+                    Value:
+                      type: string
+                  type: object
+                type: array
+            type: object
+          type: array
+      type: object
+    PutOrganizationsAccountsServersByIdRequest:
+      properties:
+        __AccountId:
+          type: string
+        __OrganizationId:
+          type: string
+        AmiLaunchIndex:
+          type: integer
+        Architecture:
+          type: string
+        BlockDeviceMappings:
+          items:
+            properties:
+              DeviceName:
+                type: string
+              Ebs:
+                properties:
+                  AttachTime:
+                    format: date-time
+                    type: string
+                  DeleteOnTermination:
+                    type: boolean
+                  Status:
+                    type: string
+                  VolumeId:
+                    type: string
+                type: object
+            type: object
+          type: array
+        CapacityReservationSpecification:
+          properties:
+            CapacityReservationPreference:
+              type: string
+          type: object
+        ClientToken:
+          type: string
+        CpuOptions:
+          properties:
+            CoreCount:
+              type: integer
+            ThreadsPerCore:
+              type: integer
+          type: object
+        EbsOptimized:
+          type: boolean
+        ElasticGpuAssociations:
+          items:
+            type: string
+          type: array
+        ElasticInferenceAcceleratorAssociations:
+          items:
+            type: string
+          type: array
+        EnaSupport:
+          type: boolean
+        HibernationOptions:
+          properties:
+            Configured:
+              type: boolean
+          type: object
+        Hypervisor:
+          type: string
+        Id:
+          type: string
+        ImageId:
+          type: string
+        InstanceId:
+          type: string
+        InstanceType:
+          type: string
+        KeyName:
+          type: string
+        LaunchTime:
+          format: date-time
+          type: string
+        Licenses:
+          items:
+            type: string
+          type: array
+        MetadataOptions:
+          properties:
+            HttpEndpoint:
+              type: string
+            HttpPutResponseHopLimit:
+              type: integer
+            HttpTokens:
+              type: string
+            State:
+              type: string
+          type: object
+        Monitoring:
+          properties:
+            State:
+              type: string
+          type: object
+        Name:
+          type: string
+        NetworkInterfaces:
+          items:
+            properties:
+              Association:
+                properties:
+                  IpOwnerId:
+                    type: string
+                  PublicDnsName:
+                    type: string
+                  PublicIp:
+                    type: string
+                type: object
+              Attachment:
+                properties:
+                  AttachmentId:
+                    type: string
+                  AttachTime:
+                    format: date-time
+                    type: string
+                  DeleteOnTermination:
+                    type: boolean
+                  DeviceIndex:
+                    type: integer
+                  Status:
+                    type: string
+                type: object
+              Description:
+                type: string
+              Groups:
+                items:
+                  properties:
+                    GroupId:
+                      type: string
+                    GroupName:
+                      type: string
+                  type: object
+                type: array
+              InterfaceType:
+                type: string
+              Ipv6Addresses:
+                items:
+                  type: string
+                type: array
+              MacAddress:
+                type: string
+              NetworkInterfaceId:
+                type: string
+              OwnerId:
+                type: string
+              PrivateDnsName:
+                type: string
+              PrivateIpAddress:
+                type: string
+              PrivateIpAddresses:
+                items:
+                  properties:
+                    Association:
+                      properties:
+                        IpOwnerId:
+                          type: string
+                        PublicDnsName:
+                          type: string
+                        PublicIp:
+                          type: string
+                      type: object
+                    Primary:
+                      type: boolean
+                    PrivateDnsName:
+                      type: string
+                    PrivateIpAddress:
+                      type: string
+                  type: object
+                type: array
+              SourceDestCheck:
+                type: boolean
+              Status:
+                type: string
+              SubnetId:
+                type: string
+              VpcId:
+                type: string
+            type: object
+          type: array
+        ObjectType:
+          type: string
+        Placement:
+          properties:
+            AvailabilityZone:
+              type: string
+            GroupName:
+              type: string
+            Tenancy:
+              type: string
+          type: object
+        postDate:
+          format: date-time
+          type: string
+        PrivateDnsName:
+          type: string
+        PrivateIpAddress:
+          type: string
+        ProductCodes:
+          items:
+            type: string
+          type: array
+        PublicDnsName:
+          type: string
+        PublicIpAddress:
+          type: string
+        Region:
+          type: string
+        RootDeviceName:
+          type: string
+        RootDeviceType:
+          type: string
+        SecurityGroups:
+          items:
+            properties:
+              GroupId:
+                type: string
+              GroupName:
+                type: string
+            type: object
+          type: array
+        Source:
+          type: string
+        SourceDestCheck:
+          type: boolean
+        State:
+          properties:
+            Code:
+              type: integer
+            Name:
+              type: string
+          type: object
+        StateTransitionReason:
+          type: string
+        SubnetId:
+          type: string
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+        TagStrings:
+          items:
+            properties:
+              Combined:
+                type: string
+            type: object
+          type: array
+        Type:
+          type: string
+        VirtualizationType:
+          type: string
+        Volumes:
+          items:
+            properties:
+              __AccountId:
+                type: string
+              __OrganizationId:
+                type: string
+              Attachments:
+                items:
+                  properties:
+                    AttachTime:
+                      format: date-time
+                      type: string
+                    DeleteOnTermination:
+                      type: boolean
+                    Device:
+                      type: string
+                    InstanceId:
+                      type: string
+                    State:
+                      type: string
+                    VolumeId:
+                      type: string
+                  type: object
+                type: array
+              AvailabilityZone:
+                type: string
+              CreateTime:
+                format: date-time
+                type: string
+              Encrypted:
+                type: boolean
+              Id:
+                type: string
+              Iops:
+                type: integer
+              ObjectType:
+                type: string
+              postDate:
+                format: date-time
+                type: string
+              Region:
+                type: string
+              Size:
+                type: integer
+              SnapshotId:
+                type: string
+              Source:
+                type: string
+              State:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              TagStrings:
+                items:
+                  type: string
+                type: array
+              Type:
+                type: string
+              VolumeId:
+                type: string
+              VolumeType:
+                type: string
+            type: object
+          type: array
+        VpcId:
+          type: string
+      type: object
+    GetOrganizationsAccountsServers_configuredResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: object
+              type: array
+            Type:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersPoliciesResponse:
+      properties:
+        policies:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsServersStartResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersDb_subnet_groupByIdResponse:
+      properties:
+        instances:
+          items:
+            properties:
+              _id:
+                type: string
+              _index:
+                type: string
+              _routing:
+                type: string
+              _score:
+                type: number
+              _source:
+                type: object
+              _type:
+                type: string
+            type: object
+          type: array
+      type: object
+  securitySchemes:
+    API_Authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

@@ -1,0 +1,1620 @@
+openapi: 3.2.0
+info:
+  title: Druva MSP Enterprise Workloads Reports API
+  version: 1.0.0
+  x-logo:
+    url: ''
+  description: Lists the APIs to get MSP Enterprise Workload reports data.
+servers:
+- url: https://apis.druva.com/
+security: []
+tags:
+- name: Enterprise Workloads Reports
+  description: Lists the APIs to get MSP Enterprise Workload reports data.
+paths:
+  /msp/reporting/v1/reports/mspEWAlertHistory:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Alert History Report
+      description: Provides a view of alerts details of MSP customers as per severity and type. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetAlertHistoryReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: severity
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - generated
+                            - description
+                            - target
+                            - resolved
+                            - alertType
+                            - severity
+                            - lastUpdatedTime
+                            - organization
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: Warning
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAlertHistoryReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWBackupActivity:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Backup Activity Report
+      description: Provides a comprehensive list of all backup operations performed for resources of the workloads configured in the organizations of the MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetBackupActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: jobID
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - ended
+                            - started
+                            - scheduled
+                            - jobID
+                            - workloads
+                            - status
+                            - backupPolicy
+                            - backupType
+                            - resourceType
+                            - vm
+                            - backupMethod
+                            - backupContent
+                            - backupMountName
+                            - scanType
+                            - backupSet
+                            - administrativeGroup
+                            - organization
+                            - details
+                            - deviceName
+                            - configurationMode
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: integer
+                              description: integer
+                            - type: string
+                              description: string
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '668'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBackupActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWResourceStatus:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Resource Status Report
+      description: Provides a consolidated and point-in-time status and details of all resources and associated backup sets of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetResourceStatusReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: backupsetType
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - backupEnabled
+                            - backupsetType
+                            - clientVersion
+                            - osVersion
+                            - resourceName
+                            - backupset
+                            - administrativeGroup
+                            - organization
+                            - lastUpdatedTime
+                            - timezone
+                            - backupContent
+                            - backupPolicy
+                            - storageTier
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: Files
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetResourceStatusReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWStorageConsumptionbyBackupSets:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Storage Consumption by BackupSets Report
+      description: Lists the Backup Set wise storage consumption details for individual resources in the organization of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetStorageConsumptionbyBackupSetsReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: organization
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - currentSource
+                            - estimatedStorage
+                            - sourceChanges
+                            - storageCloud
+                            - storageSourceReductionFactor
+                            - backupPolicy
+                            - backupContent
+                            - backupSetType
+                            - backupSet
+                            - administrativeGroup
+                            - organization
+                            - storageTier
+                            - warmThreshold
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: LT
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: org_2
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorageConsumptionbyBackupSetsReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWDisasterRecoveryReplicationActivity:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Disaster Recovery Replication Activity Report
+      description: Provides a consolidated view of DR restore job completion summary as per status and details of all replications of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetDisasterRecoveryReplicationActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: lastUpdatedTime
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - ended
+                            - started
+                            - scheduled
+                            - jobID
+                            - details
+                            - awsAccountAndRegion
+                            - status
+                            - vm
+                            - drPlanName
+                            - organization
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: GTE
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '2023-06-04T08:37:28.593Z'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDisasterRecoveryReplicationActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWDisasterRecoveryFailbackActivity:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Disaster Recovery Failback Activity Report
+      description: Provides details of the failback jobs triggered for the failed over EC2 instances in the organization of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetDisasterRecoveryFailbackActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: jobID
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - ended
+                            - started
+                            - jobID
+                            - details
+                            - destinationVCenterESXi
+                            - organization
+                            - drPlanName
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: integer
+                              description: integer
+                            - type: string
+                              description: string
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '1001'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDisasterRecoveryFailbackActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWDisasterRecoveryFailoverActivity:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Disaster Recovery Failover Activity Report
+      description: Provides a consolidated view of DR failover job completion summary as per the status and details of all DR failovers of MSP customers. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetDisasterRecoveryFailoverActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: vmName
+                            enum:
+                            - customerGlobalId
+                            - accountName
+                            - customerName
+                            - lastUpdatedTime
+                            - duration
+                            - ended
+                            - started
+                            - jobID
+                            - status
+                            - instanceDetails
+                            - failoverEndTime
+                            - failoverStartTime
+                            - vmName
+                            - recoveryStep
+                            - details
+                          operator:
+                            type: string
+                            description: Specify the operator(s) for the report. The possible values are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: vm-123
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDisasterRecoveryFailoverActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /msp/reporting/v1/reports/mspEWRestoreActivity:
+    post:
+      tags:
+      - Enterprise Workloads Reports
+      summary: View Restore Activity Report
+      description: This report provides a comprehensive list of all restore operations performed for resources of the workloads configured within the organizations. This API may be updated without any prior notification. Check the API documentation for the latest updates regularly.
+      operationId: GetEWRestoreActivityReportDataRequest
+      parameters:
+      - name: Authorization
+        description: Specify the Bearer access token
+        schema:
+          type: string
+        in: header
+        required: true
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  properties:
+                    pageSize:
+                      type: integer
+                      description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+                      default: 100
+                    filterBy:
+                      type: array
+                      description: Select the filters to be applied to the report.
+                      items:
+                        type: object
+                        properties:
+                          fieldName:
+                            type: string
+                            description: Specify the name of the filter.
+                            example: accountName
+                            enum:
+                            - accountName
+                            - customerName
+                            - customerGlobalId
+                            - lastUpdatedTime
+                            - ended
+                            - started
+                            - scheduled
+                            - jobID
+                            - workloads
+                            - details
+                            - status
+                            - dataSelectedForRestore
+                            - destinationServer
+                            - source
+                            - restoreLocation
+                            - administrativeGroup
+                            - organization
+                            - sourceVMLocation
+                          operator:
+                            type: string
+                            description: The operators that are supported for the filter are - EQUAL, NOTEQUAL, CONTAINS, LT (less-than), LTEQ (less-than-or-equal), GT (greater-than), GTEQ (greater-than-or-equal).
+                            example: EQUAL
+                            enum:
+                            - EQUAL
+                            - GT
+                            - GTE
+                            - LT
+                            - LTE
+                            - CONTAINS
+                            - NOTEQUAL
+                          value:
+                            oneOf:
+                            - type: string
+                              description: string
+                            - type: integer
+                              description: integer
+                            - type: array
+                              description: array of strings
+                              items:
+                                type: string
+                            - type: array
+                              description: array of integers
+                              items:
+                                type: integer
+                            description: Specify the value of the filter applied to the report.
+                            example: '3'
+                pageToken:
+                  type: string
+                  description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
+                  example: ''
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEWRestoreActivityReportDataResponse'
+        '400':
+          description: Bad Request
+          content: {}
+        '404':
+          description: The requested resource was not found.
+          content: {}
+        '500':
+          description: The request was not processed due to an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+components:
+  schemas:
+    ResourceStatusReportData:
+      title: ResourceStatusReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        backupEnabled:
+          type: string
+          description: The status of the backup set, whether it is enabled for backup.
+          example: 'Yes'
+        backupsetType:
+          type: string
+          description: The type of the backup set created for the resource. For example, Files, VMware, and so on.
+          example: Files
+        clientVersion:
+          type: string
+          description: The version of the agent installed.
+          example: 6.2.0
+        osVersion:
+          type: string
+          description: The version of the operating system of the resource.
+          example: Windows-2012Server-6.2.9200-SP0 (64bit)
+        resourceName:
+          type: string
+          description: The name of the resource configured for backup.
+          example: spryiq_Win2k12-Client2
+        backupset:
+          type: string
+          description: The name of the backup set associated with the resource.
+          example: spryiq_Win2k12-Client2#bset6
+        administrativeGroup:
+          type: string
+          description: The name of the administrative group of the workload.
+          example: admin_org-1
+        organization:
+          type: string
+          description: The name of the organization.
+          example: org-1
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-03T02:22:34.383Z'
+        timezone:
+          type: string
+          example: Asia/Calcutta
+        backupContent:
+          type: string
+          description: Details of the files included in & excluded from the backup.
+          example: Backup Folders- All Folders
+        backupPolicy:
+          type: string
+          description: The backup policy associated with the resource.
+          example: BackupPolicy1org2
+        storageTier:
+          type: string
+          description: Type of storage tier.
+          example: WARM
+        configurationMode:
+          type: string
+          description: "This field indicates how the Azure Virtual Machine (VM) is configured. It will contain either \"Auto Configuration\" or \"Manual Configuration\" \n - **Auto Configuration:** The VM is configured with an Auto Configuration Rule. The name of the specific rule will be included in this field.\n - **Manual Configuration:** The VM does not have an Auto Configuration Rule applied. It is likely configured manually."
+          example: AC-naz_356
+        azureRegion:
+          type: string
+          description: 'This field specifies the geographical location where the Azure Virtual Machine (VM) resides. Example: eastus.'
+          example: eastus
+        azureSubscription:
+          type: string
+          description: This field specifies the Azure subscription where the Virtual Machine (VM) is deployed.
+          example: Product Environment
+    GetEWRestoreActivityReportDataResponse:
+      title: GetEWRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EWRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    DisasterRecoveryReplicationActivityReportData:
+      title: DisasterRecoveryReplicationActivityReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-05T08:37:28.593Z'
+        ended:
+          type: string
+          description: The date and time when the DR Replication ended.
+          format: date-time
+          example: '2023-06-04T01:37:28.593Z'
+        started:
+          type: string
+          description: The date and time when the DR Replication first occurred.
+          format: date-time
+          example: '2023-06-04T08:37:28.593Z'
+        scheduled:
+          type: string
+          description: The time and date when the DR Replication restore is scheduled.
+          format: date-time
+          example: '2023-06-05T09:37:28.593Z'
+        jobID:
+          type: integer
+          description: The unique identification number of the DR Replication job.
+          example: 101
+        details:
+          type: string
+          description: The details of the DR Replication Job. For example, Cancelled.
+          example: Update DR Copy Successfully
+        awsAccountAndRegion:
+          type: string
+          description: The name of the AWS account and region.
+          example: ''
+        status:
+          type: string
+          description: The status of the DR Replication Job. For example, Cancelled, Failed, and Successful.
+          example: Failed
+        vm:
+          type: string
+          description: The name of the virtual machine.
+          example: Windows_2K12_uefi_R2
+        drPlanName:
+          type: string
+          description: The name of the DR Plan.
+          example: Lin
+        organization:
+          type: string
+          description: The name of the organization.
+          example: Default Organization
+    GetAlertHistoryReportDataResponse:
+      title: GetAlertHistoryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertHistoryReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetBackupActivityReportDataResponse:
+      title: GetBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupActivityReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    DisasterRecoveryFailoverActivityReportData:
+      title: DisasterRecoveryFailoverActivityReportData
+      type: object
+      properties:
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-04T08:22:34.383Z'
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        duration:
+          type: string
+          description: The duration of the DR Failover along with the date and time.
+          format: date-time
+        ended:
+          type: string
+          description: The date and time when the DR Failover ended.
+          format: date-time
+          example: '2023-06-03T09:22:34.383Z'
+        started:
+          type: string
+          description: The date and time when the DR Failover first occurred.
+          format: date-time
+          example: '2023-06-03T07:22:34.383Z'
+        jobID:
+          type: integer
+          description: The unique identification number of the DR Failover job.
+          example: 1345
+        status:
+          type: string
+          description: The status of the DR Failover Job. For example, Cancelled, Failed, and Successful.
+          example: Successful
+        instanceDetails:
+          type: string
+          description: The details of the restoration for a DR Failover along with date and time. For example, Restore Point.
+          example: 'Restore point: Thu Nov 17 15:06:12 2022 EC2 Instance ID: i-0d72873392290acax'
+        failoverEndTime:
+          type: string
+          description: The date and time when the DR Failover ended.
+          format: date-time
+          example: '2023-06-03T03:22:34.383Z'
+        failoverStartTime:
+          type: string
+          description: The date and time when the DR Failover first occurred.
+          format: date-time
+          example: '2023-06-03T02:22:34.383Z'
+        vmName:
+          type: string
+          description: The name of the virtual machine.
+          example: vm-123
+        recoveryStep:
+          type: string
+          description: The restoration action taken for any disaster scenario.
+          example: 'Step: 1 - VM Boot'
+        details:
+          type: string
+          description: The details of the DR Failover Job. For example, Cancelled.
+          example: Successful
+    BackupActivityReportData:
+      title: BackupActivityReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        ended:
+          type: string
+          description: The time when the backup operation finished.
+          format: date-time
+          example: '2023-06-04T01:05:18.493Z'
+        started:
+          type: string
+          description: The time when the backup operation started.
+          format: date-time
+          example: '2023-06-04T03:05:18.493Z'
+        scheduled:
+          type: string
+          description: The backup schedule defined for the backup set.
+          format: date-time
+          example: '2023-06-05T10:05:18.493Z'
+        jobID:
+          type: integer
+          description: The unique identification number associated with the backup job.
+          example: 668
+        workloads:
+          type: string
+          description: The name of the workload to which the backup set belongs. For example Files, OracleDTC.
+          example: Files
+        status:
+          type: string
+          description: The status of the backup job.
+          example: Successful
+        backupPolicy:
+          type: string
+          description: The backup policy associated with the resource.
+          example: BackupPolicy1org2
+        backupType:
+          type: string
+          description: The backup type for virtual machines and SQL servers.
+          example: Full
+        resourceType:
+          type: string
+          description: The SQL resource type, such as SQL Standalone Instance or SQL Availability Group.
+          example: SQL Standalone Instance
+        vm:
+          type: string
+          description: The name of the virtual machine, backup mount name, or NAS device that has been backed up.
+          example: NA
+        backupMethod:
+          type: string
+          description: The backup method used for Oracle databases, such as Full, Incremental, or Archive Logs.
+          example: Incremental
+        backupContent:
+          type: string
+          description: The content rule or the custom content applied to the resource for backup. For Oracle and MS-SQL Servers, this field displays the number of databases included in the backup.
+          example: 'Backup Folders: [''E:\backup\File31'']'
+        scanType:
+          type: string
+          description: The type of scans, such as the Smart scan or the Full scan.
+          example: Full
+        backupMountName:
+          type: string
+          description: Name of the backup mount.
+          example: NA
+        backupSet:
+          type: string
+          description: The name of the backup set associated with the backup policy.
+          example: WIN-L8HL4FNA0KB#bset2
+        administrativeGroup:
+          type: string
+          description: The name of the administrative group of the workload.
+          example: group-1
+        organization:
+          type: string
+          description: The name of the organization in which the workload is configured.
+          example: org-1
+        details:
+          type: string
+          description: The details of the job.
+          example: Backup completed successfully
+        deviceName:
+          type: string
+          description: The device name in Phoenix. Example - Ernie Carter's Macbook
+          example: NA
+        configurationMode:
+          type: string
+          description: Configuration mode for the backup set
+          example: NA
+    GetDisasterRecoveryFailbackActivityReportDataResponse:
+      title: GetDisasterRecoveryFailbackActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisasterRecoveryFailbackActivityReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetStorageConsumptionbyBackupSetsReportDataResponse:
+      title: GetStorageConsumptionbyBackupSetsReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageConsumptionbyBackupSetsReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    AlertHistoryReportData:
+      title: AlertHistoryReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        generated:
+          type: string
+          description: The date and time, in UTC format, when the alerts were first triggered.
+          format: date-time
+          example: '2023-06-05T08:22:48.968Z'
+        description:
+          type: string
+          description: The details of the generated alert.
+          example: Backup failed
+        target:
+          type: string
+          description: The resource for which the alert was triggered.
+          example: WIN_R1
+        resolved:
+          type: string
+          description: The number of resolved alerts.
+          example: '3'
+        alertType:
+          type: string
+          description: The type of alert generated. For example, Jobs.
+          example: Jobs
+        severity:
+          type: string
+          description: The severity of the alert. For example, Critical, Info, Warning, and so on.
+          example: Warning
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-06T08:22:48.968Z'
+        organization:
+          type: string
+          description: The name of the organization.
+          example: Default Organization
+    GetDisasterRecoveryFailoverActivityReportDataResponse:
+      title: GetDisasterRecoveryFailoverActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisasterRecoveryFailoverActivityReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    DisasterRecoveryFailbackActivityReportData:
+      title: DisasterRecoveryFailbackActivityReportData
+      type: object
+      properties:
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-03T05:56:35.093Z'
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        ended:
+          type: string
+          description: The date and time when the DR Failback ended.
+          format: date-time
+          example: '2023-06-03T09:56:35.093Z'
+        started:
+          type: string
+          description: The date and time when the DR Failback first occurred.
+          format: date-time
+          example: '2023-06-03T07:56:35.093Z'
+        jobID:
+          type: integer
+          description: The unique identification number of the DR Failback job.
+          example: 1001
+        details:
+          type: string
+          description: The details of the DR Failback Job. For example, Cancelled.
+          example: Cancelled
+        destinationVCenterESXi:
+          type: string
+          description: The destination of the vCenter/ESXi setup where the instance must failback.
+          example: 112.16.15.111
+        organization:
+          type: string
+          description: The name of the organization.
+          example: org-1
+        drPlanName:
+          type: string
+          description: The name of the DR Plan.
+          example: Lin
+    GetDisasterRecoveryReplicationActivityReportDataResponse:
+      title: GetDisasterRecoveryReplicationActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisasterRecoveryReplicationActivityReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    StorageConsumptionbyBackupSetsReportData:
+      title: StorageConsumptionbyBackupSetsReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time of a report, in the UTC format.
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        currentSource:
+          type: string
+          description: The size of the data on the source servers, databases, and virtual machines at the time of the last backup.
+          example: 14.74MB
+        estimatedStorage:
+          type: string
+          description: The ratio of "Source+Changes" to Storage. This number is an estimate and it may change with the actual data stored on the cloud.
+          example: 10.53MB
+        sourceChanges:
+          type: string
+          description: The amount of backup data generated at the source. This includes the initial full backup and incremental data from all subsequent backups.
+          example: 14.74MB
+        storageCloud:
+          type: string
+          description: The name of the storage cloud (AWS/Azure) associated with the backup set.
+          example: AWS
+        storageSourceReductionFactor:
+          type: string
+          description: The ratio of Source+Change to the Druva storage.
+          example: fsnasst(1.4x)
+        backupPolicy:
+          type: string
+          description: The backup policy associated with the resource.
+          example: BackupPolicy1org2
+        backupContent:
+          type: string
+          description: The content rule or the custom content applied to the resource for backup.For Oracle and MS-SQL Servers, this field displays the number of databases included in the backup.
+          example: 'Backup Folders: [''E:\backup\File31'']'
+        backupSetType:
+          type: string
+          description: The type of the backup set of the resource.
+          example: Files
+        backupSet:
+          type: string
+          description: The name of the backup set associated with a workload.
+          example: WIN-L8HL4FNA0KB#bset3
+        administrativeGroup:
+          type: string
+          description: The name of the administrative group of the workload.
+          example: admin_org_2
+        organization:
+          type: string
+          description: The name of the organization in which the workload is configured.
+          example: org_2
+        storageTier:
+          type: string
+          description: Type of storage tier.
+          example: None
+        warmThreshold:
+          type: string
+          example: 15
+    EWRestoreActivityReportData:
+      title: EWRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        ended:
+          type: string
+          description: The timestamp when the restore operation was completed.
+          format: date-time
+          example: '2023-06-05T09:05:35.866Z'
+        started:
+          type: string
+          description: The timestamp when the restore operation started.
+          format: date-time
+          example: '2023-06-05T09:05:35.866Z'
+        scheduled:
+          type: string
+          description: The scheduled timestamp of the restore operation for the server.
+          format: date-time
+          example: '2023-06-05T09:05:35.866Z'
+        jobID:
+          type: integer
+          description: The unique identification number associated with the restore job.
+          example: 1011
+        workloads:
+          type: string
+          description: The name of the workload associated with the job. Example- Files, OracleSBT.
+          example: Files
+        details:
+          type: string
+          description: The details of the restore job.
+          example: Restore completed successfully
+        status:
+          type: string
+          description: The status of the restore job.
+          example: Successful
+        dataSelectedForRestore:
+          type: string
+          description: The name of the snapshot or the folder selected for restore.
+          example: '20971520'
+        destinationServer:
+          type: string
+          description: The name of the destination server or virtual machine on which data was restored.
+          example: server_12.16.73.21
+        source:
+          type: string
+          description: The server or virtual machine on which a restore was initiated.
+          example: NA
+        restoreLocation:
+          type: string
+          description: The location on the destination server or destination hypervisor and data store where the data was restored.
+          example: /auto_restore_0WUZWS
+        administrativeGroup:
+          type: string
+          description: The name of the administrative group of the workload.
+          example: admin_org_2
+        organization:
+          type: string
+          description: The name of the organization under which the workload is configured.
+          example: org_2
+        sourceVMLocation:
+          type: string
+          description: Location of the source VM
+          example: NA
+    GetResourceStatusReportDataResponse:
+      title: GetResourceStatusReportDataResponse
+      type: object
+      properties:
+        'data::':
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceStatusReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp of the report data, in UTC format.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: The filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+  securitySchemes:
+    OAuth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://apis.druva.com/msp/auth/v1/token
+      type: oauth2
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
