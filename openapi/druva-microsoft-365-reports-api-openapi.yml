@@ -2119,29 +2119,8 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
-    GetM365SharePointRestoreActivityReportDataResponse:
-      title: GetM365SharePointRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365SharePointRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365UserCountAndStatusReportData:
-      title: M365UserCountAndStatusReportData
+    M365SharePointRestoreActivityReportData:
+      title: M365SharePointRestoreActivityReportData
       type: object
       properties:
         accountName:
@@ -2156,40 +2135,196 @@ components:
           type: string
           description: Unique ID of the customer.
           example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        period:
+        lastUpdatedTime:
           type: string
-          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
-          example: month
-        startDate:
-          type: string
-          description: The start date of the specified week or month.
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
           format: date-time
-          example: '2024-03-01T00:00:00.000Z'
-        endDate:
+          example: '2023-06-04T10:05:18.493Z'
+        jobId:
+          type: integer
+          description: The unique identifier of the activity stored in the database.
+          example: 79546
+        siteName:
           type: string
-          description: The end date of the specified week or month.
+          description: The name of the site associated with the activity.
+          example: Druva Data Solutions Pvt. Ltd.
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
           format: date-time
-          example: '2024-03-31T23:59:59.000Z'
-        totalUsers:
+          example: '2024-03-06T14:23:27.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-26T09:49:04.000Z'
+        restoreSize:
           type: integer
-          description: The total number of active users allocated within the specified period.
-          example: 16
-        totalPreservedUsers:
-          type: integer
-          description: The total number of preserved users allocated within the specified period.
+          description: The total amount of data restored, in bytes.
           example: 0
-        userAdded:
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restored With Errors
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: '-'
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-05T06:12:05.000Z'
+    M365PFBackupActivityReportData:
+      title: M365PFBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        publicFolderName:
+          type: string
+          description: The name of the public folder associated with the activity.
+          example: public_folder_mail_enabled_auto_DND
+        publicFolderPath:
+          type: string
+          description: The path of the public folder associated with the activity.
+          example: \\public_folder_mail_enabled_auto_DND
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-23T10:09:11.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-23T10:09:14.000Z'
+        snapshotSize:
           type: integer
-          description: The number of users added within the specified period.
-          example: 17
-        usersDeleted:
-          type: integer
-          description: The number of users deleted within the specified period.
-          example: 1
-        usersPreserved:
-          type: integer
-          description: The number of users marked as preserved within the specified period.
+          description: The total amount of data backed up during the activity, in bytes.
           example: 0
+        backupStatus:
+          type: string
+          description: The backup status of the activity.
+          example: Backup Failed
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Enabled
+    GetM365SharePointSiteDiscoveryReportDataResponse:
+      title: GetM365SharePointSiteDiscoveryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365SharePointSiteDiscoveryReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365TeamsBackupActivityReportDataResponse:
+      title: GetM365TeamsBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365TeamsBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365GroupsBackupActivityReportDataResponse:
+      title: GetM365GroupsBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365GroupsBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365StorageConsumptionReportData:
+      title: M365StorageConsumptionReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        workloadName:
+          type: string
+          description: The name of the workload for which storage consumption is displayed.
+          example: SharePoint
+        resourceCount:
+          type: integer
+          description: The total number of resources associated with the workload.
+          example: 459
+        totalBackupData:
+          type: integer
+          description: The total backup data of all resources associated with the workload.
+          example: 18384551544
     M365TeamsDiscoveryReportData:
       title: M365TeamsDiscoveryReportData
       type: object
@@ -2296,8 +2431,8 @@ components:
           type: integer
           description: Indicates whether the Team is deleted from the database.
           example: 0
-    M365UserProvisioningsReportData:
-      title: M365UserProvisioningsReportData
+    M365LicenseUsageReportData:
+      title: M365LicenseUsageReportData
       type: object
       properties:
         accountName:
@@ -2312,950 +2447,44 @@ components:
           type: string
           description: Unique ID of the customer.
           example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
+        period:
           type: string
-          description: The name of the user associated with the workload.
-          example: arfaAdmin7102 arfaAdmin7102
-        userEmail:
+          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
+          example: month
+        startDate:
           type: string
-          description: The email address of the user associated with the workload.
-          example: arfaadmin7002@druvaindia.co.in
-        profileName:
+          description: The start date of the specified week or month.
+          format: date-time
+          example: '2024-03-01T00:00:00.000Z'
+        endDate:
           type: string
-          description: The name of the profile associated with the user.
-          example: Default
-        userStatus:
-          type: string
-          description: The status of the user, indicating whether they are `Active` or `Preserved`.
-          example: Active
-        m365LicenseState:
-          type: string
-          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
-          example: Active Licensed Users
-        smbLicenseState:
-          type: string
-          description: 'The SMB license state status. Possible values: Yes, No.'
-          example: 'No'
-        totalBackupData:
+          description: The end date of the specified week or month.
+          format: date-time
+          example: '2024-03-31T23:59:59.000Z'
+        usersAdded:
           type: integer
-          description: The total backup data of the user to date.
-          example: 0
-        createdOn:
-          type: string
-          description: 'The timestamp when the user was first onboarded into the system. Format: YYY-MM-DDTHH:MM:SSZ(UTC).'
-          format: date-time
-          example: '2024-07-10T14:18:18.000Z'
-        managedBy:
-          type: string
-          description: 'The onboarding and management method for the user. Possible values: Manually, AD, SCIM, AzureAD, API.'
-          example: Manually
-        mapping:
-          type: string
-          description: The name of the profile mapping associated with the user.
-          example: Manual
-        customAttributeName:
-          type: string
-          description: The name of the custom attribute filter.
-          example: '-'
-        customAttributeValue:
-          type: string
-          description: The value of the custom attribute filter.
-          example: '-'
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    M365StorageConsumptionReportData:
-      title: M365StorageConsumptionReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        workloadName:
-          type: string
-          description: The name of the workload for which storage consumption is displayed.
-          example: SharePoint
-        resourceCount:
+          description: The number of users added within the specified period.
+          example: 17
+        usersDeleted:
           type: integer
-          description: The total number of resources associated with the workload.
-          example: 459
-        totalBackupData:
-          type: integer
-          description: The total backup data of all resources associated with the workload.
-          example: 18384551544
-    GetM365UserRestoreActivityReportDataResponse:
-      title: GetM365UserRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365UserRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365UserProvisioningsReportDataResponse:
-      title: GetM365UserProvisioningsReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365UserProvisioningsReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365PreservedUsersReportDataResponse:
-      title: GetM365PreservedUsersReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365PreservedUsersReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365LicenseUsageReportDataResponse:
-      title: GetM365LicenseUsageReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365LicenseUsageReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365GroupsRestoreActivityReportData:
-      title: M365GroupsRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        activityType:
-          type: string
-          description: The type of activity, indicating whether it is a Group or Conversation.
-          example: Group
-        groupName:
-          type: string
-          description: The name of the group associated with the activity.
-          example: 25104-auto-team-☺
-        groupEmail:
-          type: string
-          description: The email address of the group associated with the activity.
-          example: team_test_email_25104@druvadatasoftware.onmicrosoft.com
-        groupType:
-          type: string
-          description: The type of the associated group.
-          example: Microsoft 365
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-04-23T14:05:15.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-04-23T14:41:28.000Z'
-        restoreStatus:
-          type: string
-          description: The status of the restore activity.
-          example: Restore Successful
-        restoreSize:
-          type: integer
-          description: The total amount of data restored, in bytes.
-          example: 1043665
-        snapshotTimestamp:
-          type: string
-          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-11T09:06:58.000Z'
-    GetM365GroupsBackupActivityReportDataResponse:
-      title: GetM365GroupsBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365GroupsBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365SharePointRestoreActivityReportData:
-      title: M365SharePointRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        jobId:
-          type: integer
-          description: The unique identifier of the activity stored in the database.
-          example: 79546
-        siteName:
-          type: string
-          description: The name of the site associated with the activity.
-          example: Druva Data Solutions Pvt. Ltd.
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-06T14:23:27.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-26T09:49:04.000Z'
-        restoreSize:
-          type: integer
-          description: The total amount of data restored, in bytes.
-          example: 0
-        restoreStatus:
-          type: string
-          description: The status of the restore activity.
-          example: Restored With Errors
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
-          example: '-'
-        snapshotTimestamp:
-          type: string
-          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-05T06:12:05.000Z'
-    GetM365UserWorkloadReportDataResponse:
-      title: GetM365UserWorkloadReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365UserWorkloadReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365PFBackupActivityReportData:
-      title: M365PFBackupActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        publicFolderName:
-          type: string
-          description: The name of the public folder associated with the activity.
-          example: public_folder_mail_enabled_auto_DND
-        publicFolderPath:
-          type: string
-          description: The path of the public folder associated with the activity.
-          example: \\public_folder_mail_enabled_auto_DND
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-23T10:09:11.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-23T10:09:14.000Z'
-        snapshotSize:
-          type: integer
-          description: The total amount of data backed up during the activity, in bytes.
-          example: 0
-        backupStatus:
-          type: string
-          description: The backup status of the activity.
-          example: Backup Failed
-        appStatus:
-          type: string
-          description: The status of the drive associated with the activity.
-          example: Enabled
-    GetM365PFBackupActivityReportDataResponse:
-      title: GetM365PFBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365PFBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365PreservedUsersReportData:
-      title: M365PreservedUsersReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: abhi singh
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: 1234re5678@druvadatasoftware.onmicrosoft.com
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Default
-        m365LicenseState:
-          type: string
-          description: Indicates whether the user is preserved.
-          example: Preserved
-        smbLicenseState:
-          type: string
-          description: Indicates whether the user is an SMB user.
-          example: 'No'
-        preservedOn:
-          type: string
-          description: 'The timestamp when the user was marked as preserved. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-01T04:34:05.000Z'
-        mode:
-          type: string
-          description: 'The onboarding method for the user. Possible values: `Manual`, `GOOGLEDIRECTORY`, `AZUREAD`, `AD/LDAP`, `SCIM`, `Upgrade`.'
-          example: Manual
-        autoDeleteOn:
-          type: string
-          description: 'The timestamp when the user is scheduled for automatic deletion. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-01T04:34:05.000Z'
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    M365SharePointBackupActivityReportData:
-      title: M365SharePointBackupActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        siteName:
-          type: string
-          description: The name of the site associated with the activity.
-          example: 25104-auto-team-different
-        siteCollectionUrl:
-          type: string
-          description: The URL of the site stored in the database.
-          example: https://druvadatasoftware.sharepoint.com/sites/different_team_test_email_1_25104
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-08T09:39:09.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-26T09:49:04.000Z'
-        snapshotSize:
-          type: integer
-          description: The total amount of data backed up during the activity, in bytes.
-          example: 0
-        appStatus:
-          type: string
-          description: The status of the drive associated with the activity
-          example: Disabled
-        backupStatus:
-          type: string
-          description: The backup status of the activity.
-          example: Backup Cancelled
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
-          example: '-'
-    GetM365TeamsDiscoveryReportDataResponse:
-      title: GetM365TeamsDiscoveryReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365TeamsDiscoveryReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365SharePointSiteDiscoveryReportDataResponse:
-      title: GetM365SharePointSiteDiscoveryReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365SharePointSiteDiscoveryReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365UserLastBackupStatusDataResponse:
-      title: GetM365UserLastBackupStatusDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365UserLastBackupStatusData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365AlertHistoryReportDataResponse:
-      title: GetM365AlertHistoryReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365AlertHistoryReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365StorageConsumptionReportDataResponse:
-      title: GetM365StorageConsumptionReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365StorageConsumptionReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365GroupsDiscoveryReportDataResponse:
-      title: GetM365GroupsDiscoveryReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365GroupsDiscoveryReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365TeamsRestoreActivityReportData:
-      title: M365TeamsRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        teamName:
-          type: string
-          description: The name of the team associated with the activity.
-          example: 79484-auto-team-☺
-        privacy:
-          type: string
-          description: 'The privacy setting of the team. Possible values: Public, Private, Org-Wide.'
-          example: Public
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-06T12:26:30.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-06T12:26:51.000Z'
-        activityType:
-          type: string
-          description: 'The type of the team backup activity. Possible values: Team Metadata, Team Conversation.'
-          example: Team Conversation
-        restoreSize:
-          type: integer
-          description: The total amount of data restored during the activity, in bytes.
-          example: 9733
-        snapshotTimestamp:
-          type: string
-          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-06T11:34:38.000Z'
-        restoreStatus:
-          type: string
-          description: The restore status of the activity.
-          example: Restore Successful
-    M365UserWorkloadReportData:
-      title: M365UserWorkloadReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: AUTOQA1
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: AUTOQA1@DRUVAINTERNAL.ONMICROSOFT.COM
-        userPrincipalName:
-          type: string
-          description: The parent email address of the user if present
-          example: AUTOQA1
-        addedOn:
-          type: string
-          description: 'The timestamp when the user was added to the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-05-24T14:19:54.000Z'
-        workloadType:
-          type: string
-          description: The workload associated with the user.
-          example: OneDrive
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Default
-        preferredDataLocation:
-          type: string
-          description: The preferred data location of the user.
-          example: '-'
-        storageName:
-          type: string
-          description: The name of the storage associated with the user.
-          example: org_reports@druva.org_us-east-1
-        appStatus:
-          type: string
-          description: The status of the drive associated with the activity.
-          example: Enabled
-        totalBackupData:
-          type: integer
-          description: The total backup data of the user to date.
-          example: 1720261
-        lastSuccessfulBackup:
-          type: string
-          description: 'The timestamp of the last successful backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-09-01T18:10:28.000Z'
-        lastAttemptedBackup:
-          type: string
-          description: 'The timestamp of the last attempted backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-09-01T18:10:28.000Z'
-        lastBackupStatus:
-          type: string
-          description: The status of the last backup attempt.
-          example: Backed Up Successfully
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
-          example: EINTERNAL
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    GetM365SharePointBackupActivityReportDataResponse:
-      title: GetM365SharePointBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365SharePointBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    M365UserLastBackupStatusData:
-      title: M365UserLastBackupStatusData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: Arfa_DO_NOT_DELETE
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: Arfa_DO_NOT_DELETE@druvadatasoftware.onmicrosoft.com
-        workloadType:
-          type: string
-          description: The workload associated with the user.
-          example: Exchange Online
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Default
-        appStatus:
-          type: string
-          description: The status of the workload, indicating whether it is Enabled or Disabled.
-          example: Enabled
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-07-25T07:41:53.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-07-25T07:43:49.000Z'
-        itemsBackedUp:
-          type: integer
-          description: The total number of items successfully backed up in the last backup activity.
+          description: The number of users deleted within the specified period.
           example: 1
-        itemsMissed:
+        totalActiveLicense:
           type: integer
-          description: The total number of items that failed to back up in the last backup activity.
+          description: The total number of active licenses within the specified period.
+          example: 100
+        activeLicenseUsed:
+          type: integer
+          description: The total number of licenses used within the specified period.
+          example: 3
+        totalPreservedLicense:
+          type: integer
+          description: The total number of preserved licenses allocated within the specified period.
+          example: 20
+        preservedLicenseUsed:
+          type: integer
+          description: The total number of preserved licenses used within the specified period.
           example: 0
-        lastBackupData:
-          type: integer
-          description: The total amount of backup data recorded in the last backup activity, in bytes.
-          example: 0
-        totalBackupData:
-          type: integer
-          description: The total backup data of the user to date.
-          example: 12
-        lastBackupStatus:
-          type: string
-          description: The status of the last backup attempt.
-          example: Backup Failed
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
-          example: EINTERNAL
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    M365PFRestoreActivityReportData:
-      title: M365PFRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        publicFolderName:
-          type: string
-          description: The name of the public folder associated with the activity.
-          example: max_PF
-        publicFolderPath:
-          type: string
-          description: The path of the public folder associated with the activity.
-          example: \\max_PF
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-23T11:14:09.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-23T11:15:19.000Z'
-        restoreSize:
-          type: integer
-          description: The total amount of data restored, in bytes.
-          example: 0
-        snapshotTimestamp:
-          type: string
-          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-23T11:08:56.000Z'
-        restoreStatus:
-          type: string
-          description: The status of the restore activity.
-          example: Restore Successful
-        jobId:
-          type: integer
-          description: The unique identifier of the activity stored in the database.
-          example: 131268
     M365TeamsBackupActivityReportData:
       title: M365TeamsBackupActivityReportData
       type: object
@@ -3319,161 +2548,6 @@ components:
           type: string
           description: The status of the application associated with the team.
           example: Disabled
-    M365LicenseUsageReportData:
-      title: M365LicenseUsageReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        period:
-          type: string
-          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
-          example: month
-        startDate:
-          type: string
-          description: The start date of the specified week or month.
-          format: date-time
-          example: '2024-03-01T00:00:00.000Z'
-        endDate:
-          type: string
-          description: The end date of the specified week or month.
-          format: date-time
-          example: '2024-03-31T23:59:59.000Z'
-        usersAdded:
-          type: integer
-          description: The number of users added within the specified period.
-          example: 17
-        usersDeleted:
-          type: integer
-          description: The number of users deleted within the specified period.
-          example: 1
-        totalActiveLicense:
-          type: integer
-          description: The total number of active licenses within the specified period.
-          example: 100
-        activeLicenseUsed:
-          type: integer
-          description: The total number of licenses used within the specified period.
-          example: 3
-        totalPreservedLicense:
-          type: integer
-          description: The total number of preserved licenses allocated within the specified period.
-          example: 20
-        preservedLicenseUsed:
-          type: integer
-          description: The total number of preserved licenses used within the specified period.
-          example: 0
-    M365GroupsBackupActivityReportData:
-      title: M365GroupsBackupActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        groupName:
-          type: string
-          description: The name of the group associated with the activity.
-          example: Apoorav Team Site
-        groupEmail:
-          type: string
-          description: The email address of the group associated with the activity.
-          example: ApooravTeamSite@druvadatasoftware.onmicrosoft.com
-        groupType:
-          type: string
-          description: The type of the associated group.
-          example: Microsoft 365
-        appStatus:
-          type: string
-          description: The app status of the group associated with the activity.
-          example: Disabled
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-24T07:40:11.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-24T09:31:26.000Z'
-        backupStatus:
-          type: string
-          description: The backup status of the activity.
-          example: Backed Up Successfully
-        snapshotSize:
-          type: integer
-          description: The total amount of data backed up during the activity, in bytes.
-          example: 947937271
-    GetM365GroupsRestoreActivityReportDataResponse:
-      title: GetM365GroupsRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365GroupsRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365TeamsRestoreActivityReportDataResponse:
-      title: GetM365TeamsRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365TeamsRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     M365SharePointSiteDiscoveryReportData:
       title: M365SharePointSiteDiscoveryReportData
       type: object
@@ -3641,6 +2715,717 @@ components:
           type: integer
           description: Indicates whether the site is deleted from the database.
           example: 0
+    M365SharePointBackupActivityReportData:
+      title: M365SharePointBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        siteName:
+          type: string
+          description: The name of the site associated with the activity.
+          example: 25104-auto-team-different
+        siteCollectionUrl:
+          type: string
+          description: The URL of the site stored in the database.
+          example: https://druvadatasoftware.sharepoint.com/sites/different_team_test_email_1_25104
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-08T09:39:09.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-26T09:49:04.000Z'
+        snapshotSize:
+          type: integer
+          description: The total amount of data backed up during the activity, in bytes.
+          example: 0
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity
+          example: Disabled
+        backupStatus:
+          type: string
+          description: The backup status of the activity.
+          example: Backup Cancelled
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: '-'
+    GetM365UserLastBackupStatusDataResponse:
+      title: GetM365UserLastBackupStatusDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365UserLastBackupStatusData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365UserRestoreActivityReportDataResponse:
+      title: GetM365UserRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365UserRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365TeamsRestoreActivityReportData:
+      title: M365TeamsRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        teamName:
+          type: string
+          description: The name of the team associated with the activity.
+          example: 79484-auto-team-☺
+        privacy:
+          type: string
+          description: 'The privacy setting of the team. Possible values: Public, Private, Org-Wide.'
+          example: Public
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-06T12:26:30.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-06T12:26:51.000Z'
+        activityType:
+          type: string
+          description: 'The type of the team backup activity. Possible values: Team Metadata, Team Conversation.'
+          example: Team Conversation
+        restoreSize:
+          type: integer
+          description: The total amount of data restored during the activity, in bytes.
+          example: 9733
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-06T11:34:38.000Z'
+        restoreStatus:
+          type: string
+          description: The restore status of the activity.
+          example: Restore Successful
+    GetM365UserProvisioningsReportDataResponse:
+      title: GetM365UserProvisioningsReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365UserProvisioningsReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365PFBackupActivityReportDataResponse:
+      title: GetM365PFBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365PFBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365SharePointBackupActivityReportDataResponse:
+      title: GetM365SharePointBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365SharePointBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365GroupsRestoreActivityReportData:
+      title: M365GroupsRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        activityType:
+          type: string
+          description: The type of activity, indicating whether it is a Group or Conversation.
+          example: Group
+        groupName:
+          type: string
+          description: The name of the group associated with the activity.
+          example: 25104-auto-team-☺
+        groupEmail:
+          type: string
+          description: The email address of the group associated with the activity.
+          example: team_test_email_25104@druvadatasoftware.onmicrosoft.com
+        groupType:
+          type: string
+          description: The type of the associated group.
+          example: Microsoft 365
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-04-23T14:05:15.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-04-23T14:41:28.000Z'
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restore Successful
+        restoreSize:
+          type: integer
+          description: The total amount of data restored, in bytes.
+          example: 1043665
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-11T09:06:58.000Z'
+    GetM365PFRestoreActivityReportDataResponse:
+      title: GetM365PFRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365PFRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365UserCountAndStatusReportDataResponse:
+      title: GetM365UserCountAndStatusReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365UserCountAndStatusReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365UserProvisioningsReportData:
+      title: M365UserProvisioningsReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: arfaAdmin7102 arfaAdmin7102
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: arfaadmin7002@druvaindia.co.in
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        userStatus:
+          type: string
+          description: The status of the user, indicating whether they are `Active` or `Preserved`.
+          example: Active
+        m365LicenseState:
+          type: string
+          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
+          example: Active Licensed Users
+        smbLicenseState:
+          type: string
+          description: 'The SMB license state status. Possible values: Yes, No.'
+          example: 'No'
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 0
+        createdOn:
+          type: string
+          description: 'The timestamp when the user was first onboarded into the system. Format: YYY-MM-DDTHH:MM:SSZ(UTC).'
+          format: date-time
+          example: '2024-07-10T14:18:18.000Z'
+        managedBy:
+          type: string
+          description: 'The onboarding and management method for the user. Possible values: Manually, AD, SCIM, AzureAD, API.'
+          example: Manually
+        mapping:
+          type: string
+          description: The name of the profile mapping associated with the user.
+          example: Manual
+        customAttributeName:
+          type: string
+          description: The name of the custom attribute filter.
+          example: '-'
+        customAttributeValue:
+          type: string
+          description: The value of the custom attribute filter.
+          example: '-'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    M365PreservedUsersReportData:
+      title: M365PreservedUsersReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: abhi singh
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: 1234re5678@druvadatasoftware.onmicrosoft.com
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        m365LicenseState:
+          type: string
+          description: Indicates whether the user is preserved.
+          example: Preserved
+        smbLicenseState:
+          type: string
+          description: Indicates whether the user is an SMB user.
+          example: 'No'
+        preservedOn:
+          type: string
+          description: 'The timestamp when the user was marked as preserved. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        mode:
+          type: string
+          description: 'The onboarding method for the user. Possible values: `Manual`, `GOOGLEDIRECTORY`, `AZUREAD`, `AD/LDAP`, `SCIM`, `Upgrade`.'
+          example: Manual
+        autoDeleteOn:
+          type: string
+          description: 'The timestamp when the user is scheduled for automatic deletion. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    M365UserCountAndStatusReportData:
+      title: M365UserCountAndStatusReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        period:
+          type: string
+          description: 'Records are categorized by duration: week or month. User count variations are segmented based on these periods.'
+          example: month
+        startDate:
+          type: string
+          description: The start date of the specified week or month.
+          format: date-time
+          example: '2024-03-01T00:00:00.000Z'
+        endDate:
+          type: string
+          description: The end date of the specified week or month.
+          format: date-time
+          example: '2024-03-31T23:59:59.000Z'
+        totalUsers:
+          type: integer
+          description: The total number of active users allocated within the specified period.
+          example: 16
+        totalPreservedUsers:
+          type: integer
+          description: The total number of preserved users allocated within the specified period.
+          example: 0
+        userAdded:
+          type: integer
+          description: The number of users added within the specified period.
+          example: 17
+        usersDeleted:
+          type: integer
+          description: The number of users deleted within the specified period.
+          example: 1
+        usersPreserved:
+          type: integer
+          description: The number of users marked as preserved within the specified period.
+          example: 0
+    GetM365TeamsDiscoveryReportDataResponse:
+      title: GetM365TeamsDiscoveryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365TeamsDiscoveryReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365StorageConsumptionReportDataResponse:
+      title: GetM365StorageConsumptionReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365StorageConsumptionReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365GroupsDiscoveryReportDataResponse:
+      title: GetM365GroupsDiscoveryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365GroupsDiscoveryReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365UserWorkloadReportDataResponse:
+      title: GetM365UserWorkloadReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365UserWorkloadReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365AlertHistoryReportDataResponse:
+      title: GetM365AlertHistoryReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365AlertHistoryReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365GroupsRestoreActivityReportDataResponse:
+      title: GetM365GroupsRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365GroupsRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365TeamsRestoreActivityReportDataResponse:
+      title: GetM365TeamsRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365TeamsRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365GroupsBackupActivityReportData:
+      title: M365GroupsBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        groupName:
+          type: string
+          description: The name of the group associated with the activity.
+          example: Apoorav Team Site
+        groupEmail:
+          type: string
+          description: The email address of the group associated with the activity.
+          example: ApooravTeamSite@druvadatasoftware.onmicrosoft.com
+        groupType:
+          type: string
+          description: The type of the associated group.
+          example: Microsoft 365
+        appStatus:
+          type: string
+          description: The app status of the group associated with the activity.
+          example: Disabled
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-24T07:40:11.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-24T09:31:26.000Z'
+        backupStatus:
+          type: string
+          description: The backup status of the activity.
+          example: Backed Up Successfully
+        snapshotSize:
+          type: integer
+          description: The total amount of data backed up during the activity, in bytes.
+          example: 947937271
     APIError:
       description: APIError defines an application error result format
       type: object
@@ -3649,6 +3434,108 @@ components:
           type: string
         message:
           type: string
+    GetM365PreservedUsersReportDataResponse:
+      title: GetM365PreservedUsersReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365PreservedUsersReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetM365SharePointRestoreActivityReportDataResponse:
+      title: GetM365SharePointRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365SharePointRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    M365PFRestoreActivityReportData:
+      title: M365PFRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        publicFolderName:
+          type: string
+          description: The name of the public folder associated with the activity.
+          example: max_PF
+        publicFolderPath:
+          type: string
+          description: The path of the public folder associated with the activity.
+          example: \\max_PF
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-23T11:14:09.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-23T11:15:19.000Z'
+        restoreSize:
+          type: integer
+          description: The total amount of data restored, in bytes.
+          example: 0
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-23T11:08:56.000Z'
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restore Successful
+        jobId:
+          type: integer
+          description: The unique identifier of the activity stored in the database.
+          example: 131268
     M365GroupsDiscoveryReportData:
       title: M365GroupsDiscoveryReportData
       type: object
@@ -3755,6 +3642,107 @@ components:
           type: integer
           description: Indicates whether the Group is deleted from the database.
           example: 0
+    M365UserWorkloadReportData:
+      title: M365UserWorkloadReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: AUTOQA1
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: AUTOQA1@DRUVAINTERNAL.ONMICROSOFT.COM
+        userPrincipalName:
+          type: string
+          description: The parent email address of the user if present
+          example: AUTOQA1
+        addedOn:
+          type: string
+          description: 'The timestamp when the user was added to the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-05-24T14:19:54.000Z'
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: OneDrive
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        preferredDataLocation:
+          type: string
+          description: The preferred data location of the user.
+          example: '-'
+        storageName:
+          type: string
+          description: The name of the storage associated with the user.
+          example: org_reports@druva.org_us-east-1
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Enabled
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 1720261
+        lastSuccessfulBackup:
+          type: string
+          description: 'The timestamp of the last successful backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-09-01T18:10:28.000Z'
+        lastAttemptedBackup:
+          type: string
+          description: 'The timestamp of the last attempted backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-09-01T18:10:28.000Z'
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backed Up Successfully
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: EINTERNAL
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GetM365LicenseUsageReportDataResponse:
+      title: GetM365LicenseUsageReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/M365LicenseUsageReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     M365AlertHistoryReportData:
       title: M365AlertHistoryReportData
       type: object
@@ -3806,69 +3794,6 @@ components:
           description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
           format: date-time
           example: '2023-06-04T10:05:18.493Z'
-    GetM365UserCountAndStatusReportDataResponse:
-      title: GetM365UserCountAndStatusReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365UserCountAndStatusReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365PFRestoreActivityReportDataResponse:
-      title: GetM365PFRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365PFRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetM365TeamsBackupActivityReportDataResponse:
-      title: GetM365TeamsBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/M365TeamsBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     M365UserRestoreActivityReportData:
       title: M365UserRestoreActivityReportData
       type: object
@@ -3944,6 +3869,81 @@ components:
           description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
           format: date-time
           example: '2024-07-31T10:44:04.000Z'
+    M365UserLastBackupStatusData:
+      title: M365UserLastBackupStatusData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: Arfa_DO_NOT_DELETE
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: Arfa_DO_NOT_DELETE@druvadatasoftware.onmicrosoft.com
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Exchange Online
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        appStatus:
+          type: string
+          description: The status of the workload, indicating whether it is Enabled or Disabled.
+          example: Enabled
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-07-25T07:41:53.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-07-25T07:43:49.000Z'
+        itemsBackedUp:
+          type: integer
+          description: The total number of items successfully backed up in the last backup activity.
+          example: 1
+        itemsMissed:
+          type: integer
+          description: The total number of items that failed to back up in the last backup activity.
+          example: 0
+        lastBackupData:
+          type: integer
+          description: The total amount of backup data recorded in the last backup activity, in bytes.
+          example: 0
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 12
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backup Failed
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: EINTERNAL
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
   securitySchemes:
     OAuth2:
       flows:

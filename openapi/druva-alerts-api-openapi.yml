@@ -228,16 +228,6 @@ paths:
                 $ref: '#/components/schemas/ServiceError'
 components:
   schemas:
-    ListAlertsResponse:
-      description: Includes an array of alerts
-      type: object
-      properties:
-        alerts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alert'
-        nextPageToken:
-          type: string
     ListBackupAlertsResponse:
       description: Includes an array of alerts
       type: object
@@ -248,6 +238,105 @@ components:
             $ref: '#/components/schemas/BackupJobAlert'
         nextPageToken:
           type: string
+    Alert:
+      description: Includes generic alert details
+      type: object
+      properties:
+        id:
+          description: Alert ID
+          type: integer
+          format: int32
+          example: 1
+        type:
+          description: Alert type, for example, jobs, storage, and cloudcache.
+          type: string
+          example: jobs
+        subtype:
+          description: Alert subtype, for example, backupFailures, and restoreFailures.
+          type: string
+          example: backupFailures
+        generatedOn:
+          description: Alert generation timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: '2019-07-09T05:08:16Z'
+        OrgID:
+          description: Organization ID
+          type: integer
+          format: int32
+          example: 1
+        workloadType:
+          description: Type of the workload. The value can be fs, sql, nas, vmware, hyperv, or oracle.
+          type: string
+          example: vmware
+        targetType:
+          description: Target type of the alert
+          type: string
+          example: jobs
+        targetID:
+          description: Target ID of the alert. In the case of job alerts, targetID is same as the jobID of the job.
+          type: integer
+          format: int32
+          example: 1
+        resourceType:
+          description: Type of resource. The value can be physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.
+          type: string
+          example: device
+        resourceName:
+          description: Name of the resource.
+          type: string
+          example: hostname
+        status:
+          description: The status of the alert. The value can be resolved or active.
+          type: string
+          example: active
+        resolutionTime:
+          description: Alert resolution timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: NA
+        severity:
+          description: Severity of the alert. The value can be critical, warning, or info.
+          type: string
+          example: critical
+    ResourceInfo:
+      description: Contains product-specific information of the resource
+      type: object
+      properties:
+        fsServerName:
+          type: string
+          description: Server name of the FS backup set
+          example: serverName
+        fsContentRule:
+          type: string
+          description: Content rule of the FS backup set
+          example: contentRule
+        nasShare:
+          type: string
+          description: Path to the directory of the NAS share
+          example: sharename
+        sqlResourceType:
+          type: string
+          description: Type of the SQL resource. The value can be sqlAvailabilityGroup or sqlStandaloneInstance.
+          example: instance
+        sqlResourceName:
+          type: string
+          description: Name of the SQL resource
+          example: instanceName
+        sqlContentRule:
+          type: string
+          description: Content rule of the SQL resource
+          example: contentRule
+        oracleMountPoint:
+          type: string
+          description: Mount point of the Oracle resource
+          example: mountPoint
+        oraclePBS:
+          type: string
+          description: Device name of the Oracle resource
+          example: deviceName
+        vmName:
+          type: string
+          description: Name of the virtual machine
+          example: vmName
     AlertDetails:
       description: Contains backup job specific details. Only failedJobIDs and lastSucceeded will be present if failureNumberSinceLastSuccess field is specified. jobID, jobErrorMsg, jobStartTime and jobEndTime will be present for all other cases
       type: object
@@ -280,20 +369,16 @@ components:
           description: The last backup job completion timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
           type: string
           example: '2019-07-05T03:38:22.000Z'
-    ServiceError:
-      description: Service Error
+    ListAlertsResponse:
+      description: Includes an array of alerts
       type: object
-      title: ServiceError represents an error with an associated error code.
       properties:
-        code:
-          type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        nextPageToken:
           type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
     BackupJobAlert:
       description: Includes generic, alert type specific and resource specific details
       type: object
@@ -357,105 +442,20 @@ components:
           $ref: '#/components/schemas/AlertDetails'
         resourceInfo:
           $ref: '#/components/schemas/ResourceInfo'
-    ResourceInfo:
-      description: Contains product-specific information of the resource
+    ServiceError:
+      description: Service Error
       type: object
+      title: ServiceError represents an error with an associated error code.
       properties:
-        fsServerName:
-          type: string
-          description: Server name of the FS backup set
-          example: serverName
-        fsContentRule:
-          type: string
-          description: Content rule of the FS backup set
-          example: contentRule
-        nasShare:
-          type: string
-          description: Path to the directory of the NAS share
-          example: sharename
-        sqlResourceType:
-          type: string
-          description: Type of the SQL resource. The value can be sqlAvailabilityGroup or sqlStandaloneInstance.
-          example: instance
-        sqlResourceName:
-          type: string
-          description: Name of the SQL resource
-          example: instanceName
-        sqlContentRule:
-          type: string
-          description: Content rule of the SQL resource
-          example: contentRule
-        oracleMountPoint:
-          type: string
-          description: Mount point of the Oracle resource
-          example: mountPoint
-        oraclePBS:
-          type: string
-          description: Device name of the Oracle resource
-          example: deviceName
-        vmName:
-          type: string
-          description: Name of the virtual machine
-          example: vmName
-    Alert:
-      description: Includes generic alert details
-      type: object
-      properties:
-        id:
-          description: Alert ID
+        code:
           type: integer
-          format: int32
-          example: 1
-        type:
-          description: Alert type, for example, jobs, storage, and cloudcache.
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
           type: string
-          example: jobs
-        subtype:
-          description: Alert subtype, for example, backupFailures, and restoreFailures.
-          type: string
-          example: backupFailures
-        generatedOn:
-          description: Alert generation timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          example: '2019-07-09T05:08:16Z'
-        OrgID:
-          description: Organization ID
-          type: integer
-          format: int32
-          example: 1
-        workloadType:
-          description: Type of the workload. The value can be fs, sql, nas, vmware, hyperv, or oracle.
-          type: string
-          example: vmware
-        targetType:
-          description: Target type of the alert
-          type: string
-          example: jobs
-        targetID:
-          description: Target ID of the alert. In the case of job alerts, targetID is same as the jobID of the job.
-          type: integer
-          format: int32
-          example: 1
-        resourceType:
-          description: Type of resource. The value can be physicalServer, vmwareVM, hyperVM, nasShare, sqlAvailabilityGroup, sqlStandaloneInstance, or oracle.
-          type: string
-          example: device
-        resourceName:
-          description: Name of the resource.
-          type: string
-          example: hostname
-        status:
-          description: The status of the alert. The value can be resolved or active.
-          type: string
-          example: active
-        resolutionTime:
-          description: Alert resolution timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          example: NA
-        severity:
-          description: Severity of the alert. The value can be critical, warning, or info.
-          type: string
-          example: critical
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
   securitySchemes:
     OAuth2:
       type: oauth2

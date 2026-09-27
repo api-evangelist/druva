@@ -187,9 +187,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    empty:
-      properties: {}
-      type: object
     GetOrganizationsAuditsResponse:
       properties:
         hits:
@@ -245,15 +242,18 @@ components:
         total:
           type: integer
       type: object
+    GetOrganizationsAuditsCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
     Error:
       properties:
         message:
           type: string
       type: object
-    GetOrganizationsAuditsCountResponse:
-      properties:
-        count:
-          type: integer
+    empty:
+      properties: {}
       type: object
     GetOrganizationsAccountsAuditsCountResponse:
       properties:

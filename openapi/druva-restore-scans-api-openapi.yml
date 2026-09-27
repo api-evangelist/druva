@@ -335,6 +335,126 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    jobFilesDetailsResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                description: The path of the scanned file.
+                example: C:/Backup_Folder/file1.pdf
+              ver:
+                type: integer
+                format: int32
+                description: The version of the scanned file.
+                example: 16
+              mTime:
+                type: string
+                format: date-time
+                description: The modification time of the scanned file.
+                example: Jul 8 2021 03:51
+              sha1Hash:
+                type: string
+                description: SHA1 sum of the scanned file.
+                example: 077eb3024604928da9a5c70c0efefd805819e7da
+              size:
+                type: integer
+                format: int64
+                description: Size of the scanned file.
+                example: 10240
+              unique_id:
+                type: string
+                description: Unique ID of the scanned file.
+                example: d4702061-e783-46da-9161-ed9a10209c6a-33693:43:1:15
+              sha1Match:
+                type: boolean
+                description: True in case the SHA1sum matches for.
+                example: 'true'
+              sha1MatchAgainst:
+                type: string
+                description: Uploaded SHA1 ID against which File SHA1 matched.
+                example: 077eb3024604928da9a5c70c0efefd805819e7da
+              virusFound:
+                type: boolean
+                description: True in case virus found for the file.
+                example: 'false'
+              virusName:
+                type: string
+                description: Name of the virus if found.
+                example: ''
+              isSkipped:
+                type: boolean
+                description: True in case the file could not be scanned and hence was skipped from restore
+                example: 'false'
+              reasonToSkip:
+                type: string
+                description: The reason to skip the file scan.
+                example: File size is more than 1 GB
+              status:
+                type: integer
+                description: Status of the file deletion. Applicable only in case of a Sandbox Recovery Job. Possible status values are '1' and '2' which indicates that the 'file was deleted' and 'file was not deleted' respectively.
+                example: 2
+        ContentType:
+          type: string
+          example: application/json
+    SettingsRequest:
+      type: object
+      properties:
+        AVScanEnabled:
+          type: boolean
+          description: Boolean denoting if Anti Virus (AV) scan is enabled.
+          example: 'True'
+        fileHashScanEnabled:
+          type: boolean
+          description: Boolean denoting if scan for File Hash is enabled.
+          example: 'True'
+        allowAdminToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        allowAdminToSkipScanServers:
+          type: boolean
+          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
+          example: 'True'
+        allowUserToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync Client User is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        skipScanForDeviceReplace:
+          type: boolean
+          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
+          example: 'False'
+        useDruvaCuratedIOCs:
+          type: boolean
+          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
+          example: 'True'
+        useLightScan:
+          type: boolean
+          description: Boolean denoting if Quick Scan is enabled.
+          example: 'True'
+        excludeExtensionsFromScan:
+          type: array
+          items:
+            type: string
+          description: Array of Strings(File Extensions)skipped from the scan.
+          example:
+          - .exe
+          - .dll
+          - .tmp
+        maxFileSizeToScanInMB:
+          type: integer
+          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+          example: 200
+        daysBeyondWhichToSkipScan:
+          type: integer
+          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+          example: 30
     getJobCount:
       type: object
       properties:
@@ -445,126 +565,6 @@ components:
           type: integer
           description: Total jobs present in the response.
           example: 38
-    jobFilesDetailsResponse:
-      type: object
-      properties:
-        nextPageToken:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              path:
-                type: string
-                description: The path of the scanned file.
-                example: C:/Backup_Folder/file1.pdf
-              ver:
-                type: integer
-                format: int32
-                description: The version of the scanned file.
-                example: 16
-              mTime:
-                type: string
-                format: date-time
-                description: The modification time of the scanned file.
-                example: Jul 8 2021 03:51
-              sha1Hash:
-                type: string
-                description: SHA1 sum of the scanned file.
-                example: 077eb3024604928da9a5c70c0efefd805819e7da
-              size:
-                type: integer
-                format: int64
-                description: Size of the scanned file.
-                example: 10240
-              unique_id:
-                type: string
-                description: Unique ID of the scanned file.
-                example: d4702061-e783-46da-9161-ed9a10209c6a-33693:43:1:15
-              sha1Match:
-                type: boolean
-                description: True in case the SHA1sum matches for.
-                example: 'true'
-              sha1MatchAgainst:
-                type: string
-                description: Uploaded SHA1 ID against which File SHA1 matched.
-                example: 077eb3024604928da9a5c70c0efefd805819e7da
-              virusFound:
-                type: boolean
-                description: True in case virus found for the file.
-                example: 'false'
-              virusName:
-                type: string
-                description: Name of the virus if found.
-                example: ''
-              isSkipped:
-                type: boolean
-                description: True in case the file could not be scanned and hence was skipped from restore
-                example: 'false'
-              reasonToSkip:
-                type: string
-                description: The reason to skip the file scan.
-                example: File size is more than 1 GB
-              status:
-                type: integer
-                description: Status of the file deletion. Applicable only in case of a Sandbox Recovery Job. Possible status values are '1' and '2' which indicates that the 'file was deleted' and 'file was not deleted' respectively.
-                example: 2
-        ContentType:
-          type: string
-          example: application/json
-    SettingsResponse:
-      type: object
-      properties:
-        AVScanEnabled:
-          type: boolean
-          description: Boolean denoting if Anti Virus (AV) scan is enabled.
-          example: 'True'
-        fileHashScanEnabled:
-          type: boolean
-          description: Boolean denoting if scan for File Hash is enabled.
-          example: 'False'
-        allowAdminToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
-          example: 'True'
-        allowAdminToSkipScanServers:
-          type: boolean
-          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
-          example: 'True'
-        allowUserToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync Client user is allowed to enable or disable Restore scans for Endpoints.
-          example: 'False'
-        skipScanForDeviceReplace:
-          type: boolean
-          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
-          example: 'False'
-        useDruvaCuratedIOCs:
-          type: boolean
-          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
-          example: 'True'
-        useLightScan:
-          type: boolean
-          description: Boolean denoting if Quick Scan is enabled.
-          example: 'True'
-        excludeExtensionsFromScan:
-          type: array
-          items:
-            type: string
-          description: Array of Strings(File Extensions)skipped from the scan.
-          example:
-          - .exe
-          - .dll
-          - .tmp
-        maxFileSizeToScanInMB:
-          type: integer
-          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
-          example: 200
-        daysBeyondWhichToSkipScan:
-          type: integer
-          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
-          example: 30
     jobDetailsModel:
       type: object
       properties:
@@ -761,6 +761,58 @@ components:
               type: integer
               description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
               example: 30
+    SettingsResponse:
+      type: object
+      properties:
+        AVScanEnabled:
+          type: boolean
+          description: Boolean denoting if Anti Virus (AV) scan is enabled.
+          example: 'True'
+        fileHashScanEnabled:
+          type: boolean
+          description: Boolean denoting if scan for File Hash is enabled.
+          example: 'False'
+        allowAdminToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        allowAdminToSkipScanServers:
+          type: boolean
+          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
+          example: 'True'
+        allowUserToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync Client user is allowed to enable or disable Restore scans for Endpoints.
+          example: 'False'
+        skipScanForDeviceReplace:
+          type: boolean
+          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
+          example: 'False'
+        useDruvaCuratedIOCs:
+          type: boolean
+          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
+          example: 'True'
+        useLightScan:
+          type: boolean
+          description: Boolean denoting if Quick Scan is enabled.
+          example: 'True'
+        excludeExtensionsFromScan:
+          type: array
+          items:
+            type: string
+          description: Array of Strings(File Extensions)skipped from the scan.
+          example:
+          - .exe
+          - .dll
+          - .tmp
+        maxFileSizeToScanInMB:
+          type: integer
+          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+          example: 200
+        daysBeyondWhichToSkipScan:
+          type: integer
+          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+          example: 30
     RWC_HTTP_400:
       type: object
       properties:
@@ -800,58 +852,6 @@ components:
           enum:
           - false
           - true
-    SettingsRequest:
-      type: object
-      properties:
-        AVScanEnabled:
-          type: boolean
-          description: Boolean denoting if Anti Virus (AV) scan is enabled.
-          example: 'True'
-        fileHashScanEnabled:
-          type: boolean
-          description: Boolean denoting if scan for File Hash is enabled.
-          example: 'True'
-        allowAdminToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
-          example: 'True'
-        allowAdminToSkipScanServers:
-          type: boolean
-          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
-          example: 'True'
-        allowUserToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync Client User is allowed to enable or disable Restore scans for Endpoints.
-          example: 'True'
-        skipScanForDeviceReplace:
-          type: boolean
-          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
-          example: 'False'
-        useDruvaCuratedIOCs:
-          type: boolean
-          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
-          example: 'True'
-        useLightScan:
-          type: boolean
-          description: Boolean denoting if Quick Scan is enabled.
-          example: 'True'
-        excludeExtensionsFromScan:
-          type: array
-          items:
-            type: string
-          description: Array of Strings(File Extensions)skipped from the scan.
-          example:
-          - .exe
-          - .dll
-          - .tmp
-        maxFileSizeToScanInMB:
-          type: integer
-          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
-          example: 200
-        daysBeyondWhichToSkipScan:
-          type: integer
-          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
-          example: 30
   securitySchemes:
     OAuth2:
       type: oauth2

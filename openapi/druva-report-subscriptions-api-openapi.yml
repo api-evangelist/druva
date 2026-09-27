@@ -299,8 +299,81 @@ components:
           format: date-time
           type: string
       type: object
+    DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsRequest:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
     empty:
       properties: {}
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsResponse:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
+      type: object
+    PutOrganizationsReportsubscriptionsByIdResponse:
+      properties:
+        all_accounts:
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        format:
+          type: string
+        frequency:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+        organization_id:
+          type: string
+        recipients:
+          items:
+            properties:
+              email:
+                type: string
+              external:
+                type: boolean
+              organization_id:
+                type: string
+              subscription_id:
+                type: string
+            type: object
+          type: array
+        schedule_cron:
+          type: string
+        time:
+          format: time
+          type: string
+        timezone:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
       type: object
     GetOrganizationsReportsubscriptionsResponse:
       properties:
@@ -547,79 +620,6 @@ components:
                 type: integer
               updated_at:
                 format: date-time
-                type: string
-            type: object
-          type: array
-        schedule_cron:
-          type: string
-        time:
-          format: time
-          type: string
-        timezone:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsReportsubscriptionsRecipientsRequest:
-      properties:
-        email:
-          type: string
-        external:
-          type: boolean
-        subscription_id:
-          type: string
-      type: object
-    DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse:
-      properties:
-        message:
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsReportsubscriptionsRecipientsResponse:
-      properties:
-        email:
-          type: string
-        external:
-          type: boolean
-        subscription_id:
-          type: string
-      type: object
-    PutOrganizationsReportsubscriptionsByIdResponse:
-      properties:
-        all_accounts:
-          type: boolean
-        created_at:
-          format: date-time
-          type: string
-        created_by:
-          type: string
-        deleted_at:
-          type: string
-        format:
-          type: string
-        frequency:
-          type: string
-        id:
-          type: integer
-        name:
-          type: string
-        organization_id:
-          type: string
-        recipients:
-          items:
-            properties:
-              email:
-                type: string
-              external:
-                type: boolean
-              organization_id:
-                type: string
-              subscription_id:
                 type: string
             type: object
           type: array

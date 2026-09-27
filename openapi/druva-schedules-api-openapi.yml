@@ -875,42 +875,13 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PostOrganizationsAccountsSchedulesStopRequest:
-      type: object
-    PostOrganizationsAccountsSchedulesStartRequest:
-      type: object
-    GetOrganizationsAccountsSchedulesTagsKeysValuesResponse:
+    GetOrganizationsAccountsSchedulesServersResponse:
       properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    PutOrganizationsAccountsSchedulesByIdResponse:
-      type: object
-    PostOrganizationsAccountsSchedulesStartResponse:
-      properties:
-        job_id:
+        region:
           type: string
-      type: object
-    GetOrganizationsAccountsSchedulesCountResponse:
-      properties:
-        count:
-          type: integer
-      type: object
-    GetOrganizationsTasksSchedulesResponse:
-      properties:
-        account_id:
+        server_id:
           type: string
-        deleted_at:
-          type: string
-        id:
-          type: integer
-        is_active:
-          type: boolean
-        name:
-          type: string
-        organization_id:
+        type:
           type: string
       type: object
     GetOrganizationsAccountsSchedulesResponse:
@@ -965,10 +936,25 @@ components:
         total:
           type: integer
       type: object
-    PostOrganizationsAccountsSchedulesStopResponse:
+    PostOrganizationsAccountsSchedulesSearchRequest:
       properties:
-        job_id:
-          type: string
+        Keywords:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsSchedulesStartRequest:
+      type: object
+    GetOrganizationsAccountsSchedulesTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
       type: object
     PostOrganizationsAccountsSchedulesRequest:
       properties:
@@ -1164,87 +1150,6 @@ components:
           format: date-time
           type: string
       type: object
-    PostOrganizationsAccountsSchedulesSearchResponse:
-      properties:
-        hits:
-          properties:
-            account_id:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            hours_on:
-              type: integer
-            id:
-              type: integer
-            is_active:
-              type: boolean
-            match_all_tags_flag:
-              type: boolean
-            name:
-              type: string
-            organization_id:
-              type: string
-            percent_on:
-              type: integer
-            schedule_json:
-              type: string
-            servers:
-              items:
-                properties:
-                  server_id:
-                    type: string
-                type: object
-              type: array
-            tags:
-              items:
-                properties:
-                  key:
-                    type: string
-                  value:
-                    type: string
-                type: object
-              type: array
-            timezone_location:
-              type: string
-            type:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    empty:
-      properties: {}
-      type: object
-    GetOrganizationsAccountsSchedulesAverageResponse:
-      properties:
-        Friday:
-          type: integer
-        Monday:
-          type: integer
-        Saturday:
-          type: integer
-        Sunday:
-          type: integer
-        Thursday:
-          type: integer
-        Tuesday:
-          type: integer
-        Wednesday:
-          type: integer
-      type: object
-    PostOrganizationsAccountsSchedulesScaleResponse:
-      properties:
-        job_id:
-          type: string
-      type: object
     PutOrganizationsAccountsSchedulesByIdRequest:
       properties:
         account_id:
@@ -1434,6 +1339,88 @@ components:
           format: date-time
           type: string
       type: object
+    GetOrganizationsAccountsSchedulesAverageResponse:
+      properties:
+        Friday:
+          type: integer
+        Monday:
+          type: integer
+        Saturday:
+          type: integer
+        Sunday:
+          type: integer
+        Thursday:
+          type: integer
+        Tuesday:
+          type: integer
+        Wednesday:
+          type: integer
+      type: object
+    GetOrganizationsAccountsSchedulesCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    PostOrganizationsAccountsSchedulesStopRequest:
+      type: object
+    PostOrganizationsAccountsSchedulesSearchResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            hours_on:
+              type: integer
+            id:
+              type: integer
+            is_active:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            percent_on:
+              type: integer
+            schedule_json:
+              type: string
+            servers:
+              items:
+                properties:
+                  server_id:
+                    type: string
+                type: object
+              type: array
+            tags:
+              items:
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+                type: object
+              type: array
+            timezone_location:
+              type: string
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PutOrganizationsAccountsSchedulesByIdResponse:
+      type: object
     GetOrganizationsAccountsSchedulesTagsKeysResponse:
       properties:
         values:
@@ -1441,9 +1428,42 @@ components:
             type: string
           type: array
       type: object
+    PostOrganizationsAccountsSchedulesStartResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    GetOrganizationsTasksSchedulesResponse:
+      properties:
+        account_id:
+          type: string
+        deleted_at:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+      type: object
     Error:
       properties:
         message:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsAccountsSchedulesScaleResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesStopResponse:
+      properties:
+        job_id:
           type: string
       type: object
     DeleteOrganizationsAccountsSchedulesServersByIdResponse:
@@ -1456,26 +1476,6 @@ components:
           type: string
       type: object
     PostOrganizationsAccountsSchedulesScaleRequest:
-      type: object
-    PostOrganizationsAccountsSchedulesSearchRequest:
-      properties:
-        Keywords:
-          items:
-            type: string
-          type: array
-        Tags:
-          items:
-            type: string
-          type: array
-      type: object
-    GetOrganizationsAccountsSchedulesServersResponse:
-      properties:
-        region:
-          type: string
-        server_id:
-          type: string
-        type:
-          type: string
       type: object
   securitySchemes:
     API_Authorizer:

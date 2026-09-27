@@ -106,6 +106,26 @@ paths:
       description: Returns information about a particular service plan using provided service plan ID.
 components:
   schemas:
+    ListServicePlansV3Response:
+      type: object
+      properties:
+        servicePlans:
+          description: The list of service plans.
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanV3'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
+          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     ServicePlanProductFeaturesV3:
       required:
       - name
@@ -121,6 +141,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServicePlanV3Attrs'
+    ServicePlanV3Attrs:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          description: '- Name of the attribute as per Service Plan Feature
+
+            - The Storage feature will have ''unlimited storage'' as an attribute'
+          type: string
+        value:
+          description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: object
     ServicePlanProductDetailsV3Response:
       description: Contains service plan details for a specific product.
       type: object
@@ -139,14 +173,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServicePlanProductFeaturesV3'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
     ServicePlanV3:
       type: object
       properties:
@@ -169,32 +195,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
-    ServicePlanV3Attrs:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          description: '- Name of the attribute as per Service Plan Feature
-
-            - The Storage feature will have ''unlimited storage'' as an attribute'
-          type: string
-        value:
-          description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-          type: object
-    ListServicePlansV3Response:
-      type: object
-      properties:
-        servicePlans:
-          description: The list of service plans.
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlanV3'
-        nextPageToken:
-          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
-          type: string
-          example: eyJwYWdlU2l6ZSI6IDEwMH0=
   securitySchemes:
     OAuth2:
       flows:

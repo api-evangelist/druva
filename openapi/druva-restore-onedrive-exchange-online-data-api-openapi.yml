@@ -638,90 +638,62 @@ paths:
                 NotImplemented:
                   $ref: '#/components/examples/NotImplemented'
 components:
+  examples:
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
+        data:
+          status: 1
+          message: Failed to get Customer License
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
   schemas:
-    200_DeviceList:
-      required:
-      - devices
-      - nextPageToken
-      - totalResults
-      type: object
-      properties:
-        totalResults:
-          type: number
-          description: The total number of devices listed in the result pages.
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-        devices:
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            required:
-            - id
-            - appName
-            - userID
-            - userUrl
-            - workload
-            - createdOn
-            - lastCompacted
-            - profileID
-            - customerID
-            - lastBackupStatus
-            - lastBackupJob
-            - lastSuccessfulBackup
-            type: object
-            properties:
-              id:
-                type: number
-                description: The unique id of the device in inSync. Example - 12345
-              appName:
-                minLength: 1
-                type: string
-                description: The device app name in inSync. Example - OneDrive
-              userId:
-                type: number
-                description: A unique id of the user in inSync. Example - 1234
-              workload:
-                minLength: 1
-                type: string
-                description: Name of cloud platform. Example - Office 365 OneDrive, Office 365 Exchange Online, G Suite Gmail, G Suite Google Drive.
-              createdOn:
-                minLength: 1
-                type: string
-                description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
-              profileID:
-                type: number
-                description: A unique id of the profile in inSync.
-              customerID:
-                type: number
-                description: A unique id of the administrator in inSync.
-              lastBackupStatus:
-                type: number
-                description: Shows last backup status. Example - Backed Up Successfully
-              lastBackupJob:
-                type: string
-                description: Date string indicating latest time of the backup job run.
-              lastSuccessfulBackup:
-                type: string
-                description: Date string indicating latest time of the backup job run that was successful.
-      x-examples:
-        example-1:
-          totalResults: 1
-          nextPageToken: ''
-          devices:
-            id: 1
-            appName: OneDrive
-            userID: 1
-            userUrl: https://insync.druva.com/admin/app/#/user/users/1
-            workload: Office 365 OneDrive
-            createdOn: '2021-10-25T00:00:00.000Z'
-            lastCompacted: 1640076452
-            profileID: 1
-            customerID: 1
-            lastBackupStatus: Backed Up Successfully
-            lastBackupJob: 1640076452
-            lastSuccessfulBackup: 1640076452
     200_trigger_restore_resp:
       type: object
       properties:
@@ -781,24 +753,6 @@ components:
               additionalProperties:
                 type: object
                 description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Invalid API syntax.
-        code:
-          type: string
-          example: InsyncCappmaster-1001
-        data:
-          type: object
-          example: null
-        retryable:
-          type: boolean
-          enum:
-          - true
-          - false
-          example: false
     200_list_restore_points:
       type: array
       items:
@@ -892,61 +846,107 @@ components:
             type: integer
             example: 1024000
             description: Total size of the snapshot in bytes
-  examples:
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
-    NotImplemented:
-      summary: Method Not Implemented
-      description: Requested HTTP method is not implemented.
-      value:
-        code: InsyncCappmaster-1007
-        message: Method Not implemented.
-        retryable: false
-        data: null
-    Forbidden:
-      summary: Forbidden
-      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
-      value:
-        code: InsyncCappmaster-1009
-        message: Auth session expired
-        retryable: false
-        data: null
-    NotFound:
-      summary: Resource Not Found
-      description: The requested resource could not be found on server.
-      value: null
-    GARError:
-      summary: Authorization Error
-      description: Client does not have access rights or permissions to the requested content.
-      value:
-        code: InsyncCappmaster-1221
-        message: You do not have permission to access this workload.
-        retryable: false
-        data: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
-    InternalServerError:
-      summary: Internal Server Error
-      description: The request was not processed due to an internal error on server.
-      value:
-        code: InsyncCappmaster-1006
-        message: Internal server error.
-        retryable: false
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
         data:
-          status: 1
-          message: Failed to get Customer License
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_DeviceList:
+      required:
+      - devices
+      - nextPageToken
+      - totalResults
+      type: object
+      properties:
+        totalResults:
+          type: number
+          description: The total number of devices listed in the result pages.
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+        devices:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+            - id
+            - appName
+            - userID
+            - userUrl
+            - workload
+            - createdOn
+            - lastCompacted
+            - profileID
+            - customerID
+            - lastBackupStatus
+            - lastBackupJob
+            - lastSuccessfulBackup
+            type: object
+            properties:
+              id:
+                type: number
+                description: The unique id of the device in inSync. Example - 12345
+              appName:
+                minLength: 1
+                type: string
+                description: The device app name in inSync. Example - OneDrive
+              userId:
+                type: number
+                description: A unique id of the user in inSync. Example - 1234
+              workload:
+                minLength: 1
+                type: string
+                description: Name of cloud platform. Example - Office 365 OneDrive, Office 365 Exchange Online, G Suite Gmail, G Suite Google Drive.
+              createdOn:
+                minLength: 1
+                type: string
+                description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
+              profileID:
+                type: number
+                description: A unique id of the profile in inSync.
+              customerID:
+                type: number
+                description: A unique id of the administrator in inSync.
+              lastBackupStatus:
+                type: number
+                description: Shows last backup status. Example - Backed Up Successfully
+              lastBackupJob:
+                type: string
+                description: Date string indicating latest time of the backup job run.
+              lastSuccessfulBackup:
+                type: string
+                description: Date string indicating latest time of the backup job run that was successful.
+      x-examples:
+        example-1:
+          totalResults: 1
+          nextPageToken: ''
+          devices:
+            id: 1
+            appName: OneDrive
+            userID: 1
+            userUrl: https://insync.druva.com/admin/app/#/user/users/1
+            workload: Office 365 OneDrive
+            createdOn: '2021-10-25T00:00:00.000Z'
+            lastCompacted: 1640076452
+            profileID: 1
+            customerID: 1
+            lastBackupStatus: Backed Up Successfully
+            lastBackupJob: 1640076452
+            lastSuccessfulBackup: 1640076452
   securitySchemes:
     bearerAuth:
       type: apiKey

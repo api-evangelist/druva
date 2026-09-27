@@ -337,35 +337,35 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    HTTP_403_SDG:
+    PolicyListResponse:
       type: object
       properties:
-        code:
-          type: string
-          enum:
-          - InsyncSdg-1027
-          example: InsyncSdg-1027
-        message:
-          type: string
-          enum:
-          - You do not have permissions for the action.
-          example: You do not have permissions for the action.
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-          example: false
-        data:
-          type: object
-    DatatypeListResponse:
-      type: object
-      properties:
-        datatypes:
+        policies:
           type: array
           items:
-            $ref: '#/components/schemas/Datatype'
-          description: List of sensitive data types.
+            $ref: '#/components/schemas/Policy'
+          description: List of policies.
+    GetSetingsResponse:
+      type: object
+      properties:
+        isAutoResolveViolations:
+          type: boolean
+          description: Flag describing whether auto resolution of violations is enabled or not.
+        daysToResolveNonCriticalViolations:
+          type: integer
+          description: The number of days after which non critical violations will be auto resolved.
+        daysToResolveCriticalViolations:
+          type: integer
+          description: The number of days after which critical violations will be auto resolved.
+        isArchiveScan:
+          type: boolean
+          description: Flag describing whether archive files will be scanned for generating violations.
+        isAutoArchiveResolvedViolations:
+          type: boolean
+          description: Flag describing whether resolved violations will be automatically archived or not.
+        daysToResolveArchivedViolations:
+          type: integer
+          description: The number of days after which archived violations will be automatically resolved.
     WhitelistKeywordsResponse:
       type: object
       properties:
@@ -381,23 +381,6 @@ components:
                 type: boolean
                 description: Indicates if it is a whitelisted keyword or a regular expression.
           description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
-    HttpError:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - sdg-1001
-        message:
-          type: string
-          example: Error Description
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     Policy:
       type: object
       properties:
@@ -513,27 +496,25 @@ components:
           items:
             type: string
           description: Query run to identify the sensitive data type.
-    GetSetingsResponse:
+    DatatypeListResponse:
       type: object
       properties:
-        isAutoResolveViolations:
-          type: boolean
-          description: Flag describing whether auto resolution of violations is enabled or not.
-        daysToResolveNonCriticalViolations:
-          type: integer
-          description: The number of days after which non critical violations will be auto resolved.
-        daysToResolveCriticalViolations:
-          type: integer
-          description: The number of days after which critical violations will be auto resolved.
-        isArchiveScan:
-          type: boolean
-          description: Flag describing whether archive files will be scanned for generating violations.
-        isAutoArchiveResolvedViolations:
-          type: boolean
-          description: Flag describing whether resolved violations will be automatically archived or not.
-        daysToResolveArchivedViolations:
-          type: integer
-          description: The number of days after which archived violations will be automatically resolved.
+        datatypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Datatype'
+          description: List of sensitive data types.
+    FileViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileViolation'
+          description: List of file violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
     PolicyTemplateListResponse:
       type: object
       properties:
@@ -542,6 +523,55 @@ components:
           items:
             $ref: '#/components/schemas/PolicyTemplate'
           description: List of policy templates.
+    EmailViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailViolation'
+          description: List of email violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    HttpError:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - sdg-1001
+        message:
+          type: string
+          example: Error Description
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    HTTP_403_SDG:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - InsyncSdg-1027
+          example: InsyncSdg-1027
+        message:
+          type: string
+          enum:
+          - You do not have permissions for the action.
+          example: You do not have permissions for the action.
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+        data:
+          type: object
     PolicyTemplate:
       type: object
       properties:
@@ -578,36 +608,6 @@ components:
           items:
             type: integer
           description: The unique IDs of the attached sensitive data types in the policy template.
-    PolicyListResponse:
-      type: object
-      properties:
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/Policy'
-          description: List of policies.
-    EmailViolationsResponse:
-      type: object
-      properties:
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailViolation'
-          description: List of email violations.
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
-    FileViolationsResponse:
-      type: object
-      properties:
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/FileViolation'
-          description: List of file violations.
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
     FileViolation:
       type: object
       properties:

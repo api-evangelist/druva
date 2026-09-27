@@ -1567,340 +1567,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PostOrganizationsAccountsServersStopRequest:
-      type: object
-    GetOrganizationsAccountsServersSecurity_groupByIdResponse:
-      properties:
-        instances:
-          items:
-            type: object
-          type: array
-      type: object
-    PostOrganizationsAccountsServersAdr_verificationRequest:
-      properties:
-        rpo:
-          properties:
-            recovery_point_objective:
-              type: integer
-            recovery_point_unit:
-              type: string
-          type: object
-        rules:
-          items:
-            properties:
-              accounts:
-                items:
-                  properties:
-                    account_id:
-                      type: string
-                    rule_id:
-                      type: integer
-                    ruleId:
-                      type: integer
-                  type: object
-                type: array
-              all_resource_types:
-                type: boolean
-              createdAt:
-                format: date-time
-                type: string
-              dr_plan_id:
-                type: integer
-              exclude:
-                type: boolean
-              id:
-                type: integer
-              match:
-                type: integer
-              matches:
-                type: object
-              protectedStatus:
-                type: string
-              regions:
-                items:
-                  type: string
-                type: array
-              resource_types:
-                items:
-                  type: string
-                type: array
-              resources:
-                items:
-                  type: string
-                type: array
-              rule_type:
-                type: string
-              updatedAt:
-                format: date-time
-                type: string
-            type: object
-          type: array
-        source_region:
-          type: string
-        target_account_id:
-          type: string
-        target_region:
-          type: string
-      type: object
-    PostOrganizationsAccountsServersStartRequest:
-      type: object
-    PostOrganizationsAccountsServersResponse:
-      properties:
-        hits:
-          properties:
-            _id:
-              type: string
-            AvailabilityZone:
-              type: string
-            HasIndexedBackups:
-              type: boolean
-            InstanceId:
-              type: string
-            InstanceType:
-              type: string
-            Name:
-              type: string
-            Policies:
-              items:
-                type: string
-              type: array
-            Region:
-              type: string
-            Schedules:
-              items:
-                type: string
-              type: array
-            SecurityGroups:
-              items:
-                properties:
-                  GroupId:
-                    type: string
-                  GroupName:
-                    type: string
-                type: object
-              type: array
-            State:
-              properties:
-                Code:
-                  type: integer
-                Name:
-                  type: string
-              type: object
-            SubnetId:
-              type: string
-            TagCount:
-              type: integer
-            Tags:
-              items:
-                type: object
-              type: array
-            Type:
-              type: string
-            VpcId:
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    GetOrganizationsAccountsServersRegionByIdResponse:
-      properties:
-        hits:
-          properties:
-            _id:
-              type: string
-            AvailabilityZone:
-              type: string
-            HasIndexedBackups:
-              type: boolean
-            InstanceId:
-              type: string
-            InstanceType:
-              type: string
-            Name:
-              type: string
-            Policies:
-              items:
-                type: string
-              type: array
-            Region:
-              type: string
-            Schedules:
-              items:
-                type: string
-              type: array
-            SecurityGroups:
-              items:
-                properties:
-                  GroupId:
-                    type: string
-                  GroupName:
-                    type: string
-                type: object
-              type: array
-            State:
-              properties:
-                Code:
-                  type: integer
-                Name:
-                  type: string
-              type: object
-            SubnetId:
-              type: string
-            TagCount:
-              type: integer
-            Tags:
-              items:
-                type: object
-              type: array
-            Type:
-              type: string
-            VpcId:
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    PostOrganizationsAccountsServersBackupResponse:
-      properties:
-        job_id:
-          type: string
-      type: object
-    PostOrganizationsAccountsServersTagsCountRequest:
-      properties:
-        all:
-          type: boolean
-        Tags:
-          items:
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsServersIdsResponse:
-      properties:
-        AccountId:
-          type: string
-        InstanceId:
-          type: string
-        Name:
-          type: string
-        Region:
-          type: string
-        Type:
-          type: string
-      type: object
-    GetOrganizationsAccountsServersCountResponse:
-      properties:
-        _shards:
-          properties:
-            failed:
-              type: integer
-            successful:
-              type: integer
-            total:
-              type: integer
-          type: object
-        count:
-          type: integer
-      type: object
-    GetOrganizationsAccountsServersResponse:
-      properties:
-        hits:
-          properties:
-            _id:
-              type: string
-            AvailabilityZone:
-              type: string
-            HasIndexedBackups:
-              type: boolean
-            InstanceId:
-              type: string
-            InstanceType:
-              type: string
-            Name:
-              type: string
-            Policies:
-              items:
-                type: string
-              type: array
-            Region:
-              type: string
-            Schedules:
-              items:
-                type: string
-              type: array
-            SecurityGroups:
-              items:
-                properties:
-                  GroupId:
-                    type: string
-                  GroupName:
-                    type: string
-                type: object
-              type: array
-            State:
-              properties:
-                Code:
-                  type: integer
-                Name:
-                  type: string
-              type: object
-            SubnetId:
-              type: string
-            TagCount:
-              type: integer
-            Tags:
-              items:
-                type: string
-              type: array
-            Type:
-              type: string
-            VpcId:
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    PostOrganizationsAccountsServersBackupRequest:
-      properties:
-        backup_type:
-          type: string
-        type:
-          type: string
-      type: object
-    GetOrganizationsResourcesTagsKeysValuesResponse:
+    GetOrganizationsAccountsServersTagsKeysValuesResponse:
       properties:
         values:
           items:
             type: string
           type: array
-      type: object
-    GetOrganizationsAccountsServersStatsResponse:
-      properties:
-        total:
-          properties:
-            count:
-              type: integer
-            protected:
-              type: integer
-            scheduled:
-              type: integer
-          type: object
-      type: object
-    GetOrganizationsAccountsServersTagsKeysResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    PostOrganizationsAccountsServersStopResponse:
-      properties:
-        job_id:
-          type: string
       type: object
     GetOrganizationsAccountsServersSchedulesResponse:
       properties:
@@ -1908,52 +1580,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    empty:
-      properties: {}
-      type: object
-    PostOrganizationsAccountsServersRequest:
-      properties:
-        Keywords:
-          items:
-            type: string
-          type: array
-        Tags:
-          items:
-            properties:
-              Key:
-                type: string
-              Value:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsServersSubnetByIdResponse:
-      properties:
-        instances:
-          items:
-            properties:
-              _id:
-                type: string
-              _index:
-                type: string
-              _routing:
-                type: string
-              _score:
-                type: number
-              _source:
-                type: object
-              _type:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsServersProtection_countResponse:
-      properties:
-        not_protected:
-          type: integer
-        protected:
-          type: integer
       type: object
     PostOrganizationsAccountsServersAdr_verificationResponse:
       properties:
@@ -2100,11 +1726,18 @@ components:
             type: object
           type: array
       type: object
-    GetOrganizationsAccountsServersTagsKeysValuesResponse:
+    GetOrganizationsResourcesTagsKeysValuesResponse:
       properties:
         values:
           items:
             type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsServersSecurity_groupByIdResponse:
+      properties:
+        instances:
+          items:
+            type: object
           type: array
       type: object
     PostOrganizationsAccountsServersSshkeysRequest:
@@ -2155,47 +1788,6 @@ components:
               updatedAt:
                 format: date-time
                 type: string
-            type: object
-          type: array
-      type: object
-    PostOrganizationsAccountsServersTagsCountResponse:
-      properties:
-        hits:
-          properties:
-            hits:
-              items:
-                type: object
-              type: array
-            total:
-              type: integer
-          type: object
-      type: object
-    PutOrganizationsAccountsServersByIdResponse:
-      type: object
-    PostOrganizationsAccountsServersSshkeysResponse:
-      properties:
-        KeyPairs:
-          items:
-            properties:
-              KeyFingerprint:
-                type: string
-              KeyName:
-                type: string
-              KeyPairId:
-                type: string
-              KeyType:
-                type: string
-              Region:
-                type: string
-              Tags:
-                items:
-                  properties:
-                    Key:
-                      type: string
-                    Value:
-                      type: string
-                  type: object
-                type: array
             type: object
           type: array
       type: object
@@ -2525,6 +2117,212 @@ components:
         VpcId:
           type: string
       type: object
+    GetOrganizationsAccountsServersDb_subnet_groupByIdResponse:
+      properties:
+        instances:
+          items:
+            properties:
+              _id:
+                type: string
+              _index:
+                type: string
+              _routing:
+                type: string
+              _score:
+                type: number
+              _source:
+                type: object
+              _type:
+                type: string
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsServersStartRequest:
+      type: object
+    PostOrganizationsAccountsServersStartResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersIdsResponse:
+      properties:
+        AccountId:
+          type: string
+        InstanceId:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+        Type:
+          type: string
+      type: object
+    PostOrganizationsAccountsServersBackupResponse:
+      properties:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsServersSshkeysResponse:
+      properties:
+        KeyPairs:
+          items:
+            properties:
+              KeyFingerprint:
+                type: string
+              KeyName:
+                type: string
+              KeyPairId:
+                type: string
+              KeyType:
+                type: string
+              Region:
+                type: string
+              Tags:
+                items:
+                  properties:
+                    Key:
+                      type: string
+                    Value:
+                      type: string
+                  type: object
+                type: array
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsServersPoliciesResponse:
+      properties:
+        policies:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsServersBackupRequest:
+      properties:
+        backup_type:
+          type: string
+        type:
+          type: string
+      type: object
+    GetOrganizationsAccountsServersStatsResponse:
+      properties:
+        total:
+          properties:
+            count:
+              type: integer
+            protected:
+              type: integer
+            scheduled:
+              type: integer
+          type: object
+      type: object
+    PostOrganizationsAccountsServersRequest:
+      properties:
+        Keywords:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsServersProtection_countResponse:
+      properties:
+        not_protected:
+          type: integer
+        protected:
+          type: integer
+      type: object
+    PostOrganizationsAccountsServersTagsCountResponse:
+      properties:
+        hits:
+          properties:
+            hits:
+              items:
+                type: object
+              type: array
+            total:
+              type: integer
+          type: object
+      type: object
+    PostOrganizationsAccountsServersAdr_verificationRequest:
+      properties:
+        rpo:
+          properties:
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                    ruleId:
+                      type: integer
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              match:
+                type: integer
+              matches:
+                type: object
+              protectedStatus:
+                type: string
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        source_region:
+          type: string
+        target_account_id:
+          type: string
+        target_region:
+          type: string
+      type: object
     GetOrganizationsAccountsServers_configuredResponse:
       properties:
         hits:
@@ -2570,24 +2368,166 @@ components:
         total:
           type: integer
       type: object
+    PostOrganizationsAccountsServersResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: object
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
     Error:
       properties:
         message:
           type: string
       type: object
-    GetOrganizationsAccountsServersPoliciesResponse:
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsServersResponse:
       properties:
-        policies:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: string
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsServersTagsCountRequest:
+      properties:
+        all:
+          type: boolean
+        Tags:
           items:
-            type: string
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
           type: array
       type: object
-    PostOrganizationsAccountsServersStartResponse:
+    PostOrganizationsAccountsServersStopResponse:
       properties:
         job_id:
           type: string
       type: object
-    GetOrganizationsAccountsServersDb_subnet_groupByIdResponse:
+    PutOrganizationsAccountsServersByIdResponse:
+      type: object
+    GetOrganizationsAccountsServersCountResponse:
+      properties:
+        _shards:
+          properties:
+            failed:
+              type: integer
+            successful:
+              type: integer
+            total:
+              type: integer
+          type: object
+        count:
+          type: integer
+      type: object
+    GetOrganizationsAccountsServersSubnetByIdResponse:
       properties:
         instances:
           items:
@@ -2606,6 +2546,66 @@ components:
                 type: string
             type: object
           type: array
+      type: object
+    PostOrganizationsAccountsServersStopRequest:
+      type: object
+    GetOrganizationsAccountsServersRegionByIdResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            AvailabilityZone:
+              type: string
+            HasIndexedBackups:
+              type: boolean
+            InstanceId:
+              type: string
+            InstanceType:
+              type: string
+            Name:
+              type: string
+            Policies:
+              items:
+                type: string
+              type: array
+            Region:
+              type: string
+            Schedules:
+              items:
+                type: string
+              type: array
+            SecurityGroups:
+              items:
+                properties:
+                  GroupId:
+                    type: string
+                  GroupName:
+                    type: string
+                type: object
+              type: array
+            State:
+              properties:
+                Code:
+                  type: integer
+                Name:
+                  type: string
+              type: object
+            SubnetId:
+              type: string
+            TagCount:
+              type: integer
+            Tags:
+              items:
+                type: object
+              type: array
+            Type:
+              type: string
+            VpcId:
+              type: string
+          type: object
+        total:
+          type: integer
       type: object
   securitySchemes:
     API_Authorizer:

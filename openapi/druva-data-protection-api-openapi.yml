@@ -429,34 +429,16 @@ paths:
       description: Returns workloads available for data protection rules, optionally filtered by product.
 components:
   schemas:
-    DataProtectionSearchResourcesResponse:
-      description: SearchResourcesResponse represents the response for searching resources
+    DataProtectionListWorkloadsResponse:
+      description: ListWorkloadsResponse represents list workloads API response
       type: object
       properties:
-        nextPageToken:
-          description: Token for next page (empty string if no more results)
-          type: string
-          x-go-name: NextPageToken
-        resources:
-          description: List of resources
+        workloads:
+          description: List of available workloads
           type: array
           items:
-            $ref: '#/components/schemas/DataProtectionResource'
-          x-go-name: Resources
-    DataProtectionListEntitiesResponse:
-      description: ListEntitiesResponse represents the response for listing entities
-      type: object
-      properties:
-        entities:
-          description: List of entities (organizations for Enterprise, profiles for User-based)
-          type: array
-          items:
-            $ref: '#/components/schemas/DataProtectionEntity'
-          x-go-name: Entities
-        nextPageToken:
-          description: Token for next page (empty string if no more results)
-          type: string
-          x-go-name: NextPageToken
+            $ref: '#/components/schemas/DataProtectionWorkloadResponse'
+          x-go-name: Workloads
     DataProtectionExclusionResponse:
       description: ExclusionResponse represents a single exclusion in list results for a rule.
       type: object
@@ -473,28 +455,20 @@ components:
           description: Specific resource excluded (for example backup set or mailbox), when applicable
           type: string
           x-go-name: ResourceName
-    DataProtectionListExclusionsResponse:
-      description: ListExclusionsResponse represents the response for listing exclusions
+    DataProtectionCreateRuleResponse:
+      description: CreateRuleResponse represents create rule API response
+      allOf:
+      - $ref: '#/components/schemas/DataProtectionRuleResponse'
+    DataProtectionRuleCustomersResponse:
+      description: RuleCustomersResponse represents customers mapped to a rule
       type: object
       properties:
-        exclusions:
-          description: List of exclusions
+        customerGlobalIDs:
+          description: Customer global IDs mapped to this rule
           type: array
           items:
-            $ref: '#/components/schemas/DataProtectionExclusionResponse'
-          x-go-name: Exclusions
-        nextPageToken:
-          description: Token for next page (empty string if no more results)
-          type: string
-          x-go-name: NextPageToken
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
+            type: string
+          x-go-name: CustomerGlobalIDs
     DataProtectionListRulesResponse:
       description: ListRulesResponse represents list rules API response
       type: object
@@ -509,28 +483,20 @@ components:
           items:
             $ref: '#/components/schemas/DataProtectionRuleResponse'
           x-go-name: Rules
-    DataProtectionListWorkloadsResponse:
-      description: ListWorkloadsResponse represents list workloads API response
+    DataProtectionSearchResourcesResponse:
+      description: SearchResourcesResponse represents the response for searching resources
       type: object
       properties:
-        workloads:
-          description: List of available workloads
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+        resources:
+          description: List of resources
           type: array
           items:
-            $ref: '#/components/schemas/DataProtectionWorkloadResponse'
-          x-go-name: Workloads
-    DataProtectionResource:
-      description: Resource represents a resource (backup set, user email, site URL, etc.)
-      type: object
-      properties:
-        additionalData:
-          x-go-name: AdditionalData
-        entityName:
-          type: string
-          x-go-name: EntityName
-        resourceName:
-          type: string
-          x-go-name: ResourceName
+            $ref: '#/components/schemas/DataProtectionResource'
+          x-go-name: Resources
     DataProtectionEntity:
       description: Entity represents an organization/site (Enterprise workloads) or a backup profile (user-based workloads) in entity listing results.
       type: object
@@ -539,10 +505,14 @@ components:
           description: Organization, site, or profile name
           type: string
           x-go-name: EntityName
-    DataProtectionCreateRuleResponse:
-      description: CreateRuleResponse represents create rule API response
-      allOf:
-      - $ref: '#/components/schemas/DataProtectionRuleResponse'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     DataProtectionRuleResponse:
       description: RuleResponse represents single rule API response
       type: object
@@ -597,28 +567,6 @@ components:
             type: integer
             format: int64
           x-go-name: WorkloadIDs
-    DataProtectionRuleCustomersResponse:
-      description: RuleCustomersResponse represents customers mapped to a rule
-      type: object
-      properties:
-        customerGlobalIDs:
-          description: Customer global IDs mapped to this rule
-          type: array
-          items:
-            type: string
-          x-go-name: CustomerGlobalIDs
-    DataProtectionGetRulesForCustomerResponse:
-      description: GetRulesForCustomerResponse represents get rules for customer API response
-      type: object
-      properties:
-        customerGlobalID:
-          type: string
-          x-go-name: CustomerGlobalID
-        ruleIDs:
-          type: array
-          items:
-            type: string
-          x-go-name: RuleIDs
     DataProtectionWorkloadResponse:
       description: WorkloadResponse represents a single workload in the response
       type: object
@@ -637,6 +585,18 @@ components:
           description: Workload display name
           type: string
           x-go-name: WorkloadName
+    DataProtectionResource:
+      description: Resource represents a resource (backup set, user email, site URL, etc.)
+      type: object
+      properties:
+        additionalData:
+          x-go-name: AdditionalData
+        entityName:
+          type: string
+          x-go-name: EntityName
+        resourceName:
+          type: string
+          x-go-name: ResourceName
     DataProtectionCreateRuleRequest:
       description: CreateRuleRequest represents create rule API request
       type: object
@@ -684,6 +644,46 @@ components:
             type: integer
             format: int64
           x-go-name: WorkloadIDs
+    DataProtectionListExclusionsResponse:
+      description: ListExclusionsResponse represents the response for listing exclusions
+      type: object
+      properties:
+        exclusions:
+          description: List of exclusions
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionExclusionResponse'
+          x-go-name: Exclusions
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+    DataProtectionListEntitiesResponse:
+      description: ListEntitiesResponse represents the response for listing entities
+      type: object
+      properties:
+        entities:
+          description: List of entities (organizations for Enterprise, profiles for User-based)
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionEntity'
+          x-go-name: Entities
+        nextPageToken:
+          description: Token for next page (empty string if no more results)
+          type: string
+          x-go-name: NextPageToken
+    DataProtectionGetRulesForCustomerResponse:
+      description: GetRulesForCustomerResponse represents get rules for customer API response
+      type: object
+      properties:
+        customerGlobalID:
+          type: string
+          x-go-name: CustomerGlobalID
+        ruleIDs:
+          type: array
+          items:
+            type: string
+          x-go-name: RuleIDs
   securitySchemes:
     OAuth2:
       flows:

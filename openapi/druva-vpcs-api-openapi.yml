@@ -12,7 +12,7 @@ info:
     * The token is returned by calling the /authorize endpoint and supplying the x-api-key header
 
     * All other calls use the x-api-key header and the Authorzation header with Bearer followed by your token'
-  title: CloudRanger VP Cs API
+  title: CloudRanger VPCs API
   version: '2022-12-07T16:38:31.962Z'
 servers:
 - url: https://api.cloudranger.com/202004
@@ -132,11 +132,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     GetOrganizationsVpcsResponse:
       properties:
         count:
@@ -157,6 +152,11 @@ components:
       type: object
     empty:
       properties: {}
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

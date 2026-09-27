@@ -600,55 +600,33 @@ paths:
     - url: //apis.druva.com/phoenix
 components:
   schemas:
-    PutOrganizationsMembersByIdResponse:
+    DeleteOrganizationsMembersByIdResponse:
+      type: object
+    PostOrganizationsMembersRequest:
       properties:
         account_access:
-          type: string
-        created_at:
-          format: date-time
+          enum:
+          - admin
+          - view
           type: string
         email:
           type: string
         first_name:
-          type: string
-        id:
-          type: integer
-        invited_at:
           type: string
         last_name:
           type: string
         organization_id:
           type: string
         status:
-          type: string
-        updated_at:
-          format: date-time
           type: string
       type: object
-    GetOrganizationsMembersAdmin_accountsResponse:
+    PostOrganizationsAwsConnectionTestRequest:
       properties:
-        account_access:
+        access_role_arn:
           type: string
-        created_at:
-          format: date-time
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        id:
-          type: integer
-        invited_at:
-          format: date-time
-          type: string
-        last_name:
+        external_id:
           type: string
         organization_id:
-          type: string
-        status:
-          type: string
-        updated_at:
-          format: date-time
           type: string
       type: object
     PostOrganizationsMembersResponse:
@@ -675,102 +653,6 @@ components:
           type: string
         updated_at:
           format: date-time
-          type: string
-      type: object
-    PostOrganizationsCredentialRequest:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      type: object
-    GetOrganizationsAccessible_accountsResponse:
-      type: string
-    PutOrganizationsMembersByIdRequest:
-      properties:
-        account_access:
-          type: string
-      type: object
-    empty:
-      properties: {}
-      type: object
-    PutOrganizationsByIdResponse:
-      type: object
-    GetOrganizationsMembersResponse:
-      properties:
-        account_access:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        id:
-          type: integer
-        invited_at:
-          format: date-time
-          type: string
-        last_name:
-          type: string
-        organization_id:
-          type: string
-        status:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PutOrganizationsByIdRequest:
-      properties:
-        avatar_url:
-          type: string
-        name:
-          type: string
-      type: object
-    PostOrganizationsAwsConnectionTestResponse:
-      properties:
-        state:
-          type: string
-      type: object
-    DeleteOrganizationsMembersByIdResponse:
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsAccountsCredentialResponse:
-      properties:
-        access_role_arn:
-          type: string
-        account_id:
-          type: string
-        cloudformation_s3_url:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        external_id:
-          type: string
-        has_agreed:
-          type: boolean
-        state:
-          type: string
-        state_reason:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAwsConnectionTestRequest:
-      properties:
-        access_role_arn:
-          type: string
-        external_id:
-          type: string
-        organization_id:
           type: string
       type: object
     GetOrganizationsByIdResponse:
@@ -970,16 +852,32 @@ components:
           format: date-time
           type: string
       type: object
-    PostOrganizationsMembersRequest:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PutOrganizationsMembersByIdRequest:
       properties:
         account_access:
-          enum:
-          - admin
-          - view
+          type: string
+      type: object
+    PutOrganizationsByIdResponse:
+      type: object
+    PutOrganizationsMembersByIdResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
           type: string
         email:
           type: string
         first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
           type: string
         last_name:
           type: string
@@ -987,21 +885,109 @@ components:
           type: string
         status:
           type: string
-      type: object
-    ServiceError:
-      description: Service Error
-      type: object
-      title: ServiceError represents an error with an associated error code.
-      properties:
-        code:
-          type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
+        updated_at:
+          format: date-time
           type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsByIdRequest:
+      properties:
+        avatar_url:
+          type: string
+        name:
+          type: string
+      type: object
+    PostOrganizationsAccountsCredentialResponse:
+      properties:
+        access_role_arn:
+          type: string
+        account_id:
+          type: string
+        cloudformation_s3_url:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        has_agreed:
+          type: boolean
+        state:
+          type: string
+        state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsMembersAdmin_accountsResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccessible_accountsResponse:
+      type: string
+    PostOrganizationsAwsConnectionTestResponse:
+      properties:
+        state:
+          type: string
+      type: object
+    PostOrganizationsCredentialRequest:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    GetOrganizationsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
     OrgResponse:
       description: OrgResponse is the response schema for ListOrg
       type: object
@@ -1030,6 +1016,20 @@ components:
             $ref: '#/components/schemas/OrgResponse'
           x-go-name: Orgs
       x-go-package: phoenix/customerconfig/report/spec/site
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
   securitySchemes:
     API_Authorizer:
       in: header

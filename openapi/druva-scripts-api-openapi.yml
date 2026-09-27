@@ -530,6 +530,104 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    GetOrganizationsScriptsTagKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsScriptscacheResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: string
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                __OrganizationId:
+                  type: string
+                Description:
+                  type: string
+                DocumentFormat:
+                  type: string
+                DocumentType:
+                  type: string
+                DocumentVersion:
+                  type: string
+                Hash:
+                  type: string
+                HashType:
+                  type: string
+                Id:
+                  type: string
+                LatestVersion:
+                  type: string
+                Name:
+                  type: string
+                ObjectType:
+                  type: string
+                Owner:
+                  type: string
+                PlatformTypes:
+                  items:
+                    type: string
+                  type: array
+                postDate:
+                  format: date-time
+                  type: string
+                Region:
+                  type: string
+                SchemaVersion:
+                  type: string
+                Source:
+                  type: string
+                Status:
+                  type: string
+                Tags:
+                  items:
+                    type: string
+                  type: array
+                TagStrings:
+                  items:
+                    type: string
+                  type: array
+                Type:
+                  type: string
+              type: object
+            _type:
+              type: string
+            sort:
+              items:
+                type: string
+              type: array
+          type: object
+        total:
+          type: integer
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsScriptsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
     GetOrganizationsScriptsResponse:
       properties:
         hits:
@@ -815,96 +913,10 @@ components:
         total:
           type: integer
       type: object
-    empty:
-      properties: {}
-      type: object
     PutOrganizationsScriptsByIdResponse:
       properties:
         message:
           type: string
-      type: object
-    GetOrganizationsScriptsTagKeysResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    GetOrganizationsScriptscacheResponse:
-      properties:
-        hits:
-          properties:
-            _id:
-              type: string
-            _index:
-              type: string
-            _routing:
-              type: string
-            _score:
-              type: string
-            _source:
-              properties:
-                __AccountId:
-                  type: string
-                __OrganizationId:
-                  type: string
-                Description:
-                  type: string
-                DocumentFormat:
-                  type: string
-                DocumentType:
-                  type: string
-                DocumentVersion:
-                  type: string
-                Hash:
-                  type: string
-                HashType:
-                  type: string
-                Id:
-                  type: string
-                LatestVersion:
-                  type: string
-                Name:
-                  type: string
-                ObjectType:
-                  type: string
-                Owner:
-                  type: string
-                PlatformTypes:
-                  items:
-                    type: string
-                  type: array
-                postDate:
-                  format: date-time
-                  type: string
-                Region:
-                  type: string
-                SchemaVersion:
-                  type: string
-                Source:
-                  type: string
-                Status:
-                  type: string
-                Tags:
-                  items:
-                    type: string
-                  type: array
-                TagStrings:
-                  items:
-                    type: string
-                  type: array
-                Type:
-                  type: string
-              type: object
-            _type:
-              type: string
-            sort:
-              items:
-                type: string
-              type: array
-          type: object
-        total:
-          type: integer
       type: object
     PostOrganizationsScriptsRulesResponse:
       properties:
@@ -1036,18 +1048,6 @@ components:
         script_id:
           type: integer
         tags:
-          items:
-            type: string
-          type: array
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsScriptsTagsKeysValuesResponse:
-      properties:
-        values:
           items:
             type: string
           type: array

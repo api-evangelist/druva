@@ -202,20 +202,6 @@ paths:
                 $ref: '#/components/schemas/ServiceError'
 components:
   schemas:
-    ServiceError:
-      description: Service Error
-      type: object
-      title: ServiceError represents an error with an associated error code.
-      properties:
-        code:
-          type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
-          type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
     SearchFilters:
       type: object
       title: SearchFilters ...
@@ -264,6 +250,55 @@ components:
             $ref: '#/components/schemas/Tags'
           x-go-name: Tags
           description: Specify the tags to be searched.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    Subscription:
+      type: object
+      title: Subscription ...
+      properties:
+        accountID:
+          type: integer
+          format: int32
+          x-go-name: AccountID
+        accountIdentifier:
+          type: string
+          x-go-name: AccountIdentifier
+        id:
+          type: integer
+          format: int32
+          x-go-name: ID
+        name:
+          type: string
+          x-go-name: Name
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ListMetadataNamesByTypeResponse:
+      type: object
+      title: ListMetadataNamesByTypeResponse is the response schema for ListMetadataNamesByType API
+      properties:
+        metadataType:
+          type: string
+          x-go-name: MetadataType
+          description: Type of metadata  provided in request.
+        names:
+          type: array
+          items:
+            type: string
+          x-go-name: Names
+          description: Metadata values based on the type provided in request.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ListSubscriptionsResponse:
+      type: object
+      description: ListSubscriptionsResponse is the response schema for ListSubscriptions API
+      properties:
+        nextPageToken:
+          type: string
+          x-go-name: NextPageToken
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+          x-go-name: Subscriptions
+          description: Details of subscription present in the specified org. Returns subscription name, ID, accountIdentifier, and accountID.
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
     Resource:
       type: object
@@ -328,55 +363,6 @@ components:
           x-go-name: TotalCount
           description: Total count of results fetched.
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
-    ListMetadataNamesByTypeResponse:
-      type: object
-      title: ListMetadataNamesByTypeResponse is the response schema for ListMetadataNamesByType API
-      properties:
-        metadataType:
-          type: string
-          x-go-name: MetadataType
-          description: Type of metadata  provided in request.
-        names:
-          type: array
-          items:
-            type: string
-          x-go-name: Names
-          description: Metadata values based on the type provided in request.
-      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
-    ListSubscriptionsResponse:
-      type: object
-      description: ListSubscriptionsResponse is the response schema for ListSubscriptions API
-      properties:
-        nextPageToken:
-          type: string
-          x-go-name: NextPageToken
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subscription'
-          x-go-name: Subscriptions
-          description: Details of subscription present in the specified org. Returns subscription name, ID, accountIdentifier, and accountID.
-      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
-    Subscription:
-      type: object
-      title: Subscription ...
-      properties:
-        accountID:
-          type: integer
-          format: int32
-          x-go-name: AccountID
-        accountIdentifier:
-          type: string
-          x-go-name: AccountIdentifier
-        id:
-          type: integer
-          format: int32
-          x-go-name: ID
-        name:
-          type: string
-          x-go-name: Name
-      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
     Tags:
       type: object
       title: Tags ...
@@ -388,6 +374,20 @@ components:
           type: string
           x-go-name: Value
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
   securitySchemes:
     OAuth2:
       type: oauth2

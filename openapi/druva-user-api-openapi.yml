@@ -105,23 +105,23 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     GetIpResponse:
       properties:
         ip:
           type: string
+      type: object
+    empty:
+      properties: {}
       type: object
     GetAuthorizeResponse:
       properties:
         token:
           type: string
       type: object
-    empty:
-      properties: {}
+    Error:
+      properties:
+        message:
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

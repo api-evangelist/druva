@@ -199,6 +199,149 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    JobParamsAzureSQL:
+      description: Specify job parameters needed for restoring snapshot.
+      type: object
+      required:
+      - newVmRegion
+      properties:
+        snapshotState:
+          description: Specify state of the snapshot. For example, 'hot', 'warm' or 'cold'.
+          type: string
+          x-go-name: SnapshotState
+        rpState:
+          description: Specify recovery point state. For example, 'hot', 'warm' or 'cold'.
+          type: string
+          x-go-name: RpState
+        newVmRegion:
+          description: Specify the destination Azure region for VM restore.
+          type: string
+          x-go-name: NewVmRegion
+        azsqlParams:
+          $ref: '#/components/schemas/AzureSQLParams'
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
+    CreateBackupResponseAzureSQL:
+      description: CreateResponse is response schema for Create Request
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/JobAzureSQL'
+      x-go-name: CreateResponse
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
+    AzureSQLParams:
+      description: Specify Azure SQL specific parameters for database restore operations.
+      type: object
+      required:
+      - selectedDBNames
+      - targetEntityID
+      - targetVMName
+      properties:
+        selectedDBNames:
+          description: 'Specify mapping of source database names to target database objects for restore operation. For example "selectedDBNames": {"sourcedb": {"name": "targetdb", "type": "user"}}.'
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Target database name
+              type:
+                type: string
+                description: Database type
+            required:
+            - name
+            - type
+          x-go-name: SelectedDBNames
+        targetEntityID:
+          description: Specify unique identifier of the target SQL Server instance where databases will be restored.
+          type: integer
+          format: int32
+          x-go-name: TargetEntityID
+        targetVMName:
+          description: Specify name of the target virtual machine hosting the SQL Server instance.
+          type: string
+          x-go-name: TargetVMName
+        targetLocationID:
+          description: Specify identifier of the target Azure location/region for cross-region restore operations.
+          type: integer
+          format: int32
+          x-go-name: TargetLocationID
+        targetAccountID:
+          description: Specify identifier of the target Azure account for cross-account restore operation.
+          type: integer
+          format: int32
+          x-go-name: TargetAccountID
+        targetConnectionID:
+          description: Specify connection identifier for the target Azure environment/subscription.
+          type: string
+          x-go-name: TargetConnectionID
+        pitTimestamp:
+          description: Specify unix timestamp for point-in-time recovery to restore database to specific moment time.For example, '1704067200'.
+          type: integer
+          format: int64
+          x-go-name: PITTimestamp
+        snapshotIDs:
+          description: Specify Array of snapshot identifiers for multi-snapshot restore operations.
+          type: array
+          items:
+            type: string
+          x-go-name: SnapshotIDs
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
+    CreateRestoreResponseAzureSQL:
+      description: CreateResponse is response schema for Create Request
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/JobAzureSQL'
+      x-go-name: CreateResponse
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
+    CreateRestoreTriggerArgsAzureSQL:
+      description: CreateRestoreTriggerArgs bundles all job creation params in single data type.
+      type: object
+      required:
+      - backupsetID
+      - snapshotID
+      properties:
+        backupsetID:
+          description: Specify the ID of the backup set. Get the ID using the 'List backup sets' API.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        jobParams:
+          $ref: '#/components/schemas/JobParamsAzureSQL'
+        restoreType:
+          description: Specify "RegularRestore" as the restore type.
+          type: string
+          x-go-name: RestoreType
+        snapshotID:
+          description: Specify the ID of the snapshot. Get the ID using the "List Snapshots" API.
+          type: string
+          x-go-name: SnapshotID
+        snapshotName:
+          description: Specify the name of the snapshot. Get the name using "List Snapshots" API.
+          type: string
+          x-go-name: SnapshotName
+      x-go-name: TriggerArgs
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
     JobAzureSQL:
       description: Job parameters.
       type: object
@@ -398,149 +541,6 @@ components:
           x-go-name: BackupsetID
       x-go-name: TriggerArgs
       x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-          x-go-name: Code
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          x-go-name: Data
-        message:
-          type: string
-          x-go-name: Message
-        retryable:
-          type: boolean
-          x-go-name: Retry
-      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
-    CreateBackupResponseAzureSQL:
-      description: CreateResponse is response schema for Create Request
-      type: object
-      properties:
-        job:
-          $ref: '#/components/schemas/JobAzureSQL'
-      x-go-name: CreateResponse
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
-    CreateRestoreResponseAzureSQL:
-      description: CreateResponse is response schema for Create Request
-      type: object
-      properties:
-        job:
-          $ref: '#/components/schemas/JobAzureSQL'
-      x-go-name: CreateResponse
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    CreateRestoreTriggerArgsAzureSQL:
-      description: CreateRestoreTriggerArgs bundles all job creation params in single data type.
-      type: object
-      required:
-      - backupsetID
-      - snapshotID
-      properties:
-        backupsetID:
-          description: Specify the ID of the backup set. Get the ID using the 'List backup sets' API.
-          type: integer
-          format: int32
-          x-go-name: BackupsetID
-        jobParams:
-          $ref: '#/components/schemas/JobParamsAzureSQL'
-        restoreType:
-          description: Specify "RegularRestore" as the restore type.
-          type: string
-          x-go-name: RestoreType
-        snapshotID:
-          description: Specify the ID of the snapshot. Get the ID using the "List Snapshots" API.
-          type: string
-          x-go-name: SnapshotID
-        snapshotName:
-          description: Specify the name of the snapshot. Get the name using "List Snapshots" API.
-          type: string
-          x-go-name: SnapshotName
-      x-go-name: TriggerArgs
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    AzureSQLParams:
-      description: Specify Azure SQL specific parameters for database restore operations.
-      type: object
-      required:
-      - selectedDBNames
-      - targetEntityID
-      - targetVMName
-      properties:
-        selectedDBNames:
-          description: 'Specify mapping of source database names to target database objects for restore operation. For example "selectedDBNames": {"sourcedb": {"name": "targetdb", "type": "user"}}.'
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Target database name
-              type:
-                type: string
-                description: Database type
-            required:
-            - name
-            - type
-          x-go-name: SelectedDBNames
-        targetEntityID:
-          description: Specify unique identifier of the target SQL Server instance where databases will be restored.
-          type: integer
-          format: int32
-          x-go-name: TargetEntityID
-        targetVMName:
-          description: Specify name of the target virtual machine hosting the SQL Server instance.
-          type: string
-          x-go-name: TargetVMName
-        targetLocationID:
-          description: Specify identifier of the target Azure location/region for cross-region restore operations.
-          type: integer
-          format: int32
-          x-go-name: TargetLocationID
-        targetAccountID:
-          description: Specify identifier of the target Azure account for cross-account restore operation.
-          type: integer
-          format: int32
-          x-go-name: TargetAccountID
-        targetConnectionID:
-          description: Specify connection identifier for the target Azure environment/subscription.
-          type: string
-          x-go-name: TargetConnectionID
-        pitTimestamp:
-          description: Specify unix timestamp for point-in-time recovery to restore database to specific moment time.For example, '1704067200'.
-          type: integer
-          format: int64
-          x-go-name: PITTimestamp
-        snapshotIDs:
-          description: Specify Array of snapshot identifiers for multi-snapshot restore operations.
-          type: array
-          items:
-            type: string
-          x-go-name: SnapshotIDs
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    JobParamsAzureSQL:
-      description: Specify job parameters needed for restoring snapshot.
-      type: object
-      required:
-      - newVmRegion
-      properties:
-        snapshotState:
-          description: Specify state of the snapshot. For example, 'hot', 'warm' or 'cold'.
-          type: string
-          x-go-name: SnapshotState
-        rpState:
-          description: Specify recovery point state. For example, 'hot', 'warm' or 'cold'.
-          type: string
-          x-go-name: RpState
-        newVmRegion:
-          description: Specify the destination Azure region for VM restore.
-          type: string
-          x-go-name: NewVmRegion
-        azsqlParams:
-          $ref: '#/components/schemas/AzureSQLParams'
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
     JSONMap:
       description: Returns the data for the current job.
       type: object

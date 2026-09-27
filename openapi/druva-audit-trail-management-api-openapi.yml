@@ -52,24 +52,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     HTTP_403:
       type: object
       properties:
@@ -95,6 +77,24 @@ components:
           type: integer
           description: "The Audit Trail Retention settings in the duration of seconds. Example - 2592000 \n Here are the observed values and translation in days/months/year. \n- 2592000 → 30 days\n- 7776000 → 3 months\n- 15552000 → 6 months\n- 31536000 → 1 year \n- -1 → Ever"
           example: '2592000'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
   securitySchemes:
     OAuth2:
       type: oauth2

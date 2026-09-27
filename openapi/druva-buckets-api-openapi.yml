@@ -82,11 +82,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     GetOrganizationsAccountsBucketsByIdResponse:
       properties:
         __AccountId:
@@ -203,6 +198,11 @@ components:
       type: object
     empty:
       properties: {}
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

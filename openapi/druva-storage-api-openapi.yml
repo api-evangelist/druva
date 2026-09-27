@@ -53,20 +53,6 @@ paths:
                 $ref: '#/components/schemas/ServiceError'
 components:
   schemas:
-    GetStorageUsagePerOrganizationResponse:
-      description: GetStorageUsagePerOrganizationResponse is the response schema for GetStorageUsagePerOrganization
-      type: object
-      properties:
-        nextPageToken:
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          type: string
-          x-go-name: OutToken
-        storageUsage:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrgUsageResponse'
-          x-go-name: StorageUsage
-      x-go-package: phoenix/storageconfig/report/spec
     ServiceError:
       description: Service Error
       type: object
@@ -81,6 +67,20 @@ components:
           type: string
           description: Application specific error message
       x-go-package: vendor/druva.com/godevkit/errortype
+    GetStorageUsagePerOrganizationResponse:
+      description: GetStorageUsagePerOrganizationResponse is the response schema for GetStorageUsagePerOrganization
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        storageUsage:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgUsageResponse'
+          x-go-name: StorageUsage
+      x-go-package: phoenix/storageconfig/report/spec
     OrgUsageResponse:
       description: OrgUsageResponse is the response schema for storage usage per organization
       type: object

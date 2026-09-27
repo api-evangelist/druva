@@ -530,61 +530,79 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsJobsTagsResponse:
-      type: string
-    GetOrganizationsAccountsJobsResponse:
+    GetOrganizationsAccountsJobsTasksByIdResponse:
       properties:
-        account_id:
-          type: string
         action:
           type: string
         created_at:
           format: date-time
           type: string
-        cron:
-          type: string
-        cron_location:
-          type: string
-        event_at:
-          format: date-time
-          type: string
-        event_type:
-          type: string
         halt:
-          type: string
+          type: boolean
         id:
           type: string
-        object_id:
-          type: integer
-        organization_id:
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
           type: string
-        policy:
+        region:
           type: string
-        restorepolicy:
+        resource_id:
           type: string
-        schedule:
+        resource_name:
           type: string
-        seq:
-          type: integer
-        tasks:
+        resource_type:
+          type: string
+        steps:
           items:
-            properties:
-              resource_name:
-                type: string
             type: object
           type: array
-        total_fail:
-          type: integer
-        total_success:
-          type: integer
-        total_tasks:
-          type: integer
-        type:
-          type: string
         updated_at:
           format: date-time
           type: string
       type: object
+    GetOrganizationsAccountsJobsTagsResponse:
+      type: string
     GetOrganizationsAccountsJobsByIdResponse:
       properties:
         account_id:
@@ -658,85 +676,64 @@ components:
           format: date-time
           type: string
       type: object
-    empty:
-      properties: {}
-      type: object
-    GetOrganizationsAccountsJobsTasksByIdResponse:
+    GetOrganizationsAccountsJobsResponse:
       properties:
+        account_id:
+          type: string
         action:
           type: string
         created_at:
           format: date-time
           type: string
+        cron:
+          type: string
+        cron_location:
+          type: string
+        event_at:
+          format: date-time
+          type: string
+        event_type:
+          type: string
         halt:
-          type: boolean
+          type: string
         id:
           type: string
-        is_success:
-          type: boolean
-        job:
-          properties:
-            account_id:
-              type: string
-            action:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            cron:
-              type: string
-            cron_location:
-              type: string
-            event_at:
-              format: date-time
-              type: string
-            event_type:
-              type: string
-            halt:
-              type: string
-            id:
-              type: string
-            object_id:
-              type: integer
-            organization_id:
-              type: string
-            seq:
-              type: integer
-            total_fail:
-              type: integer
-            total_success:
-              type: integer
-            total_tasks:
-              type: integer
-            type:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        job_id:
+        object_id:
+          type: integer
+        organization_id:
           type: string
-        region:
+        policy:
           type: string
-        resource_id:
+        restorepolicy:
           type: string
-        resource_name:
+        schedule:
           type: string
-        resource_type:
-          type: string
-        steps:
+        seq:
+          type: integer
+        tasks:
           items:
+            properties:
+              resource_name:
+                type: string
             type: object
           type: array
+        total_fail:
+          type: integer
+        total_success:
+          type: integer
+        total_tasks:
+          type: integer
+        type:
+          type: string
         updated_at:
           format: date-time
           type: string
       type: object
-    GetOrganizationsAccountsJob_countResponse:
-      type: integer
-    PostOrganizationsAccountsJobsRetryResponse:
+    PostOrganizationsAccountsJobsRetryRequest:
       type: object
     PostOrganizationsAccountsJobsTasksStepsRetryRequest:
+      type: object
+    PostOrganizationsAccountsJobsRetryResponse:
       type: object
     PostOrganizationsAccountsJobsTasksStepsRetryResponse:
       type: object
@@ -745,8 +742,11 @@ components:
         message:
           type: string
       type: object
-    PostOrganizationsAccountsJobsRetryRequest:
+    empty:
+      properties: {}
       type: object
+    GetOrganizationsAccountsJob_countResponse:
+      type: integer
   securitySchemes:
     API_Authorizer:
       in: header

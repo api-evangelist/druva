@@ -183,41 +183,15 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    empty:
-      properties: {}
-      type: object
-    PostOrganizationsOnboardingByIdRequest:
+    PostOrganizationsOnboardingByIdResponse:
       properties:
         AccountId:
           type: string
-        CRTemplateVersion:
-          type: integer
-        Event:
+        ExternalId:
           type: string
-        Region:
+        FLSBucketName:
           type: string
-        RevisionId:
-          type: string
-        StackId:
-          type: string
-        Type:
-          type: string
-      type: object
-    PutOrganizationsOnboardingByIdRequest:
-      properties:
-        AccountId:
-          type: string
-        CRTemplateVersion:
-          type: integer
-        Event:
-          type: string
-        Region:
-          type: string
-        RevisionId:
-          type: string
-        StackId:
-          type: string
-        Type:
+        Name:
           type: string
       type: object
     Error:
@@ -236,15 +210,41 @@ components:
         Name:
           type: string
       type: object
-    PostOrganizationsOnboardingByIdResponse:
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsOnboardingByIdRequest:
       properties:
         AccountId:
           type: string
-        ExternalId:
+        CRTemplateVersion:
+          type: integer
+        Event:
           type: string
-        FLSBucketName:
+        Region:
           type: string
-        Name:
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
+          type: string
+      type: object
+    PostOrganizationsOnboardingByIdRequest:
+      properties:
+        AccountId:
+          type: string
+        CRTemplateVersion:
+          type: integer
+        Event:
+          type: string
+        Region:
+          type: string
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
           type: string
       type: object
   requestBodies:

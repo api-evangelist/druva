@@ -885,7 +885,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PostOrganizationsPoliciesRulesResponse:
+    PutOrganizationsPoliciesRulesByIdResponse:
       properties:
         accounts:
           items:
@@ -893,7 +893,7 @@ components:
               account_id:
                 type: string
               rule_id:
-                type: integer
+                type: string
             type: object
           type: array
         all_accounts:
@@ -902,10 +902,12 @@ components:
           type: boolean
         all_resource_types:
           type: boolean
+        created_at:
+          type: string
         exclude:
           type: boolean
         id:
-          type: integer
+          type: string
         policy_id:
           type: string
         regions:
@@ -918,73 +920,28 @@ components:
           type: array
         resources:
           items:
-            properties:
-              account_id:
-                type: string
-              region:
-                type: string
-              resource_id:
-                type: string
-              rule_id:
-                type: integer
-              type:
-                type: string
-            type: object
+            type: string
           type: array
         rule_type:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        updated_at:
           type: string
       type: object
-    PostOrganizationsPoliciesRulesRequest:
+    GetOrganizationsTasksPoliciesResponse:
       properties:
-        accounts:
-          items:
-            properties:
-              account_id:
-                type: string
-            type: object
-          type: array
-        all_accounts:
-          type: boolean
-        all_regions:
-          type: boolean
-        all_resource_types:
-          type: boolean
-        exclude:
-          type: boolean
-        policy_id:
+        deleted_at:
           type: string
-        regions:
-          items:
-            type: string
-          type: array
-        resource_types:
-          items:
-            enum:
-            - EC2Instance
-            - EC2Volume
-            - RDSInstance
-            - RedshiftInstance
-            - DynamoDBTable
-            type: string
-          type: array
-        resources:
-          items:
-            properties:
-              account_id:
-                type: string
-              region:
-                type: string
-              resource_id:
-                type: string
-              type:
-                type: string
-            type: object
-          type: array
-        rule_type:
-          enum:
-          - tags
-          - resource_id
-          - location
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+        organization_id:
           type: string
       type: object
     PostOrganizationsPoliciesImportRequest:
@@ -1000,25 +957,6 @@ components:
             type: string
           type: array
         types:
-          items:
-            type: string
-          type: array
-      type: object
-    DeleteOrganizationsPoliciesByIdResponse:
-      properties:
-        message:
-          type: string
-      type: object
-    DeleteOrganizationsPoliciesRulesByIdResponse:
-      type: object
-    GetOrganizationsPoliciesBackupsCountResponse:
-      properties:
-        count:
-          type: integer
-      type: object
-    GetOrganizationsPoliciesRulesKmskeysResponse:
-      properties:
-        kmsKeys:
           items:
             type: string
           type: array
@@ -1188,7 +1126,235 @@ components:
           format: date-time
           type: string
       type: object
+    PostOrganizationsPoliciesExecuteRequest:
+      type: object
+    PostOrganizationsPoliciesExecuteResponse:
+      properties:
+        job_ids:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsPoliciesRulesCountRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+                rule_id:
+                  type: integer
+              type: object
+            type: array
+          all_accounts:
+            type: boolean
+          all_regions:
+            type: boolean
+          all_resource_types:
+            type: boolean
+          created_at:
+            type: string
+          editable:
+            type: boolean
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          policy_id:
+            type: integer
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              properties:
+                account_id:
+                  type: string
+                region:
+                  type: string
+                resource_id:
+                  type: string
+                resource_name:
+                  type: string
+                rule_id:
+                  type: integer
+                type:
+                  type: string
+              type: object
+            type: array
+          rule_type:
+            type: string
+          tags:
+            items:
+              type: string
+            type: array
+          updated_at:
+            type: string
+        type: object
+      type: array
+    GetOrganizationsPoliciesRulesKmskeysResponse:
+      properties:
+        kmsKeys:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsPoliciesRulesResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              rule_id:
+                type: integer
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        exclude:
+          type: boolean
+        id:
+          type: integer
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              rule_id:
+                type: integer
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          type: string
+      type: object
+    GetOrganizationsPoliciesResponse:
+      properties:
+        hits:
+          properties:
+            created_at:
+              format: date-time
+              type: string
+            created_by:
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            fls_index_freq:
+              type: string
+            id:
+              type: integer
+            inherit_tags:
+              type: boolean
+            is_active:
+              type: boolean
+            is_fls_indexed:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            retention:
+              properties:
+                backups_count:
+                  type: string
+                policy_id:
+                  type: integer
+                tiered_amount:
+                  type: integer
+                tiered_monthly_amount:
+                  type: integer
+                tiered_monthly_enabled:
+                  type: boolean
+                tiered_unit:
+                  type: string
+                tiered_weekly_amount:
+                  type: integer
+                tiered_weekly_enabled:
+                  type: boolean
+                tiered_yearly_amount:
+                  type: integer
+                tiered_yearly_enabled:
+                  type: boolean
+                type:
+                  type: string
+              type: object
+            schedule_cron:
+              type: string
+            stats:
+              properties:
+                resource_count:
+                  type: integer
+              type: object
+            timezone_location:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    DeleteOrganizationsPoliciesRulesByIdResponse:
+      type: object
+    DeleteOrganizationsPoliciesByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
     PostOrganizationsPoliciesImportResponse:
+      type: object
+    PutOrganizationsPoliciesByIdResponse:
+      properties:
+        id:
+          type: integer
+        resource_count:
+          type: integer
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsPoliciesRulesCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    GetOrganizationsPoliciesBackupsCountResponse:
+      properties:
+        count:
+          type: integer
       type: object
     PutOrganizationsPoliciesByIdRequest:
       properties:
@@ -1303,72 +1469,59 @@ components:
           format: date-time
           type: string
       type: object
-    empty:
-      properties: {}
+    PostOrganizationsPoliciesRulesRequest:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        all_resource_types:
+          type: boolean
+        exclude:
+          type: boolean
+        policy_id:
+          type: string
+        regions:
+          items:
+            type: string
+          type: array
+        resource_types:
+          items:
+            enum:
+            - EC2Instance
+            - EC2Volume
+            - RDSInstance
+            - RedshiftInstance
+            - DynamoDBTable
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              region:
+                type: string
+              resource_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          enum:
+          - tags
+          - resource_id
+          - location
+          type: string
       type: object
-    PostOrganizationsPoliciesRulesCountRequest:
-      items:
-        properties:
-          accounts:
-            items:
-              properties:
-                account_id:
-                  type: string
-                rule_id:
-                  type: integer
-              type: object
-            type: array
-          all_accounts:
-            type: boolean
-          all_regions:
-            type: boolean
-          all_resource_types:
-            type: boolean
-          created_at:
-            type: string
-          editable:
-            type: boolean
-          exclude:
-            type: boolean
-          id:
-            type: integer
-          policy_id:
-            type: integer
-          regions:
-            items:
-              type: string
-            type: array
-          resource_types:
-            items:
-              type: string
-            type: array
-          resources:
-            items:
-              properties:
-                account_id:
-                  type: string
-                region:
-                  type: string
-                resource_id:
-                  type: string
-                resource_name:
-                  type: string
-                rule_id:
-                  type: integer
-                type:
-                  type: string
-              type: object
-            type: array
-          rule_type:
-            type: string
-          tags:
-            items:
-              type: string
-            type: array
-          updated_at:
-            type: string
-        type: object
-      type: array
     PutOrganizationsPoliciesRulesByIdRequest:
       properties:
         accounts:
@@ -1430,159 +1583,6 @@ components:
                 type: string
             type: object
           type: array
-      type: object
-    PostOrganizationsPoliciesRulesCountResponse:
-      properties:
-        count:
-          type: integer
-      type: object
-    PostOrganizationsPoliciesExecuteRequest:
-      type: object
-    GetOrganizationsPoliciesResponse:
-      properties:
-        hits:
-          properties:
-            created_at:
-              format: date-time
-              type: string
-            created_by:
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            fls_index_freq:
-              type: string
-            id:
-              type: integer
-            inherit_tags:
-              type: boolean
-            is_active:
-              type: boolean
-            is_fls_indexed:
-              type: boolean
-            name:
-              type: string
-            organization_id:
-              type: string
-            retention:
-              properties:
-                backups_count:
-                  type: string
-                policy_id:
-                  type: integer
-                tiered_amount:
-                  type: integer
-                tiered_monthly_amount:
-                  type: integer
-                tiered_monthly_enabled:
-                  type: boolean
-                tiered_unit:
-                  type: string
-                tiered_weekly_amount:
-                  type: integer
-                tiered_weekly_enabled:
-                  type: boolean
-                tiered_yearly_amount:
-                  type: integer
-                tiered_yearly_enabled:
-                  type: boolean
-                type:
-                  type: string
-              type: object
-            schedule_cron:
-              type: string
-            stats:
-              properties:
-                resource_count:
-                  type: integer
-              type: object
-            timezone_location:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    GetOrganizationsTasksPoliciesResponse:
-      properties:
-        deleted_at:
-          type: string
-        id:
-          type: integer
-        is_active:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-      type: object
-    PutOrganizationsPoliciesRulesByIdResponse:
-      properties:
-        accounts:
-          items:
-            properties:
-              account_id:
-                type: string
-              rule_id:
-                type: string
-            type: object
-          type: array
-        all_accounts:
-          type: boolean
-        all_regions:
-          type: boolean
-        all_resource_types:
-          type: boolean
-        created_at:
-          type: string
-        exclude:
-          type: boolean
-        id:
-          type: string
-        policy_id:
-          type: string
-        regions:
-          items:
-            type: string
-          type: array
-        resource_types:
-          items:
-            type: string
-          type: array
-        resources:
-          items:
-            type: string
-          type: array
-        rule_type:
-          type: string
-        tags:
-          items:
-            type: string
-          type: array
-        updated_at:
-          type: string
-      type: object
-    PostOrganizationsPoliciesExecuteResponse:
-      properties:
-        job_ids:
-          items:
-            type: string
-          type: array
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PutOrganizationsPoliciesByIdResponse:
-      properties:
-        id:
-          type: integer
-        resource_count:
-          type: integer
       type: object
   securitySchemes:
     API_Authorizer:

@@ -102,7 +102,7 @@
     "druva-administrators-api-openapi.yml"
   ],
   "archived": [
-    "deleted 5 superseded output(s) from the previous generation"
+    "deleted 4 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
@@ -165,8 +165,8 @@
     "tag 'Token' spans 2 source specs (druva-cyber-resilience-govcloud-authorization-openapi-original.json, druva-govcloud-authentication-openapi-original.json): per-path servers applied",
     "tag 'NAS' spans 3 source specs (druva-enterprise-workloads-openapi-original.json, druva-job-management-cloud-openapi-original.json, druva-job-management-govcloud-openapi-original.json): per-path servers applied",
     "tag 'Events' spans 2 source specs (druva-msp-openapi-original.json, druva-platform-openapi-original.json): per-path servers applied",
-    "superseded outputs removed: druva-backup-policies-api-openapi.yml, druva-notification-settings-api-openapi.yml, druva-report-subscriptions-api-openapi.yml, druva-report-templates-api-openapi.yml, druva-vp-cs-api-openapi.yml",
-    "apis.yml register: written (+5 apis, 86 total)"
+    "superseded outputs removed: druva-backup-policies-api-openapi.yml, druva-notification-settings-api-openapi.yml, druva-report-subscriptions-api-openapi.yml, druva-report-templates-api-openapi.yml",
+    "apis.yml register: written (+4 apis, 86 total)"
   ],
   "skipped": [
     "_original/druva-platform-openapi.json: archived document superseded by a larger archived document",
@@ -279,6 +279,6 @@
     "druva-user-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "druva-vmware-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "druva-volumes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "druva-vp-cs-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "druva-vpcs-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

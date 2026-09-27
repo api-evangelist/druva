@@ -373,16 +373,31 @@ paths:
         .'
 components:
   schemas:
-    TaskCreatedResponse:
+    TenantTypeForV3:
+      format: int64
+      description: "Specify the tenant type for the product.\n - Specify '1' if it is a Sandbox.\n - Specify '2' if it is Evaluation. This is a trial plan with a validity of 30 days. If you select this tenant type, the product license will be active until 30 days. After 30 days, you must change the tenant type to Commercial.\n - Specify '3' if it is Commercial. For this tenant type, a Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.\n"
+      type: integer
+      example: 2
+    StorageRegions:
+      description: Storage Regions that needs to enabled for tenant.
       type: object
       properties:
-        task:
-          type: object
-          properties:
-            id:
-              description: The task ID of the operation, and can be used to track the progress. Use this task ID in the 'Get Task Details' API to track the operation's progress. Example - 'c8b54819-486a-497a-b86e-5b93f2422711'.
-              type: string
-              example: c8b54819-486a-497a-b86e-5b93f2422711
+        name:
+          description: '- Name of the storage region. Example - ''us-east-1'''
+          type: string
+          example: us-east-1
+        storageProvider:
+          description: "- Storage Provider (AWS/Azure) that is associated with the storage region. \n Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: integer
+          example: 1
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     PatchTenantRequest:
       description: Specify the details for patching existing tenant.
       type: object
@@ -505,38 +520,6 @@ components:
           description: The date and time on which the tenant assigned to the customer will be deleted. If the tenant is not marked for deletion, no value is displayed. Example - '2022-10-25T00:00:00Z'
           type: string
           example: '2022-10-25T00:00:00Z'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    GetTenantsV3Response:
-      type: object
-      properties:
-        tenants:
-          description: The list of tenants and their information.
-          type: array
-          items:
-            $ref: '#/components/schemas/GetTenantV3Response'
-        nextPageToken:
-          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
-          type: string
-          example: eyJwYWdlU2l6ZSI6IDEwMH0=
-    StorageRegions:
-      description: Storage Regions that needs to enabled for tenant.
-      type: object
-      properties:
-        name:
-          description: '- Name of the storage region. Example - ''us-east-1'''
-          type: string
-          example: us-east-1
-        storageProvider:
-          description: "- Storage Provider (AWS/Azure) that is associated with the storage region. \n Storage Provider values: 1 (AWS), 2 (Azure) \n"
-          type: integer
-          example: 1
     FeatureAttributeForV3:
       type: object
       properties:
@@ -560,32 +543,6 @@ components:
             '
           type: string
           example: M365
-        attrs:
-          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-          type: array
-          items:
-            $ref: '#/components/schemas/FeatureAttributeForV3'
-    TenantTypeForV3:
-      format: int64
-      description: "Specify the tenant type for the product.\n - Specify '1' if it is a Sandbox.\n - Specify '2' if it is Evaluation. This is a trial plan with a validity of 30 days. If you select this tenant type, the product license will be active until 30 days. After 30 days, you must change the tenant type to Commercial.\n - Specify '3' if it is Commercial. For this tenant type, a Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.\n"
-      type: integer
-      example: 2
-    PatchTenantFeatures:
-      description: Features that needs to enabled/disabled for tenant.
-      type: object
-      properties:
-        name:
-          description: '- Name of the feature. Example - ''M365''
-
-            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
-
-            '
-          type: string
-          example: M365
-        isEnabled:
-          description: "- Feature state for tenant. \n- isEnabled can be true or false. Example - true\n"
-          type: boolean
-          example: true
         attrs:
           description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
           type: array
@@ -644,6 +601,49 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TenantFeaturesV3'
+    PatchTenantFeatures:
+      description: Features that needs to enabled/disabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the feature. Example - ''M365''
+
+            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+            '
+          type: string
+          example: M365
+        isEnabled:
+          description: "- Feature state for tenant. \n- isEnabled can be true or false. Example - true\n"
+          type: boolean
+          example: true
+        attrs:
+          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAttributeForV3'
+    GetTenantsV3Response:
+      type: object
+      properties:
+        tenants:
+          description: The list of tenants and their information.
+          type: array
+          items:
+            $ref: '#/components/schemas/GetTenantV3Response'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
+          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    TaskCreatedResponse:
+      type: object
+      properties:
+        task:
+          type: object
+          properties:
+            id:
+              description: The task ID of the operation, and can be used to track the progress. Use this task ID in the 'Get Task Details' API to track the operation's progress. Example - 'c8b54819-486a-497a-b86e-5b93f2422711'.
+              type: string
+              example: c8b54819-486a-497a-b86e-5b93f2422711
   securitySchemes:
     OAuth2:
       flows:

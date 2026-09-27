@@ -637,6 +637,22 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    UserList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of users fetched based on applied filters.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     UserCreate:
       type: object
       properties:
@@ -697,58 +713,6 @@ components:
           example:
             userIdentifierCustomAttribute: Custom Attribute Label
             userIdentifierCustomAttributeValue: Custom Attribute Value
-    UserList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The total number of users fetched based on applied filters.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    HTTP_403:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncAdmanagement-1221
-          description: Application specific error code
-        message:
-          type: string
-          example: Access restricted due to insufficient permissions.
-          description: Application specific error message
-        retryable:
-          type: boolean
-          example: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     User:
       type: object
       properties:
@@ -813,6 +777,42 @@ components:
           example:
             userIdentifierCustomAttribute: Custom Attribute Label
             userIdentifierCustomAttributeValue: Custom Attribute Value
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -1235,295 +1235,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsEnvironmentsResponse:
-      properties:
-        hits:
-          properties:
-            account_id:
-              type: string
-            accountId:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            id:
-              type: integer
-            name:
-              type: string
-            organization_id:
-              type: string
-            organizationId:
-              type: string
-            region:
-              type: string
-            status:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsAccountsEnvironmentsResourcesResponse:
-      properties:
-        resourceObjects:
-          items:
-            properties:
-              securityGroups:
-                items:
-                  properties:
-                    GroupId:
-                      type: string
-                    GroupName:
-                      type: string
-                  type: object
-                type: array
-              server:
-                properties:
-                  instanceId:
-                    type: string
-                  instanceName:
-                    type: string
-                  type:
-                    type: string
-                type: object
-              subnets:
-                items:
-                  type: string
-                type: array
-              type:
-                type: string
-              vpc:
-                properties:
-                  name:
-                    properties:
-                      Key:
-                        type: string
-                      Value:
-                        type: string
-                    type: object
-                  vpcId:
-                    type: string
-                type: object
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsEnvironmentsServersTagsKeysResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    GetOrganizationsAccountsRegionsVpcsResponse:
-      properties:
-        vpcs:
-          items:
-            properties:
-              CidrBlock:
-                type: string
-              CidrBlockAssociationSet:
-                items:
-                  properties:
-                    AssociationId:
-                      type: string
-                    CidrBlock:
-                      type: string
-                    CidrBlockState:
-                      properties:
-                        State:
-                          type: string
-                      type: object
-                  type: object
-                type: array
-              DBSubnetGroups:
-                items:
-                  type: string
-                type: array
-              DhcpOptionsId:
-                type: string
-              InstanceTenancy:
-                type: string
-              Ipv6CidrBlockAssociationSet:
-                items:
-                  type: string
-                type: array
-              IsDefault:
-                type: boolean
-              OwnerId:
-                type: string
-              SecurityGroups:
-                items:
-                  type: object
-                type: array
-              State:
-                type: string
-              Subnets:
-                items:
-                  type: string
-                type: array
-              Tags:
-                items:
-                  type: object
-                type: array
-              VpcId:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsEnvironmentsResponse:
-      properties:
-        hits:
-          properties:
-            account_id:
-              type: string
-            clone:
-              properties:
-                created_at:
-                  format: date-time
-                  type: string
-                environment_id:
-                  type: integer
-                job_id:
-                  type: string
-                source_environment_id:
-                  type: integer
-                stack_name:
-                  type: string
-                updated_at:
-                  format: date-time
-                  type: string
-              type: object
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            id:
-              type: integer
-            name:
-              type: string
-            organization_id:
-              type: string
-            region:
-              type: string
-            status:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    PostOrganizationsAccountsEnvironmentsServersVpcsResponse:
-      properties:
-        vpcs:
-          items:
-            type: string
-          type: array
-      type: object
-    GetOrganizationsAccountsEnvironmentsDownloadResponse:
-      properties:
-        signedUrl:
-          type: string
-      type: object
-    GetOrganizationsAccountsEnvironmentsClonesResponse:
-      properties:
-        hits:
-          properties:
-            clone_version:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            environment:
-              properties:
-                account_id:
-                  type: string
-                id:
-                  type: integer
-                name:
-                  type: string
-                organization_id:
-                  type: string
-              type: object
-            environment_id:
-              type: integer
-            environmentId:
-              type: integer
-            job_id:
-              type: string
-            last_schedule_status:
-              type: string
-            last_schedule_time:
-              type: string
-            schedule_cron:
-              type: string
-            schedule_is_active:
-              type: boolean
-            source_environment:
-              properties:
-                account_id:
-                  type: string
-                id:
-                  type: integer
-                name:
-                  type: string
-                organization_id:
-                  type: string
-              type: object
-            source_environment_id:
-              type: integer
-            sourceEnvironmentId:
-              type: integer
-            stack_hash:
-              type: string
-            stack_name:
-              type: string
-            timezone_location:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    PutOrganizationsAccountsEnvironmentsByIdResponse:
-      type: object
-    GetOrganizationsAccountsEnvironmentsCloudformationtemplatesResponse:
-      items:
-        properties:
-          created_at:
-            format: date-time
-            type: string
-          filename:
-            type: string
-          signedUrl:
-            type: string
-          status:
-            type: string
-          version:
-            type: string
-      type: array
-    DeleteOrganizationsAccountsEnvironmentsByIdResponse:
-      properties:
-        message:
-          type: string
-      type: object
     PutOrganizationsAccountsEnvironmentsClonesByIdRequest:
       properties:
         schedule_cron:
@@ -1531,47 +1242,6 @@ components:
         schedule_is_active:
           type: boolean
         timezone_location:
-          type: string
-      type: object
-    PostOrganizationsAccountsEnvironmentsCloneResponse:
-      properties:
-        job_id:
-          type: string
-      type: object
-    empty:
-      properties: {}
-      type: object
-    GetOrganizationsAccountsEnvironmentsServersResponse:
-      properties:
-        account_id:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        deleted_at:
-          type: string
-        description:
-          type: string
-        id:
-          type: integer
-        name:
-          type: string
-        objects:
-          items:
-            type: object
-          type: array
-        organization_id:
-          type: string
-        region:
-          type: string
-        resources:
-          items:
-            type: object
-          type: array
-        status:
-          type: string
-        updated_at:
-          format: date-time
           type: string
       type: object
     GetOrganizationsAccountsRegionsServercountResponse:
@@ -1744,6 +1414,477 @@ components:
           type: integer
         subnet-fe647f83:
           type: integer
+      type: object
+    GetOrganizationsAccountsEnvironmentsSourceTargetMappingsResponse:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        environment:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            region:
+              type: string
+            status:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        environment_id:
+          type: integer
+        mapping_data:
+          type: string
+        target_environment_id:
+          type: integer
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsEnvironmentsResourcesResponse:
+      properties:
+        resourceObjects:
+          items:
+            properties:
+              securityGroups:
+                items:
+                  properties:
+                    GroupId:
+                      type: string
+                    GroupName:
+                      type: string
+                  type: object
+                type: array
+              server:
+                properties:
+                  instanceId:
+                    type: string
+                  instanceName:
+                    type: string
+                  type:
+                    type: string
+                type: object
+              subnets:
+                items:
+                  type: string
+                type: array
+              type:
+                type: string
+              vpc:
+                properties:
+                  name:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  vpcId:
+                    type: string
+                type: object
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsRegionsVpcsResponse:
+      properties:
+        vpcs:
+          items:
+            properties:
+              CidrBlock:
+                type: string
+              CidrBlockAssociationSet:
+                items:
+                  properties:
+                    AssociationId:
+                      type: string
+                    CidrBlock:
+                      type: string
+                    CidrBlockState:
+                      properties:
+                        State:
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              DBSubnetGroups:
+                items:
+                  type: string
+                type: array
+              DhcpOptionsId:
+                type: string
+              InstanceTenancy:
+                type: string
+              Ipv6CidrBlockAssociationSet:
+                items:
+                  type: string
+                type: array
+              IsDefault:
+                type: boolean
+              OwnerId:
+                type: string
+              SecurityGroups:
+                items:
+                  type: object
+                type: array
+              State:
+                type: string
+              Subnets:
+                items:
+                  type: string
+                type: array
+              Tags:
+                items:
+                  type: object
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsEnvironmentsServersResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+        objects:
+          items:
+            type: object
+          type: array
+        organization_id:
+          type: string
+        region:
+          type: string
+        resources:
+          items:
+            type: object
+          type: array
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsEnvironmentsServersTagsValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsEnvironmentsClonesResponse:
+      properties:
+        hits:
+          properties:
+            clone_version:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            environment:
+              properties:
+                account_id:
+                  type: string
+                id:
+                  type: integer
+                name:
+                  type: string
+                organization_id:
+                  type: string
+              type: object
+            environment_id:
+              type: integer
+            environmentId:
+              type: integer
+            job_id:
+              type: string
+            last_schedule_status:
+              type: string
+            last_schedule_time:
+              type: string
+            schedule_cron:
+              type: string
+            schedule_is_active:
+              type: boolean
+            source_environment:
+              properties:
+                account_id:
+                  type: string
+                id:
+                  type: integer
+                name:
+                  type: string
+                organization_id:
+                  type: string
+              type: object
+            source_environment_id:
+              type: integer
+            sourceEnvironmentId:
+              type: integer
+            stack_hash:
+              type: string
+            stack_name:
+              type: string
+            timezone_location:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsEnvironmentsResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            clone:
+              properties:
+                created_at:
+                  format: date-time
+                  type: string
+                environment_id:
+                  type: integer
+                job_id:
+                  type: string
+                source_environment_id:
+                  type: integer
+                stack_name:
+                  type: string
+                updated_at:
+                  format: date-time
+                  type: string
+              type: object
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            region:
+              type: string
+            status:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsEnvironmentsServersVpcsRequest:
+      properties:
+        instances:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsEnvironmentsResponse:
+      properties:
+        hits:
+          properties:
+            account_id:
+              type: string
+            accountId:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            organization_id:
+              type: string
+            organizationId:
+              type: string
+            region:
+              type: string
+            status:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsEnvironmentsDownloadResponse:
+      properties:
+        signedUrl:
+          type: string
+      type: object
+    PutOrganizationsAccountsEnvironmentsByIdRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        region:
+          type: string
+        resources:
+          items:
+            properties:
+              dbSubnetGroups:
+                default: []
+                items:
+                  default: {}
+                  properties:
+                    DBSubnetGroupArn:
+                      type: string
+                    DBSubnetGroupName:
+                      type: string
+                  type: object
+                type: array
+              securityGroups:
+                default: []
+                items:
+                  default: {}
+                  properties:
+                    default: {}
+                    GroupId:
+                      type: string
+                    GroupName:
+                      type: string
+                  type: object
+                type: array
+              subnets:
+                default: []
+                items:
+                  default: {}
+                  properties:
+                    subnetId:
+                      type: string
+                    subnetName:
+                      type: string
+                  type: object
+                type: array
+              vpc:
+                properties:
+                  vpcId:
+                    type: string
+                  vpcName:
+                    type: string
+                type: object
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsEnvironmentsServersTagsValuesRequest:
+      properties:
+        tagKey:
+          type: string
+      type: object
+    GetOrganizationsAccountsEnvironmentsServersTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsEnvironmentsCloneRequest:
+      properties:
+        account_id:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        organization_id:
+          type: string
+        parent_region:
+          type: string
+        region:
+          type: string
+        status:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsEnvironmentsByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsEnvironmentsCloudformationtemplatesResponse:
+      items:
+        properties:
+          created_at:
+            format: date-time
+            type: string
+          filename:
+            type: string
+          signedUrl:
+            type: string
+          status:
+            type: string
+          version:
+            type: string
+      type: array
+    GetOrganizationsAccountsEnvironmentsComponentsResponse:
+      properties:
+        environment_components:
+          items:
+            properties:
+              added_by:
+                type: string
+              data:
+                type: string
+              environment_id:
+                type: integer
+              id:
+                type: integer
+              parent_vpc:
+                type: string
+              resource_id:
+                type: string
+              resource_name:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
       type: object
     PostOrganizationsAccountsEnvironmentsResourcesRequest:
       items:
@@ -2004,160 +2145,19 @@ components:
             type: string
         type: object
       type: array
-    PostOrganizationsAccountsEnvironmentsCloneRequest:
-      properties:
-        account_id:
-          type: string
-        description:
-          type: string
-        name:
-          type: string
-        organization_id:
-          type: string
-        parent_region:
-          type: string
-        region:
-          type: string
-        status:
-          type: string
+    PutOrganizationsAccountsEnvironmentsByIdResponse:
       type: object
-    PostOrganizationsAccountsEnvironmentsServersTagsValuesRequest:
+    PostOrganizationsAccountsEnvironmentsServersVpcsResponse:
       properties:
-        tagKey:
-          type: string
-      type: object
-    GetOrganizationsAccountsEnvironmentsSourceTargetMappingsResponse:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        environment:
-          properties:
-            account_id:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            id:
-              type: integer
-            name:
-              type: string
-            organization_id:
-              type: string
-            region:
-              type: string
-            status:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        environment_id:
-          type: integer
-        mapping_data:
-          type: string
-        target_environment_id:
-          type: integer
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAccountsEnvironmentsServersTagsValuesResponse:
-      properties:
-        values:
+        vpcs:
           items:
             type: string
           type: array
       type: object
-    PutOrganizationsAccountsEnvironmentsByIdRequest:
+    PostOrganizationsAccountsEnvironmentsCloneResponse:
       properties:
-        description:
+        job_id:
           type: string
-        name:
-          type: string
-        region:
-          type: string
-        resources:
-          items:
-            properties:
-              dbSubnetGroups:
-                default: []
-                items:
-                  default: {}
-                  properties:
-                    DBSubnetGroupArn:
-                      type: string
-                    DBSubnetGroupName:
-                      type: string
-                  type: object
-                type: array
-              securityGroups:
-                default: []
-                items:
-                  default: {}
-                  properties:
-                    default: {}
-                    GroupId:
-                      type: string
-                    GroupName:
-                      type: string
-                  type: object
-                type: array
-              subnets:
-                default: []
-                items:
-                  default: {}
-                  properties:
-                    subnetId:
-                      type: string
-                    subnetName:
-                      type: string
-                  type: object
-                type: array
-              vpc:
-                properties:
-                  vpcId:
-                    type: string
-                  vpcName:
-                    type: string
-                type: object
-            type: object
-          type: array
-      type: object
-    PostOrganizationsAccountsEnvironmentsServersVpcsRequest:
-      properties:
-        instances:
-          items:
-            type: string
-          type: array
-      type: object
-    GetOrganizationsAccountsEnvironmentsComponentsResponse:
-      properties:
-        environment_components:
-          items:
-            properties:
-              added_by:
-                type: string
-              data:
-                type: string
-              environment_id:
-                type: integer
-              id:
-                type: integer
-              parent_vpc:
-                type: string
-              resource_id:
-                type: string
-              resource_name:
-                type: string
-              type:
-                type: string
-            type: object
-          type: array
       type: object
   securitySchemes:
     API_Authorizer:

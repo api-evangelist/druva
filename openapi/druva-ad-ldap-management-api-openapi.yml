@@ -72,22 +72,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ADConnectorList:
-      type: object
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: The total number of AD/LDAP Connectors listed on the result page.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        adConnectorList:
-          type: array
-          items:
-            $ref: '#/components/schemas/ADConnector'
     HTTP_403:
       type: object
       properties:
@@ -106,6 +90,22 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    ADConnectorList:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: The total number of AD/LDAP Connectors listed on the result page.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        adConnectorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ADConnector'
     ADConnector:
       type: object
       properties:
