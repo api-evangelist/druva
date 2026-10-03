@@ -87,6 +87,63 @@ paths:
           description: The request was not processed due to an internal error in Cloud.
 components:
   schemas:
+    FailoverJobResponse:
+      description: FailoverJobResponse is response to failover request
+      type: object
+      properties:
+        jobID:
+          description: Job ID for successfully triggered failover job
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
+    FailoverRequestParams:
+      description: FailoverRequestParams are all the user inputs required for a failover job request
+      type: object
+      required:
+      - drPlanID
+      - failoverType
+      properties:
+        drPlanID:
+          description: The DR Plan ID for which a failover needs to be initiated. Get the ID of the DR Plan using the 'List all DR Plans' API.
+          type: integer
+          format: int32
+          x-go-name: DRPlanID
+        failoverType:
+          description: Set 'failoverType' to 1 to run a Test DR Failover job and 2 to run a Production DR failover job.
+          type: integer
+          format: int32
+          x-go-name: FailoverType
+      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
+    DRPlan:
+      type: object
+      title: DRPlan ...
+      properties:
+        awsAccountID:
+          description: The AWS account ID of the DR Plan
+          type: string
+          x-go-name: AWSAccountID
+        drPlanID:
+          description: The ID of the DR Plan
+          type: integer
+          format: int32
+          x-go-name: ID
+        healthStatus:
+          $ref: '#/components/schemas/HealthStatus'
+        name:
+          description: The name of the DR Plan
+          type: string
+          x-go-name: DRPlanName
+        region:
+          description: The region of the DR Plan
+          type: string
+          x-go-name: Region
+        vmCount:
+          description: The count of VMs associated with the DR Plan
+          type: integer
+          format: int32
+          x-go-name: VMCount
+      x-go-package: phoenix/draas/cloud/configserver/spec/drplan
     ListResponse:
       description: ListResponse is the response schema for List DR Plans
       type: object
@@ -127,63 +184,6 @@ components:
           format: int32
           x-go-name: LatestValidationTimestamp
       x-go-package: phoenix/draas/cloud/configserver/spec/drplan
-    DRPlan:
-      type: object
-      title: DRPlan ...
-      properties:
-        awsAccountID:
-          description: The AWS account ID of the DR Plan
-          type: string
-          x-go-name: AWSAccountID
-        drPlanID:
-          description: The ID of the DR Plan
-          type: integer
-          format: int32
-          x-go-name: ID
-        healthStatus:
-          $ref: '#/components/schemas/HealthStatus'
-        name:
-          description: The name of the DR Plan
-          type: string
-          x-go-name: DRPlanName
-        region:
-          description: The region of the DR Plan
-          type: string
-          x-go-name: Region
-        vmCount:
-          description: The count of VMs associated with the DR Plan
-          type: integer
-          format: int32
-          x-go-name: VMCount
-      x-go-package: phoenix/draas/cloud/configserver/spec/drplan
-    FailoverJobResponse:
-      description: FailoverJobResponse is response to failover request
-      type: object
-      properties:
-        jobID:
-          description: Job ID for successfully triggered failover job
-          type: integer
-          format: int32
-          x-go-name: JobID
-      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
-    FailoverRequestParams:
-      description: FailoverRequestParams are all the user inputs required for a failover job request
-      type: object
-      required:
-      - drPlanID
-      - failoverType
-      properties:
-        drPlanID:
-          description: The DR Plan ID for which a failover needs to be initiated. Get the ID of the DR Plan using the 'List all DR Plans' API.
-          type: integer
-          format: int32
-          x-go-name: DRPlanID
-        failoverType:
-          description: Set 'failoverType' to 1 to run a Test DR Failover job and 2 to run a Production DR failover job.
-          type: integer
-          format: int32
-          x-go-name: FailoverType
-      x-go-package: phoenix/draas/cloud/configserver/spec/drjob
   securitySchemes:
     OAuth2:
       type: oauth2

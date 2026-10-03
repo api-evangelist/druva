@@ -96,26 +96,6 @@ components:
           enum:
           - false
           - true
-    HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1004
-          - RealizeUda-1004
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     HTTP_404:
       type: object
       properties:
@@ -356,6 +336,26 @@ components:
         isLast:
           type: boolean
           description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \n  True - Is last page of results.\n  False - There are more results available. Use 'nextPageToken' value to get the next list of results."
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
   securitySchemes:
     OAuth2:
       type: oauth2

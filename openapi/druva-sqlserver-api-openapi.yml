@@ -925,299 +925,79 @@ paths:
           description: The request was not processed due to an internal error in Cloud.
 components:
   schemas:
-    SQLBackupNowRequestParams:
-      description: SQLBackupNowRequestParams is the input to the BackupNow job request
+    SQLRetentionPolicy:
+      description: RetentionPolicy struct holds the response for GetPolicies api
+      type: object
+      properties:
+        allSnapshots:
+          description: The number of days for which the daily backup restore points are to be retained.
+          type: string
+          x-go-name: Daily
+        ltrEnabled:
+          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
+          type: boolean
+          x-go-name: LTREnabled
+        monthly:
+          description: The number of months for which the monthly backup restore points are to be retained.
+          type: string
+          x-go-name: Monthly
+        warmTierDuration:
+          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
+          type: integer
+          format: int32
+          x-go-name: WarmTierDuration
+        weekly:
+          description: The number of weeks for which the weekly backup restore points are to be retained.
+          type: string
+          x-go-name: Weekly
+        yearly:
+          description: The number of years for which the yearly backup restore points are to be retained.
+          type: string
+          x-go-name: Yearly
+      x-go-name: RetentionPolicy
+      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
+    SQLEstimationDetailsStruct:
+      description: EstimationDetailsStruct struct holds the response for GetBackupJobsReport api
       type: object
       properties:
         backupType:
-          description: 'Specify the type of backup. Set this parameter to one of the following values: FULL, DIFF, LOG.'
+          description: The type of backup, such as Full, Differential, or Transaction Log.
           type: string
-          enum:
-          - FULL
-          - DIFF
-          - LOG
           x-go-name: BackupType
-        backupsetID:
-          description: Specify the ID of your backup set. Get the ID using the 'List backup sets' API.
-          type: integer
-          format: int32
-          x-go-name: BackupsetID
-      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
-    SQLGetRestoreJobReportResponse:
-      description: GetRestoreJobReportResponse is the response schema for GetRestoreJobReport
-      type: object
-      properties:
-        Jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLGetRestoreJobsReport'
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: GetRestoreJobReportResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLCancelJobResponse:
-      description: SQLCancelJobResponse is response to cancel job API
-      type: object
-      properties:
-        jobID:
-          description: A unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: CancelledJobID
-      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
-    SQLDefreezeExecDetailsStruct:
-      description: DefreezeExecDetailsStruct struct holds the response for GetDefreezeJobsReport api
-      type: object
-      properties:
-        endTime:
-          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: EndTime
-        errorCode:
-          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
-          type: string
-          x-go-name: ErrorCode
-        errorMessage:
-          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
-          type: string
-          x-go-name: ErrorMsg
-        startTime:
-          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: StartTime
-        status:
-          description: Status of the job.
-          type: string
-          enum:
-          - Queued
-          - Running
-          - Successful
-          - Successful with errors
-          - Failed
-          x-go-name: Status
-      x-go-name: DefreezeExecDetailsStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLListSnapshotResponse:
-      description: ListSnapshotResponse is the response schema for ListSnapshot API
-      type: object
-      properties:
-        nextPageToken:
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          type: string
-          x-go-name: NextPageToken
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLSnapshot'
-          x-go-name: RPs
-      x-go-name: ListSnapshotResponse
-      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/backupset
-    SQLTransactionlogSchedule:
-      description: TransactionlogSchedule struct holds the response for GetPolicies api
-      type: object
-      properties:
-        bandwidth:
-          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
-          type: string
-          x-go-name: Bandwidth
-        bandwidthInKBps:
-          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
-          type: number
-          format: double
-          x-go-name: BandwidthInKBps
-        duration:
-          description: Specifies the duration after which you want transactionlog backup operations to stop.
-          type: string
-          x-go-name: Duration
-        durationInSeconds:
-          description: Specifies the duration in seconds after which you want transactionlog backup operations to stop.
+        dbsAdded:
+          description: The number of databases added at the source during the job.
           type: integer
           format: int64
-          x-go-name: DurationInSeconds
-        repeatOn:
-          description: The days of week on which the transactional log schedule is to be run.
-          type: string
-          x-go-name: RepeatOn
-        startAt:
-          description: The start hour of the transactional log backup operation.
-          type: string
-          x-go-name: StartAt
-      x-go-name: TransactionlogSchedule
-      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
-    SQLLastBackupDetailsStruct:
-      description: LastBackupDetailsStruct is response schema for GetBackupsets
-      type: object
-      properties:
-        jobID:
-          description: The unique identification number associated with the job.
+          x-go-name: DBsAdded
+        dbsChanged:
+          description: The number of databases changed at the source during the job.
           type: integer
-          format: int32
-          x-go-name: JobID
-        status:
-          description: The status of the job
+          format: int64
+          x-go-name: DBsChanged
+        dbsRemoved:
+          description: The number of databases removed at the source during the job.
+          type: integer
+          format: int64
+          x-go-name: DBsRemoved
+        estimationTimeTaken:
+          description: Specifies the approximate time taken to scan the data.
           type: string
-          x-go-name: Status
-      x-go-name: LastBackupDetailsStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/backupsets
-    JSONStringList:
-      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
-      type: array
-      items:
-        type: string
-      x-go-package: phoenix/pkg/dlutil
-    RestorePath:
-      type: object
-      title: RestorePath for the database files
-      properties:
-        filePath:
-          description: Specify the file path for downloading database files on the restore location. The same path is used for ldf, mdf and ndf files. Skip this field if you want to specify separate paths for these files.
+          x-go-name: EstimationTimeTaken
+        estimationTimeTakenInSeconds:
+          description: Specifies the approximate time taken in seconds to scan the data.
+          type: integer
+          format: int64
+          x-go-name: EstimationTimeTakenInSeconds
+        sourceDataScanned:
+          description: Specifies the data scanned in at the source in order to backup.
           type: string
-          x-go-name: FilePath
-        ldfPath:
-          description: Specify the file path for downloading ldf file on the restore location.
-          type: string
-          x-go-name: LDFPath
-        mdfPath:
-          description: Specify the file path for downloading mdf file on the restore location.
-          type: string
-          x-go-name: MDFPath
-        ndfPath:
-          description: Specify the file path for downloading ndf file on the restore location.
-          type: string
-          x-go-name: NDFPath
-      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
-    SQLUploadLogExecDetailsStruct:
-      description: UploadLogExecDetailsStruct struct holds the response for GetUploadLogJobsReport api
-      type: object
-      properties:
-        endTime:
-          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: EndTime
-        errorCode:
-          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
-          type: string
-          x-go-name: ErrorCode
-        errorMessage:
-          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
-          type: string
-          x-go-name: ErrorMsg
-        logsExpiryTime:
-          description: The expiry time of the uploaded logs. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: LogsExpiryTime
-        logsSize:
-          description: Specifies the size of the extracted log files.
-          type: string
-          x-go-name: LogsSize
-        logsSizeInBytes:
-          description: Specifies the size of the extracted log files in bytes.
+          x-go-name: SourceDataScanned
+        sourceDataScannedInBytes:
+          description: Specifies the data scanned in bytes at the source in order to backup.
           type: integer
           format: uint64
-          x-go-name: LogsSizeInBytes
-        sourceJobID:
-          description: The unique identification number of the job for which logs are being requested.
-          type: integer
-          format: int32
-          x-go-name: SourceJobID
-        sourceJobType:
-          description: The job type for which logs are being requested.
-          type: string
-          x-go-name: SourceJobLogType
-        startTime:
-          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: StartTime
-        status:
-          description: The status of the job.
-          type: string
-          enum:
-          - Queued
-          - Running
-          - Successful
-          - Successful with errors
-          - Failed
-          x-go-name: Status
-      x-go-name: UploadLogExecDetailsStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLBackupNowResponse:
-      description: SQLBackupNowResponse is the response to the BackupNow job request
-      type: object
-      properties:
-        jobID:
-          description: A unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: JobID
-      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
-    ServiceError:
-      description: Service Error
-      type: object
-      title: ServiceError represents an error with an associated error code.
-      properties:
-        code:
-          type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
-          type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
-    SQLRestoreToOriginalParams:
-      description: SQLRestoreToOriginalParams is restore to original job request inputs
-      type: object
-      required:
-      - backupsetID
-      - databases
-      - snapshotName
-      properties:
-        backupsetID:
-          description: Specify the ID of your backup set. Get the ID using the 'List backup sets' API.
-          type: integer
-          format: int32
-          x-go-name: BackupsetID
-        databases:
-          description: 'Specify the list of database names you want to restore. Get the names of databases associated with a backup set from the ''configuredDatabases'' section of the  ''Get backup set details'' API. '
-          type: array
-          items:
-            type: string
-          x-go-name: DBListForRestore
-        snapshotName:
-          description: Specify the name of the snapshot. Get the name of the snapshot using the 'List all snapshots' API.
-          type: string
-          x-go-name: RPName
-      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
-    SQLRestoreEnvironmentStruct:
-      description: RestoreEnvironmentStruct struct holds the response for GetRestoreJobsReport api
-      type: object
-      properties:
-        diskWriteRate:
-          description: Specifies the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
-          type: string
-          x-go-name: DiskWriteRate
-        diskWriteRateInKBps:
-          description: Specifies the bit rate in Kilobytes per second for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
-          type: number
-          format: double
-          x-go-name: DiskWriteRateInKBps
-        networkRetries:
-          description: The number of retries during the job due to network issues.
-          type: integer
-          format: int32
-          x-go-name: NetworkRetries
-        networkRetryDuration:
-          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
-          type: string
-          x-go-name: NetworkRetryDuration
-        networkRetryDurationInSeconds:
-          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
-          type: integer
-          format: int64
-          x-go-name: NetworkRetryDurationInSeconds
-      x-go-name: RestoreEnvironmentStruct
+          x-go-name: SourceDataScannedInBytes
+      x-go-name: EstimationDetailsStruct
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
     SQLGetRestoreJobsReport:
       description: GetRestoreJobsReport struct holds the response for GetRestoreJobsReport api
@@ -1288,331 +1068,6 @@ components:
           x-go-name: SourceServerName
       x-go-name: GetRestoreJobsReport
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLRetentionPolicy:
-      description: RetentionPolicy struct holds the response for GetPolicies api
-      type: object
-      properties:
-        allSnapshots:
-          description: The number of days for which the daily backup restore points are to be retained.
-          type: string
-          x-go-name: Daily
-        ltrEnabled:
-          description: The status of the backup set whether enabled for long term retention. For example, True denotes that the backup set is enabled for LTR.
-          type: boolean
-          x-go-name: LTREnabled
-        monthly:
-          description: The number of months for which the monthly backup restore points are to be retained.
-          type: string
-          x-go-name: Monthly
-        warmTierDuration:
-          description: Lists the duration in days for which the snapshot will reside in the warm tier of the AWS storage.
-          type: integer
-          format: int32
-          x-go-name: WarmTierDuration
-        weekly:
-          description: The number of weeks for which the weekly backup restore points are to be retained.
-          type: string
-          x-go-name: Weekly
-        yearly:
-          description: The number of years for which the yearly backup restore points are to be retained.
-          type: string
-          x-go-name: Yearly
-      x-go-name: RetentionPolicy
-      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
-    SQLGetAllJobsReport:
-      description: GetAllJobsReport struct holds the response for GetAllJobsReport api
-      type: object
-      properties:
-        backupContent:
-          $ref: '#/components/schemas/JSONMap'
-        endTime:
-          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: EndTime
-        errorCode:
-          description: 'The error code for the failed jobs. The possible values are:
-
-            \"0\": If the job is successful
-
-            <error_number>: If the job has failed'
-          type: string
-          x-go-name: ErrorCode
-        errorMessage:
-          description: The error message for failed jobs. This field is empty if the job is successful.
-          type: string
-          x-go-name: ErrorMsg
-        jobID:
-          description: The unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: JobID
-        jobType:
-          description: The type of the job. The job type can be "Backup", "Restore", "Log Request", and "Defreeze".
-          type: string
-          x-go-name: JobType
-        organizationName:
-          description: The name of the organization.
-          type: string
-          x-go-name: OrgName
-        resourceID:
-          description: The unique identification number associated with the resource.
-          type: integer
-          format: int32
-          x-go-name: ResourceID
-        resourceName:
-          description: The name of the SQL resource.
-          type: string
-          x-go-name: ReSourceName
-        resourceType:
-          description: The type of SQL resource. The resource type can be "SA" or "AG".
-          type: string
-          x-go-name: ResourceType
-        scheduleTime:
-          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: ScheduleTime
-        startTime:
-          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: StartTime
-        status:
-          description: The status of the job.
-          type: string
-          enum:
-          - Queued
-          - Running
-          - Successful
-          - Successful with errors
-          - Failed
-          x-go-name: Status
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetUploadLogJobReportResponse:
-      description: GetUploadLogJobReportResponse is the response schema for GetUploadLogJobReport
-      type: object
-      properties:
-        Jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLGetUploadLogJobsReport'
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: GetUploadLogJobReportResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetDefreezeJobsReport:
-      description: GetDefreezeJobsReport struct holds the response for GetDefreezeJobsReport api
-      type: object
-      properties:
-        backupContent:
-          $ref: '#/components/schemas/JSONMap'
-        executionDetails:
-          $ref: '#/components/schemas/SQLDefreezeExecDetailsStruct'
-        jobID:
-          description: The unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: JobID
-        jobType:
-          description: The type of the job.
-          type: string
-          enum:
-          - Backup
-          - Restore
-          - Log Request
-          - Defreeze
-          x-go-name: JobType
-        organizationName:
-          description: The name of the organization.
-          type: string
-          x-go-name: OrgName
-        resourceName:
-          description: The name of the SQL resource.
-          type: string
-          x-go-name: SQLResourceName
-        resourceType:
-          description: The type of SQL resource, such as an availability group (AG) or a standalone instance (SA).
-          type: string
-          x-go-name: SQLResourceType
-        scheduleTime:
-          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          x-go-name: ScheduleTime
-        snapshotDefreezed:
-          description: The name of the restore point for which the defreeze job is initiated.
-          type: string
-          x-go-name: RPName
-      x-go-name: GetDefreezeJobsReport
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetPoliciesResponse:
-      description: GetPoliciesResponse is response schema for GetPolicies
-      type: object
-      properties:
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLGetPolicies'
-          x-go-name: Policies
-      x-go-name: GetPoliciesResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
-    SQLGetBackupsetsResponse:
-      description: GetBackupsetsResponse is response schema for GetBackupsets
-      type: object
-      properties:
-        backupsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLBackupsetInfo'
-          x-go-name: Backupsets
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: GetBackupsetsResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/backupsets
-    SQLResourceResponse:
-      description: ResourceResponse is the response part of the  schema for ListSQLInstances
-      type: object
-      properties:
-        administrativeGroupName:
-          description: The name of the resource group the SQL instance is a part of.
-          type: string
-          x-go-name: GroupName
-        agID:
-          description: The ID of the availability group.
-          type: integer
-          format: int32
-          x-go-name: AgID
-        configurationStatus:
-          description: The status indicating whether the SQL resource is configured for backup.
-          type: boolean
-          x-go-name: ConfiguredForFile
-        organizationName:
-          description: The name of the organization the SQL instance is a part of.
-          type: string
-          x-go-name: OrganizationName
-        resourceName:
-          description: The name of the SQL resource.
-          type: string
-          x-go-name: SQLResourceName
-        resourceType:
-          description: The type of the SQL resource.
-          type: string
-          x-go-name: SQLResourceType
-        serverName:
-          description: The name of the Windows or Linux server the SQL instance is a part of.
-          type: array
-          items:
-            type: string
-          x-go-name: ServerName
-        sqlServerVersion:
-          description: The version of the SQL resource.
-          type: string
-          x-go-name: Version
-      x-go-name: ResourceResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/instances
-    SQLRestoreToAlternateInstanceResponse:
-      description: A unique identification number associated with the job.
-      type: object
-      properties:
-        jobID:
-          description: A unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: JobID
-      x-go-name: RestoreToAlternateInstanceResponse
-      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
-    SQLEnvironmentStruct:
-      description: EnvironmentStruct struct holds the response for GetBackupJobsReport api
-      type: object
-      properties:
-        diskReadRate:
-          description: Specifies the bit rate for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
-          type: string
-          x-go-name: DiskReadRate
-        diskReadRateInKBps:
-          description: Specifies the bit rate in Kilobytes per second for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
-          type: number
-          format: double
-          x-go-name: DiskReadRateInKBps
-        networkRetries:
-          description: The number of retries during the job due to network issues.
-          type: integer
-          format: int32
-          x-go-name: NetworkRetries
-        networkRetryDuration:
-          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
-          type: string
-          x-go-name: NetworkRetryDuration
-        networkRetryDurationInSeconds:
-          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
-          type: integer
-          format: int64
-          x-go-name: NetworkRetryDurationInSeconds
-      x-go-name: EnvironmentStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLCancellationParams:
-      description: SQLCancellationParams is job cancellation request inputs
-      type: object
-      properties:
-        jobID:
-          description: Specify the ID of the job that you want to cancel. Get the ID of the job using the 'List all jobs' API.
-          type: integer
-          format: int32
-          x-go-name: JobID
-      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
-    SQLGetBackupJobReportResponse:
-      description: GetBackupJobReportResponse is the response schema for GetBackupJobReport
-      type: object
-      properties:
-        Jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLGetBackupJobsReport'
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: GetBackupJobReportResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLSchedules:
-      description: Schedules struct holds the response for GetPolicies api
-      type: object
-      properties:
-        backup Type:
-          description: The type of the backup.
-          type: string
-          x-go-name: BackupType
-        bandwidth:
-          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
-          type: string
-          x-go-name: Bandwidth
-        bandwidthInKBps:
-          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
-          type: number
-          format: double
-          x-go-name: BandwidthInKBps
-        duration:
-          description: Specifies the duration after which you want backup operations to stop.
-          type: string
-          x-go-name: Duration
-        durationInSeconds:
-          description: Specifies the duration in seconds after which you want backup operations to stop.
-          type: integer
-          format: int64
-          x-go-name: DurationInSeconds
-        repeatOn:
-          $ref: '#/components/schemas/JSONStringList'
-        startAt:
-          description: The start hour of the backup operation.
-          type: string
-          x-go-name: StartAt
-      x-go-name: Schedules
-      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
     SQLBackupsetInfo:
       description: BackupsetInfo is response schema for GetBackupsets
       type: object
@@ -1693,50 +1148,284 @@ components:
           x-go-name: OutToken
       x-go-name: GetAllJobsReportResponse
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetBackupsetDetailsResponse:
-      description: GetBackupsetDetailsResponse is the response schema for GetBackupsetDetails API
+    SQLTransactionlogSchedule:
+      description: TransactionlogSchedule struct holds the response for GetPolicies api
       type: object
       properties:
-        backupsetID:
-          description: The ID of the backup set.
+        bandwidth:
+          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          description: Specifies the duration after which you want transactionlog backup operations to stop.
+          type: string
+          x-go-name: Duration
+        durationInSeconds:
+          description: Specifies the duration in seconds after which you want transactionlog backup operations to stop.
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          description: The days of week on which the transactional log schedule is to be run.
+          type: string
+          x-go-name: RepeatOn
+        startAt:
+          description: The start hour of the transactional log backup operation.
+          type: string
+          x-go-name: StartAt
+      x-go-name: TransactionlogSchedule
+      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
+    SQLRestoreToAlternateInstanceResponse:
+      description: A unique identification number associated with the job.
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job.
           type: integer
           format: int32
-          x-go-name: ID
-        backupsetName:
-          description: The name of the backup set.
+          x-go-name: JobID
+      x-go-name: RestoreToAlternateInstanceResponse
+      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
+    SQLGetDefreezeJobsReport:
+      description: GetDefreezeJobsReport struct holds the response for GetDefreezeJobsReport api
+      type: object
+      properties:
+        backupContent:
+          $ref: '#/components/schemas/JSONMap'
+        executionDetails:
+          $ref: '#/components/schemas/SQLDefreezeExecDetailsStruct'
+        jobID:
+          description: The unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of the job.
           type: string
-          x-go-name: Name
-        configuredDatabases:
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          - Defreeze
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        resourceName:
+          description: The name of the SQL resource.
+          type: string
+          x-go-name: SQLResourceName
+        resourceType:
+          description: The type of SQL resource, such as an availability group (AG) or a standalone instance (SA).
+          type: string
+          x-go-name: SQLResourceType
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        snapshotDefreezed:
+          description: The name of the restore point for which the defreeze job is initiated.
+          type: string
+          x-go-name: RPName
+      x-go-name: GetDefreezeJobsReport
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLUploadLogExecDetailsStruct:
+      description: UploadLogExecDetailsStruct struct holds the response for GetUploadLogJobsReport api
+      type: object
+      properties:
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        logsExpiryTime:
+          description: The expiry time of the uploaded logs. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: LogsExpiryTime
+        logsSize:
+          description: Specifies the size of the extracted log files.
+          type: string
+          x-go-name: LogsSize
+        logsSizeInBytes:
+          description: Specifies the size of the extracted log files in bytes.
+          type: integer
+          format: uint64
+          x-go-name: LogsSizeInBytes
+        sourceJobID:
+          description: The unique identification number of the job for which logs are being requested.
+          type: integer
+          format: int32
+          x-go-name: SourceJobID
+        sourceJobType:
+          description: The job type for which logs are being requested.
+          type: string
+          x-go-name: SourceJobLogType
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: The status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-name: UploadLogExecDetailsStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLResourceResponse:
+      description: ResourceResponse is the response part of the  schema for ListSQLInstances
+      type: object
+      properties:
+        administrativeGroupName:
+          description: The name of the resource group the SQL instance is a part of.
+          type: string
+          x-go-name: GroupName
+        agID:
+          description: The ID of the availability group.
+          type: integer
+          format: int32
+          x-go-name: AgID
+        configurationStatus:
+          description: The status indicating whether the SQL resource is configured for backup.
+          type: boolean
+          x-go-name: ConfiguredForFile
+        organizationName:
+          description: The name of the organization the SQL instance is a part of.
+          type: string
+          x-go-name: OrganizationName
+        resourceName:
+          description: The name of the SQL resource.
+          type: string
+          x-go-name: SQLResourceName
+        resourceType:
+          description: The type of the SQL resource.
+          type: string
+          x-go-name: SQLResourceType
+        serverName:
+          description: The name of the Windows or Linux server the SQL instance is a part of.
           type: array
           items:
-            $ref: '#/components/schemas/SQLConfiguredDatabases'
-          x-go-name: DBDetails
-        contentRuleID:
+            type: string
+          x-go-name: ServerName
+        sqlServerVersion:
+          description: The version of the SQL resource.
+          type: string
+          x-go-name: Version
+      x-go-name: ResourceResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/instances
+    SQLRestoreToOriginalInstanceResponse:
+      description: The unique identification number associated with the job.
+      type: object
+      properties:
+        jobID:
+          description: The unique identification number associated with the job.
           type: integer
           format: int32
-          x-go-name: ContentRuleID
-        disableTimeStamp:
-          description: The date and time when the backup set was disabled.
+          x-go-name: JobID
+      x-go-name: RestoreToOriginalInstanceResponse
+      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
+    SQLGetUploadLogJobsReport:
+      description: GetUploadLogJobsReport struct holds the response for GetUploadLogJobsReport api
+      type: object
+      properties:
+        executionDetails:
+          $ref: '#/components/schemas/SQLUploadLogExecDetailsStruct'
+        jobID:
+          description: The unique identification number associated with the job.
           type: integer
           format: int32
-          x-go-name: DisableTimeStamp
-        policyID:
-          description: The ID of the backup policy associated with the backup set.
-          type: integer
-          format: int32
-          x-go-name: BackupPolicyID
-        storageCsetID:
-          description: The ID of the storage cset associated with the backup set.
-          type: integer
-          format: int32
-          x-go-name: StorageCSetID
-        storageID:
-          description: The ID of the storage associated with the backup set.
-          type: integer
-          format: int32
-          x-go-name: StorageID
-      x-go-name: GetBackupsetDetailsResponse
+          x-go-name: JobID
+        jobType:
+          description: The type of the job.
+          type: string
+          enum:
+          - Backup
+          - Restore
+          - Log Request
+          - Defreeze
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        resourceName:
+          description: The name of the SQL resource.
+          type: string
+          x-go-name: SQLResourceName
+        resourceType:
+          description: The type of SQL resource, such as an availability group (AG) or a standalone instance (SA).
+          type: string
+          x-go-name: SQLResourceType
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+      x-go-name: GetUploadLogJobsReport
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLConfiguredDatabases:
+      description: The list of databases configured with the backup set.
+      type: object
+      properties:
+        createdAt:
+          description: The creation date and time of the database.
+          type: string
+          x-go-name: DBCreationTime
+        databaseName:
+          description: The name of the database.
+          type: string
+          x-go-name: DBName
+        isReadOnlyMode:
+          description: The value is set to TRUE if the database is in Read-Only mode, else it is set to FALSE.
+          type: boolean
+          x-go-name: IsReadonlyDB
+      x-go-name: Databases
       x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/backupset
+    SQLGetBackupJobReportResponse:
+      description: GetBackupJobReportResponse is the response schema for GetBackupJobReport
+      type: object
+      properties:
+        Jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLGetBackupJobsReport'
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupJobReportResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLGetPoliciesResponse:
+      description: GetPoliciesResponse is response schema for GetPolicies
+      type: object
+      properties:
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLGetPolicies'
+          x-go-name: Policies
+      x-go-name: GetPoliciesResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
     SQLBackupContentStruct:
       type: object
       title: 'BackupContentStruct : Details of the content rule.'
@@ -1781,19 +1470,39 @@ components:
           x-go-name: IncludeInstanceList
       x-go-name: BackupContentStruct
       x-go-package: phoenix/sqlserver/cloud/report/spec/backupsets
-    SQLRestoreExecutionDetailsStruct:
-      description: RestoreExecutionDetailsStruct struct holds the response for GetRestoreJobsReport api
+    SQLEnvironmentStruct:
+      description: EnvironmentStruct struct holds the response for GetBackupJobsReport api
       type: object
       properties:
-        bandwidthConsumed:
-          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+        diskReadRate:
+          description: Specifies the bit rate for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
           type: string
-          x-go-name: BandwidthConsumed
-        bandwidthConsumedInKBps:
-          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          x-go-name: DiskReadRate
+        diskReadRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for reading I/O by the agent. The Disk Read Rate is an average of the total data read with respect to the total time taken to read data at various intervals for all drives where data is distributed.
           type: number
           format: double
-          x-go-name: BandwidthConsumedInKBps
+          x-go-name: DiskReadRateInKBps
+        networkRetries:
+          description: The number of retries during the job due to network issues.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: EnvironmentStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLDefreezeExecDetailsStruct:
+      description: DefreezeExecDetailsStruct struct holds the response for GetDefreezeJobsReport api
+      type: object
+      properties:
         endTime:
           description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
           type: string
@@ -1806,166 +1515,131 @@ components:
           description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
           type: string
           x-go-name: ErrorMsg
-        restoredData:
-          description: Specifies the total amount of data restored.
-          type: string
-          x-go-name: RestoredData
-        restoredDataInBytes:
-          description: Specifies the total amount of data restored in bytes.
-          type: integer
-          format: uint64
-          x-go-name: RestoredDataInBytes
-        restoredItems:
-          description: The files and folders restored on the server.
-          type: string
-          x-go-name: RestoredItems
         startTime:
           description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
           type: string
           x-go-name: StartTime
         status:
-          description: The status of the job.
+          description: Status of the job.
           type: string
           enum:
           - Queued
           - Running
           - Successful
           - Successful with errors
-          - Failed.
+          - Failed
           x-go-name: Status
-      x-go-name: RestoreExecutionDetailsStruct
+      x-go-name: DefreezeExecDetailsStruct
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLEstimationDetailsStruct:
-      description: EstimationDetailsStruct struct holds the response for GetBackupJobsReport api
+    SQLBackupNowRequestParams:
+      description: SQLBackupNowRequestParams is the input to the BackupNow job request
       type: object
       properties:
         backupType:
-          description: The type of backup, such as Full, Differential, or Transaction Log.
-          type: string
-          x-go-name: BackupType
-        dbsAdded:
-          description: The number of databases added at the source during the job.
-          type: integer
-          format: int64
-          x-go-name: DBsAdded
-        dbsChanged:
-          description: The number of databases changed at the source during the job.
-          type: integer
-          format: int64
-          x-go-name: DBsChanged
-        dbsRemoved:
-          description: The number of databases removed at the source during the job.
-          type: integer
-          format: int64
-          x-go-name: DBsRemoved
-        estimationTimeTaken:
-          description: Specifies the approximate time taken to scan the data.
-          type: string
-          x-go-name: EstimationTimeTaken
-        estimationTimeTakenInSeconds:
-          description: Specifies the approximate time taken in seconds to scan the data.
-          type: integer
-          format: int64
-          x-go-name: EstimationTimeTakenInSeconds
-        sourceDataScanned:
-          description: Specifies the data scanned in at the source in order to backup.
-          type: string
-          x-go-name: SourceDataScanned
-        sourceDataScannedInBytes:
-          description: Specifies the data scanned in bytes at the source in order to backup.
-          type: integer
-          format: uint64
-          x-go-name: SourceDataScannedInBytes
-      x-go-name: EstimationDetailsStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLDataTransferStruct:
-      description: DataTransferStruct struct holds the response for GetBackupJobsReport api
-      type: object
-      properties:
-        backupDuration:
-          description: Specifies the total time taken to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
-          type: string
-          x-go-name: BackupDuration
-        backupDurationInSeconds:
-          description: Specifies the total time taken in seconds to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
-          type: integer
-          format: int64
-          x-go-name: BackupDurationInSeconds
-        backupSpeed:
-          description: Specifies the rate at which the source data is backed up to the Cloud.
-          type: string
-          x-go-name: BackupSpeed
-        backupSpeedInKBps:
-          description: Specifies the rate in Kilobytes per second at which the source data is backed up to the Cloud.
-          type: number
-          format: double
-          x-go-name: BackupSpeedInKBps
-        bandwidthConsumed:
-          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
-          type: string
-          x-go-name: BandwidthConsumed
-        bandwidthConsumedInKBps:
-          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
-          type: number
-          format: double
-          x-go-name: BandwidthConsumedInKBps
-        dataTransferCache:
-          description: Specifies the incremental data that is uploaded to CloudCache after deduplication and compression.
-          type: string
-          x-go-name: DataTransferCache
-        dataTransferCacheInBytes:
-          description: Specifies the incremental data in bytes that is uploaded to CloudCache after deduplication and compression.
-          type: integer
-          format: uint64
-          x-go-name: DataTransferCacheInBytes
-        dataTransferCloud:
-          description: Specifies the incremental data that is uploaded to the Cloud after deduplication and compression.
-          type: string
-          x-go-name: DataTransferCloud
-        dataTransferCloudInBytes:
-          description: Specifies the incremental data in bytes that is uploaded to the Cloud after deduplication and compression.
-          type: integer
-          format: uint64
-          x-go-name: DataTransferCloudInBytes
-      x-go-name: DataTransferStruct
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetUploadLogJobsReport:
-      description: GetUploadLogJobsReport struct holds the response for GetUploadLogJobsReport api
-      type: object
-      properties:
-        executionDetails:
-          $ref: '#/components/schemas/SQLUploadLogExecDetailsStruct'
-        jobID:
-          description: The unique identification number associated with the job.
-          type: integer
-          format: int32
-          x-go-name: JobID
-        jobType:
-          description: The type of the job.
+          description: 'Specify the type of backup. Set this parameter to one of the following values: FULL, DIFF, LOG.'
           type: string
           enum:
-          - Backup
-          - Restore
-          - Log Request
-          - Defreeze
-          x-go-name: JobType
-        organizationName:
-          description: The name of the organization.
+          - FULL
+          - DIFF
+          - LOG
+          x-go-name: BackupType
+        backupsetID:
+          description: Specify the ID of your backup set. Get the ID using the 'List backup sets' API.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
+    SQLGetPolicies:
+      description: GetPolicies struct holds the response for GetPolicies api
+      type: object
+      properties:
+        automaticRetry:
+          description: Whether the automatic retry option is enabled.
+          type: boolean
+          x-go-name: AutomaticRetry
+        dataLock:
+          description: The status indicating if Data Lock is enabled in the backup policy.
+          type: boolean
+          x-go-name: Immutability
+        description:
+          description: The description of the policy.
           type: string
-          x-go-name: OrgName
-        resourceName:
-          description: The name of the SQL resource.
+          x-go-name: Description
+        ignoreFirstBackupDuration:
+          description: Whether the backup duration is to be ignored for the first backup.
+          type: boolean
+          x-go-name: IgnoreBackupDuration
+        maxRetryCount:
+          description: The maximum retry count for the job operation. This parameter will be skipped if the value is NULL.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryCount
+        maxRetryDuration:
+          description: Specifies the wait interval before the job is retried.
           type: string
-          x-go-name: SQLResourceName
-        resourceType:
-          description: The type of SQL resource, such as an availability group (AG) or a standalone instance (SA).
+          x-go-name: MaxRetryDuration
+        maxRetryDurationInSeconds:
+          description: Specifies the wait interval in seconds before the job is retried.
+          type: integer
+          format: int64
+          x-go-name: MaxRetryDurationInSeconds
+        policyID:
+          description: The ID of your backup policy.
+          type: integer
+          format: int64
+          x-go-name: PolicyID
+        policyName:
+          description: The name of the policy.
           type: string
-          x-go-name: SQLResourceType
-        scheduleTime:
-          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          x-go-name: PolicyName
+        policyType:
+          description: The type of the policy.
           type: string
-          x-go-name: ScheduleTime
-      x-go-name: GetUploadLogJobsReport
+          x-go-name: PolicyType
+        retention:
+          $ref: '#/components/schemas/SQLRetentionPolicy'
+        schedules:
+          description: The schedule information for backup. This parameter will be skipped if the value is NULL.
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLSchedules'
+          x-go-name: Schedules
+        transactionLogsBackup:
+          description: The Transaction log schedule information for backup. This parameter will be skipped if the value is NULL.
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLTransactionlogSchedule'
+          x-go-name: TransactionlogSchedule
+      x-go-name: GetPolicies
+      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
+    SQLGetBackupsetsResponse:
+      description: GetBackupsetsResponse is response schema for GetBackupsets
+      type: object
+      properties:
+        backupsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLBackupsetInfo'
+          x-go-name: Backupsets
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetBackupsetsResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/backupsets
+    SQLGetRestoreJobReportResponse:
+      description: GetRestoreJobReportResponse is the response schema for GetRestoreJobReport
+      type: object
+      properties:
+        Jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLGetRestoreJobsReport'
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetRestoreJobReportResponse
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
     SQLExecutionDetailsStruct:
       description: ExecutionDetailsStruct struct holds the response for GetBackupJobsReport api
@@ -1999,46 +1673,70 @@ components:
           x-go-name: Status
       x-go-name: ExecutionDetailsStruct
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLGetDefreezeJobReportResponse:
-      description: GetDefreezeJobReportResponse is the response schema for GetDefreezeJobReport
+    JSONStringList:
+      description: JSONStringList is data type to be used in model definition for data that is string:interface map in memory but stored as JSON string in DB
+      type: array
+      items:
+        type: string
+      x-go-package: phoenix/pkg/dlutil
+    SQLRestoreToOriginalParams:
+      description: SQLRestoreToOriginalParams is restore to original job request inputs
       type: object
+      required:
+      - backupsetID
+      - databases
+      - snapshotName
       properties:
-        Jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLGetDefreezeJobsReport'
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: GetDefreezeJobReportResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
-    SQLListSQLInstancesResponse:
-      description: ListSQLResourceResponse is the response schema for ListSQLInstance
-      type: object
-      properties:
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLResourceResponse'
-          x-go-name: Servers
-        nextPageToken:
-          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
-          type: string
-          x-go-name: OutToken
-      x-go-name: ListSQLResourceResponse
-      x-go-package: phoenix/sqlserver/cloud/report/spec/instances
-    SQLRestoreToOriginalInstanceResponse:
-      description: The unique identification number associated with the job.
-      type: object
-      properties:
-        jobID:
-          description: The unique identification number associated with the job.
+        backupsetID:
+          description: Specify the ID of your backup set. Get the ID using the 'List backup sets' API.
           type: integer
           format: int32
-          x-go-name: JobID
-      x-go-name: RestoreToOriginalInstanceResponse
+          x-go-name: BackupsetID
+        databases:
+          description: 'Specify the list of database names you want to restore. Get the names of databases associated with a backup set from the ''configuredDatabases'' section of the  ''Get backup set details'' API. '
+          type: array
+          items:
+            type: string
+          x-go-name: DBListForRestore
+        snapshotName:
+          description: Specify the name of the snapshot. Get the name of the snapshot using the 'List all snapshots' API.
+          type: string
+          x-go-name: RPName
       x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
+    SQLSchedules:
+      description: Schedules struct holds the response for GetPolicies api
+      type: object
+      properties:
+        backup Type:
+          description: The type of the backup.
+          type: string
+          x-go-name: BackupType
+        bandwidth:
+          description: Specifies the bandwidth that each resource can consume while backing up data to the Cloud.
+          type: string
+          x-go-name: Bandwidth
+        bandwidthInKBps:
+          description: Specifies the bandwidth in Kilobytes per second that each resource can consume while backing up data to the Cloud.
+          type: number
+          format: double
+          x-go-name: BandwidthInKBps
+        duration:
+          description: Specifies the duration after which you want backup operations to stop.
+          type: string
+          x-go-name: Duration
+        durationInSeconds:
+          description: Specifies the duration in seconds after which you want backup operations to stop.
+          type: integer
+          format: int64
+          x-go-name: DurationInSeconds
+        repeatOn:
+          $ref: '#/components/schemas/JSONStringList'
+        startAt:
+          description: The start hour of the backup operation.
+          type: string
+          x-go-name: StartAt
+      x-go-name: Schedules
+      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
     SQLRestoreToAlternateParams:
       description: SQLRestoreToAlternateParams is restore to alternate job request inputs
       type: object
@@ -2085,6 +1783,60 @@ components:
           type: string
           x-go-name: TargetResourceType
       x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/job
+    SQLBackupNowResponse:
+      description: SQLBackupNowResponse is the response to the BackupNow job request
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
+    SQLGetBackupsetDetailsResponse:
+      description: GetBackupsetDetailsResponse is the response schema for GetBackupsetDetails API
+      type: object
+      properties:
+        backupsetID:
+          description: The ID of the backup set.
+          type: integer
+          format: int32
+          x-go-name: ID
+        backupsetName:
+          description: The name of the backup set.
+          type: string
+          x-go-name: Name
+        configuredDatabases:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLConfiguredDatabases'
+          x-go-name: DBDetails
+        contentRuleID:
+          type: integer
+          format: int32
+          x-go-name: ContentRuleID
+        disableTimeStamp:
+          description: The date and time when the backup set was disabled.
+          type: integer
+          format: int32
+          x-go-name: DisableTimeStamp
+        policyID:
+          description: The ID of the backup policy associated with the backup set.
+          type: integer
+          format: int32
+          x-go-name: BackupPolicyID
+        storageCsetID:
+          description: The ID of the storage cset associated with the backup set.
+          type: integer
+          format: int32
+          x-go-name: StorageCSetID
+        storageID:
+          description: The ID of the storage associated with the backup set.
+          type: integer
+          format: int32
+          x-go-name: StorageID
+      x-go-name: GetBackupsetDetailsResponse
+      x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/backupset
     SQLGetBackupJobsReport:
       description: GetBackupJobsReport struct holds the response for GetBackupJobsReport api
       type: object
@@ -2155,6 +1907,96 @@ components:
           x-go-name: ScheduleTime
       x-go-name: GetBackupJobsReport
       x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLCancellationParams:
+      description: SQLCancellationParams is job cancellation request inputs
+      type: object
+      properties:
+        jobID:
+          description: Specify the ID of the job that you want to cancel. Get the ID of the job using the 'List all jobs' API.
+          type: integer
+          format: int32
+          x-go-name: JobID
+      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
+    SQLRestoreEnvironmentStruct:
+      description: RestoreEnvironmentStruct struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        diskWriteRate:
+          description: Specifies the bit rate for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: string
+          x-go-name: DiskWriteRate
+        diskWriteRateInKBps:
+          description: Specifies the bit rate in Kilobytes per second for writing I/O by the agent. The Disk Write Rate is the average of the total data written with respect to the total time taken to write data at various intervals.
+          type: number
+          format: double
+          x-go-name: DiskWriteRateInKBps
+        networkRetries:
+          description: The number of retries during the job due to network issues.
+          type: integer
+          format: int32
+          x-go-name: NetworkRetries
+        networkRetryDuration:
+          description: Specifies the total time spent in the network retries. It represents the cumulative of all network session duration.
+          type: string
+          x-go-name: NetworkRetryDuration
+        networkRetryDurationInSeconds:
+          description: Specifies the total time spent in seconds in the network retries. It represents the cumulative of all network session duration.
+          type: integer
+          format: int64
+          x-go-name: NetworkRetryDurationInSeconds
+      x-go-name: RestoreEnvironmentStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLDataTransferStruct:
+      description: DataTransferStruct struct holds the response for GetBackupJobsReport api
+      type: object
+      properties:
+        backupDuration:
+          description: Specifies the total time taken to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: string
+          x-go-name: BackupDuration
+        backupDurationInSeconds:
+          description: Specifies the total time taken in seconds to upload data to the Cloud and CloudCache. Backup duration excludes the estimation time, network retry time, and the waiting for retry time.
+          type: integer
+          format: int64
+          x-go-name: BackupDurationInSeconds
+        backupSpeed:
+          description: Specifies the rate at which the source data is backed up to the Cloud.
+          type: string
+          x-go-name: BackupSpeed
+        backupSpeedInKBps:
+          description: Specifies the rate in Kilobytes per second at which the source data is backed up to the Cloud.
+          type: number
+          format: double
+          x-go-name: BackupSpeedInKBps
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        dataTransferCache:
+          description: Specifies the incremental data that is uploaded to CloudCache after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCache
+        dataTransferCacheInBytes:
+          description: Specifies the incremental data in bytes that is uploaded to CloudCache after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCacheInBytes
+        dataTransferCloud:
+          description: Specifies the incremental data that is uploaded to the Cloud after deduplication and compression.
+          type: string
+          x-go-name: DataTransferCloud
+        dataTransferCloudInBytes:
+          description: Specifies the incremental data in bytes that is uploaded to the Cloud after deduplication and compression.
+          type: integer
+          format: uint64
+          x-go-name: DataTransferCloudInBytes
+      x-go-name: DataTransferStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
     SQLListSQLAvailabilityGroupResponse:
       description: ListSQLResourceResponse is the response schema for ListSQLAvailabilityGroup
       type: object
@@ -2170,6 +2012,79 @@ components:
           x-go-name: OutToken
       x-go-name: ListSQLResourceResponse
       x-go-package: phoenix/sqlserver/cloud/report/spec/availabilitygroup
+    SQLGetAllJobsReport:
+      description: GetAllJobsReport struct holds the response for GetAllJobsReport api
+      type: object
+      properties:
+        backupContent:
+          $ref: '#/components/schemas/JSONMap'
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: 'The error code for the failed jobs. The possible values are:
+
+            \"0\": If the job is successful
+
+            <error_number>: If the job has failed'
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: The error message for failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        jobID:
+          description: The unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: JobID
+        jobType:
+          description: The type of the job. The job type can be "Backup", "Restore", "Log Request", and "Defreeze".
+          type: string
+          x-go-name: JobType
+        organizationName:
+          description: The name of the organization.
+          type: string
+          x-go-name: OrgName
+        resourceID:
+          description: The unique identification number associated with the resource.
+          type: integer
+          format: int32
+          x-go-name: ResourceID
+        resourceName:
+          description: The name of the SQL resource.
+          type: string
+          x-go-name: ReSourceName
+        resourceType:
+          description: The type of SQL resource. The resource type can be "SA" or "AG".
+          type: string
+          x-go-name: ResourceType
+        scheduleTime:
+          description: The date and time when the job starts or is scheduled to start. The time is specified in UTC in the format YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: ScheduleTime
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: The status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed
+          x-go-name: Status
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    JSONMap:
+      description: Returns the data for the current job.
+      type: object
+      additionalProperties:
+        type: object
+      x-go-package: phoenix/pkg/dlutil
     SQLSnapshot:
       description: Contains the response parameters for the ListSnapshot API.
       type: object
@@ -2188,93 +2103,178 @@ components:
           x-go-name: RPType
       x-go-name: RPDict
       x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/backupset
-    SQLGetPolicies:
-      description: GetPolicies struct holds the response for GetPolicies api
+    SQLLastBackupDetailsStruct:
+      description: LastBackupDetailsStruct is response schema for GetBackupsets
       type: object
       properties:
-        automaticRetry:
-          description: Whether the automatic retry option is enabled.
-          type: boolean
-          x-go-name: AutomaticRetry
-        dataLock:
-          description: The status indicating if Data Lock is enabled in the backup policy.
-          type: boolean
-          x-go-name: Immutability
-        description:
-          description: The description of the policy.
-          type: string
-          x-go-name: Description
-        ignoreFirstBackupDuration:
-          description: Whether the backup duration is to be ignored for the first backup.
-          type: boolean
-          x-go-name: IgnoreBackupDuration
-        maxRetryCount:
-          description: The maximum retry count for the job operation. This parameter will be skipped if the value is NULL.
+        jobID:
+          description: The unique identification number associated with the job.
           type: integer
-          format: int64
-          x-go-name: MaxRetryCount
-        maxRetryDuration:
-          description: Specifies the wait interval before the job is retried.
+          format: int32
+          x-go-name: JobID
+        status:
+          description: The status of the job
           type: string
-          x-go-name: MaxRetryDuration
-        maxRetryDurationInSeconds:
-          description: Specifies the wait interval in seconds before the job is retried.
-          type: integer
-          format: int64
-          x-go-name: MaxRetryDurationInSeconds
-        policyID:
-          description: The ID of your backup policy.
-          type: integer
-          format: int64
-          x-go-name: PolicyID
-        policyName:
-          description: The name of the policy.
-          type: string
-          x-go-name: PolicyName
-        policyType:
-          description: The type of the policy.
-          type: string
-          x-go-name: PolicyType
-        retention:
-          $ref: '#/components/schemas/SQLRetentionPolicy'
-        schedules:
-          description: The schedule information for backup. This parameter will be skipped if the value is NULL.
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLSchedules'
-          x-go-name: Schedules
-        transactionLogsBackup:
-          description: The Transaction log schedule information for backup. This parameter will be skipped if the value is NULL.
-          type: array
-          items:
-            $ref: '#/components/schemas/SQLTransactionlogSchedule'
-          x-go-name: TransactionlogSchedule
-      x-go-name: GetPolicies
-      x-go-package: phoenix/sqlserver/cloud/report/spec/policies
-    JSONMap:
-      description: Returns the data for the current job.
+          x-go-name: Status
+      x-go-name: LastBackupDetailsStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/backupsets
+    ServiceError:
+      description: Service Error
       type: object
-      additionalProperties:
-        type: object
-      x-go-package: phoenix/pkg/dlutil
-    SQLConfiguredDatabases:
-      description: The list of databases configured with the backup set.
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
+    SQLListSQLInstancesResponse:
+      description: ListSQLResourceResponse is the response schema for ListSQLInstance
       type: object
       properties:
-        createdAt:
-          description: The creation date and time of the database.
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLResourceResponse'
+          x-go-name: Servers
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
           type: string
-          x-go-name: DBCreationTime
-        databaseName:
-          description: The name of the database.
+          x-go-name: OutToken
+      x-go-name: ListSQLResourceResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/instances
+    SQLGetDefreezeJobReportResponse:
+      description: GetDefreezeJobReportResponse is the response schema for GetDefreezeJobReport
+      type: object
+      properties:
+        Jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLGetDefreezeJobsReport'
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
           type: string
-          x-go-name: DBName
-        isReadOnlyMode:
-          description: The value is set to TRUE if the database is in Read-Only mode, else it is set to FALSE.
-          type: boolean
-          x-go-name: IsReadonlyDB
-      x-go-name: Databases
+          x-go-name: OutToken
+      x-go-name: GetDefreezeJobReportResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLListSnapshotResponse:
+      description: ListSnapshotResponse is the response schema for ListSnapshot API
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: NextPageToken
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLSnapshot'
+          x-go-name: RPs
+      x-go-name: ListSnapshotResponse
       x-go-package: _/root/dcloud/phoenix_cloud/code/sqlserver/cloud/configserver/spec/backupset
+    SQLGetUploadLogJobReportResponse:
+      description: GetUploadLogJobReportResponse is the response schema for GetUploadLogJobReport
+      type: object
+      properties:
+        Jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SQLGetUploadLogJobsReport'
+        nextPageToken:
+          description: The page token value for the next set of API results. The value of this parameter is NULL for the last set of results.
+          type: string
+          x-go-name: OutToken
+      x-go-name: GetUploadLogJobReportResponse
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    SQLCancelJobResponse:
+      description: SQLCancelJobResponse is response to cancel job API
+      type: object
+      properties:
+        jobID:
+          description: A unique identification number associated with the job.
+          type: integer
+          format: int32
+          x-go-name: CancelledJobID
+      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
+    SQLRestoreExecutionDetailsStruct:
+      description: RestoreExecutionDetailsStruct struct holds the response for GetRestoreJobsReport api
+      type: object
+      properties:
+        bandwidthConsumed:
+          description: Specifies the bit rate to transfer data from the Cloud and CloudCache.
+          type: string
+          x-go-name: BandwidthConsumed
+        bandwidthConsumedInKBps:
+          description: Specifies the bit rate in Kilobytes per second to transfer data from the Cloud and CloudCache.
+          type: number
+          format: double
+          x-go-name: BandwidthConsumedInKBps
+        endTime:
+          description: The time when the job completes. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: EndTime
+        errorCode:
+          description: "Specifies the error code for the failed jobs. The possible values are:\n \\\"0\\\": If the job is successful\n<error_number>: If the job has failed"
+          type: string
+          x-go-name: ErrorCode
+        errorMessage:
+          description: Specifies the error message for the failed jobs. This field is empty if the job is successful.
+          type: string
+          x-go-name: ErrorMsg
+        restoredData:
+          description: Specifies the total amount of data restored.
+          type: string
+          x-go-name: RestoredData
+        restoredDataInBytes:
+          description: Specifies the total amount of data restored in bytes.
+          type: integer
+          format: uint64
+          x-go-name: RestoredDataInBytes
+        restoredItems:
+          description: The files and folders restored on the server.
+          type: string
+          x-go-name: RestoredItems
+        startTime:
+          description: The time when the job starts. The time is specified in the UTC timezone. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          x-go-name: StartTime
+        status:
+          description: The status of the job.
+          type: string
+          enum:
+          - Queued
+          - Running
+          - Successful
+          - Successful with errors
+          - Failed.
+          x-go-name: Status
+      x-go-name: RestoreExecutionDetailsStruct
+      x-go-package: phoenix/sqlserver/cloud/report/spec/jobs
+    RestorePath:
+      type: object
+      title: RestorePath for the database files
+      properties:
+        filePath:
+          description: Specify the file path for downloading database files on the restore location. The same path is used for ldf, mdf and ndf files. Skip this field if you want to specify separate paths for these files.
+          type: string
+          x-go-name: FilePath
+        ldfPath:
+          description: Specify the file path for downloading ldf file on the restore location.
+          type: string
+          x-go-name: LDFPath
+        mdfPath:
+          description: Specify the file path for downloading mdf file on the restore location.
+          type: string
+          x-go-name: MDFPath
+        ndfPath:
+          description: Specify the file path for downloading ndf file on the restore location.
+          type: string
+          x-go-name: NDFPath
+      x-go-package: phoenix/sqlserver/cloud/configserver/spec/job
   securitySchemes:
     OAuth2:
       type: oauth2

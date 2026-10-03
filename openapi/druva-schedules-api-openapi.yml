@@ -884,7 +884,24 @@ components:
         type:
           type: string
       type: object
-    GetOrganizationsAccountsSchedulesResponse:
+    GetOrganizationsAccountsSchedulesAverageResponse:
+      properties:
+        Friday:
+          type: integer
+        Monday:
+          type: integer
+        Saturday:
+          type: integer
+        Sunday:
+          type: integer
+        Thursday:
+          type: integer
+        Tuesday:
+          type: integer
+        Wednesday:
+          type: integer
+      type: object
+    PostOrganizationsAccountsSchedulesSearchResponse:
       properties:
         hits:
           properties:
@@ -913,17 +930,21 @@ components:
               type: integer
             schedule_json:
               type: string
-            schedule_times:
-              items:
-                type: object
-              type: array
             servers:
               items:
-                type: string
+                properties:
+                  server_id:
+                    type: string
+                type: object
               type: array
             tags:
               items:
-                type: string
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+                type: object
               type: array
             timezone_location:
               type: string
@@ -936,176 +957,19 @@ components:
         total:
           type: integer
       type: object
-    PostOrganizationsAccountsSchedulesSearchRequest:
+    Error:
       properties:
-        Keywords:
-          items:
-            type: string
-          type: array
-        Tags:
-          items:
-            type: string
-          type: array
+        message:
+          type: string
       type: object
     PostOrganizationsAccountsSchedulesStartRequest:
       type: object
-    GetOrganizationsAccountsSchedulesTagsKeysValuesResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
+    PostOrganizationsAccountsSchedulesStopRequest:
       type: object
-    PostOrganizationsAccountsSchedulesRequest:
+    GetOrganizationsAccountsSchedulesCountResponse:
       properties:
-        account_id:
-          type: string
-        group_tags:
-          items:
-            type: string
-          type: array
-        groups:
-          items:
-            type: string
-          type: array
-        hours_on:
+        count:
           type: integer
-        is_active:
-          type: boolean
-        match_all_tags_flag:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-        percent_on:
-          type: integer
-        retainObjects:
-          type: boolean
-        schedule_json:
-          properties:
-            Friday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Monday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Saturday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Sunday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Thursday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Tuesday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-            Wednesday:
-              items:
-                properties:
-                  action_type:
-                    type: string
-                  end:
-                    type: integer
-                  minutes:
-                    type: integer
-                  start:
-                    type: integer
-                  stop:
-                    type: integer
-                type: object
-              type: array
-          type: object
-        schedule_times:
-          items:
-            type: string
-          type: array
-        servers:
-          items:
-            type: string
-          type: array
-        tags:
-          items:
-            type: string
-          type: array
-        timezone_location:
-          type: string
-        type:
-          type: string
       type: object
     PostOrganizationsAccountsSchedulesResponse:
       properties:
@@ -1149,6 +1013,24 @@ components:
         updated_at:
           format: date-time
           type: string
+      type: object
+    DeleteOrganizationsAccountsSchedulesServersByIdResponse:
+      properties:
+        region:
+          type: string
+        server_id:
+          type: string
+        type:
+          type: string
+      type: object
+    PutOrganizationsAccountsSchedulesByIdResponse:
+      type: object
+    GetOrganizationsAccountsSchedulesTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
       type: object
     PutOrganizationsAccountsSchedulesByIdRequest:
       properties:
@@ -1339,31 +1221,12 @@ components:
           format: date-time
           type: string
       type: object
-    GetOrganizationsAccountsSchedulesAverageResponse:
+    PostOrganizationsAccountsSchedulesScaleResponse:
       properties:
-        Friday:
-          type: integer
-        Monday:
-          type: integer
-        Saturday:
-          type: integer
-        Sunday:
-          type: integer
-        Thursday:
-          type: integer
-        Tuesday:
-          type: integer
-        Wednesday:
-          type: integer
+        job_id:
+          type: string
       type: object
-    GetOrganizationsAccountsSchedulesCountResponse:
-      properties:
-        count:
-          type: integer
-      type: object
-    PostOrganizationsAccountsSchedulesStopRequest:
-      type: object
-    PostOrganizationsAccountsSchedulesSearchResponse:
+    GetOrganizationsAccountsSchedulesResponse:
       properties:
         hits:
           properties:
@@ -1392,21 +1255,17 @@ components:
               type: integer
             schedule_json:
               type: string
+            schedule_times:
+              items:
+                type: object
+              type: array
             servers:
               items:
-                properties:
-                  server_id:
-                    type: string
-                type: object
+                type: string
               type: array
             tags:
               items:
-                properties:
-                  key:
-                    type: string
-                  value:
-                    type: string
-                type: object
+                type: string
               type: array
             timezone_location:
               type: string
@@ -1419,18 +1278,162 @@ components:
         total:
           type: integer
       type: object
-    PutOrganizationsAccountsSchedulesByIdResponse:
-      type: object
-    GetOrganizationsAccountsSchedulesTagsKeysResponse:
+    PostOrganizationsAccountsSchedulesStopResponse:
       properties:
-        values:
+        job_id:
+          type: string
+      type: object
+    PostOrganizationsAccountsSchedulesScaleRequest:
+      type: object
+    PostOrganizationsAccountsSchedulesRequest:
+      properties:
+        account_id:
+          type: string
+        group_tags:
           items:
             type: string
           type: array
-      type: object
-    PostOrganizationsAccountsSchedulesStartResponse:
-      properties:
-        job_id:
+        groups:
+          items:
+            type: string
+          type: array
+        hours_on:
+          type: integer
+        is_active:
+          type: boolean
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        percent_on:
+          type: integer
+        retainObjects:
+          type: boolean
+        schedule_json:
+          properties:
+            Friday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Monday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Saturday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Sunday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Thursday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Tuesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+            Wednesday:
+              items:
+                properties:
+                  action_type:
+                    type: string
+                  end:
+                    type: integer
+                  minutes:
+                    type: integer
+                  start:
+                    type: integer
+                  stop:
+                    type: integer
+                type: object
+              type: array
+          type: object
+        schedule_times:
+          items:
+            type: string
+          type: array
+        servers:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        type:
           type: string
       type: object
     GetOrganizationsTasksSchedulesResponse:
@@ -1448,34 +1451,31 @@ components:
         organization_id:
           type: string
       type: object
-    Error:
+    PostOrganizationsAccountsSchedulesStartResponse:
       properties:
-        message:
+        job_id:
           type: string
+      type: object
+    GetOrganizationsAccountsSchedulesTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PostOrganizationsAccountsSchedulesSearchRequest:
+      properties:
+        Keywords:
+          items:
+            type: string
+          type: array
+        Tags:
+          items:
+            type: string
+          type: array
       type: object
     empty:
       properties: {}
-      type: object
-    PostOrganizationsAccountsSchedulesScaleResponse:
-      properties:
-        job_id:
-          type: string
-      type: object
-    PostOrganizationsAccountsSchedulesStopResponse:
-      properties:
-        job_id:
-          type: string
-      type: object
-    DeleteOrganizationsAccountsSchedulesServersByIdResponse:
-      properties:
-        region:
-          type: string
-        server_id:
-          type: string
-        type:
-          type: string
-      type: object
-    PostOrganizationsAccountsSchedulesScaleRequest:
       type: object
   securitySchemes:
     API_Authorizer:

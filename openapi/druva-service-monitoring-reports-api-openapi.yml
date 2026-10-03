@@ -182,84 +182,53 @@ paths:
       - Bearer: []
 components:
   schemas:
-    MSPServiceMonitoringQuotaViolationsReport:
+    GetMSPServiceMonitoringQuotaManagementReportRequest:
+      description: Specify the parameters required to retrieve the MSP Service Monitoring Quota Management report.
       type: object
       properties:
-        accountName:
+        pageToken:
+          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
           type: string
-          description: Account name of the customer.
-        alertId:
-          type: integer
-          format: int64
-          description: Alert identifier.
-        consumptionParameter:
-          type: string
-          description: Chargeback consumption parameter name.
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-        dcpUniqueKey:
-          type: string
-          description: A key which is used to uniquely identify each record in the report.
-        generatedOn:
-          type: string
-          format: date-time
-          description: The timestamp when the quota violation was first detected.
-        productId:
-          type: integer
-          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-        productModuleId:
-          type: integer
-          description: Product module identifier.
-        productModuleName:
-          type: string
-          enum:
-          - Hybrid Workloads
-          - Microsoft 365
-          - Endpoints
-          - Google Workspace
-          description: 'The name of the product module.
-
-            This field will be updated in the future for addition of new product modules as and when applicable.'
-        productName:
-          type: string
-          enum:
-          - Enterprise Workloads
-          - SaaS Apps and Endpoints
-          description: "The name of the product.\nThis field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-        quotaConsumed:
-          type: number
-          description: Consumed amount for the quota metric.
-        quotaLimit:
-          type: number
-          description: Configured quota limit.
-        severity:
-          type: string
-          description: Alert severity (for example Critical, Warning).
-        state:
-          type: string
-          description: Alert state (for example Active, Resolved, System Archived, Manual Archived).
-        unit:
-          type: string
-          description: Unit for the consumption parameter.
-        updatedOn:
-          type: string
-          format: date-time
-          description: Last update time for the row. Format may be display-specific in responses.
-    FiltersTypeMSPServiceMonitoringDataProtectionViolationsReport:
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringQuotaManagementReport'
+      example:
+        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          pageSize: 10
+          filterBy: []
+    FilterAttributeForMSPServiceMonitoringQuotaManagementReport:
       type: object
       properties:
-        pageSize:
-          description: 'Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later.'
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringDataProtectionViolationsReport'
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - productName
+          - productModuleName
+          - consumptionParameter
+          - unit
+          - incrementFrequency
+          - customerGlobalId
+          - productId
+          - productModuleId
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: Example Customer
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
     GetMSPServiceMonitoringQuotaManagementReportResponse:
       type: object
       properties:
@@ -319,74 +288,6 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of results.
           example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-    FilterAttributeForMSPServiceMonitoringQuotaManagementReport:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - accountName
-          - productName
-          - productModuleName
-          - consumptionParameter
-          - unit
-          - incrementFrequency
-          - customerGlobalId
-          - productId
-          - productModuleId
-          example: accountName
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: Example Customer
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    GetMSPServiceMonitoringDataProtectionViolationsReportRequest:
-      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Data Protection Violations report.
-      type: object
-      properties:
-        pageToken:
-          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringDataProtectionViolationsReport'
-      example:
-        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          pageSize: 10
-          filterBy:
-          - fieldName: generatedOn
-            value: '30'
-            operator: GTE
-          - fieldName: state
-            value:
-            - Active
-            operator: CONTAINS
-    FiltersTypeMSPServiceMonitoringDataProtectionCustomerCoverageReport:
-      type: object
-      properties:
-        pageSize:
-          description: 'Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later.'
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringDataProtectionCustomerCoverageReport'
     GetMSPServiceMonitoringDataProtectionCustomerCoverageReportResponse:
       type: object
       properties:
@@ -419,211 +320,14 @@ components:
           - 'null'
           description: The token to access the next page of results. This parameter will be empty for the last page of results.
           example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-    FiltersTypeMSPServiceMonitoringQuotaManagementReport:
+    APIError:
+      description: APIError defines an application error result format
       type: object
       properties:
-        pageSize:
-          description: "Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later."
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringQuotaManagementReport'
-    MSPServiceMonitoringDataProtectionCustomerCoverageItem:
-      type: object
-      description: Customer coverage for a product and optional data protection rule.
-      properties:
-        customerName:
+        code:
           type: string
-          description: Customer display name.
-          example: Acme Corp
-        accountName:
+        message:
           type: string
-          description: Account name.
-          example: Acme Corp
-        servicePlanName:
-          type: string
-          description: Service plan name.
-          example: Enterprise Plan
-        servicePlanId:
-          type: integer
-          description: Service plan identifier.
-          format: int64
-          example: 12
-        productName:
-          type: string
-          description: Product name.
-          example: Enterprise Workloads
-        ruleName:
-          type: string
-          description: Rule name, or Not Applied when no rule is configured for the product row.
-          example: RPO-EW-Critical
-        ruleType:
-          type: string
-          description: Rule type, or '-' when not applicable.
-          example: Recovery Point Objective
-        durationDescription:
-          type: string
-          description: Duration description, or '-' when not applicable.
-          example: N.A.
-        workloadsMonitored:
-          type: string
-          description: Comma-separated or summarized list of workloads monitored, or '-' when not applicable.
-          example: AHV, VMware
-        threshold:
-          type: string
-          description: Configured threshold, or '-' when not applicable.
-          example: 5 day(s)
-        customerGlobalId:
-          type: string
-          description: Global unique identifier of the customer.
-          format: uuid
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3
-        productId:
-          type: integer
-          description: Product identifier.
-          format: int64
-          example: 1
-        ruleId:
-          type:
-          - string
-          - 'null'
-          description: Rule identifier when a rule applies; null when not applied.
-          example: rule-001
-        dcpUniqueKey:
-          type: string
-          description: Unique key for the row in the data protection context.
-          example: abcd1234pqrs567890
-    MSPServiceMonitoringQuotaManagementReport:
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name of the customer.
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-        productId:
-          type: integer
-          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-        productName:
-          type: string
-          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
-        productModuleId:
-          type: integer
-          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace. This field will be updated in the future for addition of new product modules as and when applicable.
-        productModuleName:
-          type: string
-          enum:
-          - Hybrid Workloads
-          - Microsoft 365
-          - Endpoints
-          - Google Workspace
-          description: 'The name of the product module.
-
-            This field will be updated in the future for addition of new product modules as and when applicable.'
-        consumptionParameter:
-          type: string
-          description: Chargeback consumption parameter name.
-        unit:
-          type: string
-          description: Unit for the consumption parameter.
-        quota:
-          type:
-          - number
-          - 'null'
-          description: Configured quota limit.
-        incrementBy:
-          type:
-          - number
-          - 'null'
-          description: Increment step when applicable.
-        incrementFrequency:
-          type:
-          - string
-          - 'null'
-          description: Increment cadence (for example Monthly, Quarterly, Half Yearly, Yearly).
-        upcomingIncrement:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Next increment date when applicable.
-        incrementTill:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Upper bound for increment scheduling when applicable.
-        dcpUniqueKey:
-          type: string
-          description: Unique key for the report row.
-    GetMSPServiceMonitoringQuotaViolationsReportResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: Matching quota violation rows for the requested page.
-          items:
-            $ref: '#/components/schemas/MSPServiceMonitoringQuotaViolationsReport'
-          example:
-          - accountName: Example Customer
-            alertId: 6339
-            consumptionParameter: Total Active Devices or Backup sets
-            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-            dcpUniqueKey: abcd1234pqrs567890
-            generatedOn: '2026-05-18T08:42:46.000Z'
-            productId: 1
-            productModuleId: 1
-            productModuleName: Hybrid Workloads
-            productName: Enterprise Workloads
-            quotaConsumed: 357
-            quotaLimit: 357
-            severity: Critical
-            state: Active
-            unit: Count
-            updatedOn: '2026-05-19T12:41:33.000Z'
-          - accountName: Example Customer
-            alertId: 6340
-            consumptionParameter: Total Allocated Active Users
-            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-            dcpUniqueKey: abcd1234pqrs567890
-            generatedOn: '2026-05-20T10:00:00.000Z'
-            productId: 2
-            productModuleId: 4
-            productModuleName: Google Workspace
-            productName: SaaS Apps and Endpoints
-            quotaConsumed: 50
-            quotaLimit: 100
-            severity: Warning
-            state: Active
-            unit: Count
-            updatedOn: '2026-05-21T09:15:00.000Z'
-        filters:
-          type: object
-          description: All filters passed in request are returned in response.
-          properties:
-            pageSize:
-              type: integer
-              description: Maximum number of records that can be returned in the response.
-              example: 100
-            filterBy:
-              type: array
-              description: Filters applied in the request.
-              items:
-                $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringQuotaViolationsReport'
-        lastSyncTimestamp:
-          type: string
-          format: date-time
-          description: When report data was last refreshed.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
     GetMSPServiceMonitoringDataProtectionViolationsReportResponse:
       type: object
       properties:
@@ -699,6 +403,28 @@ components:
           - 'null'
           description: The token to access the next page of results. This parameter will be empty for the last page of results.
           example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+    GetMSPServiceMonitoringDataProtectionViolationsReportRequest:
+      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Data Protection Violations report.
+      type: object
+      properties:
+        pageToken:
+          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringDataProtectionViolationsReport'
+      example:
+        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          pageSize: 10
+          filterBy:
+          - fieldName: generatedOn
+            value: '30'
+            operator: GTE
+          - fieldName: state
+            value:
+            - Active
+            operator: CONTAINS
     MSPServiceMonitoringDataProtectionViolationsItem:
       type: object
       description: A single data protection violation record.
@@ -795,130 +521,84 @@ components:
           type: string
           description: Unique key for the row in the data protection context.
           example: abcd1234pqrs567890
-    GetMSPServiceMonitoringQuotaViolationsReportRequest:
-      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Quota Violations report.
+    MSPServiceMonitoringQuotaViolationsReport:
       type: object
       properties:
-        pageToken:
-          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+        accountName:
           type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringQuotaViolationsReport'
-      example:
-        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          pageSize: 10
-          filterBy:
-          - fieldName: generatedOn
-            value: '30'
-            operator: GTE
-          - fieldName: state
-            value:
-            - Active
-            operator: CONTAINS
-    GetMSPServiceMonitoringDataProtectionCustomerCoverageReportRequest:
-      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Data Protection Customer Coverage report.
-      type: object
-      properties:
-        pageToken:
-          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+          description: Account name of the customer.
+        alertId:
+          type: integer
+          format: int64
+          description: Alert identifier.
+        consumptionParameter:
           type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringDataProtectionCustomerCoverageReport'
-      example:
-        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          pageSize: 10
-          filterBy: []
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
+          description: Chargeback consumption parameter name.
+        customerGlobalId:
           type: string
-        message:
+          description: Unique ID of the customer.
+        dcpUniqueKey:
           type: string
-    GetMSPServiceMonitoringQuotaManagementReportRequest:
-      description: Specify the parameters required to retrieve the MSP Service Monitoring Quota Management report.
-      type: object
-      properties:
-        pageToken:
-          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+          description: A key which is used to uniquely identify each record in the report.
+        generatedOn:
           type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringQuotaManagementReport'
-      example:
-        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          pageSize: 10
-          filterBy: []
-    FilterAttributeForMSPServiceMonitoringDataProtectionCustomerCoverageReport:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
+          format: date-time
+          description: The timestamp when the quota violation was first detected.
+        productId:
+          type: integer
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+        productModuleId:
+          type: integer
+          description: Product module identifier.
+        productModuleName:
           type: string
           enum:
-          - customerName
-          - accountName
-          - servicePlanName
-          - productName
-          - ruleName
-          - ruleType
-          - durationDescription
-          example: accountName
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: Example Customer
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          - Hybrid Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+        productName:
           type: string
           enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    FilterAttributeForMSPServiceMonitoringQuotaViolationsReport:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: "The name of the product.\nThis field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+        quotaConsumed:
+          type: number
+          description: Consumed amount for the quota metric.
+        quotaLimit:
+          type: number
+          description: Configured quota limit.
+        severity:
+          type: string
+          description: Alert severity (for example Critical, Warning).
+        state:
+          type: string
+          description: Alert state (for example Active, Resolved, System Archived, Manual Archived).
+        unit:
+          type: string
+          description: Unit for the consumption parameter.
+        updatedOn:
+          type: string
+          format: date-time
+          description: Last update time for the row. Format may be display-specific in responses.
+    FiltersTypeMSPServiceMonitoringDataProtectionViolationsReport:
       type: object
       properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - accountName
-          - productName
-          - productModuleName
-          - consumptionParameter
-          - unit
-          - generatedOn
-          - severity
-          - state
-          - customerGlobalId
-          - productId
-          - productModuleId
-          example: generatedOn
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: '30'
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: GTE
+        pageSize:
+          description: 'Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later.'
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringDataProtectionViolationsReport'
     FilterAttributeForMSPServiceMonitoringDataProtectionViolationsReport:
       type: object
       properties:
@@ -954,6 +634,62 @@ components:
           - LTE
           - GTE
           example: GTE
+    FilterAttributeForMSPServiceMonitoringQuotaViolationsReport:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - productName
+          - productModuleName
+          - consumptionParameter
+          - unit
+          - generatedOn
+          - severity
+          - state
+          - customerGlobalId
+          - productId
+          - productModuleId
+          example: generatedOn
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: '30'
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: GTE
+    GetMSPServiceMonitoringQuotaViolationsReportRequest:
+      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Quota Violations report.
+      type: object
+      properties:
+        pageToken:
+          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringQuotaViolationsReport'
+      example:
+        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          pageSize: 10
+          filterBy:
+          - fieldName: generatedOn
+            value: '30'
+            operator: GTE
+          - fieldName: state
+            value:
+            - Active
+            operator: CONTAINS
     FiltersTypeMSPServiceMonitoringQuotaViolationsReport:
       type: object
       properties:
@@ -968,6 +704,270 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringQuotaViolationsReport'
+    GetMSPServiceMonitoringDataProtectionCustomerCoverageReportRequest:
+      description: Specify the filter criteria and parameters required to generate the MSP Service Monitoring Data Protection Customer Coverage report.
+      type: object
+      properties:
+        pageToken:
+          description: The token used to retrieve the next page of results. Pass the nextPageToken value returned from the previous response. For the initial request, leave this field empty.
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FiltersTypeMSPServiceMonitoringDataProtectionCustomerCoverageReport'
+      example:
+        pageToken: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          pageSize: 10
+          filterBy: []
+    FilterAttributeForMSPServiceMonitoringDataProtectionCustomerCoverageReport:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - customerName
+          - accountName
+          - servicePlanName
+          - productName
+          - ruleName
+          - ruleType
+          - durationDescription
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: Example Customer
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    FiltersTypeMSPServiceMonitoringQuotaManagementReport:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringQuotaManagementReport'
+    MSPServiceMonitoringQuotaManagementReport:
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name of the customer.
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+        productId:
+          type: integer
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+        productName:
+          type: string
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+        productModuleId:
+          type: integer
+          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace. This field will be updated in the future for addition of new product modules as and when applicable.
+        productModuleName:
+          type: string
+          enum:
+          - Hybrid Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+        consumptionParameter:
+          type: string
+          description: Chargeback consumption parameter name.
+        unit:
+          type: string
+          description: Unit for the consumption parameter.
+        quota:
+          type:
+          - number
+          - 'null'
+          description: Configured quota limit.
+        incrementBy:
+          type:
+          - number
+          - 'null'
+          description: Increment step when applicable.
+        incrementFrequency:
+          type:
+          - string
+          - 'null'
+          description: Increment cadence (for example Monthly, Quarterly, Half Yearly, Yearly).
+        upcomingIncrement:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Next increment date when applicable.
+        incrementTill:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Upper bound for increment scheduling when applicable.
+        dcpUniqueKey:
+          type: string
+          description: Unique key for the report row.
+    FiltersTypeMSPServiceMonitoringDataProtectionCustomerCoverageReport:
+      type: object
+      properties:
+        pageSize:
+          description: 'Specify the maximum number of records to return in a single response. The default is 100 records, and the maximum limit is 500 records. \n\nNote: The pageSize value set in the initial request persists across all subsequent paginated calls using the pageToken, even if a different pageSize is supplied later.'
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringDataProtectionCustomerCoverageReport'
+    MSPServiceMonitoringDataProtectionCustomerCoverageItem:
+      type: object
+      description: Customer coverage for a product and optional data protection rule.
+      properties:
+        customerName:
+          type: string
+          description: Customer display name.
+          example: Acme Corp
+        accountName:
+          type: string
+          description: Account name.
+          example: Acme Corp
+        servicePlanName:
+          type: string
+          description: Service plan name.
+          example: Enterprise Plan
+        servicePlanId:
+          type: integer
+          description: Service plan identifier.
+          format: int64
+          example: 12
+        productName:
+          type: string
+          description: Product name.
+          example: Enterprise Workloads
+        ruleName:
+          type: string
+          description: Rule name, or Not Applied when no rule is configured for the product row.
+          example: RPO-EW-Critical
+        ruleType:
+          type: string
+          description: Rule type, or '-' when not applicable.
+          example: Recovery Point Objective
+        durationDescription:
+          type: string
+          description: Duration description, or '-' when not applicable.
+          example: N.A.
+        workloadsMonitored:
+          type: string
+          description: Comma-separated or summarized list of workloads monitored, or '-' when not applicable.
+          example: AHV, VMware
+        threshold:
+          type: string
+          description: Configured threshold, or '-' when not applicable.
+          example: 5 day(s)
+        customerGlobalId:
+          type: string
+          description: Global unique identifier of the customer.
+          format: uuid
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3
+        productId:
+          type: integer
+          description: Product identifier.
+          format: int64
+          example: 1
+        ruleId:
+          type:
+          - string
+          - 'null'
+          description: Rule identifier when a rule applies; null when not applied.
+          example: rule-001
+        dcpUniqueKey:
+          type: string
+          description: Unique key for the row in the data protection context.
+          example: abcd1234pqrs567890
+    GetMSPServiceMonitoringQuotaViolationsReportResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: Matching quota violation rows for the requested page.
+          items:
+            $ref: '#/components/schemas/MSPServiceMonitoringQuotaViolationsReport'
+          example:
+          - accountName: Example Customer
+            alertId: 6339
+            consumptionParameter: Total Active Devices or Backup sets
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            dcpUniqueKey: abcd1234pqrs567890
+            generatedOn: '2026-05-18T08:42:46.000Z'
+            productId: 1
+            productModuleId: 1
+            productModuleName: Hybrid Workloads
+            productName: Enterprise Workloads
+            quotaConsumed: 357
+            quotaLimit: 357
+            severity: Critical
+            state: Active
+            unit: Count
+            updatedOn: '2026-05-19T12:41:33.000Z'
+          - accountName: Example Customer
+            alertId: 6340
+            consumptionParameter: Total Allocated Active Users
+            customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            dcpUniqueKey: abcd1234pqrs567890
+            generatedOn: '2026-05-20T10:00:00.000Z'
+            productId: 2
+            productModuleId: 4
+            productModuleName: Google Workspace
+            productName: SaaS Apps and Endpoints
+            quotaConsumed: 50
+            quotaLimit: 100
+            severity: Warning
+            state: Active
+            unit: Count
+            updatedOn: '2026-05-21T09:15:00.000Z'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 100
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForMSPServiceMonitoringQuotaViolationsReport'
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: When report data was last refreshed.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
   securitySchemes:
     OAuth2:
       flows:

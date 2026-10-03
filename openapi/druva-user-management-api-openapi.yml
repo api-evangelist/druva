@@ -637,82 +637,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    UserList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The total number of users fetched based on applied filters.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    UserCreate:
-      type: object
-      properties:
-        userID:
-          type: integer
-          format: int64
-          description: The unique id of the user in Druva inSync. Example - 1
-          example: 1
-        userName:
-          type: string
-          description: The user name of the user in Druva inSync. Example - Ernie Carter
-          example: Ernie Carter
-        emailID:
-          type: string
-          description: The email address of the user. Example - ernie.carter@druva.com
-          example: ernie.carter@druva.com
-        status:
-          type: string
-          description: The status of the user account. Example - active
-          enum:
-          - active
-          - preserved
-        profileID:
-          type: integer
-          description: The profile ID of the profile associated with the user. Example - 1
-          example: 1
-        storageID:
-          type: integer
-          description: The storage ID of the storage associated with the user. Example - 1
-          example: 1
-        quota:
-          type: string
-          description: The storage quota assigned to the user in inSync. Example - 50 GB
-          example: 50 GB
-        quotaInBytes:
-          type: integer
-          description: The storage quota (in bytes) assigned to the user in inSync. Example - 53687091200
-          example: 53687091200
-        addedOn:
-          type: string
-          format: date-time
-          description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
-          example: '2019-10-25T00:00:00Z'
-        privacySettingsEnabled:
-          type: string
-          description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
-          example: true
-        ldapGUID:
-          type: boolean
-          format: hexstring
-          description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
-          example: B1C47201C67910458867BA19982E353E
-        additionalProperties:
-          type: object
-          description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
-          additionalProperties:
-            type: string
-          example:
-            userIdentifierCustomAttribute: Custom Attribute Label
-            userIdentifierCustomAttributeValue: Custom Attribute Value
     User:
       type: object
       properties:
@@ -777,24 +701,22 @@ components:
           example:
             userIdentifierCustomAttribute: Custom Attribute Label
             userIdentifierCustomAttributeValue: Custom Attribute Value
-    Error:
+    UserList:
       type: object
       properties:
-        code:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of users fetched based on applied filters.
+          example: 1
+        nextPageToken:
           type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     HTTP_403:
       type: object
       properties:
@@ -813,6 +735,84 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    UserCreate:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int64
+          description: The unique id of the user in Druva inSync. Example - 1
+          example: 1
+        userName:
+          type: string
+          description: The user name of the user in Druva inSync. Example - Ernie Carter
+          example: Ernie Carter
+        emailID:
+          type: string
+          description: The email address of the user. Example - ernie.carter@druva.com
+          example: ernie.carter@druva.com
+        status:
+          type: string
+          description: The status of the user account. Example - active
+          enum:
+          - active
+          - preserved
+        profileID:
+          type: integer
+          description: The profile ID of the profile associated with the user. Example - 1
+          example: 1
+        storageID:
+          type: integer
+          description: The storage ID of the storage associated with the user. Example - 1
+          example: 1
+        quota:
+          type: string
+          description: The storage quota assigned to the user in inSync. Example - 50 GB
+          example: 50 GB
+        quotaInBytes:
+          type: integer
+          description: The storage quota (in bytes) assigned to the user in inSync. Example - 53687091200
+          example: 53687091200
+        addedOn:
+          type: string
+          format: date-time
+          description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        privacySettingsEnabled:
+          type: string
+          description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
+          example: true
+        ldapGUID:
+          type: boolean
+          format: hexstring
+          description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
+          example: B1C47201C67910458867BA19982E353E
+        additionalProperties:
+          type: object
+          description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
+          additionalProperties:
+            type: string
+          example:
+            userIdentifierCustomAttribute: Custom Attribute Label
+            userIdentifierCustomAttributeValue: Custom Attribute Value
   securitySchemes:
     OAuth2:
       type: oauth2

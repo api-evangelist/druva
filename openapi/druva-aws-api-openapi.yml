@@ -1956,67 +1956,360 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsAwsRegionsVpcsSubnetsGatewaysResponse:
+    GetOrganizationsAccountsAwsS3locationByIdResponse:
       properties:
-        NatGateways:
+        Region:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsSshkeysResponse:
+      properties:
+        KeyPairs:
+          items:
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAwsAccountaliasResponse:
+      properties:
+        AccountAliases:
           items:
             type: string
           type: array
-      type: object
-    GetOrganizationsAccountsAwsRegionsDbclusterparametergroupsResponse:
-      properties:
-        DBClusterParameterGroups:
-          items:
-            properties:
-              DBClusterParameterGroupArn:
-                type: string
-              DBClusterParameterGroupName:
-                type: string
-              DBParameterGroupFamily:
-                type: string
-              Description:
-                type: string
-            type: object
-          type: array
+        IsTruncated:
+          type: boolean
         ResponseMetadata:
           properties:
             RequestId:
               type: string
           type: object
       type: object
-    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesResponse:
+    PostOrganizationsOnboardingCloudformationRequest:
       properties:
-        InstanceProfileArns:
-          items:
-            type: string
-          type: array
+        credential:
+          properties:
+            external_id:
+              type: string
+          type: object
+        id:
+          type: string
+        settings:
+          properties:
+            fls_bucket:
+              type: string
+          type: object
       type: object
-    GetOrganizationsAccountsAwsRegionsDbsubnetgroupsResponse:
+    Error:
       properties:
-        DBSubnetGroupArn:
+        message:
           type: string
-        DBSubnetGroupDescription:
+      type: object
+    PostOrganizationsAwsAccountaliasRequest:
+      properties:
+        access_role_arn:
           type: string
-        DBSubnetGroupName:
+        external_id:
           type: string
-        SubnetGroupStatus:
+        state:
           type: string
-        Subnets:
+      type: object
+    GetOrganizationsAccountsAwsRegionsVpcsResponse:
+      properties:
+        Vpcs:
           items:
             properties:
-              SubnetAvailabilityZone:
-                properties:
-                  Name:
-                    type: string
-                type: object
-              SubnetIdentifier:
+              CidrBlock:
                 type: string
-              SubnetStatus:
+              CidrBlockAssociationSet:
+                items:
+                  properties:
+                    AssociationId:
+                      type: string
+                    CidrBlock:
+                      type: string
+                    CidrBlockState:
+                      properties:
+                        State:
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              DhcpOptionsId:
+                type: string
+              InstanceTenancy:
+                type: string
+              Ipv6CidrBlockAssociationSet:
+                items:
+                  type: string
+                type: array
+              IsDefault:
+                type: boolean
+              OwnerId:
+                type: string
+              State:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              VpcId:
                 type: string
             type: object
           type: array
-        VpcId:
+      type: object
+    GetOrganizationsAccountsAwsRegionsKmskeysResponse:
+      items:
+        properties:
+          Alias:
+            type: string
+          KeyId:
+            type: string
+          KeyState:
+            enum:
+            - AccessDenied
+            - Creating
+            - Enabled
+            - Disabled
+            - PendingDeletion
+            - PendingImport
+            - PendingReplicaDeletion
+            - Unavailable
+            - Updating
+            type: string
+        type: object
+      type: array
+    GetOrganizationsAccountsAwsRegionsResponse:
+      properties:
+        Endpoint:
           type: string
+        OptInStatus:
+          type: string
+        RegionName:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsNetworkInterfacesResponse:
+      type: object
+      properties:
+        NetworkInterfaces:
+          type: array
+          description: Description of the ENI'.
+          items:
+            type: object
+            properties:
+              NetworkInterfaceId:
+                type: string
+                description: The ID of the network interface
+              Status:
+                type: string
+                description: The status of the network interface
+                enum:
+                - available
+                - in-use
+              InterfaceType:
+                type: string
+                description: The type of network interface.
+                enum:
+                - interface
+                - efa
+                - efa-only
+              SecurityGroups:
+                type: array
+                description: The security groups associated with the network interface
+                items:
+                  type: object
+                  properties:
+                    GroupId:
+                      type: string
+                      description: The ID of the security group
+                    GroupName:
+                      type: string
+                      description: The name of the security group
+              PrivateIpAddress:
+                type: string
+                description: The primary private IP address of the network interface
+              PrivateIpAddresses:
+                type: array
+                description: The private IP addresses associated with the network interface
+                items:
+                  type: object
+                  properties:
+                    PrivateIpAddress:
+                      type: string
+                      description: The private IP address
+                    Primary:
+                      type: boolean
+                      description: Indicates whether this IP address is the primary private IP address
+                    Association:
+                      type: object
+                      description: The association information for an Elastic IP address
+                      properties:
+                        PublicIp:
+                          type: string
+                          description: The public IP address
+                        AllocationId:
+                          type: string
+                          description: The allocation ID for the Elastic IP address
+              SubnetId:
+                type: string
+                description: The ID of the subnet in which the network interface is located
+              VpcId:
+                type: string
+                description: The ID of the VPC in which the network interface is located
+              AvailabilityZone:
+                type: string
+                description: The Availability Zone of the network interface
+              Description:
+                type: string
+                description: The description of the network interface.
+    GetOrganizationsAccountsAwsRegionsSecuritygroupsResponse:
+      properties:
+        SecurityGroups:
+          items:
+            type: object
+          type: array
+      type: object
+    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesRequest:
+      items:
+        properties:
+          accounts:
+            items:
+              properties:
+                account_id:
+                  type: string
+              type: object
+            type: array
+          all_resource_types:
+            type: boolean
+          createdAt:
+            format: date-time
+            type: string
+          dr_plan_id:
+            type: integer
+          exclude:
+            type: boolean
+          id:
+            type: integer
+          match:
+            type: integer
+          matches:
+            properties:
+              tags:
+                items:
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                type: array
+            type: object
+          protectedStatus:
+            type: string
+          regions:
+            items:
+              type: string
+            type: array
+          resource_types:
+            items:
+              type: string
+            type: array
+          resources:
+            items:
+              properties:
+                account_id:
+                  type: string
+                region:
+                  type: string
+                resource_id:
+                  type: string
+                resource_name:
+                  type: string
+                rule_id:
+                  type: string
+                type:
+                  type: string
+            type: array
+          rule_type:
+            type: string
+          updatedAt:
+            format: date-time
+            type: string
+        type: object
+      type: array
+    GetOrganizationsAccountsAwsRegionsInstancetypesResponse:
+      type: string
+    GetOrganizationsAccountsAwsRegionsVpcsSecuritygroupsResponse:
+      properties:
+        SecurityGroups:
+          items:
+            properties:
+              Description:
+                type: string
+              GroupId:
+                type: string
+              GroupName:
+                type: string
+              IpPermissions:
+                items:
+                  properties:
+                    IpProtocol:
+                      type: string
+                    IpRanges:
+                      items:
+                        type: string
+                      type: array
+                    Ipv6Ranges:
+                      items:
+                        type: string
+                      type: array
+                    PrefixListIds:
+                      items:
+                        type: string
+                      type: array
+                    UserIdGroupPairs:
+                      items:
+                        properties:
+                          GroupId:
+                            type: string
+                          UserId:
+                            type: string
+                        type: object
+                      type: array
+                  type: object
+                type: array
+              IpPermissionsEgress:
+                items:
+                  properties:
+                    IpProtocol:
+                      type: string
+                    IpRanges:
+                      items:
+                        properties:
+                          CidrIp:
+                            type: string
+                        type: object
+                      type: array
+                    Ipv6Ranges:
+                      items:
+                        type: string
+                      type: array
+                    PrefixListIds:
+                      items:
+                        type: string
+                      type: array
+                    UserIdGroupPairs:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              OwnerId:
+                type: string
+              Tags:
+                items:
+                  type: string
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
       type: object
     PostOrganizationsOnboardingCloudformationResponse:
       properties:
@@ -2514,6 +2807,85 @@ components:
         external_id:
           type: string
       type: object
+    GetOrganizationsAccountsAwsRegionsAzsResponse:
+      properties:
+        GroupName:
+          type: string
+        Messages:
+          items:
+            type: string
+          type: array
+        NetworkBorderGroup:
+          type: string
+        OptInStatus:
+          type: string
+        RegionName:
+          type: string
+        State:
+          type: string
+        ZoneId:
+          type: string
+        ZoneName:
+          type: string
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbsubnetsResponse:
+      properties:
+        DBSubnetGroups:
+          items:
+            properties:
+              DBSubnetGroupArn:
+                type: string
+              DBSubnetGroupDescription:
+                type: string
+              DBSubnetGroupName:
+                type: string
+              SubnetGroupStatus:
+                type: string
+              Subnets:
+                items:
+                  properties:
+                    SubnetAvailabilityZone:
+                      properties:
+                        Name:
+                          type: string
+                      type: object
+                    SubnetIdentifier:
+                      type: string
+                    SubnetStatus:
+                      type: string
+                  type: object
+                type: array
+              VpcId:
+                type: string
+            type: object
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbclusterparametergroupsResponse:
+      properties:
+        DBClusterParameterGroups:
+          items:
+            properties:
+              DBClusterParameterGroupArn:
+                type: string
+              DBClusterParameterGroupName:
+                type: string
+              DBParameterGroupFamily:
+                type: string
+              Description:
+                type: string
+            type: object
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
     GetOrganizationsAccountsAwsRegionsVpcsSubnetsResponse:
       properties:
         Subnets:
@@ -2559,21 +2931,79 @@ components:
             type: object
           type: array
       type: object
-    GetOrganizationsAccountsAwsRegionsResponse:
+    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesResponse:
       properties:
-        Endpoint:
-          type: string
-        OptInStatus:
-          type: string
-        RegionName:
-          type: string
-      type: object
-    GetOrganizationsAccountsAwsRegionsSshkeysResponse:
-      properties:
-        KeyPairs:
+        InstanceProfileArns:
           items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsVpcsSubnetsGatewaysResponse:
+      properties:
+        NatGateways:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbparametergroupsResponse:
+      properties:
+        DBParameterGroups:
+          items:
+            properties:
+              DBParameterGroupArn:
+                type: string
+              DBParameterGroupFamily:
+                type: string
+              DBParameterGroupName:
+                type: string
+              Description:
+                type: string
             type: object
           type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    PostOrganizationsAccountsAwsRegionsDboptiongroupsResponse:
+      properties:
+        OptionGroupsList:
+          items:
+            type: string
+          type: array
+        ResponseMetadata:
+          properties:
+            RequestId:
+              type: string
+          type: object
+      type: object
+    GetOrganizationsAccountsAwsRegionsDbsubnetgroupsResponse:
+      properties:
+        DBSubnetGroupArn:
+          type: string
+        DBSubnetGroupDescription:
+          type: string
+        DBSubnetGroupName:
+          type: string
+        SubnetGroupStatus:
+          type: string
+        Subnets:
+          items:
+            properties:
+              SubnetAvailabilityZone:
+                properties:
+                  Name:
+                    type: string
+                type: object
+              SubnetIdentifier:
+                type: string
+              SubnetStatus:
+                type: string
+            type: object
+          type: array
+        VpcId:
+          type: string
       type: object
     GetOrganizationsAccountsAwsRegionsSubnetsResponse:
       properties:
@@ -2622,185 +3052,6 @@ components:
         MajorEngineVersion:
           type: string
       type: object
-    GetOrganizationsAccountsAwsRegionsVpcsResponse:
-      properties:
-        Vpcs:
-          items:
-            properties:
-              CidrBlock:
-                type: string
-              CidrBlockAssociationSet:
-                items:
-                  properties:
-                    AssociationId:
-                      type: string
-                    CidrBlock:
-                      type: string
-                    CidrBlockState:
-                      properties:
-                        State:
-                          type: string
-                      type: object
-                  type: object
-                type: array
-              DhcpOptionsId:
-                type: string
-              InstanceTenancy:
-                type: string
-              Ipv6CidrBlockAssociationSet:
-                items:
-                  type: string
-                type: array
-              IsDefault:
-                type: boolean
-              OwnerId:
-                type: string
-              State:
-                type: string
-              Tags:
-                items:
-                  type: string
-                type: array
-              VpcId:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsAwsRegionsNetworkInterfacesResponse:
-      type: object
-      properties:
-        NetworkInterfaces:
-          type: array
-          description: Description of the ENI'.
-          items:
-            type: object
-            properties:
-              NetworkInterfaceId:
-                type: string
-                description: The ID of the network interface
-              Status:
-                type: string
-                description: The status of the network interface
-                enum:
-                - available
-                - in-use
-              InterfaceType:
-                type: string
-                description: The type of network interface.
-                enum:
-                - interface
-                - efa
-                - efa-only
-              SecurityGroups:
-                type: array
-                description: The security groups associated with the network interface
-                items:
-                  type: object
-                  properties:
-                    GroupId:
-                      type: string
-                      description: The ID of the security group
-                    GroupName:
-                      type: string
-                      description: The name of the security group
-              PrivateIpAddress:
-                type: string
-                description: The primary private IP address of the network interface
-              PrivateIpAddresses:
-                type: array
-                description: The private IP addresses associated with the network interface
-                items:
-                  type: object
-                  properties:
-                    PrivateIpAddress:
-                      type: string
-                      description: The private IP address
-                    Primary:
-                      type: boolean
-                      description: Indicates whether this IP address is the primary private IP address
-                    Association:
-                      type: object
-                      description: The association information for an Elastic IP address
-                      properties:
-                        PublicIp:
-                          type: string
-                          description: The public IP address
-                        AllocationId:
-                          type: string
-                          description: The allocation ID for the Elastic IP address
-              SubnetId:
-                type: string
-                description: The ID of the subnet in which the network interface is located
-              VpcId:
-                type: string
-                description: The ID of the VPC in which the network interface is located
-              AvailabilityZone:
-                type: string
-                description: The Availability Zone of the network interface
-              Description:
-                type: string
-                description: The description of the network interface.
-    GetOrganizationsAccountsAwsRegionsKmskeysResponse:
-      items:
-        properties:
-          Alias:
-            type: string
-          KeyId:
-            type: string
-          KeyState:
-            enum:
-            - AccessDenied
-            - Creating
-            - Enabled
-            - Disabled
-            - PendingDeletion
-            - PendingImport
-            - PendingReplicaDeletion
-            - Unavailable
-            - Updating
-            type: string
-        type: object
-      type: array
-    PostOrganizationsAccountsAwsRegionsDboptiongroupsResponse:
-      properties:
-        OptionGroupsList:
-          items:
-            type: string
-          type: array
-        ResponseMetadata:
-          properties:
-            RequestId:
-              type: string
-          type: object
-      type: object
-    GetOrganizationsAccountsAwsRegionsSecuritygroupsResponse:
-      properties:
-        SecurityGroups:
-          items:
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsAwsRegionsDbparametergroupsResponse:
-      properties:
-        DBParameterGroups:
-          items:
-            properties:
-              DBParameterGroupArn:
-                type: string
-              DBParameterGroupFamily:
-                type: string
-              DBParameterGroupName:
-                type: string
-              Description:
-                type: string
-            type: object
-          type: array
-        ResponseMetadata:
-          properties:
-            RequestId:
-              type: string
-          type: object
-      type: object
     GetOrganizationsAccountsAwsRegionsInstanceprofilesResponse:
       properties:
         InstanceProfiles:
@@ -2841,259 +3092,8 @@ components:
                 type: array
           type: array
       type: object
-    PostOrganizationsAwsAccountaliasRequest:
-      properties:
-        access_role_arn:
-          type: string
-        external_id:
-          type: string
-        state:
-          type: string
-      type: object
-    GetOrganizationsAccountsAwsS3locationByIdResponse:
-      properties:
-        Region:
-          type: string
-      type: object
-    GetOrganizationsAccountsAwsRegionsVpcsSecuritygroupsResponse:
-      properties:
-        SecurityGroups:
-          items:
-            properties:
-              Description:
-                type: string
-              GroupId:
-                type: string
-              GroupName:
-                type: string
-              IpPermissions:
-                items:
-                  properties:
-                    IpProtocol:
-                      type: string
-                    IpRanges:
-                      items:
-                        type: string
-                      type: array
-                    Ipv6Ranges:
-                      items:
-                        type: string
-                      type: array
-                    PrefixListIds:
-                      items:
-                        type: string
-                      type: array
-                    UserIdGroupPairs:
-                      items:
-                        properties:
-                          GroupId:
-                            type: string
-                          UserId:
-                            type: string
-                        type: object
-                      type: array
-                  type: object
-                type: array
-              IpPermissionsEgress:
-                items:
-                  properties:
-                    IpProtocol:
-                      type: string
-                    IpRanges:
-                      items:
-                        properties:
-                          CidrIp:
-                            type: string
-                        type: object
-                      type: array
-                    Ipv6Ranges:
-                      items:
-                        type: string
-                      type: array
-                    PrefixListIds:
-                      items:
-                        type: string
-                      type: array
-                    UserIdGroupPairs:
-                      items:
-                        type: string
-                      type: array
-                  type: object
-                type: array
-              OwnerId:
-                type: string
-              Tags:
-                items:
-                  type: string
-                type: array
-              VpcId:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsAwsRegionsAzsResponse:
-      properties:
-        GroupName:
-          type: string
-        Messages:
-          items:
-            type: string
-          type: array
-        NetworkBorderGroup:
-          type: string
-        OptInStatus:
-          type: string
-        RegionName:
-          type: string
-        State:
-          type: string
-        ZoneId:
-          type: string
-        ZoneName:
-          type: string
-      type: object
-    PostOrganizationsAwsAccountaliasResponse:
-      properties:
-        AccountAliases:
-          items:
-            type: string
-          type: array
-        IsTruncated:
-          type: boolean
-        ResponseMetadata:
-          properties:
-            RequestId:
-              type: string
-          type: object
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     empty:
       properties: {}
-      type: object
-    PostOrganizationsOnboardingCloudformationRequest:
-      properties:
-        credential:
-          properties:
-            external_id:
-              type: string
-          type: object
-        id:
-          type: string
-        settings:
-          properties:
-            fls_bucket:
-              type: string
-          type: object
-      type: object
-    GetOrganizationsAccountsAwsRegionsInstancetypesResponse:
-      type: string
-    PostOrganizationsAccountsAwsRegionsServerinstanceprofilesRequest:
-      items:
-        properties:
-          accounts:
-            items:
-              properties:
-                account_id:
-                  type: string
-              type: object
-            type: array
-          all_resource_types:
-            type: boolean
-          createdAt:
-            format: date-time
-            type: string
-          dr_plan_id:
-            type: integer
-          exclude:
-            type: boolean
-          id:
-            type: integer
-          match:
-            type: integer
-          matches:
-            properties:
-              tags:
-                items:
-                  properties:
-                    key:
-                      type: string
-                    value:
-                      type: string
-                type: array
-            type: object
-          protectedStatus:
-            type: string
-          regions:
-            items:
-              type: string
-            type: array
-          resource_types:
-            items:
-              type: string
-            type: array
-          resources:
-            items:
-              properties:
-                account_id:
-                  type: string
-                region:
-                  type: string
-                resource_id:
-                  type: string
-                resource_name:
-                  type: string
-                rule_id:
-                  type: string
-                type:
-                  type: string
-            type: array
-          rule_type:
-            type: string
-          updatedAt:
-            format: date-time
-            type: string
-        type: object
-      type: array
-    GetOrganizationsAccountsAwsRegionsDbsubnetsResponse:
-      properties:
-        DBSubnetGroups:
-          items:
-            properties:
-              DBSubnetGroupArn:
-                type: string
-              DBSubnetGroupDescription:
-                type: string
-              DBSubnetGroupName:
-                type: string
-              SubnetGroupStatus:
-                type: string
-              Subnets:
-                items:
-                  properties:
-                    SubnetAvailabilityZone:
-                      properties:
-                        Name:
-                          type: string
-                      type: object
-                    SubnetIdentifier:
-                      type: string
-                    SubnetStatus:
-                      type: string
-                  type: object
-                type: array
-              VpcId:
-                type: string
-            type: object
-          type: array
-        ResponseMetadata:
-          properties:
-            RequestId:
-              type: string
-          type: object
       type: object
   securitySchemes:
     API_Authorizer:

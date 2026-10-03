@@ -851,22 +851,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    createQuarantineRangeV2ResponseSchema:
-      type: object
-      properties:
-        ranges:
-          type: array
-          items:
-            type: object
-            properties:
-              fromDate:
-                type: string
-                description: from date
-                example: '2020-10-25'
-              toDate:
-                type: string
-                description: to date
-                example: '2021-10-25'
     listQuarantinedResourcesResponseSchema:
       type: object
       properties:
@@ -905,6 +889,66 @@ components:
                 format: int32
         nextPageToken:
           type: string
+    listAllQuarantinedSnapshotsForResourceResponseSchema:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          items:
+            type: object
+            properties:
+              snapshotID:
+                type: string
+              snapshotName:
+                type: string
+              createdFiles:
+                type: integer
+                format: int32
+              deletedFiles:
+                type: integer
+                format: int32
+              updatedFiles:
+                type: integer
+                format: int32
+              encryptedFiles:
+                type: integer
+                format: int32
+              totalFilesImpacted:
+                type: integer
+                format: int32
+              snapshotSize:
+                type: integer
+                format: int64
+              quarantineType:
+                type: integer
+                enum:
+                - 1
+                - 2
+              snapshotEpoch:
+                type: integer
+                format: int64
+              rangeID:
+                type: integer
+                format: int64
+              storageID:
+                type: integer
+                format: int64
+                description: Provides information about the Storage ID where the snapshot is backed up.
+              csetID:
+                type: integer
+                format: int64
+                description: Provides information about the CSET ID where the snapshot is backed up.
+              isAirGapped:
+                type: boolean
+                description: Indicates if the snapshot is backed up to Druva Cloud.
+    deleteSnapshotSchema:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Probable infection point
     RR_HTTP_404:
       type: object
       properties:
@@ -920,6 +964,67 @@ components:
           - The requested resource was not found.
           - The requested resource ID was invalid.
           - The requested quarantine range was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    createQuarantineRangeV2ResponseSchema:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            type: object
+            properties:
+              fromDate:
+                type: string
+                description: from date
+                example: '2020-10-25'
+              toDate:
+                type: string
+                description: to date
+                example: '2021-10-25'
+    quarantineRangeCreateResponse:
+      type: object
+      properties:
+        rangeID:
+          type: integer
+          description: The unique identifier of the quarantine range which is created or updated for the resource.
+          example: 101
+    RR_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1002
+          - RealizeUda-1002
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
         data:
           type: object
         retryable:
@@ -996,46 +1101,6 @@ components:
         isLast:
           type: boolean
           description: An identifier to identify if the returned page is the last page of results. Value can be one of the following - True - Is last page of results. False - There are more results available. Use 'nextPageToken' value to get the next list of results.
-    RR_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - RansomwareRR-1111
-          - RansomwareRR-1102
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-          - Invalid Resource Type
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1004
-          - RealizeUda-1004
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     createQuarantineRangeV2RequestSchema:
       type: object
       properties:
@@ -1073,18 +1138,18 @@ components:
                 type: integer
                 description: Indicates the type of Quarantine enabled for the resource. The value 2 refers to Auto Quarantine type while 1 indicates Manual Quarantine.
                 example: 1
-    HTTP_404:
+    HTTP_400:
       type: object
       properties:
         code:
           type: integer
           enum:
-          - ransomware-1002
-          - RealizeUda-1002
+          - ransomware-1001
+          - RealizeUda-1001
         message:
           type: string
           enum:
-          - The requested resource was not found.
+          - Invalid API Syntax
         data:
           type: object
         retryable:
@@ -1092,58 +1157,26 @@ components:
           enum:
           - false
           - true
-    listAllQuarantinedSnapshotsForResourceResponseSchema:
+    HTTP_500:
       type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
       properties:
-        snapshots:
-          type: array
-          items:
-            type: object
-            properties:
-              snapshotID:
-                type: string
-              snapshotName:
-                type: string
-              createdFiles:
-                type: integer
-                format: int32
-              deletedFiles:
-                type: integer
-                format: int32
-              updatedFiles:
-                type: integer
-                format: int32
-              encryptedFiles:
-                type: integer
-                format: int32
-              totalFilesImpacted:
-                type: integer
-                format: int32
-              snapshotSize:
-                type: integer
-                format: int64
-              quarantineType:
-                type: integer
-                enum:
-                - 1
-                - 2
-              snapshotEpoch:
-                type: integer
-                format: int64
-              rangeID:
-                type: integer
-                format: int64
-              storageID:
-                type: integer
-                format: int64
-                description: Provides information about the Storage ID where the snapshot is backed up.
-              csetID:
-                type: integer
-                format: int64
-                description: Provides information about the CSET ID where the snapshot is backed up.
-              isAirGapped:
-                type: boolean
-                description: Indicates if the snapshot is backed up to Druva Cloud.
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
     quarantineRangeGetResponse:
       type: object
       properties:
@@ -1198,6 +1231,125 @@ components:
           type: boolean
           description: Resource is data locked or not, if true, cannot delete the quarantined snapshots
           example: 'false'
+    RR_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1111
+          - RansomwareRR-1102
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          - Invalid Resource Type
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    searchResponse:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                description: The unique ID of the resource in Druva Cloud.
+                example: 101
+              orgID:
+                type: integer
+                description: The unique identifier of the Enterprise Workloads organization for the resource. Not applicable for Endpoints.
+                example: -1
+              resourceName:
+                type: string
+                description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+                example: DOMAIN1234
+              resourceParent:
+                type: string
+                description: Name of the user in case of a device or Server Name in case of a backup set which is quarantined. Example for Devices - Ernie Carter
+                example: Ernie Carter
+              resourceType:
+                type: string
+                description: "The type of resource. A resource can be one of the following types - \nEndpoint \nFile Server \nNAS."
+                enum:
+                - Endpoint
+                - File Server
+                - NAS
+              resourceStatus:
+                type: string
+                description: "The backup status of the resource in Druva Cloud. Status can be one of the following -\nEnabled - The resource is enabled for backup. \nDisabled - The resource is disabled for backup."
+                enum:
+                - Enabled
+                - Disabled
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: 20
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
+    listDetailsOfQuarantinedResourceResponseSchema:
+      type: object
+      properties:
+        resourceID:
+          type: integer
+          format: int64
+        rangeIDs:
+          type: array
+          items:
+            type: object
+            properties:
+              rangeID:
+                type: integer
+                format: int64
+              fromDate:
+                type: string
+                format: date
+              toDate:
+                type: string
+                format: date
+              quarantineType:
+                type: integer
+        orgID:
+          type: integer
+          format: int32
+        resourceName:
+          type: string
+        resourceParent:
+          type: string
+        resourcePlatform:
+          type: string
+        resourceType:
+          type: string
+        addedTime:
+          type: string
+          format: date-time
+        lastUpdatedTime:
+          type: string
+          format: date-time
+        dataLock:
+          type: array
+          description: Provides information related to the Data Lock status of the snapshot.
+          items:
+            type: object
+            properties:
+              storageID:
+                description: Storage ID where the snapshots are backed up
+                type: integer
+                format: int64
+              csetID:
+                description: CSET ID where the snapshots are backed up
+                type: integer
+                format: int64
+              isDataLockEnabled:
+                type: boolean
     quarantineRangeListResponse:
       type: object
       properties:
@@ -1260,132 +1412,6 @@ components:
           type: boolean
           description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
           example: true
-    deleteSnapshotSchema:
-      type: object
-      properties:
-        deleteReason:
-          type: string
-          minLength: 10
-          maxLength: 150
-          example: Probable infection point
-    searchResponse:
-      type: object
-      properties:
-        resources:
-          type: array
-          items:
-            type: object
-            properties:
-              resourceID:
-                type: integer
-                description: The unique ID of the resource in Druva Cloud.
-                example: 101
-              orgID:
-                type: integer
-                description: The unique identifier of the Enterprise Workloads organization for the resource. Not applicable for Endpoints.
-                example: -1
-              resourceName:
-                type: string
-                description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
-                example: DOMAIN1234
-              resourceParent:
-                type: string
-                description: Name of the user in case of a device or Server Name in case of a backup set which is quarantined. Example for Devices - Ernie Carter
-                example: Ernie Carter
-              resourceType:
-                type: string
-                description: "The type of resource. A resource can be one of the following types - \nEndpoint \nFile Server \nNAS."
-                enum:
-                - Endpoint
-                - File Server
-                - NAS
-              resourceStatus:
-                type: string
-                description: "The backup status of the resource in Druva Cloud. Status can be one of the following -\nEnabled - The resource is enabled for backup. \nDisabled - The resource is disabled for backup."
-                enum:
-                - Enabled
-                - Disabled
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: 20
-        isLast:
-          type: boolean
-          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
-    RR_HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - RansomwareRR-1000
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    listDetailsOfQuarantinedResourceResponseSchema:
-      type: object
-      properties:
-        resourceID:
-          type: integer
-          format: int64
-        rangeIDs:
-          type: array
-          items:
-            type: object
-            properties:
-              rangeID:
-                type: integer
-                format: int64
-              fromDate:
-                type: string
-                format: date
-              toDate:
-                type: string
-                format: date
-              quarantineType:
-                type: integer
-        orgID:
-          type: integer
-          format: int32
-        resourceName:
-          type: string
-        resourceParent:
-          type: string
-        resourcePlatform:
-          type: string
-        resourceType:
-          type: string
-        addedTime:
-          type: string
-          format: date-time
-        lastUpdatedTime:
-          type: string
-          format: date-time
-        dataLock:
-          type: array
-          description: Provides information related to the Data Lock status of the snapshot.
-          items:
-            type: object
-            properties:
-              storageID:
-                description: Storage ID where the snapshots are backed up
-                type: integer
-                format: int64
-              csetID:
-                description: CSET ID where the snapshots are backed up
-                type: integer
-                format: int64
-              isDataLockEnabled:
-                type: boolean
     quarantineRangeUpdateRequest:
       type: object
       properties:
@@ -1430,32 +1456,6 @@ components:
           format: date
           description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD. \n Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
           example: '2020-10-25'
-    quarantineRangeCreateResponse:
-      type: object
-      properties:
-        rangeID:
-          type: integer
-          description: The unique identifier of the quarantine range which is created or updated for the resource.
-          example: 101
-    HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1001
-          - RealizeUda-1001
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
   requestBodies:
     createQuarantineRangeV2RequestSchema:
       content:

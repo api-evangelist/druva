@@ -118,6 +118,24 @@ components:
           description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
           type: string
           example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    ServicePlanProductDetailsV3Response:
+      description: Contains service plan details for a specific product.
+      type: object
+      properties:
+        edition:
+          description: "The name of the edition assigned to the service plan. The edition can have one of the following values - \n - business \n - enterprise \n - elite\n"
+          type: string
+          example: elite
+        productID:
+          format: int64
+          description: The ID of the product for which this service plan is configured. Example - 1
+          type: integer
+          example: 1
+        features:
+          description: The list containing service plan features for specific products. Example - []
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanProductFeaturesV3'
     APIError:
       description: APIError defines an application error result format
       type: object
@@ -126,6 +144,28 @@ components:
           type: string
         message:
           type: string
+    ServicePlanV3:
+      type: object
+      properties:
+        id:
+          format: int64
+          description: The ID of the service plan. Example - 1
+          type: integer
+          example: 1
+        name:
+          description: The name of the service plan. Example - 'Default service plan'
+          type: string
+          example: Default service plan
+        status:
+          format: int64
+          description: "- The status of the Service Plan.\n    - 0 - Updating\n    - 1 - Ready \n"
+          type: integer
+          example: 1
+        products:
+          description: The list containing service plan details for specific products. Example - []
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
     ServicePlanProductFeaturesV3:
       required:
       - name
@@ -155,46 +195,6 @@ components:
         value:
           description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
           type: object
-    ServicePlanProductDetailsV3Response:
-      description: Contains service plan details for a specific product.
-      type: object
-      properties:
-        edition:
-          description: "The name of the edition assigned to the service plan. The edition can have one of the following values - \n - business \n - enterprise \n - elite\n"
-          type: string
-          example: elite
-        productID:
-          format: int64
-          description: The ID of the product for which this service plan is configured. Example - 1
-          type: integer
-          example: 1
-        features:
-          description: The list containing service plan features for specific products. Example - []
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlanProductFeaturesV3'
-    ServicePlanV3:
-      type: object
-      properties:
-        id:
-          format: int64
-          description: The ID of the service plan. Example - 1
-          type: integer
-          example: 1
-        name:
-          description: The name of the service plan. Example - 'Default service plan'
-          type: string
-          example: Default service plan
-        status:
-          format: int64
-          description: "- The status of the Service Plan.\n    - 0 - Updating\n    - 1 - Ready \n"
-          type: integer
-          example: 1
-        products:
-          description: The list containing service plan details for specific products. Example - []
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
   securitySchemes:
     OAuth2:
       flows:

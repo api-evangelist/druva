@@ -76,9 +76,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    empty:
-      properties: {}
-      type: object
     PutOrganizationsNotifications_settingsResponse:
       items:
         properties:
@@ -110,6 +107,9 @@ components:
       properties:
         message:
           type: string
+      type: object
+    empty:
+      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

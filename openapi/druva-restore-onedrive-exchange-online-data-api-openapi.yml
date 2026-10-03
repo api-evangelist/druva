@@ -639,16 +639,36 @@ paths:
                   $ref: '#/components/examples/NotImplemented'
 components:
   examples:
-    NotFound:
-      summary: Resource Not Found
-      description: The requested resource could not be found on server.
-      value: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
     Forbidden:
       summary: Forbidden
       description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
       value:
         code: InsyncCappmaster-1009
         message: Auth session expired
+        retryable: false
+        data: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
         retryable: false
         data: null
     InternalServerError:
@@ -661,6 +681,10 @@ components:
         data:
           status: 1
           message: Failed to get Customer License
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
     NotImplemented:
       summary: Method Not Implemented
       description: Requested HTTP method is not implemented.
@@ -669,37 +693,7 @@ components:
         message: Method Not implemented.
         retryable: false
         data: null
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
-    GARError:
-      summary: Authorization Error
-      description: Client does not have access rights or permissions to the requested content.
-      value:
-        code: InsyncCappmaster-1221
-        message: You do not have permission to access this workload.
-        retryable: false
-        data: null
   schemas:
-    200_trigger_restore_resp:
-      type: object
-      properties:
-        status:
-          type: string
-          example: OK
     200_list_users:
       type: object
       properties:
@@ -846,24 +840,6 @@ components:
             type: integer
             example: 1024000
             description: Total size of the snapshot in bytes
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Invalid API syntax.
-        code:
-          type: string
-          example: InsyncCappmaster-1001
-        data:
-          type: object
-          example: null
-        retryable:
-          type: boolean
-          enum:
-          - true
-          - false
-          example: false
     200_DeviceList:
       required:
       - devices
@@ -947,6 +923,30 @@ components:
             lastBackupStatus: Backed Up Successfully
             lastBackupJob: 1640076452
             lastSuccessfulBackup: 1640076452
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_trigger_restore_resp:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
   securitySchemes:
     bearerAuth:
       type: apiKey

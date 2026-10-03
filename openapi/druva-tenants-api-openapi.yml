@@ -373,31 +373,18 @@ paths:
         .'
 components:
   schemas:
-    TenantTypeForV3:
-      format: int64
-      description: "Specify the tenant type for the product.\n - Specify '1' if it is a Sandbox.\n - Specify '2' if it is Evaluation. This is a trial plan with a validity of 30 days. If you select this tenant type, the product license will be active until 30 days. After 30 days, you must change the tenant type to Commercial.\n - Specify '3' if it is Commercial. For this tenant type, a Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.\n"
-      type: integer
-      example: 2
-    StorageRegions:
-      description: Storage Regions that needs to enabled for tenant.
+    GetTenantsV3Response:
       type: object
       properties:
-        name:
-          description: '- Name of the storage region. Example - ''us-east-1'''
+        tenants:
+          description: The list of tenants and their information.
+          type: array
+          items:
+            $ref: '#/components/schemas/GetTenantV3Response'
+        nextPageToken:
+          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
           type: string
-          example: us-east-1
-        storageProvider:
-          description: "- Storage Provider (AWS/Azure) that is associated with the storage region. \n Storage Provider values: 1 (AWS), 2 (Azure) \n"
-          type: integer
-          example: 1
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
+          example: eyJwYWdlU2l6ZSI6IDEwMH0=
     PatchTenantRequest:
       description: Specify the details for patching existing tenant.
       type: object
@@ -443,6 +430,111 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PatchTenantFeatures'
+    CreateTenantV3Request:
+      description: "- Specify the details for a new tenant. \n"
+      required:
+      - licenseExpiryDate
+      - servicePlanID
+      - storageRegions
+      - tenantType
+      - productID
+      - features
+      type: object
+      properties:
+        licenseExpiryDate:
+          format: date-time
+          description: Specify the date on which the tenant will expire. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quota:
+          format: double
+          description: Specify the Druva Consumption Units to be allocated to this customer. If the customer is close to breaching this limit, an alert is sent to the configured email address based on the severity of the breach. Example - 1.5
+          type: number
+          example: 1.5
+        quotaStartDate:
+          format: date-time
+          description: Specify the Start date from when the quota limit will be applicable to the customer account and the storage consumption usage begins. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        quotaEndDate:
+          format: date-time
+          description: Specify the End date on which the quota limit will end for the customer account. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
+          type: string
+          example: '2022-10-25T00:00:00Z'
+        servicePlanID:
+          format: int64
+          description: "- Specify the unique ID of the Service Plan that you wish to associate with the tenant. \n- Get the Service Plan ID using the 'List Service Plans' API.\n"
+          type: integer
+          example: 1
+        storageRegions:
+          description: "- Specify the storage regions where you want to store the tenant data specifying the 'name' of storage region and its associated storage provider.\n- Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: array
+          items:
+            $ref: '#/components/schemas/StorageRegions'
+        tenantType:
+          $ref: '#/components/schemas/TenantTypeForV3'
+        productID:
+          format: int64
+          description: "Specify the ID of the product for which the tenant is being created.\n - To create the tenant for Enterprise Workloads, specify '1'.\n - To create the tenant for SaaS Apps and Endpoints, specify '2'\n"
+          type: integer
+          example: 1
+        features:
+          description: Specify the list of features that must be enabled for the tenant. It cannot be empty.
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantFeaturesV3'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    PatchTenantFeatures:
+      description: Features that needs to enabled/disabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the feature. Example - ''M365''
+
+            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
+
+            '
+          type: string
+          example: M365
+        isEnabled:
+          description: "- Feature state for tenant. \n- isEnabled can be true or false. Example - true\n"
+          type: boolean
+          example: true
+        attrs:
+          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAttributeForV3'
+    FeatureAttributeForV3:
+      type: object
+      properties:
+        name:
+          description: Specify the name of the attribute. Example - 'userCount', 'preservedUserCount'
+          type: string
+          example: userCount
+        value:
+          description: Specify the value of the attribute. Example - 100
+          type: object
+          example: 100
+    StorageRegions:
+      description: Storage Regions that needs to enabled for tenant.
+      type: object
+      properties:
+        name:
+          description: '- Name of the storage region. Example - ''us-east-1'''
+          type: string
+          example: us-east-1
+        storageProvider:
+          description: "- Storage Provider (AWS/Azure) that is associated with the storage region. \n Storage Provider values: 1 (AWS), 2 (Azure) \n"
+          type: integer
+          example: 1
     GetTenantV3Response:
       type: object
       properties:
@@ -520,17 +612,6 @@ components:
           description: The date and time on which the tenant assigned to the customer will be deleted. If the tenant is not marked for deletion, no value is displayed. Example - '2022-10-25T00:00:00Z'
           type: string
           example: '2022-10-25T00:00:00Z'
-    FeatureAttributeForV3:
-      type: object
-      properties:
-        name:
-          description: Specify the name of the attribute. Example - 'userCount', 'preservedUserCount'
-          type: string
-          example: userCount
-        value:
-          description: Specify the value of the attribute. Example - 100
-          type: object
-          example: 100
     TenantFeaturesV3:
       description: Features that needs to enabled for tenant.
       type: object
@@ -548,92 +629,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FeatureAttributeForV3'
-    CreateTenantV3Request:
-      description: "- Specify the details for a new tenant. \n"
-      required:
-      - licenseExpiryDate
-      - servicePlanID
-      - storageRegions
-      - tenantType
-      - productID
-      - features
-      type: object
-      properties:
-        licenseExpiryDate:
-          format: date-time
-          description: Specify the date on which the tenant will expire. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
-          type: string
-          example: '2022-10-25T00:00:00Z'
-        quota:
-          format: double
-          description: Specify the Druva Consumption Units to be allocated to this customer. If the customer is close to breaching this limit, an alert is sent to the configured email address based on the severity of the breach. Example - 1.5
-          type: number
-          example: 1.5
-        quotaStartDate:
-          format: date-time
-          description: Specify the Start date from when the quota limit will be applicable to the customer account and the storage consumption usage begins. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
-          type: string
-          example: '2022-10-25T00:00:00Z'
-        quotaEndDate:
-          format: date-time
-          description: Specify the End date on which the quota limit will end for the customer account. The format for this parameter value is YYYY-MM-DDTHH:MM:SSZ. Example - '2022-10-25T00:00:00Z'
-          type: string
-          example: '2022-10-25T00:00:00Z'
-        servicePlanID:
-          format: int64
-          description: "- Specify the unique ID of the Service Plan that you wish to associate with the tenant. \n- Get the Service Plan ID using the 'List Service Plans' API.\n"
-          type: integer
-          example: 1
-        storageRegions:
-          description: "- Specify the storage regions where you want to store the tenant data specifying the 'name' of storage region and its associated storage provider.\n- Storage Provider values: 1 (AWS), 2 (Azure) \n"
-          type: array
-          items:
-            $ref: '#/components/schemas/StorageRegions'
-        tenantType:
-          $ref: '#/components/schemas/TenantTypeForV3'
-        productID:
-          format: int64
-          description: "Specify the ID of the product for which the tenant is being created.\n - To create the tenant for Enterprise Workloads, specify '1'.\n - To create the tenant for SaaS Apps and Endpoints, specify '2'\n"
-          type: integer
-          example: 1
-        features:
-          description: Specify the list of features that must be enabled for the tenant. It cannot be empty.
-          type: array
-          items:
-            $ref: '#/components/schemas/TenantFeaturesV3'
-    PatchTenantFeatures:
-      description: Features that needs to enabled/disabled for tenant.
-      type: object
-      properties:
-        name:
-          description: '- Name of the feature. Example - ''M365''
-
-            - For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values
-
-            '
-          type: string
-          example: M365
-        isEnabled:
-          description: "- Feature state for tenant. \n- isEnabled can be true or false. Example - true\n"
-          type: boolean
-          example: true
-        attrs:
-          description: "- Attributes to be enabled for tenant. \n- Attrs can be empty. Example - []\n- For valid products and their values, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-          type: array
-          items:
-            $ref: '#/components/schemas/FeatureAttributeForV3'
-    GetTenantsV3Response:
-      type: object
-      properties:
-        tenants:
-          description: The list of tenants and their information.
-          type: array
-          items:
-            $ref: '#/components/schemas/GetTenantV3Response'
-        nextPageToken:
-          description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
-          type: string
-          example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    TenantTypeForV3:
+      format: int64
+      description: "Specify the tenant type for the product.\n - Specify '1' if it is a Sandbox.\n - Specify '2' if it is Evaluation. This is a trial plan with a validity of 30 days. If you select this tenant type, the product license will be active until 30 days. After 30 days, you must change the tenant type to Commercial.\n - Specify '3' if it is Commercial. For this tenant type, a Enterprise Workloads license is valid for eight years, while a SaaS Apps and Endpoints license is valid for three years.\n"
+      type: integer
+      example: 2
     TaskCreatedResponse:
       type: object
       properties:

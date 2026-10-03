@@ -203,26 +203,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Storage:
-      type: object
-      properties:
-        StorageID:
-          type: integer
-          format: int64
-          description: The unique identifier of the storage in Druva inSync.
-          example: 1
-        storageName:
-          type: string
-          description: The name of the storage in Druva inSync.
-          example: Druva3_local
-        storageUsage:
-          type: string
-          description: The storage space consumed on the storage.
-          example: 225.04 MB
-        totalSizeOfBackedUpFiles:
-          type: string
-          description: The total size of the files backed up on this storage.
-          example: 1.29 GB
     StorageList:
       type: object
       properties:
@@ -239,6 +219,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Storage'
+    CloudCacheList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of CloudCache Servers listed on the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        cloudcaches:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudCache'
     CloudCache:
       type: object
       properties:
@@ -267,24 +263,6 @@ components:
           type: string
           description: The total disk space available for cache data.
           example: 1 TB
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     HTTP_403:
       type: object
       properties:
@@ -303,22 +281,44 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    CloudCacheList:
+    Error:
       type: object
       properties:
-        totalSize:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    Storage:
+      type: object
+      properties:
+        StorageID:
           type: integer
           format: int64
-          description: The number of CloudCache Servers listed on the result pages.
+          description: The unique identifier of the storage in Druva inSync.
           example: 1
-        nextPageToken:
+        storageName:
           type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        cloudcaches:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudCache'
+          description: The name of the storage in Druva inSync.
+          example: Druva3_local
+        storageUsage:
+          type: string
+          description: The storage space consumed on the storage.
+          example: 225.04 MB
+        totalSizeOfBackedUpFiles:
+          type: string
+          description: The total size of the files backed up on this storage.
+          example: 1.29 GB
   securitySchemes:
     OAuth2:
       type: oauth2

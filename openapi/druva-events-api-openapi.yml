@@ -312,6 +312,73 @@ paths:
     - url: https://apis.druva.com/platform
 components:
   schemas:
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ListCustomerEvents:
+      description: The event details published by products of the customer. Contains filtered or unexported fields.
+      type: object
+      properties:
+        category:
+          description: The category of the event.
+          type: string
+          enum:
+          - EVENT
+          - AUDIT
+          - ALERT
+        customerName:
+          description: Name of the customer for whom the event is generated.
+          type: string
+        details:
+          description: All the details of event in JSON schema specific to the eventType. For the JSON schema definition, please refer to <a href="https://developer.druva.com/docs/events-api-for-msps#supported-druva-workloads">Supported Druva Workloads</a>
+          type: object
+        feature:
+          description: Type of the entity for which the event has happened.
+          type: string
+        globalID:
+          description: Global ID of MSP.
+          type: string
+        timeStamp:
+          description: The epoch representation of the time at which the event occurred.
+          type: integer
+        syslogFacility:
+          description: Syslog standard of defining the event origin/type.
+          type: integer
+        syslogSeverity:
+          description: 'SyslogSeverity represents the severity(0-7) of the event. The severity codes are as follows:
+
+
+            0: Emergency
+
+
+            1: Alert (action must be taken immediately)
+
+
+            2: Critical (critical conditions)
+
+
+            3: Error (error conditions)
+
+
+            4: Warning (warning conditions)
+
+
+            5: Notice (normal but significant condition)
+
+
+            6: Informational (informational messages)
+
+
+            7: Debug (debug-level messages)'
+          type: integer
+        type:
+          description: 'Type of the event. For all valid values of event types, please refer to : <a href="https://developer.druva.com/docs/events-api-for-msps#supported-druva-workloads">Supported Druva Workloads</a>'
+          type: string
     ListCustomerEventsResponse:
       type: object
       properties:
@@ -349,65 +416,6 @@ components:
             type: JobTriggered
           items:
             $ref: '#/components/schemas/ListCustomerEvents'
-        nextPageToken:
-          description: 'The token to access the next page of results. Use the received token value in subsequent request''s parameter ''pageToken''.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    ListMSPEventsResponse:
-      type: object
-      properties:
-        events:
-          type: array
-          description: The list contains event details published by MSP. Empty array is returned when pageToken is provided in request and there are no events available for the pageToken object.
-          example:
-          - category: AUDIT
-            details:
-              initiatorType: ADMIN
-              initiatorId: '221'
-              initiatorName: initator@admin.com
-              adminId: '109'
-              oldState: null
-              newState:
-                email: email@example.com
-                firstName: John
-                lastName: Smith
-                phone: '12345678910'
-                role: 2
-                lastLogin: '0001-01-01T00:00:00Z'
-                creatorAdminId: 1
-                isActive: true
-            feature: Admin
-            globalID: MSP:c8b3866b-aa9e-4a87-a316-133214f7d23f
-            timeStamp: 1709208497
-            syslogFacility: 14
-            syslogSeverity: 6
-            type: AdminCreated
-          - category: ALERT
-            details:
-              customerGlobalId: c8b3866b-aa9e-4a87-a316-133214f7d23f
-              customerName: sampleCustomer
-              productId: 2
-              tenantId: 133214f7d23f-c8b3866b-4a87-a316-aa9e
-              description: SaaS Apps and Endpoints would be removed for sampleCustomer in the next 168 hours
-              severity: critical
-            feature: Tenant
-            globalID: MSP:c8b3866b-aa9e-4a87-a316-133214f7d23f
-            timeStamp: 1709213497
-            syslogFacility: 14
-            syslogSeverity: 1
-            type: TenantDeletionInitiated
-          items:
-            $ref: '#/components/schemas/ListMSPEvents'
         nextPageToken:
           description: 'The token to access the next page of results. Use the received token value in subsequent request''s parameter ''pageToken''.
 
@@ -470,65 +478,57 @@ components:
         type:
           description: 'Type of the event. For all valid values of event types, please refer to : <a href="https://developer.druva.com/docs/supported-msp-events">Supported MSP Events</a>'
           type: string
-    ListCustomerEvents:
-      description: The event details published by products of the customer. Contains filtered or unexported fields.
+    ListMSPEventsResponse:
       type: object
       properties:
-        category:
-          description: The category of the event.
+        events:
+          type: array
+          description: The list contains event details published by MSP. Empty array is returned when pageToken is provided in request and there are no events available for the pageToken object.
+          example:
+          - category: AUDIT
+            details:
+              initiatorType: ADMIN
+              initiatorId: '221'
+              initiatorName: initator@admin.com
+              adminId: '109'
+              oldState: null
+              newState:
+                email: email@example.com
+                firstName: John
+                lastName: Smith
+                phone: '12345678910'
+                role: 2
+                lastLogin: '0001-01-01T00:00:00Z'
+                creatorAdminId: 1
+                isActive: true
+            feature: Admin
+            globalID: MSP:c8b3866b-aa9e-4a87-a316-133214f7d23f
+            timeStamp: 1709208497
+            syslogFacility: 14
+            syslogSeverity: 6
+            type: AdminCreated
+          - category: ALERT
+            details:
+              customerGlobalId: c8b3866b-aa9e-4a87-a316-133214f7d23f
+              customerName: sampleCustomer
+              productId: 2
+              tenantId: 133214f7d23f-c8b3866b-4a87-a316-aa9e
+              description: SaaS Apps and Endpoints would be removed for sampleCustomer in the next 168 hours
+              severity: critical
+            feature: Tenant
+            globalID: MSP:c8b3866b-aa9e-4a87-a316-133214f7d23f
+            timeStamp: 1709213497
+            syslogFacility: 14
+            syslogSeverity: 1
+            type: TenantDeletionInitiated
+          items:
+            $ref: '#/components/schemas/ListMSPEvents'
+        nextPageToken:
+          description: 'The token to access the next page of results. Use the received token value in subsequent request''s parameter ''pageToken''.
+
+            '
           type: string
-          enum:
-          - EVENT
-          - AUDIT
-          - ALERT
-        customerName:
-          description: Name of the customer for whom the event is generated.
-          type: string
-        details:
-          description: All the details of event in JSON schema specific to the eventType. For the JSON schema definition, please refer to <a href="https://developer.druva.com/docs/events-api-for-msps#supported-druva-workloads">Supported Druva Workloads</a>
-          type: object
-        feature:
-          description: Type of the entity for which the event has happened.
-          type: string
-        globalID:
-          description: Global ID of MSP.
-          type: string
-        timeStamp:
-          description: The epoch representation of the time at which the event occurred.
-          type: integer
-        syslogFacility:
-          description: Syslog standard of defining the event origin/type.
-          type: integer
-        syslogSeverity:
-          description: 'SyslogSeverity represents the severity(0-7) of the event. The severity codes are as follows:
-
-
-            0: Emergency
-
-
-            1: Alert (action must be taken immediately)
-
-
-            2: Critical (critical conditions)
-
-
-            3: Error (error conditions)
-
-
-            4: Warning (warning conditions)
-
-
-            5: Notice (normal but significant condition)
-
-
-            6: Informational (informational messages)
-
-
-            7: Debug (debug-level messages)'
-          type: integer
-        type:
-          description: 'Type of the event. For all valid values of event types, please refer to : <a href="https://developer.druva.com/docs/events-api-for-msps#supported-druva-workloads">Supported Druva Workloads</a>'
-          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
     EventResponseThree:
       title: EventResponse (API v3)
       type: object
@@ -563,43 +563,6 @@ components:
         type:
           type: string
           description: type represents the type of the event e.g - Login,Logout,LicenseExpired,BackupStatus etc.
-      x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
-    ListEventsResponse:
-      title: ListEventsResponse (API v1)
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventResponse'
-      x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
-    APIError_2:
-      type: object
-      properties:
-        code:
-          type: string
-          x-go-name: Code
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          x-go-name: Data
-        message:
-          type: string
-          x-go-name: Message
-        retryable:
-          type: boolean
-          x-go-name: Retry
-      description: APIError defines an application error result format
-      x-go-package: druva.com/godevkit/errortype
-    ListEventsResponseThree:
-      title: ListEventsResponse (API v3)
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventResponseThree'
       x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
     EventResponseTwo:
       title: EventResponse (API v2)
@@ -636,6 +599,34 @@ components:
           type: string
           description: type represents the type of the event e.g - Login,Logout,LicenseExpired,BackupStatus etc.
       x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
+    ListEventsResponseThree:
+      title: ListEventsResponse (API v3)
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventResponseThree'
+      x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
+    APIError_2:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
     ListEventsResponseTwo:
       title: ListEventsResponse (API v2)
       type: object
@@ -644,6 +635,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EventResponseTwo'
+      x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
+    ListEventsResponse:
+      title: ListEventsResponse (API v1)
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventResponse'
       x-go-package: git.druva.org/dcp/dcp_event_manager/spec/req_resp
     EventResponse:
       title: EventResponse (API v1)

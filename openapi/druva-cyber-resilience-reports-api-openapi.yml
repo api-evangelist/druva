@@ -223,6 +223,14 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     RollbackActionsReportData:
       title: RollbackActionsReportData
       type: object
@@ -316,14 +324,6 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
     GetRollbackActionsReportDataResponse:
       title: GetRollbackActionsReportDataResponse
       type: object

@@ -72,40 +72,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    HTTP_403:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncAdmanagement-1221
-          description: Application specific error code
-        message:
-          type: string
-          example: Access restricted due to insufficient permissions.
-          description: Application specific error message
-        retryable:
-          type: boolean
-          example: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    ADConnectorList:
-      type: object
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: The total number of AD/LDAP Connectors listed on the result page.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        adConnectorList:
-          type: array
-          items:
-            $ref: '#/components/schemas/ADConnector'
     ADConnector:
       type: object
       properties:
@@ -129,6 +95,40 @@ components:
           type: string
           description: The current status of the AD/LDAP Connector
           example: Connected
+    ADConnectorList:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: The total number of AD/LDAP Connectors listed on the result page.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        adConnectorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ADConnector'
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     Error:
       type: object
       properties:

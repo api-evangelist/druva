@@ -60,30 +60,6 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
-    ListRolesResponse:
-      title: ListRolesResponse ...
-      type: array
-      items:
-        $ref: '#/components/schemas/ListRolesResponse_inner'
-    APIError:
-      type: object
-      properties:
-        code:
-          type: string
-          x-go-name: Code
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          x-go-name: Data
-        message:
-          type: string
-          x-go-name: Message
-        retryable:
-          type: boolean
-          x-go-name: Retry
-      description: APIError defines an application error result format
-      x-go-package: druva.com/godevkit/errortype
     ListRolesResponse_inner:
       type: object
       properties:
@@ -145,6 +121,30 @@ components:
                     - Workloads or Profiles or Legal Hold Types for Endpoints and SaaS Apps
 
                     '
+    APIError:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
+    ListRolesResponse:
+      title: ListRolesResponse ...
+      type: array
+      items:
+        $ref: '#/components/schemas/ListRolesResponse_inner'
   securitySchemes:
     BearerAuth:
       type: oauth2

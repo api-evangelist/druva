@@ -69,6 +69,57 @@ paths:
                 $ref: '#/components/schemas/ServiceError'
 components:
   schemas:
+    GetAllCacheConfigResponse:
+      description: GetAllCacheConfigResponse is the response schema for GetAllCacheConfigResponse
+      type: object
+      properties:
+        cacheConfig:
+          type: array
+          items:
+            $ref: '#/components/schemas/CacheConfigResponse'
+          x-go-name: CacheConfig
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
+    CacheDeviceResponse:
+      description: CacheDeviceResponse is the response schema for Device
+      type: object
+      properties:
+        activationTime:
+          description: The activation time of the cloudcache.
+          type: string
+          x-go-name: ActivationTime
+        cacheVersion:
+          description: The version of the cloudcache build currently installed on the cloudcache server.
+          type: string
+          x-go-name: Version
+        fqdn:
+          description: The FQDN of the cloudcache server.
+          type: string
+          x-go-name: FQDN
+        isUpgradable:
+          description: The status of the cloudcache build that indicates wheather it is upgradable or not.
+          type: boolean
+          x-go-name: IsUpgradable
+        lastUpgradeTime:
+          description: The time indicates the last upgrade of the cloudcache server build.
+          type: string
+          x-go-name: LastUpgradeTime
+        os:
+          description: The OS type of the cloudcache server.
+          type: string
+          x-go-name: OS
+        osVersion:
+          description: The OS version of the cloudcache server.
+          type: string
+          x-go-name: OSVersion
+        timezone:
+          description: The timezone of the cloudcache server.
+          type: string
+          x-go-name: Timezone
+      x-go-package: phoenix/cloudcache/cloud/report/spec/config
     CacheConfigResponse:
       description: CacheConfigResponse is the response schema for Cache config
       type: object
@@ -164,57 +215,6 @@ components:
           description: It's start timing of cloudcahe sync schedule.
           type: string
           x-go-name: StartTime
-      x-go-package: phoenix/cloudcache/cloud/report/spec/config
-    GetAllCacheConfigResponse:
-      description: GetAllCacheConfigResponse is the response schema for GetAllCacheConfigResponse
-      type: object
-      properties:
-        cacheConfig:
-          type: array
-          items:
-            $ref: '#/components/schemas/CacheConfigResponse'
-          x-go-name: CacheConfig
-        nextPageToken:
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          type: string
-          x-go-name: OutToken
-      x-go-package: phoenix/cloudcache/cloud/report/spec/config
-    CacheDeviceResponse:
-      description: CacheDeviceResponse is the response schema for Device
-      type: object
-      properties:
-        activationTime:
-          description: The activation time of the cloudcache.
-          type: string
-          x-go-name: ActivationTime
-        cacheVersion:
-          description: The version of the cloudcache build currently installed on the cloudcache server.
-          type: string
-          x-go-name: Version
-        fqdn:
-          description: The FQDN of the cloudcache server.
-          type: string
-          x-go-name: FQDN
-        isUpgradable:
-          description: The status of the cloudcache build that indicates wheather it is upgradable or not.
-          type: boolean
-          x-go-name: IsUpgradable
-        lastUpgradeTime:
-          description: The time indicates the last upgrade of the cloudcache server build.
-          type: string
-          x-go-name: LastUpgradeTime
-        os:
-          description: The OS type of the cloudcache server.
-          type: string
-          x-go-name: OS
-        osVersion:
-          description: The OS version of the cloudcache server.
-          type: string
-          x-go-name: OSVersion
-        timezone:
-          description: The timezone of the cloudcache server.
-          type: string
-          x-go-name: Timezone
       x-go-package: phoenix/cloudcache/cloud/report/spec/config
     ServiceError:
       description: Service Error

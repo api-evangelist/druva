@@ -238,6 +238,56 @@ components:
             $ref: '#/components/schemas/BackupJobAlert'
         nextPageToken:
           type: string
+    ResourceInfo:
+      description: Contains product-specific information of the resource
+      type: object
+      properties:
+        fsServerName:
+          type: string
+          description: Server name of the FS backup set
+          example: serverName
+        fsContentRule:
+          type: string
+          description: Content rule of the FS backup set
+          example: contentRule
+        nasShare:
+          type: string
+          description: Path to the directory of the NAS share
+          example: sharename
+        sqlResourceType:
+          type: string
+          description: Type of the SQL resource. The value can be sqlAvailabilityGroup or sqlStandaloneInstance.
+          example: instance
+        sqlResourceName:
+          type: string
+          description: Name of the SQL resource
+          example: instanceName
+        sqlContentRule:
+          type: string
+          description: Content rule of the SQL resource
+          example: contentRule
+        oracleMountPoint:
+          type: string
+          description: Mount point of the Oracle resource
+          example: mountPoint
+        oraclePBS:
+          type: string
+          description: Device name of the Oracle resource
+          example: deviceName
+        vmName:
+          type: string
+          description: Name of the virtual machine
+          example: vmName
+    ListAlertsResponse:
+      description: Includes an array of alerts
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        nextPageToken:
+          type: string
     Alert:
       description: Includes generic alert details
       type: object
@@ -297,88 +347,20 @@ components:
           description: Severity of the alert. The value can be critical, warning, or info.
           type: string
           example: critical
-    ResourceInfo:
-      description: Contains product-specific information of the resource
+    ServiceError:
+      description: Service Error
       type: object
+      title: ServiceError represents an error with an associated error code.
       properties:
-        fsServerName:
-          type: string
-          description: Server name of the FS backup set
-          example: serverName
-        fsContentRule:
-          type: string
-          description: Content rule of the FS backup set
-          example: contentRule
-        nasShare:
-          type: string
-          description: Path to the directory of the NAS share
-          example: sharename
-        sqlResourceType:
-          type: string
-          description: Type of the SQL resource. The value can be sqlAvailabilityGroup or sqlStandaloneInstance.
-          example: instance
-        sqlResourceName:
-          type: string
-          description: Name of the SQL resource
-          example: instanceName
-        sqlContentRule:
-          type: string
-          description: Content rule of the SQL resource
-          example: contentRule
-        oracleMountPoint:
-          type: string
-          description: Mount point of the Oracle resource
-          example: mountPoint
-        oraclePBS:
-          type: string
-          description: Device name of the Oracle resource
-          example: deviceName
-        vmName:
-          type: string
-          description: Name of the virtual machine
-          example: vmName
-    AlertDetails:
-      description: Contains backup job specific details. Only failedJobIDs and lastSucceeded will be present if failureNumberSinceLastSuccess field is specified. jobID, jobErrorMsg, jobStartTime and jobEndTime will be present for all other cases
-      type: object
-      properties:
-        jobID:
-          description: ID of the job
+        code:
           type: integer
-          format: int32
-          example: 1
-        jobStartTime:
-          description: Timestamp at which the job started
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
           type: string
-          example: '2019-07-08T03:38:22.000Z'
-        jobEndTime:
-          description: Timestamp at which the job ended
-          type: string
-          example: '2019-07-08T05:52:36.000Z'
-        jobErrorMsg:
-          description: Error message stating the reason for job failure
-          type: string
-          example: error message
-        failedJobIDs:
-          description: List of failed job IDs since the last successful job
-          type: array
-          items:
-            type: integer
-            format: int32
-            example: 1
-        lastSucceeded:
-          description: The last backup job completion timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
-          type: string
-          example: '2019-07-05T03:38:22.000Z'
-    ListAlertsResponse:
-      description: Includes an array of alerts
-      type: object
-      properties:
-        alerts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alert'
-        nextPageToken:
-          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
     BackupJobAlert:
       description: Includes generic, alert type specific and resource specific details
       type: object
@@ -442,20 +424,38 @@ components:
           $ref: '#/components/schemas/AlertDetails'
         resourceInfo:
           $ref: '#/components/schemas/ResourceInfo'
-    ServiceError:
-      description: Service Error
+    AlertDetails:
+      description: Contains backup job specific details. Only failedJobIDs and lastSucceeded will be present if failureNumberSinceLastSuccess field is specified. jobID, jobErrorMsg, jobStartTime and jobEndTime will be present for all other cases
       type: object
-      title: ServiceError represents an error with an associated error code.
       properties:
-        code:
+        jobID:
+          description: ID of the job
           type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
+          format: int32
+          example: 1
+        jobStartTime:
+          description: Timestamp at which the job started
           type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
+          example: '2019-07-08T03:38:22.000Z'
+        jobEndTime:
+          description: Timestamp at which the job ended
+          type: string
+          example: '2019-07-08T05:52:36.000Z'
+        jobErrorMsg:
+          description: Error message stating the reason for job failure
+          type: string
+          example: error message
+        failedJobIDs:
+          description: List of failed job IDs since the last successful job
+          type: array
+          items:
+            type: integer
+            format: int32
+            example: 1
+        lastSucceeded:
+          description: The last backup job completion timestamp. The format is YYYY-MM-DDTHH:MM:SSZ.
+          type: string
+          example: '2019-07-05T03:38:22.000Z'
   securitySchemes:
     OAuth2:
       type: oauth2

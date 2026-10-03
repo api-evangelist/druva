@@ -530,6 +530,65 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    GetOrganizationsAccountsJobsResponse:
+      properties:
+        account_id:
+          type: string
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        cron:
+          type: string
+        cron_location:
+          type: string
+        event_at:
+          format: date-time
+          type: string
+        event_type:
+          type: string
+        halt:
+          type: string
+        id:
+          type: string
+        object_id:
+          type: integer
+        organization_id:
+          type: string
+        policy:
+          type: string
+        restorepolicy:
+          type: string
+        schedule:
+          type: string
+        seq:
+          type: integer
+        tasks:
+          items:
+            properties:
+              resource_name:
+                type: string
+            type: object
+          type: array
+        total_fail:
+          type: integer
+        total_success:
+          type: integer
+        total_tasks:
+          type: integer
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsJobsRetryRequest:
+      type: object
+    GetOrganizationsAccountsJobsTagsResponse:
+      type: string
+    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
+      type: object
     GetOrganizationsAccountsJobsTasksByIdResponse:
       properties:
         action:
@@ -601,8 +660,8 @@ components:
           format: date-time
           type: string
       type: object
-    GetOrganizationsAccountsJobsTagsResponse:
-      type: string
+    GetOrganizationsAccountsJob_countResponse:
+      type: integer
     GetOrganizationsAccountsJobsByIdResponse:
       properties:
         account_id:
@@ -676,77 +735,18 @@ components:
           format: date-time
           type: string
       type: object
-    GetOrganizationsAccountsJobsResponse:
-      properties:
-        account_id:
-          type: string
-        action:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        cron:
-          type: string
-        cron_location:
-          type: string
-        event_at:
-          format: date-time
-          type: string
-        event_type:
-          type: string
-        halt:
-          type: string
-        id:
-          type: string
-        object_id:
-          type: integer
-        organization_id:
-          type: string
-        policy:
-          type: string
-        restorepolicy:
-          type: string
-        schedule:
-          type: string
-        seq:
-          type: integer
-        tasks:
-          items:
-            properties:
-              resource_name:
-                type: string
-            type: object
-          type: array
-        total_fail:
-          type: integer
-        total_success:
-          type: integer
-        total_tasks:
-          type: integer
-        type:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAccountsJobsRetryRequest:
-      type: object
-    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
-      type: object
-    PostOrganizationsAccountsJobsRetryResponse:
-      type: object
-    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
-      type: object
     Error:
       properties:
         message:
           type: string
       type: object
+    PostOrganizationsAccountsJobsRetryResponse:
+      type: object
+    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
+      type: object
     empty:
       properties: {}
       type: object
-    GetOrganizationsAccountsJob_countResponse:
-      type: integer
   securitySchemes:
     API_Authorizer:
       in: header

@@ -477,44 +477,6 @@ paths:
                   $ref: '#/components/examples/NotImplemented'
 components:
   examples:
-    NotFound:
-      summary: Resource Not Found
-      description: The requested resource could not be found on server.
-      value: null
-    InternalServerError:
-      summary: Internal Server Error
-      description: The request was not processed due to an internal error on server.
-      value:
-        code: InsyncCappmaster-1006
-        message: Internal server error.
-        retryable: false
-        data:
-          status: 1
-          message: Failed to get Customer License
-    NotImplemented:
-      summary: Method Not Implemented
-      description: Requested HTTP method is not implemented.
-      value:
-        code: InsyncCappmaster-1007
-        message: Method Not implemented.
-        retryable: false
-        data: null
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
     GARError:
       summary: Authorization Error
       description: Client does not have access rights or permissions to the requested content.
@@ -531,181 +493,45 @@ components:
         message: Auth session expired
         retryable: false
         data: null
-  schemas:
-    200_trigger_spo_restore_resp:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Restore triggered successfully.
-          description: Message indicating the restore trigger status if restore is triggered successfully or restore trigger failed.
-        restore_status:
-          type: integer
-          example: 0
-          description: Restore status code. Eg. 0-Success, 1-Failure
-        restore_task:
-          type: boolean
-          example: true
-          description: flag indicating if restore task was created successfuly. Eg. True-Success, False-Failure
-        task_id:
-          type: integer
-          example: '3458'
-          description: A unique identifier for the restore task.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Invalid API syntax.
-        code:
-          type: string
-          example: InsyncCappmaster-1001
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
         data:
-          type: object
-          example: null
-        retryable:
-          type: boolean
-          enum:
-          - true
-          - false
-          example: false
-    200_list_spo_restore_points:
-      type: array
-      items:
-        type: object
-        properties:
-          isAnomalous:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is anomalous.
-          ls_name:
-            type: string
-            example: Wed Mar  6 11:54:00 2024
-            description: Snapshot name.
-          filesMissed:
-            type: integer
-            example: 0
-            description: Number of files missed in the snapshot.
-          ls_rpxattrs:
-            type: object
-            example: {}
-            description: Dict containing the restore point extra attributes.
-          display_name:
-            type: string
-            example: Wed Mar  6 11:54:00 2024
-            description: Snapshot display name
-          ls_virtual:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is virtual snapshot on storage
-          filesSynced:
-            type: integer
-            example: 221
-            description: Number files backed up in snapshot
-          ls_stat:
-            type: object
-            example:
-              st_blocksz: 0
-              st_flags: 0
-              st_mtime: 1710236576
-              st_links: 1
-              st_mdattrs: null
-              st_ver: 18
-              st_method: -1
-              st_deleted: false
-              st_mode: 16384
-              st_acl_handle: 0
-              st_size: 40041770
-              st_ino: 5
-              st_valid: true
-              st_readsz: 0
-              st_cver: 17
-            description: Object containg the storage stats of the snapshot.
-          is_virtual:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is virtual snapshot
-          sysState:
-            type: integer
-            example: 0
-            description: System state of the snapshot
-          sid:
-            type: integer
-            example: 1000002
-            description: Storage id of snapshot
-          ls_softdel:
-            type: object
-            properties:
-              deleted:
-                type: boolean
-                example: false
-                description: Flahg indicating if the snashot is deleted
-              softdeleted:
-                type: boolean
-                example: false
-                description: Flag indicating if the snapshot is soft deleted
-            example:
-              deleted: false
-              softdeleted: false
-            description: Object containing the info if the snapshot is deleted or soft deleted.
-          latestUnquarantined:
-            type: boolean
-            example: true
-            description: Flag indicating if the snapshot is latest unquarantined snapshot
-          isQuarantined:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is quarantined snapshot
-          ls_locked:
-            type: boolean
-            example: false
-            description: Flag indicating of the snapshot is locked
-          ignFilesMissed:
-            type: integer
-            example: 0
-            description: Number of ignored files missed.
-          bmr:
-            type: boolean
-            example: false
-            description: Flag indicating if the meeting recordings are backed up in snapshot
-          ectime:
-            type: integer
-            example: 1709726041
-            description: Snapshot exact creation datetime
-          ls_ino:
-            type: integer
-            example: 5
-            description: Snapshot number
-          ls_type:
-            type: integer
-            example: 5
-            description: Snapshot type. Default 5
-          ls_rplckowns:
-            type: array
-            items:
-              type: string
-            example: []
-            description: List of rplc knowns
-          ls_dver:
-            type: integer
-            example: 2147483632
-            description: Snapshot data version
-          ctime:
-            type: integer
-            example: 1709726040
-            description: Snapshot creation detetime
-          totalSize:
-            type: integer
-            example: 23903222
-            description: Total size of snapshot in bytes
-          ls_cver:
-            type: integer
-            example: 17
-            description: Snapshot version number
-          ls_cseq:
-            type: integer
-            example: 5
-            description: Snapshot sequence number
+          status: 1
+          message: Failed to get Customer License
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+  schemas:
     200_list_sites:
       type: object
       properties:
@@ -879,6 +705,180 @@ components:
                 example: SC_V_Main
                 description: System-defined title of the SharePoint site collection, primarily used for backend processes such as restore.
           description: List of SharePoint Site Collections
+    200_list_spo_restore_points:
+      type: array
+      items:
+        type: object
+        properties:
+          isAnomalous:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is anomalous.
+          ls_name:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot name.
+          filesMissed:
+            type: integer
+            example: 0
+            description: Number of files missed in the snapshot.
+          ls_rpxattrs:
+            type: object
+            example: {}
+            description: Dict containing the restore point extra attributes.
+          display_name:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot display name
+          ls_virtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot on storage
+          filesSynced:
+            type: integer
+            example: 221
+            description: Number files backed up in snapshot
+          ls_stat:
+            type: object
+            example:
+              st_blocksz: 0
+              st_flags: 0
+              st_mtime: 1710236576
+              st_links: 1
+              st_mdattrs: null
+              st_ver: 18
+              st_method: -1
+              st_deleted: false
+              st_mode: 16384
+              st_acl_handle: 0
+              st_size: 40041770
+              st_ino: 5
+              st_valid: true
+              st_readsz: 0
+              st_cver: 17
+            description: Object containg the storage stats of the snapshot.
+          is_virtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot
+          sysState:
+            type: integer
+            example: 0
+            description: System state of the snapshot
+          sid:
+            type: integer
+            example: 1000002
+            description: Storage id of snapshot
+          ls_softdel:
+            type: object
+            properties:
+              deleted:
+                type: boolean
+                example: false
+                description: Flahg indicating if the snashot is deleted
+              softdeleted:
+                type: boolean
+                example: false
+                description: Flag indicating if the snapshot is soft deleted
+            example:
+              deleted: false
+              softdeleted: false
+            description: Object containing the info if the snapshot is deleted or soft deleted.
+          latestUnquarantined:
+            type: boolean
+            example: true
+            description: Flag indicating if the snapshot is latest unquarantined snapshot
+          isQuarantined:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is quarantined snapshot
+          ls_locked:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked
+          ignFilesMissed:
+            type: integer
+            example: 0
+            description: Number of ignored files missed.
+          bmr:
+            type: boolean
+            example: false
+            description: Flag indicating if the meeting recordings are backed up in snapshot
+          ectime:
+            type: integer
+            example: 1709726041
+            description: Snapshot exact creation datetime
+          ls_ino:
+            type: integer
+            example: 5
+            description: Snapshot number
+          ls_type:
+            type: integer
+            example: 5
+            description: Snapshot type. Default 5
+          ls_rplckowns:
+            type: array
+            items:
+              type: string
+            example: []
+            description: List of rplc knowns
+          ls_dver:
+            type: integer
+            example: 2147483632
+            description: Snapshot data version
+          ctime:
+            type: integer
+            example: 1709726040
+            description: Snapshot creation detetime
+          totalSize:
+            type: integer
+            example: 23903222
+            description: Total size of snapshot in bytes
+          ls_cver:
+            type: integer
+            example: 17
+            description: Snapshot version number
+          ls_cseq:
+            type: integer
+            example: 5
+            description: Snapshot sequence number
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_trigger_spo_restore_resp:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Restore triggered successfully.
+          description: Message indicating the restore trigger status if restore is triggered successfully or restore trigger failed.
+        restore_status:
+          type: integer
+          example: 0
+          description: Restore status code. Eg. 0-Success, 1-Failure
+        restore_task:
+          type: boolean
+          example: true
+          description: flag indicating if restore task was created successfuly. Eg. True-Success, False-Failure
+        task_id:
+          type: integer
+          example: '3458'
+          description: A unique identifier for the restore task.
   securitySchemes:
     bearerAuth:
       type: apiKey

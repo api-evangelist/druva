@@ -570,6 +570,26 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    GetSfdcSandboxSeedingActivityReportDataResponse:
+      title: GetSfdcSandboxSeedingActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcSandboxSeedingActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied to the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
     SfdcDataRestoreActivityReportData:
       title: SfdcDataRestoreActivityReportData
       type: object
@@ -657,96 +677,6 @@ components:
           type: string
         message:
           type: string
-    SfdcSandboxSeedingActivityReportData:
-      title: SfdcSandboxSeedingActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Customer account name for the sandbox seeding activity row.
-          example: Customer Account Name
-        globalCustomerId:
-          type: string
-          description: The unique identifier of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        customerName:
-          type: string
-          description: The name of the customer.
-          example: Acme Corporation
-        dataTemplateName:
-          type: string
-          description: Data template name of the Activity
-          example: DC_TC02_Template
-        destinationOrganization:
-          type: string
-          description: The name of the source organization selected for data copy as part of the activity
-          example: destin001
-        endTime:
-          type: string
-          description: 'End Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        projectName:
-          type: string
-          description: The name of the project to which the activity belongs
-          example: DataCopyRegression_71759
-        recordsCopied:
-          type: integer
-          description: Count of the records restored as part of the activity
-          example: 1000
-        salesforceUser:
-          type: string
-          description: The name of the salesforce user who has initiated the activity
-          example: sfdc2_sanity sfdc2_sanity
-        sourceOrganization:
-          type: string
-          description: Source Salesforce org name supplying the data.
-          example: source001
-        startTime:
-          type: string
-          description: 'Start Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        statusDetails:
-          type: string
-          description: Error details if any
-          example: ''
-        taskState:
-          type: string
-          description: Task status of the activity
-          example: Completed
-        totalRecordCount:
-          type: integer
-          description: The total number of records identified for data copy as part of the activity
-          example: 1000
-        totalDataCopiedInMB:
-          type: integer
-          description: Total logical data copied, in megabytes.
-          example: 0
-        dcpUniqueKey:
-          type: string
-          description: The key which is used to uniquely identify each record in the report.
-          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcDataRestoreActivityReportDataResponse:
-      title: GetSfdcDataRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcDataRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
     SfdcBackupActivityReportData:
       title: SfdcBackupActivityReportData
       type: object
@@ -830,14 +760,14 @@ components:
           type: string
           description: The key which is used to uniquely identify each record in the report.
           example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcArchivalActivityReportDataResponse:
-      title: GetSfdcArchivalActivityReportDataResponse
+    GetSfdcArchivalRestoreActivityReportDataResponse:
+      title: GetSfdcArchivalRestoreActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/SfdcArchivalActivityReportData'
+            $ref: '#/components/schemas/SfdcArchivalRestoreActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -850,6 +780,96 @@ components:
         nextPageToken:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    GetSfdcDataRestoreActivityReportDataResponse:
+      title: GetSfdcDataRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcDataRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    SfdcSandboxSeedingActivityReportData:
+      title: SfdcSandboxSeedingActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the sandbox seeding activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        dataTemplateName:
+          type: string
+          description: Data template name of the Activity
+          example: DC_TC02_Template
+        destinationOrganization:
+          type: string
+          description: The name of the source organization selected for data copy as part of the activity
+          example: destin001
+        endTime:
+          type: string
+          description: 'End Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: DataCopyRegression_71759
+        recordsCopied:
+          type: integer
+          description: Count of the records restored as part of the activity
+          example: 1000
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who has initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        sourceOrganization:
+          type: string
+          description: Source Salesforce org name supplying the data.
+          example: source001
+        startTime:
+          type: string
+          description: 'Start Time of the data copy task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type: string
+          description: Error details if any
+          example: ''
+        taskState:
+          type: string
+          description: Task status of the activity
+          example: Completed
+        totalRecordCount:
+          type: integer
+          description: The total number of records identified for data copy as part of the activity
+          example: 1000
+        totalDataCopiedInMB:
+          type: integer
+          description: Total logical data copied, in megabytes.
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
     SfdcArchivalRestoreActivityReportData:
       title: SfdcArchivalRestoreActivityReportData
       type: object
@@ -922,26 +942,27 @@ components:
           type: string
           description: The key which is used to uniquely identify each record in the report.
           example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcArchivalRestoreActivityReportDataResponse:
-      title: GetSfdcArchivalRestoreActivityReportDataResponse
+    GetSfdcBackupActivityReportDataResponse:
+      title: GetSfdcBackupActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/SfdcArchivalRestoreActivityReportData'
+            $ref: '#/components/schemas/SfdcBackupActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
-          format: date-time
           description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
         filters:
           type: object
           properties: {}
-          description: Filters applied on the report
+          description: Filters applied on the report.
         nextPageToken:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: ZGE4ZWYwYzctNDEwZi00MTVjLWJhNzgtMTFiYzQzMzA2ODMy
     SfdcArchivalActivityReportData:
       title: SfdcArchivalActivityReportData
       type: object
@@ -1014,14 +1035,14 @@ components:
           type: string
           description: The key which is used to uniquely identify each record in the report.
           example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcSandboxSeedingActivityReportDataResponse:
-      title: GetSfdcSandboxSeedingActivityReportDataResponse
+    GetSfdcArchivalActivityReportDataResponse:
+      title: GetSfdcArchivalActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/SfdcSandboxSeedingActivityReportData'
+            $ref: '#/components/schemas/SfdcArchivalActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1030,31 +1051,10 @@ components:
         filters:
           type: object
           properties: {}
-          description: Filters applied to the report
+          description: Filters applied on the report
         nextPageToken:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-    GetSfdcBackupActivityReportDataResponse:
-      title: GetSfdcBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: ZGE4ZWYwYzctNDEwZi00MTVjLWJhNzgtMTFiYzQzMzA2ODMy
   securitySchemes:
     OAuth2:
       flows:

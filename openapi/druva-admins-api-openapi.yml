@@ -91,6 +91,24 @@ paths:
       description: Returns the list of admins with their details.
 components:
   schemas:
+    ListAdminsV2Response:
+      type: object
+      properties:
+        admins:
+          description: The list of admins.
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminV2Response'
+        nextPageToken:
+          type: string
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     AdminV2Response:
       description: Contains details about an MSP admin.
       type: object
@@ -142,24 +160,6 @@ components:
           format: date-time
           description: The timestamp of the admin's last successful login. Example - 2024-01-04T09:06:02.191Z
           example: '2024-12-24T10:48:56.361Z'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    ListAdminsV2Response:
-      type: object
-      properties:
-        admins:
-          description: The list of admins.
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminV2Response'
-        nextPageToken:
-          type: string
   securitySchemes:
     OAuth2:
       flows:
