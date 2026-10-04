@@ -851,6 +851,102 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    RR_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    createQuarantineRangeV2ResponseSchema:
+      type: object
+      properties:
+        ranges:
+          type: array
+          items:
+            type: object
+            properties:
+              fromDate:
+                type: string
+                description: from date
+                example: '2020-10-25'
+              toDate:
+                type: string
+                description: to date
+                example: '2021-10-25'
+    quarantineRangeCreateResponse:
+      type: object
+      properties:
+        rangeID:
+          type: integer
+          description: The unique identifier of the quarantine range which is created or updated for the resource.
+          example: 101
+    quarantineRangeGetResponse:
+      type: object
+      properties:
+        resourceID:
+          type: integer
+          description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101
+          example: 101
+        rangeID:
+          type: integer
+          description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
+          example: 101
+        orgID:
+          type: integer
+          description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
+          example: 101
+        resourceName:
+          type: string
+          description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
+          example: Ernie Carter's Macbook
+        resourceParent:
+          type: string
+          description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+          example: Ernie Carter
+        resourcePlatform:
+          type: string
+          description: The operating system on the quarantined resource. Example - linux
+          example: linux
+        resourceType:
+          type: string
+          description: "The type of resource. A resource can be one of the following types:\n - Endpoint \n - File Server \n - NAS, and so on"
+          example: Endpoint
+        workload:
+          type: string
+          description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
+          example: endpoints
+        fromDate:
+          type: string
+          format: date
+          description: Lists the start date of the quarantine range. Example - 2020-01-25.
+          example: '2020-10-25'
+        toDate:
+          type: string
+          format: date
+          description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
+          example: '2020-10-25'
+        addedTime:
+          type: string
+          format: date
+          description: "The date and time when the quarantine range was created. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z"
+          example: '2020-01-02T15:04:05Z'
+        dataLock:
+          type: boolean
+          description: Resource is data locked or not, if true, cannot delete the quarantined snapshots
+          example: 'false'
     listQuarantinedResourcesResponseSchema:
       type: object
       properties:
@@ -889,6 +985,166 @@ components:
                 format: int32
         nextPageToken:
           type: string
+    listDetailsOfQuarantinedResourceResponseSchema:
+      type: object
+      properties:
+        resourceID:
+          type: integer
+          format: int64
+        rangeIDs:
+          type: array
+          items:
+            type: object
+            properties:
+              rangeID:
+                type: integer
+                format: int64
+              fromDate:
+                type: string
+                format: date
+              toDate:
+                type: string
+                format: date
+              quarantineType:
+                type: integer
+        orgID:
+          type: integer
+          format: int32
+        resourceName:
+          type: string
+        resourceParent:
+          type: string
+        resourcePlatform:
+          type: string
+        resourceType:
+          type: string
+        addedTime:
+          type: string
+          format: date-time
+        lastUpdatedTime:
+          type: string
+          format: date-time
+        dataLock:
+          type: array
+          description: Provides information related to the Data Lock status of the snapshot.
+          items:
+            type: object
+            properties:
+              storageID:
+                description: Storage ID where the snapshots are backed up
+                type: integer
+                format: int64
+              csetID:
+                description: CSET ID where the snapshots are backed up
+                type: integer
+                format: int64
+              isDataLockEnabled:
+                type: boolean
+    searchResponse:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                description: The unique ID of the resource in Druva Cloud.
+                example: 101
+              orgID:
+                type: integer
+                description: The unique identifier of the Enterprise Workloads organization for the resource. Not applicable for Endpoints.
+                example: -1
+              resourceName:
+                type: string
+                description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
+                example: DOMAIN1234
+              resourceParent:
+                type: string
+                description: Name of the user in case of a device or Server Name in case of a backup set which is quarantined. Example for Devices - Ernie Carter
+                example: Ernie Carter
+              resourceType:
+                type: string
+                description: "The type of resource. A resource can be one of the following types - \nEndpoint \nFile Server \nNAS."
+                enum:
+                - Endpoint
+                - File Server
+                - NAS
+              resourceStatus:
+                type: string
+                description: "The backup status of the resource in Druva Cloud. Status can be one of the following -\nEnabled - The resource is enabled for backup. \nDisabled - The resource is disabled for backup."
+                enum:
+                - Enabled
+                - Disabled
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: 20
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1001
+          - RealizeUda-1001
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    RR_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1111
+          - RansomwareRR-1102
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          - Invalid Resource Type
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    RR_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - RansomwareRR-1003
+          - RansomwareRR-1101
+          - RansomwareRR-1122
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+          - The requested resource ID was invalid.
+          - The requested quarantine range was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
     listAllQuarantinedSnapshotsForResourceResponseSchema:
       type: object
       properties:
@@ -949,70 +1205,6 @@ components:
           minLength: 10
           maxLength: 150
           example: Probable infection point
-    RR_HTTP_404:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - RansomwareRR-1003
-          - RansomwareRR-1101
-          - RansomwareRR-1122
-        message:
-          type: string
-          enum:
-          - The requested resource was not found.
-          - The requested resource ID was invalid.
-          - The requested quarantine range was not found.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    createQuarantineRangeV2ResponseSchema:
-      type: object
-      properties:
-        ranges:
-          type: array
-          items:
-            type: object
-            properties:
-              fromDate:
-                type: string
-                description: from date
-                example: '2020-10-25'
-              toDate:
-                type: string
-                description: to date
-                example: '2021-10-25'
-    quarantineRangeCreateResponse:
-      type: object
-      properties:
-        rangeID:
-          type: integer
-          description: The unique identifier of the quarantine range which is created or updated for the resource.
-          example: 101
-    RR_HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - RansomwareRR-1000
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     HTTP_404:
       type: object
       properties:
@@ -1032,6 +1224,156 @@ components:
           enum:
           - false
           - true
+    createQuarantineRangeV2RequestSchema:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+          - AzureVM
+        orgID:
+          type: integer
+          description: This applies to Enterprise Workloads resource types only.
+          example: -1
+        ranges:
+          type: array
+          items:
+            type: object
+            properties:
+              fromDate:
+                type: string
+                description: from date
+                example: '2020-10-25'
+              toDate:
+                type: string
+                description: Leaving the field 'toDate' empty quarantines all snapshots created after the 'fromDate', including future snapshots.
+                example: '2021-10-25'
+              quarantineType:
+                type: integer
+                description: Indicates the type of Quarantine enabled for the resource. The value 2 refers to Auto Quarantine type while 1 indicates Manual Quarantine.
+                example: 1
+    quarantineRangeCreateRequest:
+      type: object
+      required:
+      - resourceType
+      properties:
+        orgID:
+          type: integer
+          description: Specify unique ID of the Enterprise Workloads organization to which the backup set belongs. For Endpoints, specify -1.
+          example: -1
+        resourceType:
+          type: string
+          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - VMware
+          - OneDrive
+          - Google Drive
+          - SharePoint
+          - Shared Drive
+        fromDate:
+          type: string
+          format: date
+          description: "Specify a date from which you want to quarantine all the snapshots. Format - YYYY-MM-DD \n Example - 2020-10-25. \n:fa-info-circle: If you do not specify a date Druva will quarantine all the snapshots after November 10, 2019 (a system-defined limit). \n Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates."
+          example: '2020-10-25'
+        toDate:
+          type: string
+          format: date
+          description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD. \n Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
+          example: '2020-10-25'
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    quarantineRangeListResponse:
+      type: object
+      properties:
+        quarantineRanges:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceID:
+                type: integer
+                description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101.
+                example: 101
+              rangeID:
+                type: integer
+                description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
+                example: 101
+              orgID:
+                type: integer
+                description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
+                example: -1
+              resourceName:
+                type: string
+                description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
+                example: Ernie Carter's Macbook.
+              resourceParent:
+                type: string
+                description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+                example: Ernie Carter
+              resourcePlatform:
+                type: string
+                description: The operating system on the quarantined resource. Example - linux
+                example: linux
+              resourceType:
+                type: string
+                description: "The type of resource. A resource can be one of the following types:\nEndpoint \nFile Server \nNAS, and so on"
+                example: Endpoint
+              workload:
+                type: string
+                description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
+                example: endpoints
+              fromDate:
+                type: string
+                format: date
+                description: Lists the start date of the quarantine range. Example - 2020-01-25
+                example: '2020-10-25'
+              toDate:
+                type: string
+                format: date
+                description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
+                example: '2020-10-25'
+        errorMessage:
+          type: string
+          description: Error Message if any.
+          example: Message of the error seen while listing quarantined range.
+        nextPageToken:
+          type: integer
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: 20
+        isLast:
+          type: boolean
+          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
+          example: true
     snapshotListResponse:
       type: object
       properties:
@@ -1101,317 +1443,6 @@ components:
         isLast:
           type: boolean
           description: An identifier to identify if the returned page is the last page of results. Value can be one of the following - True - Is last page of results. False - There are more results available. Use 'nextPageToken' value to get the next list of results.
-    createQuarantineRangeV2RequestSchema:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
-          enum:
-          - Endpoint
-          - File Server
-          - NAS
-          - VMware
-          - OneDrive
-          - Google Drive
-          - SharePoint
-          - Shared Drive
-          - AzureVM
-        orgID:
-          type: integer
-          description: This applies to Enterprise Workloads resource types only.
-          example: -1
-        ranges:
-          type: array
-          items:
-            type: object
-            properties:
-              fromDate:
-                type: string
-                description: from date
-                example: '2020-10-25'
-              toDate:
-                type: string
-                description: Leaving the field 'toDate' empty quarantines all snapshots created after the 'fromDate', including future snapshots.
-                example: '2021-10-25'
-              quarantineType:
-                type: integer
-                description: Indicates the type of Quarantine enabled for the resource. The value 2 refers to Auto Quarantine type while 1 indicates Manual Quarantine.
-                example: 1
-    HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1001
-          - RealizeUda-1001
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1004
-          - RealizeUda-1004
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    quarantineRangeGetResponse:
-      type: object
-      properties:
-        resourceID:
-          type: integer
-          description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101
-          example: 101
-        rangeID:
-          type: integer
-          description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
-          example: 101
-        orgID:
-          type: integer
-          description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
-          example: 101
-        resourceName:
-          type: string
-          description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
-          example: Ernie Carter's Macbook
-        resourceParent:
-          type: string
-          description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
-          example: Ernie Carter
-        resourcePlatform:
-          type: string
-          description: The operating system on the quarantined resource. Example - linux
-          example: linux
-        resourceType:
-          type: string
-          description: "The type of resource. A resource can be one of the following types:\n - Endpoint \n - File Server \n - NAS, and so on"
-          example: Endpoint
-        workload:
-          type: string
-          description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
-          example: endpoints
-        fromDate:
-          type: string
-          format: date
-          description: Lists the start date of the quarantine range. Example - 2020-01-25.
-          example: '2020-10-25'
-        toDate:
-          type: string
-          format: date
-          description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
-          example: '2020-10-25'
-        addedTime:
-          type: string
-          format: date
-          description: "The date and time when the quarantine range was created. Format - YYYY-MM-DDTHH:MM:SSZ \n  Example - 2020-01-02T15:04:05Z"
-          example: '2020-01-02T15:04:05Z'
-        dataLock:
-          type: boolean
-          description: Resource is data locked or not, if true, cannot delete the quarantined snapshots
-          example: 'false'
-    RR_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - RansomwareRR-1111
-          - RansomwareRR-1102
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-          - Invalid Resource Type
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    searchResponse:
-      type: object
-      properties:
-        resources:
-          type: array
-          items:
-            type: object
-            properties:
-              resourceID:
-                type: integer
-                description: The unique ID of the resource in Druva Cloud.
-                example: 101
-              orgID:
-                type: integer
-                description: The unique identifier of the Enterprise Workloads organization for the resource. Not applicable for Endpoints.
-                example: -1
-              resourceName:
-                type: string
-                description: Specify the resource name to filter and list the specific resource name within Druva Cloud. Example - 'DOMAIN1234'.
-                example: DOMAIN1234
-              resourceParent:
-                type: string
-                description: Name of the user in case of a device or Server Name in case of a backup set which is quarantined. Example for Devices - Ernie Carter
-                example: Ernie Carter
-              resourceType:
-                type: string
-                description: "The type of resource. A resource can be one of the following types - \nEndpoint \nFile Server \nNAS."
-                enum:
-                - Endpoint
-                - File Server
-                - NAS
-              resourceStatus:
-                type: string
-                description: "The backup status of the resource in Druva Cloud. Status can be one of the following -\nEnabled - The resource is enabled for backup. \nDisabled - The resource is disabled for backup."
-                enum:
-                - Enabled
-                - Disabled
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: 20
-        isLast:
-          type: boolean
-          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
-    listDetailsOfQuarantinedResourceResponseSchema:
-      type: object
-      properties:
-        resourceID:
-          type: integer
-          format: int64
-        rangeIDs:
-          type: array
-          items:
-            type: object
-            properties:
-              rangeID:
-                type: integer
-                format: int64
-              fromDate:
-                type: string
-                format: date
-              toDate:
-                type: string
-                format: date
-              quarantineType:
-                type: integer
-        orgID:
-          type: integer
-          format: int32
-        resourceName:
-          type: string
-        resourceParent:
-          type: string
-        resourcePlatform:
-          type: string
-        resourceType:
-          type: string
-        addedTime:
-          type: string
-          format: date-time
-        lastUpdatedTime:
-          type: string
-          format: date-time
-        dataLock:
-          type: array
-          description: Provides information related to the Data Lock status of the snapshot.
-          items:
-            type: object
-            properties:
-              storageID:
-                description: Storage ID where the snapshots are backed up
-                type: integer
-                format: int64
-              csetID:
-                description: CSET ID where the snapshots are backed up
-                type: integer
-                format: int64
-              isDataLockEnabled:
-                type: boolean
-    quarantineRangeListResponse:
-      type: object
-      properties:
-        quarantineRanges:
-          type: array
-          items:
-            type: object
-            properties:
-              resourceID:
-                type: integer
-                description: The unique identifier of the resource, a device or a backup set, which is quarantined. Example - 101.
-                example: 101
-              rangeID:
-                type: integer
-                description: The unique identifier of the quarantine range for the quarantined resource. Example - 101.
-                example: 101
-              orgID:
-                type: integer
-                description: The unique identifier of the Phoenix organization for the quarantined resource. Example - 101. Not applicable for Endpoints.
-                example: -1
-              resourceName:
-                type: string
-                description: Name of the quarantined resource. Example - Ernie Carter's Macbook.
-                example: Ernie Carter's Macbook.
-              resourceParent:
-                type: string
-                description: Name of the device user in case of a device or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
-                example: Ernie Carter
-              resourcePlatform:
-                type: string
-                description: The operating system on the quarantined resource. Example - linux
-                example: linux
-              resourceType:
-                type: string
-                description: "The type of resource. A resource can be one of the following types:\nEndpoint \nFile Server \nNAS, and so on"
-                example: Endpoint
-              workload:
-                type: string
-                description: "The type of workload. A workload can be one of the following types:\nendpoint \nfile Server \nnas, and so on"
-                example: endpoints
-              fromDate:
-                type: string
-                format: date
-                description: Lists the start date of the quarantine range. Example - 2020-01-25
-                example: '2020-10-25'
-              toDate:
-                type: string
-                format: date
-                description: Lists the end date of the quarantine change. If the administrator has not defined any end date, empty string is returned.
-                example: '2020-10-25'
-        errorMessage:
-          type: string
-          description: Error Message if any.
-          example: Message of the error seen while listing quarantined range.
-        nextPageToken:
-          type: integer
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: 20
-        isLast:
-          type: boolean
-          description: "An identifier to identify if the returned page is the last page of results. Value can be one of the following - \nTrue - Is last page of results. \nFalse - There are more results available. Use 'nextPageToken' value to get the next list of results."
-          example: true
     quarantineRangeUpdateRequest:
       type: object
       properties:
@@ -1424,37 +1455,6 @@ components:
           type: string
           format: date
           description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD.\n  Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
-          example: '2020-10-25'
-    quarantineRangeCreateRequest:
-      type: object
-      required:
-      - resourceType
-      properties:
-        orgID:
-          type: integer
-          description: Specify unique ID of the Enterprise Workloads organization to which the backup set belongs. For Endpoints, specify -1.
-          example: -1
-        resourceType:
-          type: string
-          description: "Select the resource type. \n Select Endpoint if you want to quarantine snapshots on a device. \n Select File Server, NAS, and so on respectively if you want to quarantine snapshots on server data sources."
-          enum:
-          - Endpoint
-          - File Server
-          - NAS
-          - VMware
-          - OneDrive
-          - Google Drive
-          - SharePoint
-          - Shared Drive
-        fromDate:
-          type: string
-          format: date
-          description: "Specify a date from which you want to quarantine all the snapshots. Format - YYYY-MM-DD \n Example - 2020-10-25. \n:fa-info-circle: If you do not specify a date Druva will quarantine all the snapshots after November 10, 2019 (a system-defined limit). \n Druva uses UTC time zone to quarantine a resource. You must factor in the difference between the resource time zone and UTC zone while selecting the dates."
-          example: '2020-10-25'
-        toDate:
-          type: string
-          format: date
-          description: "Specify the date until which you want to quarantine the snapshots on the resource. Format - YYYY-MM-DD. \n Example - 2020-04-01 \n:fa-info-circle: If you do not specify a date Druva will keep quarantining all the snapshots formed on the resource indefinitely."
           example: '2020-10-25'
   requestBodies:
     createQuarantineRangeV2RequestSchema:

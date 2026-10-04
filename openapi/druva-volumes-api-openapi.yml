@@ -438,123 +438,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsVolumesIdsResponse:
-      properties:
-        AccountId:
-          type: string
-        Name:
-          type: string
-        Region:
-          type: string
-        Type:
-          type: string
-        VolumeId:
-          type: string
-      type: object
-    GetOrganizationsAccountsVolumesResponse:
-      properties:
-        hits:
-          properties:
-            _id:
-              type: string
-            _index:
-              type: string
-            _routing:
-              type: string
-            _score:
-              type: integer
-            _source:
-              properties:
-                __AccountId:
-                  type: string
-                __OrganizationId:
-                  type: string
-                Attachments:
-                  items:
-                    properties:
-                      AttachTime:
-                        format: date-time
-                        type: string
-                      DeleteOnTermination:
-                        type: boolean
-                      Device:
-                        type: string
-                      InstanceId:
-                        type: string
-                      State:
-                        type: string
-                      VolumeId:
-                        type: string
-                    type: object
-                  type: array
-                AvailabilityZone:
-                  type: string
-                CreateTime:
-                  format: date-time
-                  type: string
-                Encrypted:
-                  type: boolean
-                Id:
-                  type: string
-                Iops:
-                  type: integer
-                ObjectType:
-                  type: string
-                postDate:
-                  format: date-time
-                  type: string
-                Region:
-                  type: string
-                Size:
-                  type: integer
-                SnapshotId:
-                  type: string
-                Source:
-                  type: string
-                State:
-                  type: string
-                Tags:
-                  items:
-                    properties:
-                      Key:
-                        type: string
-                      Value:
-                        type: string
-                    type: object
-                  type: array
-                TagStrings:
-                  items:
-                    properties:
-                      Combined:
-                        type: string
-                    type: object
-                  type: array
-                Type:
-                  type: string
-                VolumeId:
-                  type: string
-                VolumeType:
-                  type: string
-              type: object
-            _type:
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    PutOrganizationsAccountsVolumesByIdRequest:
-      properties:
-        Tags:
-          items:
-            properties:
-              Key:
-                type: string
-              Value:
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsVolumesTagsKeysResponse:
+    GetOrganizationsAccountsVolumesTagsKeysValuesResponse:
       properties:
         values:
           items:
@@ -636,37 +520,12 @@ components:
         VolumeType:
           type: string
       type: object
-    PostOrganizationsAccountsVolumesTagsCountRequest:
-      properties:
-        account_ids:
-          items:
-            type: string
-          type: array
-        all:
-          type: boolean
-        Tags:
-          items:
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-            type: object
-          type: array
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsAccountsVolumesTagsKeysValuesResponse:
+    GetOrganizationsAccountsVolumesTagsKeysResponse:
       properties:
         values:
           items:
             type: string
           type: array
-      type: object
-    PutOrganizationsAccountsVolumesByIdResponse:
       type: object
     PostOrganizationsAccountsVolumesTagsCountResponse:
       properties:
@@ -766,8 +625,149 @@ components:
               type: integer
           type: object
       type: object
+    PutOrganizationsAccountsVolumesByIdResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsAccountsVolumesIdsResponse:
+      properties:
+        AccountId:
+          type: string
+        Name:
+          type: string
+        Region:
+          type: string
+        Type:
+          type: string
+        VolumeId:
+          type: string
+      type: object
     empty:
       properties: {}
+      type: object
+    PostOrganizationsAccountsVolumesTagsCountRequest:
+      properties:
+        account_ids:
+          items:
+            type: string
+          type: array
+        all:
+          type: boolean
+        Tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
+      type: object
+    PutOrganizationsAccountsVolumesByIdRequest:
+      properties:
+        Tags:
+          items:
+            properties:
+              Key:
+                type: string
+              Value:
+                type: string
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsVolumesResponse:
+      properties:
+        hits:
+          properties:
+            _id:
+              type: string
+            _index:
+              type: string
+            _routing:
+              type: string
+            _score:
+              type: integer
+            _source:
+              properties:
+                __AccountId:
+                  type: string
+                __OrganizationId:
+                  type: string
+                Attachments:
+                  items:
+                    properties:
+                      AttachTime:
+                        format: date-time
+                        type: string
+                      DeleteOnTermination:
+                        type: boolean
+                      Device:
+                        type: string
+                      InstanceId:
+                        type: string
+                      State:
+                        type: string
+                      VolumeId:
+                        type: string
+                    type: object
+                  type: array
+                AvailabilityZone:
+                  type: string
+                CreateTime:
+                  format: date-time
+                  type: string
+                Encrypted:
+                  type: boolean
+                Id:
+                  type: string
+                Iops:
+                  type: integer
+                ObjectType:
+                  type: string
+                postDate:
+                  format: date-time
+                  type: string
+                Region:
+                  type: string
+                Size:
+                  type: integer
+                SnapshotId:
+                  type: string
+                Source:
+                  type: string
+                State:
+                  type: string
+                Tags:
+                  items:
+                    properties:
+                      Key:
+                        type: string
+                      Value:
+                        type: string
+                    type: object
+                  type: array
+                TagStrings:
+                  items:
+                    properties:
+                      Combined:
+                        type: string
+                    type: object
+                  type: array
+                Type:
+                  type: string
+                VolumeId:
+                  type: string
+                VolumeType:
+                  type: string
+              type: object
+            _type:
+              type: string
+          type: object
+        total:
+          type: integer
       type: object
   securitySchemes:
     API_Authorizer:

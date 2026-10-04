@@ -424,26 +424,6 @@ components:
           enum:
           - false
           - true
-    FS_HTTP_404:
-      type: string
-      enum:
-      - 404 page not found
-    FS_HTTP_403:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - MDS-1205
-        message:
-          type: string
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     FS_HTTP_401:
       type: object
       properties:
@@ -464,6 +444,26 @@ components:
           enum:
           - false
           - true
+    FS_HTTP_403:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - MDS-1205
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    FS_HTTP_404:
+      type: string
+      enum:
+      - 404 page not found
   securitySchemes:
     OAuth2:
       type: oauth2

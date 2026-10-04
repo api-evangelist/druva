@@ -1262,23 +1262,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    DeviceListV2:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The total number of devices listed in the result pages.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeviceV2'
-    DeviceMappingCreate:
+    DeviceMappingListResponse:
       type: object
       properties:
         mappingID:
@@ -1313,92 +1297,176 @@ components:
           type: string
           description: The type of data restore performed on the new device. Example - SYSTEM
           example: SYSTEM
-    DeviceList:
+        createdTime:
+          type: string
+          format: date-time
+          description: The date and time when the device mapping was created. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+    RestoreDefault:
       type: object
       properties:
-        totalSize:
+        deviceID:
           type: integer
-          format: int64
-          description: The total number of devices listed in the result pages.
-          example: 1
-        nextPageToken:
+          description: 'The unique ID of the device in inSync from which the restore activity was triggered. Example: 12345'
+          default: null
+          example: 12345
+        targetDeviceID:
+          type: integer
+          description: 'The unique ID of the device in inSync to which the data was restored.
+
+            It can be similar to ''deviceID'' if the data was restored on the same device. Example: 12345.'
+          default: null
+          example: 12345
+        restoreLocation:
           type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/Device'
-    Backup:
+          description: "Displays the location at which the data was restored. Example - Original.\nPossible values are - \n1) Desktop - If the data was restored on the user desktop. \n2) Original - If the data was restored to the original location from where it was backed up. \n3) Absolute path of the location on the device if the data was restored at a custom location."
+          default: ''
+          example: Desktop
+        userID:
+          type: integer
+          description: 'The unique ID of the user in inSync for whom the restore activity was triggered. Example: 12345'
+          default: null
+          example: 12345
+        restoreID:
+          type: integer
+          description: "The unique ID of the restore activity. Example: 12345. \nThis value is 'null' in case the restore was initiated from a mobile device. "
+          default: null
+          example: 12345
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the restore activity. Example - 2013-04-17T09:12:36Z
+          default: ''
+          example: '2019-11-19T06:49:15Z'
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the restore activity. No value is displayed for this field as it is an ongoing restore activity.
+          default: ''
+          example: ''
+        status:
+          type: string
+          description: ' The status of the restore activity. Always displays ''Ongoing'' as the restore activity is in progress'
+          default: Ongoing
+          example: Ongoing
+        restoreSize:
+          type: string
+          description: The size of data restored. No value is displayed for this field as it is an ongoing restore activity.
+          default: ''
+          example: ''
+        numberOfFilesRestored:
+          type: integer
+          description: The number of files restored in the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity..
+          default: null
+          example: null
+        numberOfFilesMissed:
+          type: integer
+          description: The number of files missed during the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity.
+          default: null
+          example: null
+        restoreMode:
+          type: string
+          description: Information of the restore initiator. Always displays 'Admin' as the initiator of the restore activity.
+          default: Admin
+          example: Admin
+        systemSettingsRestore:
+          type: boolean
+          description: ' Displays whether system settings are restored as part of restore. ''Null'' is displayed for this field as it is an ongoing restore activity.'
+          default: null
+          example: null
+        failureReason:
+          type: string
+          description: Displays the reason for failure if the restore activity has failed, else the value is empty.
+          default: ''
+          example: ''
+    Device:
       type: object
       properties:
         deviceID:
           type: integer
           format: int64
-          description: It is unique postive integer id associated with device.
+          description: The unique id of the device in inSync. Example - 12345
           example: 12345
-        backupStatus:
+        deviceName:
           type: string
-          description: Backup status of the device
+          description: The device name in inSync. Example - Ernie Carter's Macbook
+          example: Ernie Carter's Macbook
+        serialNumber:
+          type: string
+          description: A unique, identifying number assigned to an individual piece of hardware by the manufacturer. Example - PX045
+          example: PX045
+        deviceOS:
+          type: string
+          description: The operating system of the device. Example - Mojave
+          example: mojave
+        deviceOSVersion:
+          type: string
+          description: The version of the operating system of the device. Example - 10.14 r34567
+          example: 10.14 r34567
+        platformOS:
+          type: string
+          description: The operating system platform of the device. Example - darwin
+          example: darwin
           enum:
-          - Completed
-        filesBackedUp:
-          type: integer
-          description: The number of files backed up in the last successful backup.
-          example: 124
-        bytesTransferred:
-          type: integer
-          description: The number of bytes transferred in the last successful backup.
-          example: 23456
-        filesMissed:
-          type: integer
-          description: The number of files missed on the device in the last successful backup.
-          example: 50
-        snapshotSize:
+          - win32
+          - linux2
+          - darwin
+          - android
+          - ios
+        uuid:
           type: string
-          description: The size of the snapshot generated in the last successful backup in MBs.
-          example: 2546 MB
-        startTime:
+          description: A 128-bit number used to uniquely identify device in internet. Example - TY5h67-5674r-675645
+          example: TY5h67-5674r-675645
+        clientVersion:
+          type: string
+          description: The inSync Client version installed on the device. Example - 6.1.0 r56746
+          example: 6.1.0 r56746
+        deviceStatus:
+          type: string
+          description: The status of the device. Example - enabled
+          enum:
+          - enabled
+          - disabled
+        upgradeState:
+          type: string
+          description: The upgrade state of the device.
+          enum:
+          - NOT UPGRADABLE
+          - UPGRADABLE
+          - UPTODATE
+          - SCHEDULED
+          - UNKNOWN
+        userID:
+          type: integer
+          description: A unique id of the user in inSync.
+          example: 1
+        totalBackupData:
+          type: string
+          description: The storage quota consumed by the user.
+          example: 40.05 GB
+        totalBackupDataInBytes:
+          type: integer
+          description: The storage quota consumed by the user (in bytes).
+          example: 43003360051
+        addedOn:
           type: string
           format: date-time
-          description: The start time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
           example: '2019-10-25T00:00:00Z'
-        endTime:
+        lastUpgradedOn:
           type: string
           format: date-time
-          description: The end time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          description: The date on which the inSync Client was last updated for the user. Example - 2019-10-25T00:00:00Z
           example: '2019-10-25T00:00:00Z'
-        systemSettingsBackedUp:
+        lastConnected:
+          type: string
+          format: date-time
+          description: The date and time on which the inSync Client last connected with inSync Cloud. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        deviceMarkedInactive:
           type: boolean
-          description: Specifies whether the system settings were backed up as part of the backup.
-    CreateRestores:
-      type: object
-      properties:
-        restores:
-          type: array
-          items:
-            $ref: '#/components/schemas/RestoreDefault'
-        totalSize:
-          type: integer
-          format: int64
-          description: The total number of restore activities created.
-          example: 1
-    DeviceMappingList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The total number of device mappings listed on the result page. Example - 3
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        imdMappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeviceMappingListResponse'
+          description: Devices marked as inactive. Example - true
+          example: true
     DeviceV2:
       type: object
       properties:
@@ -1501,171 +1569,6 @@ components:
           format: date-time
           description: The date and time when the device was disabled. Example - 2019-10-25T00:00:00Z
           example: '2019-10-25T00:00:00Z'
-    Device:
-      type: object
-      properties:
-        deviceID:
-          type: integer
-          format: int64
-          description: The unique id of the device in inSync. Example - 12345
-          example: 12345
-        deviceName:
-          type: string
-          description: The device name in inSync. Example - Ernie Carter's Macbook
-          example: Ernie Carter's Macbook
-        serialNumber:
-          type: string
-          description: A unique, identifying number assigned to an individual piece of hardware by the manufacturer. Example - PX045
-          example: PX045
-        deviceOS:
-          type: string
-          description: The operating system of the device. Example - Mojave
-          example: mojave
-        deviceOSVersion:
-          type: string
-          description: The version of the operating system of the device. Example - 10.14 r34567
-          example: 10.14 r34567
-        platformOS:
-          type: string
-          description: The operating system platform of the device. Example - darwin
-          example: darwin
-          enum:
-          - win32
-          - linux2
-          - darwin
-          - android
-          - ios
-        uuid:
-          type: string
-          description: A 128-bit number used to uniquely identify device in internet. Example - TY5h67-5674r-675645
-          example: TY5h67-5674r-675645
-        clientVersion:
-          type: string
-          description: The inSync Client version installed on the device. Example - 6.1.0 r56746
-          example: 6.1.0 r56746
-        deviceStatus:
-          type: string
-          description: The status of the device. Example - enabled
-          enum:
-          - enabled
-          - disabled
-        upgradeState:
-          type: string
-          description: The upgrade state of the device.
-          enum:
-          - NOT UPGRADABLE
-          - UPGRADABLE
-          - UPTODATE
-          - SCHEDULED
-          - UNKNOWN
-        userID:
-          type: integer
-          description: A unique id of the user in inSync.
-          example: 1
-        totalBackupData:
-          type: string
-          description: The storage quota consumed by the user.
-          example: 40.05 GB
-        totalBackupDataInBytes:
-          type: integer
-          description: The storage quota consumed by the user (in bytes).
-          example: 43003360051
-        addedOn:
-          type: string
-          format: date-time
-          description: The date and time on which the device was added to inSync. Example - 2019-10-25T00:00:00Z
-          example: '2019-10-25T00:00:00Z'
-        lastUpgradedOn:
-          type: string
-          format: date-time
-          description: The date on which the inSync Client was last updated for the user. Example - 2019-10-25T00:00:00Z
-          example: '2019-10-25T00:00:00Z'
-        lastConnected:
-          type: string
-          format: date-time
-          description: The date and time on which the inSync Client last connected with inSync Cloud. Example - 2019-10-25T00:00:00Z
-          example: '2019-10-25T00:00:00Z'
-        deviceMarkedInactive:
-          type: boolean
-          description: Devices marked as inactive. Example - true
-          example: true
-    RestoreDefault:
-      type: object
-      properties:
-        deviceID:
-          type: integer
-          description: 'The unique ID of the device in inSync from which the restore activity was triggered. Example: 12345'
-          default: null
-          example: 12345
-        targetDeviceID:
-          type: integer
-          description: 'The unique ID of the device in inSync to which the data was restored.
-
-            It can be similar to ''deviceID'' if the data was restored on the same device. Example: 12345.'
-          default: null
-          example: 12345
-        restoreLocation:
-          type: string
-          description: "Displays the location at which the data was restored. Example - Original.\nPossible values are - \n1) Desktop - If the data was restored on the user desktop. \n2) Original - If the data was restored to the original location from where it was backed up. \n3) Absolute path of the location on the device if the data was restored at a custom location."
-          default: ''
-          example: Desktop
-        userID:
-          type: integer
-          description: 'The unique ID of the user in inSync for whom the restore activity was triggered. Example: 12345'
-          default: null
-          example: 12345
-        restoreID:
-          type: integer
-          description: "The unique ID of the restore activity. Example: 12345. \nThis value is 'null' in case the restore was initiated from a mobile device. "
-          default: null
-          example: 12345
-        startTime:
-          type: string
-          format: date-time
-          description: The start time of the restore activity. Example - 2013-04-17T09:12:36Z
-          default: ''
-          example: '2019-11-19T06:49:15Z'
-        endTime:
-          type: string
-          format: date-time
-          description: The end time of the restore activity. No value is displayed for this field as it is an ongoing restore activity.
-          default: ''
-          example: ''
-        status:
-          type: string
-          description: ' The status of the restore activity. Always displays ''Ongoing'' as the restore activity is in progress'
-          default: Ongoing
-          example: Ongoing
-        restoreSize:
-          type: string
-          description: The size of data restored. No value is displayed for this field as it is an ongoing restore activity.
-          default: ''
-          example: ''
-        numberOfFilesRestored:
-          type: integer
-          description: The number of files restored in the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity..
-          default: null
-          example: null
-        numberOfFilesMissed:
-          type: integer
-          description: The number of files missed during the restore activity. 'Null' is displayed for this field as it is an ongoing restore activity.
-          default: null
-          example: null
-        restoreMode:
-          type: string
-          description: Information of the restore initiator. Always displays 'Admin' as the initiator of the restore activity.
-          default: Admin
-          example: Admin
-        systemSettingsRestore:
-          type: boolean
-          description: ' Displays whether system settings are restored as part of restore. ''Null'' is displayed for this field as it is an ongoing restore activity.'
-          default: null
-          example: null
-        failureReason:
-          type: string
-          description: Displays the reason for failure if the restore activity has failed, else the value is empty.
-          default: ''
-          example: ''
     Restore:
       type: object
       properties:
@@ -1714,21 +1617,36 @@ components:
           type: string
           description: This returns the failure reason if the status is 'failed' else returns 'empty.
           example: ''
-    BackupList:
+    RestoreList:
       type: object
       properties:
         totalSize:
           type: integer
           format: int64
+          description: 'The total number of restore activities listed in the result pages. Example: 4096'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        restores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Restore'
+    DeviceListV2:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of devices listed in the result pages.
           example: 1
         nextPageToken:
           type: string
           description: The token to access next page of results. This parameter will be empty for the last page of results.
           example: MTExMQ==
-        backups:
+        devices:
           type: array
           items:
-            $ref: '#/components/schemas/Backup'
+            $ref: '#/components/schemas/DeviceV2'
     Error:
       type: object
       properties:
@@ -1747,25 +1665,7 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    HTTP_403:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncAdmanagement-1221
-          description: Application specific error code
-        message:
-          type: string
-          example: Access restricted due to insufficient permissions.
-          description: Application specific error message
-        retryable:
-          type: boolean
-          example: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    DeviceMappingListResponse:
+    DeviceMappingCreate:
       type: object
       properties:
         mappingID:
@@ -1800,25 +1700,125 @@ components:
           type: string
           description: The type of data restore performed on the new device. Example - SYSTEM
           example: SYSTEM
-        createdTime:
-          type: string
-          format: date-time
-          description: The date and time when the device mapping was created. Example - 2019-10-25T00:00:00Z
-          example: '2019-10-25T00:00:00Z'
-    RestoreList:
+    DeviceList:
       type: object
       properties:
         totalSize:
           type: integer
           format: int64
-          description: 'The total number of restore activities listed in the result pages. Example: 4096'
+          description: The total number of devices listed in the result pages.
+          example: 1
         nextPageToken:
           type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    CreateRestores:
+      type: object
+      properties:
         restores:
           type: array
           items:
-            $ref: '#/components/schemas/Restore'
+            $ref: '#/components/schemas/RestoreDefault'
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of restore activities created.
+          example: 1
+    Backup:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          format: int64
+          description: It is unique postive integer id associated with device.
+          example: 12345
+        backupStatus:
+          type: string
+          description: Backup status of the device
+          enum:
+          - Completed
+        filesBackedUp:
+          type: integer
+          description: The number of files backed up in the last successful backup.
+          example: 124
+        bytesTransferred:
+          type: integer
+          description: The number of bytes transferred in the last successful backup.
+          example: 23456
+        filesMissed:
+          type: integer
+          description: The number of files missed on the device in the last successful backup.
+          example: 50
+        snapshotSize:
+          type: string
+          description: The size of the snapshot generated in the last successful backup in MBs.
+          example: 2546 MB
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the last successful backup. Example - 2019-10-25T00:00:00Z
+          example: '2019-10-25T00:00:00Z'
+        systemSettingsBackedUp:
+          type: boolean
+          description: Specifies whether the system settings were backed up as part of the backup.
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    DeviceMappingList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The total number of device mappings listed on the result page. Example - 3
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        imdMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceMappingListResponse'
+    BackupList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Backup'
   securitySchemes:
     OAuth2:
       type: oauth2

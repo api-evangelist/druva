@@ -111,25 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTP_500'
 components:
   schemas:
-    HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1001
-          - RealizeUda-1001
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     HTTP_500:
       type: object
       description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
@@ -143,25 +124,6 @@ components:
           type: string
           enum:
           - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    HTTP_404:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1002
-          - RealizeUda-1002
-        message:
-          type: string
-          enum:
-          - The requested resource was not found.
         data:
           type: object
         retryable:
@@ -305,6 +267,44 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
           example: eyJpZCI6NTY1NX0=
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1001
+          - RealizeUda-1001
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1002
+          - RealizeUda-1002
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
   securitySchemes:
     OAuth2:
       type: oauth2

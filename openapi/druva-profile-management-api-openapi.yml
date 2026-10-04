@@ -107,22 +107,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Profile:
-      type: object
-      properties:
-        profileID:
-          type: integer
-          format: int64
-          description: The unique id of the profile in inSync. Example - 1
-          example: 1
-        profileName:
-          type: string
-          description: The name assigned to the profile in inSync. Example - Default
-          example: profile1
-        profileDescription:
-          type: string
-          description: Description of the profile. Example - Default profile with pre-configured values
-          example: dummy
     ProfileList:
       type: object
       properties:
@@ -157,6 +141,22 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    Profile:
+      type: object
+      properties:
+        profileID:
+          type: integer
+          format: int64
+          description: The unique id of the profile in inSync. Example - 1
+          example: 1
+        profileName:
+          type: string
+          description: The name assigned to the profile in inSync. Example - Default
+          example: profile1
+        profileDescription:
+          type: string
+          description: Description of the profile. Example - Default profile with pre-configured values
+          example: dummy
     Error:
       type: object
       properties:

@@ -902,6 +902,625 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyResponse:
+      properties:
+        verifiedResources:
+          items:
+            type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansCountResponse:
+      properties:
+        count:
+          type: integer
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansResponse:
+      properties:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        failover_shutdown_setting:
+          type: boolean
+        id:
+          type: integer
+        instance_not_available_setting:
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        mappings:
+          items:
+            properties:
+              disaster_recovery_plan_id:
+                type: integer
+              disasterRecoveryPlanId:
+                type: integer
+              id:
+                type: integer
+              mapping:
+                type: string
+              target_account_id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        organizationId:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                    ruleId:
+                      type: integer
+                  type: object
+                type: array
+              all_resource_types:
+                type: boolean
+              createdAt:
+                format: date-time
+                type: string
+              dr_plan_id:
+                type: integer
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              matches:
+                type: object
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              updatedAt:
+                format: date-time
+                type: string
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          type: string
+        test_schedule_enabled:
+          type: boolean
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansScheduleRequest:
+      properties:
+        cron_string:
+          type: string
+        never_delete:
+          type: boolean
+        retention_amount:
+          type: integer
+        retention_unit:
+          type: string
+        test_restart_setting:
+          type: boolean
+        test_schedule_enabled:
+          type: boolean
+        test_shutdown_setting:
+          type: boolean
+        timezone_location:
+          type: string
+      type: object
+    PutOrganizationsAccountsDisasterrecoveryplansByIdRequest:
+      properties:
+        account_id:
+          type: string
+        description:
+          type: string
+        failover_shutdown_setting:
+          type: boolean
+        instance_not_available_setting:
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        mappings:
+          items:
+            type: object
+          type: array
+        match_all_tags_flag:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        resources:
+          items:
+            type: string
+          type: array
+        rules:
+          items:
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          type: string
+        test_plan_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          type: string
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansResponse:
+      properties:
+        total:
+          type: integer
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansExecutionsByIdResponse:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        disaster_recovery_plan:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            failover_shutdown_setting:
+              type: boolean
+            id:
+              type: integer
+            instance_not_available_setting:
+              type: string
+            is_cross_account:
+              type: boolean
+            is_valid:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+            recovery_time_objective:
+              type: integer
+            recovery_time_unit:
+              type: string
+            source_environment_id:
+              type: integer
+            summary:
+              type: string
+            target_account_id:
+              type: string
+            target_environment_id:
+              type: integer
+            test_plan_ec2_instance_type:
+              type: string
+            test_plan_rds_instance_type:
+              type: string
+            test_retention_amount:
+              type: integer
+            test_retention_unit:
+              type: string
+            test_schedule_cron:
+              type: string
+            test_schedule_enabled:
+              type: boolean
+            test_schedule_timezone:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        disaster_recovery_plan_id:
+          type: integer
+        end_time:
+          type: string
+        execution_resources:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        is_latest:
+          type: boolean
+        start_time:
+          format: date-time
+          type: string
+        status:
+          type: string
+        test_retention_amount:
+          type: integer
+        test_retention_unit:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansLogsResponse:
+      properties:
+        jobs:
+          items:
+            type: string
+          type: array
+      type: object
+    PutOrganizationsAccountsDisasterrecoveryplansByIdResponse:
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansFailbackResponse:
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansScheduleResponse:
+      type: integer
+    GetOrganizationsAccountsDisasterrecoveryplansExecutionsResponse:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        disaster_recovery_plan:
+          properties:
+            account_id:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            deleted_at:
+              type: string
+            description:
+              type: string
+            failover_shutdown_setting:
+              type: boolean
+            id:
+              type: integer
+            instance_not_available_setting:
+              type: string
+            is_cross_account:
+              type: boolean
+            is_valid:
+              type: boolean
+            match_all_tags_flag:
+              type: boolean
+            name:
+              type: string
+            organization_id:
+              type: string
+            recovery_point_objective:
+              type: integer
+            recovery_point_unit:
+              type: string
+            recovery_time_objective:
+              type: integer
+            recovery_time_unit:
+              type: string
+            source_environment_id:
+              type: integer
+            summary:
+              type: string
+            target_account_id:
+              type: string
+            target_environment_id:
+              type: integer
+            test_plan_ec2_instance_type:
+              type: string
+            test_plan_rds_instance_type:
+              type: string
+            test_retention_amount:
+              type: integer
+            test_retention_unit:
+              type: string
+            test_schedule_cron:
+              type: string
+            test_schedule_enabled:
+              type: boolean
+            test_schedule_timezone:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        disaster_recovery_plan_id:
+          type: integer
+        end_time:
+          type: string
+        execution_resources:
+          items:
+            type: object
+          type: array
+        id:
+          type: integer
+        is_latest:
+          type: boolean
+        start_time:
+          format: date-time
+          type: string
+        status:
+          type: string
+        test_retention_amount:
+          type: integer
+        test_retention_unit:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansFailbackRequest:
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyRequest:
+      properties:
+        resources:
+          items:
+            type: string
+          type: array
+        source_region:
+          type: string
+        target_account_id:
+          type: string
+        target_region:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsDisasterrecoveryplansByIdResponse:
+      type: object
+    GetOrganizationsAccountsDisasterrecoveryplansEnvironmentByIdResponse:
+      properties:
+        drplans:
+          items:
+            properties:
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              deleted_at:
+                type: string
+              description:
+                type: string
+              failover_shutdown_setting:
+                type: boolean
+              id:
+                type: integer
+              instance_not_available_setting:
+                type: string
+              is_cross_account:
+                type: boolean
+              is_valid:
+                type: boolean
+              match_all_tags_flag:
+                type: boolean
+              name:
+                type: string
+              organization_id:
+                type: string
+              recovery_point_objective:
+                type: integer
+              recovery_point_unit:
+                type: string
+              recovery_time_objective:
+                type: integer
+              recovery_time_unit:
+                type: string
+              source_environment_id:
+                type: integer
+              summary:
+                type: string
+              target_account_id:
+                type: string
+              target_environment_id:
+                type: integer
+              test_plan_ec2_instance_type:
+                type: string
+              test_plan_rds_instance_type:
+                type: string
+              test_retention_amount:
+                type: string
+              test_retention_unit:
+                type: string
+              test_schedule_cron:
+                type: string
+              test_schedule_enabled:
+                type: boolean
+              test_schedule_timezone:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+            type: object
+          type: array
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsAccountsDisasterrecoveryplansRequest:
+      properties:
+        account_id:
+          type: string
+        description:
+          type: string
+        instance_not_available_setting:
+          enum:
+          - up
+          - down
+          - fail
+          type: string
+        is_cross_account:
+          type: boolean
+        is_valid:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        preserve_private_ips:
+          type: boolean
+        recovery_point_objective:
+          type: integer
+        recovery_point_unit:
+          type: string
+        recovery_time_objective:
+          type: integer
+        recovery_time_unit:
+          type: string
+        resources:
+          items:
+            type: string
+          type: array
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    rule_id:
+                      type: integer
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              id:
+                type: integer
+              matches:
+                properties:
+                  tags:
+                    items:
+                      properties:
+                        Key:
+                          type: string
+                        Value:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                    region:
+                      type: string
+                    resource_id:
+                      type: string
+                    resource_name:
+                      type: string
+                    rule_id:
+                      type: integer
+                    type:
+                      type: string
+                  type: object
+                type: array
+              rule_type:
+                type: string
+              updated_at:
+                type: string
+            type: object
+          type: array
+        source_environment_id:
+          type: integer
+        target_account_id:
+          type: string
+        target_environment_id:
+          type: integer
+        test_plan_ec2_instance_type:
+          default: source
+          type: string
+        test_plan_instance_type:
+          type: string
+        test_plan_rds_instance_type:
+          default: source
+          type: string
+      type: object
     GetOrganizationsAccountsDisasterrecoveryplansServersBackupsResponse:
       properties:
         backups:
@@ -1098,625 +1717,6 @@ components:
         updated_at:
           format: date-time
           type: string
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyRequest:
-      properties:
-        resources:
-          items:
-            type: string
-          type: array
-        source_region:
-          type: string
-        target_account_id:
-          type: string
-        target_region:
-          type: string
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansScheduleResponse:
-      type: integer
-    PostOrganizationsAccountsDisasterrecoveryplansFailbackResponse:
-      type: object
-    DeleteOrganizationsAccountsDisasterrecoveryplansByIdResponse:
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansScheduleRequest:
-      properties:
-        cron_string:
-          type: string
-        never_delete:
-          type: boolean
-        retention_amount:
-          type: integer
-        retention_unit:
-          type: string
-        test_restart_setting:
-          type: boolean
-        test_schedule_enabled:
-          type: boolean
-        test_shutdown_setting:
-          type: boolean
-        timezone_location:
-          type: string
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansRequest:
-      properties:
-        account_id:
-          type: string
-        description:
-          type: string
-        instance_not_available_setting:
-          enum:
-          - up
-          - down
-          - fail
-          type: string
-        is_cross_account:
-          type: boolean
-        is_valid:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-        preserve_private_ips:
-          type: boolean
-        recovery_point_objective:
-          type: integer
-        recovery_point_unit:
-          type: string
-        recovery_time_objective:
-          type: integer
-        recovery_time_unit:
-          type: string
-        resources:
-          items:
-            type: string
-          type: array
-        rules:
-          items:
-            properties:
-              accounts:
-                items:
-                  properties:
-                    account_id:
-                      type: string
-                    rule_id:
-                      type: integer
-                  type: object
-                type: array
-              all_accounts:
-                type: boolean
-              all_regions:
-                type: boolean
-              all_resource_types:
-                type: boolean
-              created_at:
-                type: string
-              exclude:
-                type: boolean
-              id:
-                type: integer
-              matches:
-                properties:
-                  tags:
-                    items:
-                      properties:
-                        Key:
-                          type: string
-                        Value:
-                          type: string
-                      type: object
-                    type: array
-                type: object
-              policy_id:
-                type: integer
-              regions:
-                items:
-                  type: string
-                type: array
-              resource_types:
-                items:
-                  type: string
-                type: array
-              resources:
-                items:
-                  properties:
-                    account_id:
-                      type: string
-                    region:
-                      type: string
-                    resource_id:
-                      type: string
-                    resource_name:
-                      type: string
-                    rule_id:
-                      type: integer
-                    type:
-                      type: string
-                  type: object
-                type: array
-              rule_type:
-                type: string
-              updated_at:
-                type: string
-            type: object
-          type: array
-        source_environment_id:
-          type: integer
-        target_account_id:
-          type: string
-        target_environment_id:
-          type: integer
-        test_plan_ec2_instance_type:
-          default: source
-          type: string
-        test_plan_instance_type:
-          type: string
-        test_plan_rds_instance_type:
-          default: source
-          type: string
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansExecutionsByIdResponse:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        deleted_at:
-          type: string
-        disaster_recovery_plan:
-          properties:
-            account_id:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            failover_shutdown_setting:
-              type: boolean
-            id:
-              type: integer
-            instance_not_available_setting:
-              type: string
-            is_cross_account:
-              type: boolean
-            is_valid:
-              type: boolean
-            match_all_tags_flag:
-              type: boolean
-            name:
-              type: string
-            organization_id:
-              type: string
-            recovery_point_objective:
-              type: integer
-            recovery_point_unit:
-              type: string
-            recovery_time_objective:
-              type: integer
-            recovery_time_unit:
-              type: string
-            source_environment_id:
-              type: integer
-            summary:
-              type: string
-            target_account_id:
-              type: string
-            target_environment_id:
-              type: integer
-            test_plan_ec2_instance_type:
-              type: string
-            test_plan_rds_instance_type:
-              type: string
-            test_retention_amount:
-              type: integer
-            test_retention_unit:
-              type: string
-            test_schedule_cron:
-              type: string
-            test_schedule_enabled:
-              type: boolean
-            test_schedule_timezone:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        disaster_recovery_plan_id:
-          type: integer
-        end_time:
-          type: string
-        execution_resources:
-          items:
-            type: object
-          type: array
-        id:
-          type: integer
-        is_latest:
-          type: boolean
-        start_time:
-          format: date-time
-          type: string
-        status:
-          type: string
-        test_retention_amount:
-          type: integer
-        test_retention_unit:
-          type: string
-        type:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansServersVerifyResponse:
-      properties:
-        verifiedResources:
-          items:
-            type: object
-          type: array
-      type: object
-    PutOrganizationsAccountsDisasterrecoveryplansByIdResponse:
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansFailbackRequest:
-      type: object
-    PostOrganizationsAccountsDisasterrecoveryplansResponse:
-      properties:
-        account_id:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        description:
-          type: string
-        failover_shutdown_setting:
-          type: boolean
-        id:
-          type: integer
-        instance_not_available_setting:
-          type: string
-        is_cross_account:
-          type: boolean
-        is_valid:
-          type: boolean
-        mappings:
-          items:
-            properties:
-              disaster_recovery_plan_id:
-                type: integer
-              disasterRecoveryPlanId:
-                type: integer
-              id:
-                type: integer
-              mapping:
-                type: string
-              target_account_id:
-                type: string
-              type:
-                type: string
-            type: object
-          type: array
-        match_all_tags_flag:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-        organizationId:
-          type: string
-        preserve_private_ips:
-          type: boolean
-        recovery_point_objective:
-          type: integer
-        recovery_point_unit:
-          type: string
-        recovery_time_objective:
-          type: integer
-        recovery_time_unit:
-          type: string
-        rules:
-          items:
-            properties:
-              accounts:
-                items:
-                  properties:
-                    account_id:
-                      type: string
-                    rule_id:
-                      type: integer
-                    ruleId:
-                      type: integer
-                  type: object
-                type: array
-              all_resource_types:
-                type: boolean
-              createdAt:
-                format: date-time
-                type: string
-              dr_plan_id:
-                type: integer
-              exclude:
-                type: boolean
-              id:
-                type: integer
-              matches:
-                type: object
-              regions:
-                items:
-                  type: string
-                type: array
-              resource_types:
-                items:
-                  type: string
-                type: array
-              resources:
-                items:
-                  type: string
-                type: array
-              rule_type:
-                type: string
-              updatedAt:
-                format: date-time
-                type: string
-            type: object
-          type: array
-        source_environment_id:
-          type: integer
-        target_account_id:
-          type: string
-        target_environment_id:
-          type: integer
-        test_plan_ec2_instance_type:
-          type: string
-        test_plan_rds_instance_type:
-          type: string
-        test_schedule_enabled:
-          type: boolean
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansExecutionsResponse:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        deleted_at:
-          type: string
-        disaster_recovery_plan:
-          properties:
-            account_id:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            deleted_at:
-              type: string
-            description:
-              type: string
-            failover_shutdown_setting:
-              type: boolean
-            id:
-              type: integer
-            instance_not_available_setting:
-              type: string
-            is_cross_account:
-              type: boolean
-            is_valid:
-              type: boolean
-            match_all_tags_flag:
-              type: boolean
-            name:
-              type: string
-            organization_id:
-              type: string
-            recovery_point_objective:
-              type: integer
-            recovery_point_unit:
-              type: string
-            recovery_time_objective:
-              type: integer
-            recovery_time_unit:
-              type: string
-            source_environment_id:
-              type: integer
-            summary:
-              type: string
-            target_account_id:
-              type: string
-            target_environment_id:
-              type: integer
-            test_plan_ec2_instance_type:
-              type: string
-            test_plan_rds_instance_type:
-              type: string
-            test_retention_amount:
-              type: integer
-            test_retention_unit:
-              type: string
-            test_schedule_cron:
-              type: string
-            test_schedule_enabled:
-              type: boolean
-            test_schedule_timezone:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        disaster_recovery_plan_id:
-          type: integer
-        end_time:
-          type: string
-        execution_resources:
-          items:
-            type: object
-          type: array
-        id:
-          type: integer
-        is_latest:
-          type: boolean
-        start_time:
-          format: date-time
-          type: string
-        status:
-          type: string
-        test_retention_amount:
-          type: integer
-        test_retention_unit:
-          type: string
-        type:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PutOrganizationsAccountsDisasterrecoveryplansByIdRequest:
-      properties:
-        account_id:
-          type: string
-        description:
-          type: string
-        failover_shutdown_setting:
-          type: boolean
-        instance_not_available_setting:
-          type: string
-        is_cross_account:
-          type: boolean
-        is_valid:
-          type: boolean
-        mappings:
-          items:
-            type: object
-          type: array
-        match_all_tags_flag:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-        preserve_private_ips:
-          type: boolean
-        recovery_point_objective:
-          type: integer
-        recovery_point_unit:
-          type: string
-        recovery_time_objective:
-          type: integer
-        recovery_time_unit:
-          type: string
-        resources:
-          items:
-            type: string
-          type: array
-        rules:
-          items:
-            type: object
-          type: array
-        source_environment_id:
-          type: integer
-        target_account_id:
-          type: string
-        target_environment_id:
-          type: integer
-        test_plan_ec2_instance_type:
-          type: string
-        test_plan_instance_type:
-          type: string
-        test_plan_rds_instance_type:
-          type: string
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansResponse:
-      properties:
-        total:
-          type: integer
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansCountResponse:
-      properties:
-        count:
-          type: integer
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansEnvironmentByIdResponse:
-      properties:
-        drplans:
-          items:
-            properties:
-              account_id:
-                type: string
-              created_at:
-                format: date-time
-                type: string
-              deleted_at:
-                type: string
-              description:
-                type: string
-              failover_shutdown_setting:
-                type: boolean
-              id:
-                type: integer
-              instance_not_available_setting:
-                type: string
-              is_cross_account:
-                type: boolean
-              is_valid:
-                type: boolean
-              match_all_tags_flag:
-                type: boolean
-              name:
-                type: string
-              organization_id:
-                type: string
-              recovery_point_objective:
-                type: integer
-              recovery_point_unit:
-                type: string
-              recovery_time_objective:
-                type: integer
-              recovery_time_unit:
-                type: string
-              source_environment_id:
-                type: integer
-              summary:
-                type: string
-              target_account_id:
-                type: string
-              target_environment_id:
-                type: integer
-              test_plan_ec2_instance_type:
-                type: string
-              test_plan_rds_instance_type:
-                type: string
-              test_retention_amount:
-                type: string
-              test_retention_unit:
-                type: string
-              test_schedule_cron:
-                type: string
-              test_schedule_enabled:
-                type: boolean
-              test_schedule_timezone:
-                type: string
-              updated_at:
-                format: date-time
-                type: string
-            type: object
-          type: array
-      type: object
-    GetOrganizationsAccountsDisasterrecoveryplansLogsResponse:
-      properties:
-        jobs:
-          items:
-            type: string
-          type: array
-      type: object
-    empty:
-      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

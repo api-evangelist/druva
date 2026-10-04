@@ -110,17 +110,17 @@ components:
         ip:
           type: string
       type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     empty:
       properties: {}
       type: object
     GetAuthorizeResponse:
       properties:
         token:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
           type: string
       type: object
   securitySchemes:

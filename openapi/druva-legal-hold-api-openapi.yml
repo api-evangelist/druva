@@ -1267,266 +1267,13 @@ paths:
                 $ref: '#/components/schemas/HTTP_500'
 components:
   schemas:
-    ListJobsResponse:
-      allOf:
-      - title: ListJobsResponse
-        type: object
-        properties:
-          totalPages:
-            type: integer
-            description: Total number of pages for the API Response. Example - 10
-            example: 10
-          pageNumber:
-            type: integer
-            description: Page Number for which API response is expected. Example - 1
-            example: 1
-          totalResults:
-            type: integer
-            description: Total number of jobs. Example - 4
-            example: 4
-          jobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/JobDetails'
-          pageSize:
-            type: integer
-            description: Page Size for API response. Example - 100
-            example: 100
-    RequestListPoliciesByUsers:
+    ResponseCreateLHPolicy:
       type: object
       properties:
-        custodians:
-          type: array
-          items:
-            type: object
-            properties:
-              emailId:
-                type: string
-                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
-                example: john.doe@someorg.com
-        action:
-          type: string
-          enum:
-          - list
-    CreateDownloadJobRequest:
-      title: JobDetails
-      type: object
-      properties:
-        clientName:
-          type: string
-          description: Name of the eDiscovery Download Client. Example - Client1
-          example: Client1
-        downloadOption:
-          type: integer
-          description: 0 indicates only metadata, 1 indicates data and metadata and 2 indicates zip download option.
-          enum:
-          - 0
-          - 1
-          - 2
-          example: 2
-        legalholdId:
-          type: integer
-          description: Legal Hold ID for which download is to be triggered. Example -10
-          example: 10
-        downloadLocation:
-          type: string
-          description: Location to download the job. Example - D:\Downloads
-          example: D:\Downloads
-        createdBy:
-          type: string
-          description: Name of administrator triggering the job. Example - Ernie Carter
-          example: Ernie Carter
-        custodianEmails:
-          allOf:
-          - type: array
-            items:
-              type: string
-              description: User email for which data is to be downloaded.
-              example: john.doe@druva.com
-        enable_data_integrity:
-          type: boolean
-          description: Use 'true' to enable data integrity and 'false' to disable data integrity.
-          enum:
-          - true
-          - false
-          example: false
-      required:
-      - clientName
-      - downloadOption
-      - legalholdId
-      - downloadLocation
-      - createdBy
-      - custodianEmails
-      - enable_data_integrity
-    EditlegalHoldPolicyDetailsRequest:
-      title: EditlegalHoldPolicyDetailsRequest
-      type: object
-      properties:
-        name:
-          type: string
-          description: 'Name of the Legal Hold policy. Example - Jan_2021. Note: Changing the name of the legal Hold policy will have an impact on long-running eDiscovery Download jobs. Initiate a new eDiscovery Download job in case of failure.'
-          example: Jan_2021
-        legalHoldType:
-          type: string
-          description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
-          example: Human Resources
-        startDate:
-          type: string
-          description: Displays the start time if the webdav access type option selected is 'Data within a Date Range'. Example- Apr 11 2021
-          format: mmm DD YYYY
-          example: Apr 11 2021
-        endDate:
-          type: string
-          description: Displays the end time if the webdav access type option selected is 'Data within a Date Range'. Example- Jun 12 2021
-          format: mmm DD YYYY
-          example: Jun 12 2021
-        webDavAccessType:
-          type: string
-          description: Details about the type of Webdav access. This field is case-sensitive. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
-          enum:
-          - All Collected Data
-          - Last Collected Data
-          - Data within a Date Range
-          example: Data within a Date Range
-        isADCEnabled:
-          type: boolean
-          description: Indicates if Additional Data Collection feature is enabled for Legal Hold policy. Example-true/false
-          enum:
-          - true
-          - false
-          example: 'false'
-        accessAdditionalData:
-          type: boolean
-          description: Indicates if Additional Data access option is enabled for Legal Hold policy. Example-true/false
-          enum:
-          - true
-          - false
-          example: 'false'
-        accessBackupData:
-          type: boolean
-          description: Indicates if backup data access option is enabled for Legal Hold policy. Example-true/false
-          enum:
-          - true
-          - false
-          example: 'true'
-        collectionFrequency:
-          type: string
-          description: Provides details about additional data collection frequency. This field is case-sensitive. Example - One time/Recurring
-          enum:
-          - One time
-          - Recurring
-          example: Recurring
-        deletedFilesOnly:
-          type: boolean
-          description: Use 'true' to access only deleted files of users who belong to this Legal Hold policy. Else, use 'false'.
-          enum:
-          - true
-          - false
-          example: 'true'
-    ViewLegalHoldPolicyCollectionStreamResponse:
-      type: object
-      properties:
-        streamsList:
-          $ref: '#/components/schemas/StreamList'
-        totalResults:
-          type: integer
-          format: int32
-          description: Number of devices in a given Legal Hold policy. Example- 4
-          example: 1
-    ResponseGetCustodians:
-      type: object
-      properties:
-        custodians:
-          type: array
-          items:
-            type: object
-            properties:
-              emailId:
-                type: string
-                description: Email address of the users associated with the legal hold policy. Example - ernie.carter@druva.com
-                example: john.doe@someorg.com
-              webdavUrl:
-                type: string
-                description: WebDAV URL to access the user's data.
-                example: https://restore-c1-kunals.drtst.in/webdav/LH Policy 1/uname/
-    GetLegalholds:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The data access type of the legal hold policy
-          enum:
-          - All Backup Data
-          - Last Backup Data
-          - Data within a Date Range
-          example: Data within a Date Range
-        name:
-          type: string
-          description: The name of the legal hold policy
-          example: LH Policy 1
         policyId:
           type: integer
-          description: The ID of the Legal hold policy
+          description: The ID of the legal hold policy. Example - 1
           example: '1'
-        cullingType:
-          type: string
-          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-          enum:
-          - Include All Files
-          - Include Only Deleted Files
-          example: Include Only Deleted Files
-        startDate:
-          type: string
-          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-          format: date
-          example: '2019-03-19'
-        endDate:
-          type: string
-          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-          format: date
-          example: '2019-10-25'
-    HTTP_403_Legalholds:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - inSyncLegalholds-4294967490
-          example: inSyncLegalholds-4294967490
-        message:
-          type: string
-          enum:
-          - You do not have permissions for the action.
-          example: You do not have permissions for the action.
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-          example: false
-        data:
-          type: object
-    EditlegalHoldPolicyDetailsResponse:
-      title: EditlegalHoldPolicyDetailsResponse
-      type: object
-      properties:
-        message:
-          type: string
-          example: Legal Hold updated successfully.
-        policyId:
-          type: integer
-          example: 2
-    TakeActionOnJobResponse:
-      title: TakeActionOnJobResponse
-      type: object
-      properties:
-        message:
-          type: string
-          example: Download Job has been Cancelled Successfully.
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobDetails'
     ListClients:
       title: ListClients
       type: object
@@ -1552,440 +1299,14 @@ components:
           type: integer
           description: Page Size for API response. Example - 100
           example: 100
-    HTTP_404:
+    CreateLegalHoldPolicyResponse:
+      title: CreateLegalHoldPolicyResponse
       type: object
       properties:
-        code:
-          type: string
-          enum:
-          - inSyncLegalholds-4294967438
-          example: inSyncLegalholds-4294967438
-        message:
-          type: string
-          enum:
-          - Legalhold policy not found.
-          example: Legalhold policy not found.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-          example: false
-    StreamList:
-      type: array
-      items:
-        properties:
-          deviceName:
-            type: string
-            description: Name of the device that is on Legal Hold. Example - Desktop1-john
-            example: Desktop1-john
-          collectionType:
-            type: string
-            description: The type of the device. It can be either Backup or Additional.
-            enum:
-            - Backup
-            - Additional
-            example: Backup
-          collectionStatus:
-            type: string
-            description: Collection status of a device on Legal Hold. Example - Successful
-            enum:
-            - Successful
-            - Failed
-            - Collected with Errors
-            - Never Collected
-            - Collection Throttled
-            - Inactive
-            example: Successful
-          totalCollectedDataInBytes:
-            type: integer
-            format: int32
-            description: Size of the total data (in bytes) collected. Example - 1800010372
-            example: 1800010372
-          linkId:
-            type: integer
-            format: int32
-            description: For device type 'Additional', this is the ID of the linked backup device. Example - 10008179
-            example: 10008179
-          custodianName:
-            type: string
-            description: Name of the custodian on Legal Hold. Example - John Doe
-            example: John Doe
-          platformIcon:
-            type: string
-            description: Name of the device platform image. Example - windows.png
-            example: windows.png
-          deviceStatus:
-            type: string
-            description: Status of the device. Example - Enabled
-            example: Enabled
-          isCollectionDisabled:
-            type: boolean
-            description: Flag to indicate if collection on Legal Hold is disabled or not. Example - false
-            example: false
-          isCloudApp:
-            type: boolean
-            description: Flag to indicate if device on Legal Hold is of type cloudapp. Example - false
-            example: false
-          custodianId:
-            type: integer
-            format: int32
-            description: Unique ID of the custodian. Example - 10005623
-            example: 10005623
-          deviceId:
-            type: integer
-            format: int32
-            description: Unique ID of the device. Example - 10008211
-            example: 10008211
-          lastCompletedCollection:
-            type: string
-            description: Timestamp of last completed collection for a device. Example - Sep 05 2024, 02:55
-            example: Sep 05 2024, 02:55
-          platformName:
-            type: string
-            description: Name of the device platform. Example - win32
-            example: win32
-          totalCollectedData:
-            type: string
-            description: Total data collected. Example - 2.12 GB
-            example: 2.12 GB
-    UsersList:
-      type: array
-      items:
-        properties:
-          userName:
-            type: string
-            description: Name of the user who is on Legal Hold. Example - John Doe
-            example: John Doe
-          status:
-            type: string
-            description: The status of the user. It can be either Active or Inactive.
-            enum:
-            - Active
-            - Inactive
-            example: Active
-          userEmail:
-            type: string
-            description: User email ID who is on Legal Hold. Example - john@druva.org
-            example: john@druva.org
-          collectedData:
-            type: string
-            description: Size of the data collected in the last backup snapshot. Example - 1.68 GB
-            example: 1.68 GB
-          collectedDataInBytes:
-            type: integer
-            description: Size of the data (in bytes) collected in the last backup snapshot. Example - 1800010372
-            example: 1800010372
-          userId:
-            type: integer
-            format: int32
-            description: Unique ID of the user. Example - 3
-            example: 3
-          policyId:
-            type: integer
-            format: int32
-            description: Unique ID of the Legal Hold policy to which the user belongs. Example - 12529
-            example: 12529
-          onLegalHold:
-            type: boolean
-            description: Flag to indicate if user is on Legal Hold or not. Example - true/false
-            example: true
-          numberOfDataSources:
-            type: integer
-            description: Number of data sources for current User. Example - 2
-            example: 2
-          totalCollectedData:
-            type: string
-            description: Total data collected. Example - 2.12 GB
-            example: 2.12 GB
-          totalCollectedDataInBytes:
-            type: integer
-            description: Total data collected in bytes. Example - 2276332666
-            example: '2276332666'
-    DeleteLegalholds:
-      type: object
-      properties: {}
-    ListingData:
-      title: ListingData
-      type: object
-      properties:
-        legalHoldsList:
-          type: array
-          items:
-            $ref: '#/components/schemas/LegalHoldDetails'
-    ViewLegalHoldPolicyCustodians:
-      type: object
-      properties:
-        results:
-          $ref: '#/components/schemas/ViewLegalHoldPolicyCustodiansResponse'
-        pageInfo:
-          $ref: '#/components/schemas/PageInfo'
-    LegalHoldDetails:
-      title: LegalHoldDetails
-      type: object
-      properties:
-        startDate:
-          type: string
-          description: Start time if webdav access type selected is Data within a Date Range. Example- Apr 11 2021
-          format: mmm DD YYYY
-          example: Apr 11 2021
-        endDate:
-          type: string
-          description: End time if webdav access type selected is Data within a Date Range. Example- Jun 12 2021
-          format: mmm DD YYYY
-          example: Jun 12 2021
-        webDavAccessType:
-          type: string
-          description: Type of webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
-          enum:
-          - All Collected Data
-          - Last Collected Data
-          - Data within a Data Range
-          example: All Collected Data
-        isADCEnabled:
-          type: boolean
-          description: Flag to indicate if Additional Data Collection is enabled. Example - true/false.
-          enum:
-          - 'true'
-          - 'false'
-          example: 'true'
-        createdOn:
-          type: string
-          description: Date and Time when Legal Hold Policy was created. Example- 'Jul 01 2021, 08:54'
-          example: Jul 01 2021, 08:54
-        legalHoldType:
-          type: string
-          description: Type of Legal Hold Policy. Example- Human Resources
-          example: Human Resources
         policyId:
           type: integer
-          format: int32
-          description: Unique ID of the Legal Hold policy. Example - 20
-          example: 20
-        createdBy:
-          type: string
-          description: Name of admin creating Legal Hold Policy. Example - Ernie Carter
-          example: Ernie Carter
-        numberOfCustodians:
-          type: integer
-          format: int32
-          description: Count of Custodians in the Legal Hold Policy. Example - 7
-          example: 7
-        legalHoldTypeId:
-          type: integer
-          format: int32
-          description: Unique ID of the legal hold type. Example - 132
-          example: 132
-        deletedFilesOnly:
-          type: boolean
-          description: Use true if you want to access only deleted files. Otherwise, use false.
-          enum:
-          - true
-          - false
-          example: false
-        name:
-          type: string
-          description: Name of the Legal Hold policy. Example - Jan_2021
-          example: Jan_2021
-    HTTP_400:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - inSyncLegalholds-4294967489
-          example: inSyncLegalholds-4294967489
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-          example: Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    LegalHoldPolicy:
-      title: LegalHoldPolicy
-      type: object
-      properties:
-        results:
-          type: object
-          properties:
-            legalHoldPolicy:
-              type: object
-              properties:
-                startDate:
-                  type: string
-                  description: Start time if webdav access type selected is 'Data within a Date Range'. Example- Apr 11 2021
-                  format: mmm DD YYYY
-                  example: Apr 11 2021
-                webDavAccessUrls:
-                  type: array
-                  items:
-                    type: string
-                  description: URL for accessing webDav. Example - ['https://restore-c22-cloud.druva.com/webdav/Mike']
-                  example: '[''https://restore-c22-cloud.druva.com/webdav/Mike'']'
-                endDate:
-                  type: string
-                  description: End time if webdav access type selected is 'Data within a Date Range'. Example- Jun 12 2021
-                  format: mmm DD YYYY
-                  example: Jun 12 2021
-                webDavAccessType:
-                  type: object
-                  additionalProperties:
-                    type: string
-                  description: Type of Webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
-                  enum:
-                  - All Collected Data
-                  - Last Collected Data
-                  - Data within a Date Range
-                  example: Data within a Date Range
-                isADCEnabled:
-                  type: boolean
-                  description: Flag to indicate if ADC feature is enable for Legal Hold policy or not. Example-true/false
-                  enum:
-                  - true
-                  - false
-                  example: 'false'
-                directDownLoadLink:
-                  type: string
-                  description: URL for direct download Legalhold Policy of a user. Example-'https://downloads.druva.com/insync/webdav/1-2/'
-                  example: https://downloads.druva.com/insync/webdav/1-2/
-                createdOn:
-                  type: string
-                  description: Date and Time when Legal Hold Policy was created. Example- 'Feb 24 2021, 08:54'
-                  example: Feb 24 2021, 08:54
-                usersCount:
-                  type: integer
-                  format: int32
-                  description: Count of custodians on Legal Hold. Example -5
-                  example: 5
-                accessAdditionalData:
-                  type: boolean
-                  description: Flag to indicate additional data access for Legal Hold policy. Example-true/false
-                  enum:
-                  - true
-                  - false
-                  example: 'false'
-                legalHoldType:
-                  type: string
-                  description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
-                  example: Human Resources
-                webDavAuthentication:
-                  type: string
-                  description: webDAV authentication is done using inSync Administrator credential.
-                  example: Use your inSync Administrator credential
-                accessBackupData:
-                  type: boolean
-                  description: Flag to indicate backup data access for Legal Hold policy. Example-true/false
-                  enum:
-                  - true
-                  - false
-                  example: 'true'
-                policyId:
-                  type: integer
-                  format: int32
-                  description: Unique ID of the Legal Hold policy. Example - 4
-                  example: 4
-                createdBy:
-                  type: string
-                  description: Name of the admin who created the Legal Hold policy. Example - Ernie Carter
-                  example: Ernie Carter
-                legalHoldTypeId:
-                  type: integer
-                  format: int32
-                  description: Legal Hold policy type Id. Example - 1397
-                  example: 1397
-                collectionFrequency:
-                  type: string
-                  description: Backup data collection frequency. Example - Not collecting/One time/Recurring.
-                  enum:
-                  - Not collecting
-                  - One time
-                  - Recurring
-                  example: Not collecting
-                deletedFilesOnly:
-                  type: boolean
-                  description: Use 'true' if you want to access only deleted files of users who are on this Legal Hold policy. Otherwise use 'false'.
-                  enum:
-                  - true
-                  - false
-                  example: 'true'
-                name:
-                  type: string
-                  description: Name of Legal Hold policy. Example - Jan_2021
-                  example: Jan_2021
-    TakeActionOnJobRequest:
-      title: TakeActionOnJobRequest
-      type: object
-      properties:
-        jobIds:
-          type: array
-          items:
-            type: integer
-          description: List of Job IDs for which action is to be taken. Example-[115,114]
-          example: '[115,114]'
-        action:
-          type: string
-          description: 'Specify the action that you want to take. Use any of the following: '
-          enum:
-          - Cancel
-          - Pause
-          - Retry
-          - Resume
-          example: Cancel
-      required:
-      - action
-      - jobIds
-    CreateDownloadJobResponse:
-      title: CreateDownloadJobResponse
-      type: object
-      properties:
-        message:
-          type: string
-          example: Download initiated. Click Download Jobs on the left pane to view details.
-    ResponseListPoliciesByUsers:
-      type: object
-      properties:
-        custodians:
-          type: array
-          items:
-            type: object
-            properties:
-              emailId:
-                type: string
-                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
-                example: john.doe@someorg.com
-              policyIds:
-                type: array
-                items:
-                  type: integer
-                  description: The list of legal hold policy ids associated with the user. Example - 2,4,11
-                  example: 2, 4, 11
-    HTTP_500:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - inSyncLegalholds-2003
-          example: inSyncLegalholds-2003
-        message:
-          type: string
-          example: Programing Error occurred on server, please check server logs for more details
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-          example: false
+          description: The unique ID of the created Legal Hold policy. Example - 12359
+          example: 12359
     Client_details:
       title: Client_details
       properties:
@@ -2065,6 +1386,560 @@ components:
           type: integer
           description: Timestamp when the eDiscovery Download Client machine was activated. Example - 1624887294
           example: 1624887294
+    ResponseListPoliciesByUsers:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
+                example: john.doe@someorg.com
+              policyIds:
+                type: array
+                items:
+                  type: integer
+                  description: The list of legal hold policy ids associated with the user. Example - 2,4,11
+                  example: 2, 4, 11
+    GetLegalholds:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The data access type of the legal hold policy
+          enum:
+          - All Backup Data
+          - Last Backup Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        name:
+          type: string
+          description: The name of the legal hold policy
+          example: LH Policy 1
+        policyId:
+          type: integer
+          description: The ID of the Legal hold policy
+          example: '1'
+        cullingType:
+          type: string
+          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          enum:
+          - Include All Files
+          - Include Only Deleted Files
+          example: Include Only Deleted Files
+        startDate:
+          type: string
+          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-03-19'
+        endDate:
+          type: string
+          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-10-25'
+    PageInfo:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          description: Total number of pages for the API Response. Example - 1
+          example: 1
+        pageNumber:
+          type: integer
+          format: int32
+          description: Page number for which API response is expected. Example - 1
+          example: 1
+        pageSize:
+          type: integer
+          description: Page Size for API response. Example - 100
+          example: 100
+    UsersList:
+      type: array
+      items:
+        properties:
+          userName:
+            type: string
+            description: Name of the user who is on Legal Hold. Example - John Doe
+            example: John Doe
+          status:
+            type: string
+            description: The status of the user. It can be either Active or Inactive.
+            enum:
+            - Active
+            - Inactive
+            example: Active
+          userEmail:
+            type: string
+            description: User email ID who is on Legal Hold. Example - john@druva.org
+            example: john@druva.org
+          collectedData:
+            type: string
+            description: Size of the data collected in the last backup snapshot. Example - 1.68 GB
+            example: 1.68 GB
+          collectedDataInBytes:
+            type: integer
+            description: Size of the data (in bytes) collected in the last backup snapshot. Example - 1800010372
+            example: 1800010372
+          userId:
+            type: integer
+            format: int32
+            description: Unique ID of the user. Example - 3
+            example: 3
+          policyId:
+            type: integer
+            format: int32
+            description: Unique ID of the Legal Hold policy to which the user belongs. Example - 12529
+            example: 12529
+          onLegalHold:
+            type: boolean
+            description: Flag to indicate if user is on Legal Hold or not. Example - true/false
+            example: true
+          numberOfDataSources:
+            type: integer
+            description: Number of data sources for current User. Example - 2
+            example: 2
+          totalCollectedData:
+            type: string
+            description: Total data collected. Example - 2.12 GB
+            example: 2.12 GB
+          totalCollectedDataInBytes:
+            type: integer
+            description: Total data collected in bytes. Example - 2276332666
+            example: '2276332666'
+    HTTP_401:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967557
+          - inSyncLegalholds-4294967391
+          example: inSyncLegalholds-4294967391
+        message:
+          type: string
+          example: Authentication/Authorization failed
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+    ListLegalholds:
+      type: object
+      properties:
+        legalholdList:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The data access type of the legal hold policy
+                enum:
+                - All Backup Data
+                - Last Backup Data
+                - Data within a Date Range
+                example: Data within a Date Range
+              name:
+                type: string
+                description: The name of the legal hold policy
+                example: LH Policy 1
+              policyId:
+                type: integer
+                description: The ID of the legal hold policy
+                example: '1'
+              cullingType:
+                type: string
+                description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                enum:
+                - Include All Files
+                - Include Only Deleted Files
+                example: Include Only Deleted Files
+              startDate:
+                type: string
+                description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                format: date
+                example: '2019-03-19'
+              endDate:
+                type: string
+                description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+                format: date
+                example: '2019-10-25'
+    ResponseOperateOncustodians:
+      type: object
+      properties:
+        alreadyOnLegalhold:
+          type: array
+          description: While adding a user to a legal hold policy, if a user is already on legal hold then the email address is returned in this list. This field is returned only if the action is 'add'.
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are already on legal hold.
+                example: john.doe@someorg.com
+        notOnLegalhold:
+          type: array
+          description: While deleting a user from a legal hold policy, if a user is already deleted from legal hold then the user email address will be returned in this list. This field is returned only if the action is 'delete'.
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are already deleted from legal hold or are not on legal hold.
+                example: john.doe_1@someorg.com
+        notInsyncUsers:
+          type: array
+          items:
+            type: object
+            description: While adding OR deleting a user from a legal hold policy, if the user is not a valid inSync user then the user email address will be returned in this list.
+            properties:
+              emailId:
+                type: string
+                description: Email address of users which are not valid inSync users.
+                example: john.doe_2@someorg.com
+    ViewLegalHoldPolicyCustodiansResponse:
+      type: object
+      properties:
+        usersList:
+          $ref: '#/components/schemas/UsersList'
+        totalCustodians:
+          type: integer
+          format: int32
+          description: Number of custodians in a Legal Hold policy. Example- 1
+          example: 1
+    StreamList:
+      type: array
+      items:
+        properties:
+          deviceName:
+            type: string
+            description: Name of the device that is on Legal Hold. Example - Desktop1-john
+            example: Desktop1-john
+          collectionType:
+            type: string
+            description: The type of the device. It can be either Backup or Additional.
+            enum:
+            - Backup
+            - Additional
+            example: Backup
+          collectionStatus:
+            type: string
+            description: Collection status of a device on Legal Hold. Example - Successful
+            enum:
+            - Successful
+            - Failed
+            - Collected with Errors
+            - Never Collected
+            - Collection Throttled
+            - Inactive
+            example: Successful
+          totalCollectedDataInBytes:
+            type: integer
+            format: int32
+            description: Size of the total data (in bytes) collected. Example - 1800010372
+            example: 1800010372
+          linkId:
+            type: integer
+            format: int32
+            description: For device type 'Additional', this is the ID of the linked backup device. Example - 10008179
+            example: 10008179
+          custodianName:
+            type: string
+            description: Name of the custodian on Legal Hold. Example - John Doe
+            example: John Doe
+          platformIcon:
+            type: string
+            description: Name of the device platform image. Example - windows.png
+            example: windows.png
+          deviceStatus:
+            type: string
+            description: Status of the device. Example - Enabled
+            example: Enabled
+          isCollectionDisabled:
+            type: boolean
+            description: Flag to indicate if collection on Legal Hold is disabled or not. Example - false
+            example: false
+          isCloudApp:
+            type: boolean
+            description: Flag to indicate if device on Legal Hold is of type cloudapp. Example - false
+            example: false
+          custodianId:
+            type: integer
+            format: int32
+            description: Unique ID of the custodian. Example - 10005623
+            example: 10005623
+          deviceId:
+            type: integer
+            format: int32
+            description: Unique ID of the device. Example - 10008211
+            example: 10008211
+          lastCompletedCollection:
+            type: string
+            description: Timestamp of last completed collection for a device. Example - Sep 05 2024, 02:55
+            example: Sep 05 2024, 02:55
+          platformName:
+            type: string
+            description: Name of the device platform. Example - win32
+            example: win32
+          totalCollectedData:
+            type: string
+            description: Total data collected. Example - 2.12 GB
+            example: 2.12 GB
+    ListJobsResponse:
+      allOf:
+      - title: ListJobsResponse
+        type: object
+        properties:
+          totalPages:
+            type: integer
+            description: Total number of pages for the API Response. Example - 10
+            example: 10
+          pageNumber:
+            type: integer
+            description: Page Number for which API response is expected. Example - 1
+            example: 1
+          totalResults:
+            type: integer
+            description: Total number of jobs. Example - 4
+            example: 4
+          jobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/JobDetails'
+          pageSize:
+            type: integer
+            description: Page Size for API response. Example - 100
+            example: 100
+    EditlegalHoldPolicyDetailsRequest:
+      title: EditlegalHoldPolicyDetailsRequest
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Name of the Legal Hold policy. Example - Jan_2021. Note: Changing the name of the legal Hold policy will have an impact on long-running eDiscovery Download jobs. Initiate a new eDiscovery Download job in case of failure.'
+          example: Jan_2021
+        legalHoldType:
+          type: string
+          description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
+          example: Human Resources
+        startDate:
+          type: string
+          description: Displays the start time if the webdav access type option selected is 'Data within a Date Range'. Example- Apr 11 2021
+          format: mmm DD YYYY
+          example: Apr 11 2021
+        endDate:
+          type: string
+          description: Displays the end time if the webdav access type option selected is 'Data within a Date Range'. Example- Jun 12 2021
+          format: mmm DD YYYY
+          example: Jun 12 2021
+        webDavAccessType:
+          type: string
+          description: Details about the type of Webdav access. This field is case-sensitive. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+          enum:
+          - All Collected Data
+          - Last Collected Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        isADCEnabled:
+          type: boolean
+          description: Indicates if Additional Data Collection feature is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'false'
+        accessAdditionalData:
+          type: boolean
+          description: Indicates if Additional Data access option is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'false'
+        accessBackupData:
+          type: boolean
+          description: Indicates if backup data access option is enabled for Legal Hold policy. Example-true/false
+          enum:
+          - true
+          - false
+          example: 'true'
+        collectionFrequency:
+          type: string
+          description: Provides details about additional data collection frequency. This field is case-sensitive. Example - One time/Recurring
+          enum:
+          - One time
+          - Recurring
+          example: Recurring
+        deletedFilesOnly:
+          type: boolean
+          description: Use 'true' to access only deleted files of users who belong to this Legal Hold policy. Else, use 'false'.
+          enum:
+          - true
+          - false
+          example: 'true'
+    HTTP_422:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - inSyncLegalholds-4294967423
+        message:
+          type: string
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - 'false'
+          - 'true'
+    CreateDownloadJobRequest:
+      title: JobDetails
+      type: object
+      properties:
+        clientName:
+          type: string
+          description: Name of the eDiscovery Download Client. Example - Client1
+          example: Client1
+        downloadOption:
+          type: integer
+          description: 0 indicates only metadata, 1 indicates data and metadata and 2 indicates zip download option.
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 2
+        legalholdId:
+          type: integer
+          description: Legal Hold ID for which download is to be triggered. Example -10
+          example: 10
+        downloadLocation:
+          type: string
+          description: Location to download the job. Example - D:\Downloads
+          example: D:\Downloads
+        createdBy:
+          type: string
+          description: Name of administrator triggering the job. Example - Ernie Carter
+          example: Ernie Carter
+        custodianEmails:
+          allOf:
+          - type: array
+            items:
+              type: string
+              description: User email for which data is to be downloaded.
+              example: john.doe@druva.com
+        enable_data_integrity:
+          type: boolean
+          description: Use 'true' to enable data integrity and 'false' to disable data integrity.
+          enum:
+          - true
+          - false
+          example: false
+      required:
+      - clientName
+      - downloadOption
+      - legalholdId
+      - downloadLocation
+      - createdBy
+      - custodianEmails
+      - enable_data_integrity
+    HTTP_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - inSyncLegalholds-4294967489
+          example: inSyncLegalholds-4294967489
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          example: Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    DeleteLegalholds:
+      type: object
+      properties: {}
+    RequestOperateOnCustodians:
+      type: object
+      properties:
+        custodians:
+          type: array
+          items:
+            type: object
+            properties:
+              emailId:
+                type: string
+                description: The email address of the user, who should be added to OR deleted from the legal hold policy.
+                example: john.doe@someorg.com
+        action:
+          type: string
+          description: The action to be performed on the user.
+          enum:
+          - add
+          - delete
+          example: add
+    CreateDownloadJobResponse:
+      title: CreateDownloadJobResponse
+      type: object
+      properties:
+        message:
+          type: string
+          example: Download initiated. Click Download Jobs on the left pane to view details.
+    HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967438
+          example: inSyncLegalholds-4294967438
+        message:
+          type: string
+          enum:
+          - Legalhold policy not found.
+          example: Legalhold policy not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+    ListLegalHoldPolicies:
+      title: ListLegalHoldPolicies
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ListingData'
+    ViewLegalHoldPolicyCollectionStream:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ViewLegalHoldPolicyCollectionStreamResponse'
+        pageInfo:
+          $ref: '#/components/schemas/PageInfo'
+    EditlegalHoldPolicyDetailsResponse:
+      title: EditlegalHoldPolicyDetailsResponse
+      type: object
+      properties:
+        message:
+          type: string
+          example: Legal Hold updated successfully.
+        policyId:
+          type: integer
+          example: 2
     JobDetails:
       title: JobDetails
       type: object
@@ -2218,26 +2093,38 @@ components:
           type: string
           description: Name of the eDiscovery Download Client. Example - Client-1.0.0
           example: Client-1.0.0
-    CreateLegalHoldPolicyResponse:
-      title: CreateLegalHoldPolicyResponse
+    TakeActionOnJobResponse:
+      title: TakeActionOnJobResponse
       type: object
       properties:
-        policyId:
+        message:
+          type: string
+          example: Download Job has been Cancelled Successfully.
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobDetails'
+    ViewLegalHoldPolicyCollectionStreamResponse:
+      type: object
+      properties:
+        streamsList:
+          $ref: '#/components/schemas/StreamList'
+        totalResults:
           type: integer
-          description: The unique ID of the created Legal Hold policy. Example - 12359
-          example: 12359
-    HTTP_401:
+          format: int32
+          description: Number of devices in a given Legal Hold policy. Example- 4
+          example: 1
+    HTTP_500:
       type: object
       properties:
         code:
           type: string
           enum:
-          - inSyncLegalholds-4294967557
-          - inSyncLegalholds-4294967391
-          example: inSyncLegalholds-4294967391
+          - inSyncLegalholds-2003
+          example: inSyncLegalholds-2003
         message:
           type: string
-          example: Authentication/Authorization failed
+          example: Programing Error occurred on server, please check server logs for more details
         data:
           type: object
         retryable:
@@ -2246,23 +2133,14 @@ components:
           - false
           - true
           example: false
-    HTTP_422:
+    ViewLegalHoldPolicyCustodians:
       type: object
       properties:
-        code:
-          type: integer
-          enum:
-          - inSyncLegalholds-4294967423
-        message:
-          type: string
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - 'false'
-          - 'true'
-    RequestOperateOnCustodians:
+        results:
+          $ref: '#/components/schemas/ViewLegalHoldPolicyCustodiansResponse'
+        pageInfo:
+          $ref: '#/components/schemas/PageInfo'
+    ResponseGetCustodians:
       type: object
       properties:
         custodians:
@@ -2272,31 +2150,272 @@ components:
             properties:
               emailId:
                 type: string
-                description: The email address of the user, who should be added to OR deleted from the legal hold policy.
+                description: Email address of the users associated with the legal hold policy. Example - ernie.carter@druva.com
                 example: john.doe@someorg.com
-        action:
-          type: string
-          description: The action to be performed on the user.
-          enum:
-          - add
-          - delete
-          example: add
-    PageInfo:
+              webdavUrl:
+                type: string
+                description: WebDAV URL to access the user's data.
+                example: https://restore-c1-kunals.drtst.in/webdav/LH Policy 1/uname/
+    RequestCreateLHPolicy:
       type: object
       properties:
-        totalPages:
-          type: integer
-          description: Total number of pages for the API Response. Example - 1
-          example: 1
-        pageNumber:
+        name:
+          type: string
+          description: The name of the legal hold policy. Example - Legal Hold Policy 1
+          example: LH Policy 1
+        type:
+          type: string
+          description: The data access type of the legal hold policy
+          enum:
+          - All Backup Data
+          - Last Backup Data
+          - Data within a Date Range
+          example: Data within a Date Range
+        cullingType:
+          type: string
+          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'. Use any of the filter types"
+          enum:
+          - Include All Files
+          - Include Only Deleted Files
+        startDate:
+          type: string
+          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-03-19'
+        endDate:
+          type: string
+          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
+          format: date
+          example: '2019-10-25'
+    ListingData:
+      title: ListingData
+      type: object
+      properties:
+        legalHoldsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegalHoldDetails'
+    TakeActionOnJobRequest:
+      title: TakeActionOnJobRequest
+      type: object
+      properties:
+        jobIds:
+          type: array
+          items:
+            type: integer
+          description: List of Job IDs for which action is to be taken. Example-[115,114]
+          example: '[115,114]'
+        action:
+          type: string
+          description: 'Specify the action that you want to take. Use any of the following: '
+          enum:
+          - Cancel
+          - Pause
+          - Retry
+          - Resume
+          example: Cancel
+      required:
+      - action
+      - jobIds
+    LegalHoldDetails:
+      title: LegalHoldDetails
+      type: object
+      properties:
+        startDate:
+          type: string
+          description: Start time if webdav access type selected is Data within a Date Range. Example- Apr 11 2021
+          format: mmm DD YYYY
+          example: Apr 11 2021
+        endDate:
+          type: string
+          description: End time if webdav access type selected is Data within a Date Range. Example- Jun 12 2021
+          format: mmm DD YYYY
+          example: Jun 12 2021
+        webDavAccessType:
+          type: string
+          description: Type of webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+          enum:
+          - All Collected Data
+          - Last Collected Data
+          - Data within a Data Range
+          example: All Collected Data
+        isADCEnabled:
+          type: boolean
+          description: Flag to indicate if Additional Data Collection is enabled. Example - true/false.
+          enum:
+          - 'true'
+          - 'false'
+          example: 'true'
+        createdOn:
+          type: string
+          description: Date and Time when Legal Hold Policy was created. Example- 'Jul 01 2021, 08:54'
+          example: Jul 01 2021, 08:54
+        legalHoldType:
+          type: string
+          description: Type of Legal Hold Policy. Example- Human Resources
+          example: Human Resources
+        policyId:
           type: integer
           format: int32
-          description: Page number for which API response is expected. Example - 1
-          example: 1
-        pageSize:
+          description: Unique ID of the Legal Hold policy. Example - 20
+          example: 20
+        createdBy:
+          type: string
+          description: Name of admin creating Legal Hold Policy. Example - Ernie Carter
+          example: Ernie Carter
+        numberOfCustodians:
           type: integer
-          description: Page Size for API response. Example - 100
-          example: 100
+          format: int32
+          description: Count of Custodians in the Legal Hold Policy. Example - 7
+          example: 7
+        legalHoldTypeId:
+          type: integer
+          format: int32
+          description: Unique ID of the legal hold type. Example - 132
+          example: 132
+        deletedFilesOnly:
+          type: boolean
+          description: Use true if you want to access only deleted files. Otherwise, use false.
+          enum:
+          - true
+          - false
+          example: false
+        name:
+          type: string
+          description: Name of the Legal Hold policy. Example - Jan_2021
+          example: Jan_2021
+    HTTP_403_Legalholds:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - inSyncLegalholds-4294967490
+          example: inSyncLegalholds-4294967490
+        message:
+          type: string
+          enum:
+          - You do not have permissions for the action.
+          example: You do not have permissions for the action.
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+        data:
+          type: object
+    LegalHoldPolicy:
+      title: LegalHoldPolicy
+      type: object
+      properties:
+        results:
+          type: object
+          properties:
+            legalHoldPolicy:
+              type: object
+              properties:
+                startDate:
+                  type: string
+                  description: Start time if webdav access type selected is 'Data within a Date Range'. Example- Apr 11 2021
+                  format: mmm DD YYYY
+                  example: Apr 11 2021
+                webDavAccessUrls:
+                  type: array
+                  items:
+                    type: string
+                  description: URL for accessing webDav. Example - ['https://restore-c22-cloud.druva.com/webdav/Mike']
+                  example: '[''https://restore-c22-cloud.druva.com/webdav/Mike'']'
+                endDate:
+                  type: string
+                  description: End time if webdav access type selected is 'Data within a Date Range'. Example- Jun 12 2021
+                  format: mmm DD YYYY
+                  example: Jun 12 2021
+                webDavAccessType:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Type of Webdav access. Example- 'All Collected Data' OR 'Last Collected Data' OR 'Data within a Date Range'
+                  enum:
+                  - All Collected Data
+                  - Last Collected Data
+                  - Data within a Date Range
+                  example: Data within a Date Range
+                isADCEnabled:
+                  type: boolean
+                  description: Flag to indicate if ADC feature is enable for Legal Hold policy or not. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'false'
+                directDownLoadLink:
+                  type: string
+                  description: URL for direct download Legalhold Policy of a user. Example-'https://downloads.druva.com/insync/webdav/1-2/'
+                  example: https://downloads.druva.com/insync/webdav/1-2/
+                createdOn:
+                  type: string
+                  description: Date and Time when Legal Hold Policy was created. Example- 'Feb 24 2021, 08:54'
+                  example: Feb 24 2021, 08:54
+                usersCount:
+                  type: integer
+                  format: int32
+                  description: Count of custodians on Legal Hold. Example -5
+                  example: 5
+                accessAdditionalData:
+                  type: boolean
+                  description: Flag to indicate additional data access for Legal Hold policy. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'false'
+                legalHoldType:
+                  type: string
+                  description: Type of Legal Hold policy created. It can be custom or pre-defined. Example- Human Resources
+                  example: Human Resources
+                webDavAuthentication:
+                  type: string
+                  description: webDAV authentication is done using inSync Administrator credential.
+                  example: Use your inSync Administrator credential
+                accessBackupData:
+                  type: boolean
+                  description: Flag to indicate backup data access for Legal Hold policy. Example-true/false
+                  enum:
+                  - true
+                  - false
+                  example: 'true'
+                policyId:
+                  type: integer
+                  format: int32
+                  description: Unique ID of the Legal Hold policy. Example - 4
+                  example: 4
+                createdBy:
+                  type: string
+                  description: Name of the admin who created the Legal Hold policy. Example - Ernie Carter
+                  example: Ernie Carter
+                legalHoldTypeId:
+                  type: integer
+                  format: int32
+                  description: Legal Hold policy type Id. Example - 1397
+                  example: 1397
+                collectionFrequency:
+                  type: string
+                  description: Backup data collection frequency. Example - Not collecting/One time/Recurring.
+                  enum:
+                  - Not collecting
+                  - One time
+                  - Recurring
+                  example: Not collecting
+                deletedFilesOnly:
+                  type: boolean
+                  description: Use 'true' if you want to access only deleted files of users who are on this Legal Hold policy. Otherwise use 'false'.
+                  enum:
+                  - true
+                  - false
+                  example: 'true'
+                name:
+                  type: string
+                  description: Name of Legal Hold policy. Example - Jan_2021
+                  example: Jan_2021
     CreateLegalHoldPolicyRequest:
       title: CreateLegalHoldPolicyRequest
       type: object
@@ -2361,141 +2480,22 @@ components:
       - webDavAccessType
       - startDate
       - endDate
-    ResponseOperateOncustodians:
+    RequestListPoliciesByUsers:
       type: object
       properties:
-        alreadyOnLegalhold:
+        custodians:
           type: array
-          description: While adding a user to a legal hold policy, if a user is already on legal hold then the email address is returned in this list. This field is returned only if the action is 'add'.
           items:
             type: object
             properties:
               emailId:
                 type: string
-                description: Email address of users which are already on legal hold.
+                description: Email address of the user for which the associated legal hold policies are requested. Example - ernie.carter@druva.com
                 example: john.doe@someorg.com
-        notOnLegalhold:
-          type: array
-          description: While deleting a user from a legal hold policy, if a user is already deleted from legal hold then the user email address will be returned in this list. This field is returned only if the action is 'delete'.
-          items:
-            type: object
-            properties:
-              emailId:
-                type: string
-                description: Email address of users which are already deleted from legal hold or are not on legal hold.
-                example: john.doe_1@someorg.com
-        notInsyncUsers:
-          type: array
-          items:
-            type: object
-            description: While adding OR deleting a user from a legal hold policy, if the user is not a valid inSync user then the user email address will be returned in this list.
-            properties:
-              emailId:
-                type: string
-                description: Email address of users which are not valid inSync users.
-                example: john.doe_2@someorg.com
-    ViewLegalHoldPolicyCustodiansResponse:
-      type: object
-      properties:
-        usersList:
-          $ref: '#/components/schemas/UsersList'
-        totalCustodians:
-          type: integer
-          format: int32
-          description: Number of custodians in a Legal Hold policy. Example- 1
-          example: 1
-    RequestCreateLHPolicy:
-      type: object
-      properties:
-        name:
+        action:
           type: string
-          description: The name of the legal hold policy. Example - Legal Hold Policy 1
-          example: LH Policy 1
-        type:
-          type: string
-          description: The data access type of the legal hold policy
           enum:
-          - All Backup Data
-          - Last Backup Data
-          - Data within a Date Range
-          example: Data within a Date Range
-        cullingType:
-          type: string
-          description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'. Use any of the filter types"
-          enum:
-          - Include All Files
-          - Include Only Deleted Files
-        startDate:
-          type: string
-          description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-          format: date
-          example: '2019-03-19'
-        endDate:
-          type: string
-          description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-          format: date
-          example: '2019-10-25'
-    ListLegalHoldPolicies:
-      title: ListLegalHoldPolicies
-      type: object
-      properties:
-        results:
-          $ref: '#/components/schemas/ListingData'
-    ListLegalholds:
-      type: object
-      properties:
-        legalholdList:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: The data access type of the legal hold policy
-                enum:
-                - All Backup Data
-                - Last Backup Data
-                - Data within a Date Range
-                example: Data within a Date Range
-              name:
-                type: string
-                description: The name of the legal hold policy
-                example: LH Policy 1
-              policyId:
-                type: integer
-                description: The ID of the legal hold policy
-                example: '1'
-              cullingType:
-                type: string
-                description: "The filter type of the legal hold policy. \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-                enum:
-                - Include All Files
-                - Include Only Deleted Files
-                example: Include Only Deleted Files
-              startDate:
-                type: string
-                description: "The start date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-                format: date
-                example: '2019-03-19'
-              endDate:
-                type: string
-                description: "The end date in the range in which the data is to be accessed. Format: YYYY-MM-DD \n :fa-info-circle: Applicable only if the data access type is 'Data within a Date Range'."
-                format: date
-                example: '2019-10-25'
-    ViewLegalHoldPolicyCollectionStream:
-      type: object
-      properties:
-        results:
-          $ref: '#/components/schemas/ViewLegalHoldPolicyCollectionStreamResponse'
-        pageInfo:
-          $ref: '#/components/schemas/PageInfo'
-    ResponseCreateLHPolicy:
-      type: object
-      properties:
-        policyId:
-          type: integer
-          description: The ID of the legal hold policy. Example - 1
-          example: '1'
+          - list
   securitySchemes:
     OAuth2:
       type: oauth2

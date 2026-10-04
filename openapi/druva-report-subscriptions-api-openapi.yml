@@ -253,21 +253,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsReportsubscriptionsRecipientsResponse:
-      properties:
-        email:
-          type: string
-        external:
-          type: boolean
-        subscription_id:
-          type: string
-      type: object
-    PutOrganizationsReportsubscriptionsByIdRequest:
+    PutOrganizationsReportsubscriptionsByIdResponse:
       properties:
         all_accounts:
           type: boolean
@@ -279,12 +265,11 @@ components:
         deleted_at:
           type: string
         format:
-          enum:
-          - pdf
-          - csv
           type: string
         frequency:
           type: string
+        id:
+          type: integer
         name:
           type: string
         organization_id:
@@ -572,12 +557,12 @@ components:
           format: date-time
           type: string
       type: object
-    Error:
+    DeleteOrganizationsReportsubscriptionsRecipientsByIdResponse:
       properties:
         message:
           type: string
       type: object
-    PutOrganizationsReportsubscriptionsByIdResponse:
+    PutOrganizationsReportsubscriptionsByIdRequest:
       properties:
         all_accounts:
           type: boolean
@@ -589,11 +574,12 @@ components:
         deleted_at:
           type: string
         format:
+          enum:
+          - pdf
+          - csv
           type: string
         frequency:
           type: string
-        id:
-          type: integer
         name:
           type: string
         organization_id:
@@ -622,6 +608,11 @@ components:
           format: date-time
           type: string
       type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
     PostOrganizationsReportsubscriptionsRecipientsRequest:
       properties:
         email:
@@ -633,6 +624,15 @@ components:
       type: object
     empty:
       properties: {}
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsResponse:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

@@ -530,18 +530,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PutOrganizationsScriptsByIdResponse:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsScriptsTagKeysResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
     PostOrganizationsScriptsRulesResponse:
       properties:
         accounts:
@@ -675,18 +663,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    GetOrganizationsScriptsTagsKeysValuesResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
       type: object
     GetOrganizationsScriptsResponse:
       properties:
@@ -973,6 +949,33 @@ components:
         total:
           type: integer
       type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsScriptsTagKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    PutOrganizationsScriptsByIdResponse:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsScriptsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
+    empty:
+      properties: {}
+      type: object
     GetOrganizationsScriptscacheResponse:
       properties:
         hits:
@@ -1048,9 +1051,6 @@ components:
           type: object
         total:
           type: integer
-      type: object
-    empty:
-      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

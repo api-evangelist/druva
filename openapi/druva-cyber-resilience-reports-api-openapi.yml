@@ -223,14 +223,6 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
     RollbackActionsReportData:
       title: RollbackActionsReportData
       type: object
@@ -304,26 +296,6 @@ components:
           description: The last updated time stamp. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
           format: date-time
           example: '2023-04-26T11:00:56.000Z'
-    GetDataProtectionRiskReportDataResponse:
-      title: GetDataProtectionRiskReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DataProtectionRiskReportData'
-        lastSyncTimestamp:
-          type: string
-          description: Time stamp until which report data is returned in the API. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     GetRollbackActionsReportDataResponse:
       title: GetRollbackActionsReportDataResponse
       type: object
@@ -390,6 +362,34 @@ components:
           type: string
           description: The connection status to the vCenter. Possible values (Connected,Disconnected)
           example: Disconnected
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    GetDataProtectionRiskReportDataResponse:
+      title: GetDataProtectionRiskReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProtectionRiskReportData'
+        lastSyncTimestamp:
+          type: string
+          description: Time stamp until which report data is returned in the API. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
   securitySchemes:
     OAuth2:
       flows:

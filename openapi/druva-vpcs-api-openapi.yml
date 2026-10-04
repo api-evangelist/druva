@@ -132,7 +132,7 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsSubnetsResponse:
+    GetOrganizationsVpcsResponse:
       properties:
         count:
           type: integer
@@ -141,12 +141,7 @@ components:
             type: object
           type: array
       type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsVpcsResponse:
+    GetOrganizationsSubnetsResponse:
       properties:
         count:
           type: integer
@@ -157,6 +152,11 @@ components:
       type: object
     empty:
       properties: {}
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

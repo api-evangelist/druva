@@ -454,6 +454,88 @@ paths:
                 $ref: '#/components/schemas/TI_HTTP_500'
 components:
   schemas:
+    IocLookupResponse:
+      type: object
+      properties:
+        iocSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/IocSetForLookup'
+    DeleteIocsResponse:
+      type: object
+    GetIOCsResponse:
+      type: object
+      properties:
+        iocs:
+          type: array
+          items:
+            $ref: '#/components/schemas/IOCDetails'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=.
+          example: eyJpZCI6NTY1NX0=
+        totalIocs:
+          type: integer
+          example: 38
+          description: Total number of IOCs present in the specified IOC set.
+    IOCDetails:
+      type: object
+      properties:
+        addedBy:
+          type: string
+          example: John Doe
+          description: Name of administrator who added the IOC.
+        addedTime:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which this IOC was added.
+        convertedIoc:
+          type: string
+          example: .wfwhr
+          description: Corresponding SHA1 of SHA256 and MD5 hash or empty if not converted, else same as user input
+        id:
+          type: integer
+          example: 25
+          description: Unique ID of the IOC.
+        iocSetID:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Details of the IOC type. It can be either file hash or file extension.
+        iocValue:
+          type: string
+          example: .wfwhr
+          description: IOC value added by the administrator.
+    IOCSetResponse:
+      description: IOCSetResponse is the response structure of successful ioc create request
+      type: object
+      properties:
+        countAdded:
+          type: integer
+          example: 12
+          description: Number of IOCs that got added in IOC set.
+        countDuplicate:
+          type: integer
+          example: 3
+          description: Number of IOCs that were duplicate and not added to IOC set.
+        countSkipped:
+          type: integer
+          example: 2
+          description: Number of IOCs that were invalid and not added to IOC set.
+        countTotal:
+          type: integer
+          example: 17
+          description: Total number of IOCs that were provided by administrator.
+        iocSetID:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
     IocSetDetailsResponse:
       type: object
       properties:
@@ -496,79 +578,6 @@ components:
           type: string
           example: Jane Doe
           description: Name of admin who published this IOC set.
-    TI_HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: string
-          enum:
-          - TIMaster-1000
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    GetIOCsResponse:
-      type: object
-      properties:
-        iocs:
-          type: array
-          items:
-            $ref: '#/components/schemas/IOCDetails'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=.
-          example: eyJpZCI6NTY1NX0=
-        totalIocs:
-          type: integer
-          example: 38
-          description: Total number of IOCs present in the specified IOC set.
-    ListIocSetResponse:
-      type: object
-      properties:
-        allPublishers:
-          type: array
-          items:
-            type: string
-            example: John Doe
-          description: Name of all the administrators who published IOC Set.
-        iocSets:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListIocSetDetails'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
-          example: eyJpZCI6NTY1NX0=
-        totalRecords:
-          type: integer
-          example: 27
-          description: Total number of IOC sets.
-    TI_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - TIMaster-1002
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     CreateIOCSetRequestBody:
       type: object
       required:
@@ -601,34 +610,79 @@ components:
           type: string
           example: IOCs of black cat ramsomware
           description: Source of IOC set.
-    DeleteIocSetResponse:
-      type: object
-    DeleteIocsResponse:
-      type: object
-    IOCSetResponse:
-      description: IOCSetResponse is the response structure of successful ioc create request
+    DeleteIocsRequestBody:
       type: object
       properties:
-        countAdded:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Outdated IOCs
+          description: Reasion for deletion.
+        iocIDs:
+          type: array
+          items:
+            type: integer
+            example: 23
+          description: IOC ID that needs to be deleted. A maximum of 10 IOCs can be deleted in one delete request.
+    TI_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - TIMaster-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    TI_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - TIMaster-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ListIocSetResponse:
+      type: object
+      properties:
+        allPublishers:
+          type: array
+          items:
+            type: string
+            example: John Doe
+          description: Name of all the administrators who published IOC Set.
+        iocSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListIocSetDetails'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalRecords:
           type: integer
-          example: 12
-          description: Number of IOCs that got added in IOC set.
-        countDuplicate:
-          type: integer
-          example: 3
-          description: Number of IOCs that were duplicate and not added to IOC set.
-        countSkipped:
-          type: integer
-          example: 2
-          description: Number of IOCs that were invalid and not added to IOC set.
-        countTotal:
-          type: integer
-          example: 17
-          description: Total number of IOCs that were provided by administrator.
-        iocSetID:
-          type: integer
-          example: 7
-          description: Unique ID of the IOC set.
+          example: 27
+          description: Total number of IOC sets.
     TI_HTTP_404:
       type: object
       properties:
@@ -647,123 +701,6 @@ components:
           enum:
           - false
           - true
-    IocLookupResponse:
-      type: object
-      properties:
-        iocSets:
-          type: array
-          items:
-            $ref: '#/components/schemas/IocSetForLookup'
-    DeleteIocSetBody:
-      type: object
-      properties:
-        deleteReason:
-          type: string
-          minLength: 10
-          maxLength: 150
-          example: Outdated IOCs
-          description: Reasion for deletion.
-    IOCDetails:
-      type: object
-      properties:
-        addedBy:
-          type: string
-          example: John Doe
-          description: Name of administrator who added the IOC.
-        addedTime:
-          type: string
-          example: Jan 22, 2025 09:08:42
-          description: Time at which this IOC was added.
-        convertedIoc:
-          type: string
-          example: .wfwhr
-          description: Corresponding SHA1 of SHA256 and MD5 hash or empty if not converted, else same as user input
-        id:
-          type: integer
-          example: 25
-          description: Unique ID of the IOC.
-        iocSetID:
-          type: integer
-          example: 7
-          description: Unique ID of the IOC set.
-        iocType:
-          type: string
-          example: hash
-          enum:
-          - hash
-          - ext
-          description: Details of the IOC type. It can be either file hash or file extension.
-        iocValue:
-          type: string
-          example: .wfwhr
-          description: IOC value added by the administrator.
-    IocSetForLookup:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 7
-          description: Unique ID of the IOC set.
-        iocSetType:
-          type: string
-          example: hash
-          enum:
-          - hash
-          - ext
-          description: Type of IOC, can be either hash or extension.
-        lastModifiedOn:
-          type: string
-          example: Jan 22, 2025 09:08:42
-          description: Time at which this IOC set was last updated.
-        name:
-          type: string
-          example: Black cat IOCs
-          description: Name of IOC set.
-        publishDate:
-          type: string
-          example: Jan 07, 2025 07:08:40
-          description: Time at which this IOC set was published.
-        publishedBy:
-          type: string
-          example: Jane Doe
-          description: Name of admin who published this IOC set.
-    UpdateIocSetRequestBody:
-      description: UpdateIocSetRequestBody is the request structure to handle IOC set create request
-      type: object
-      properties:
-        description:
-          type: string
-          example: IOC set decription
-          description: IOC Set description.
-        iocs:
-          type: array
-          items:
-            type: string
-            example: 077eb3024604928da9a5c70c0efefd805819e7da
-          description: IOCs that needs to be added in IOC set
-        name:
-          type: string
-          example: Black cat IOCs
-          description: Name of the IOC Set.
-        source:
-          type: string
-          example: IOCs of black cat ramsomware
-          description: Source of IOC Set.
-    DeleteIocsRequestBody:
-      type: object
-      properties:
-        deleteReason:
-          type: string
-          minLength: 10
-          maxLength: 150
-          example: Outdated IOCs
-          description: Reasion for deletion.
-        iocIDs:
-          type: array
-          items:
-            type: integer
-            example: 23
-          description: IOC ID that needs to be deleted. A maximum of 10 IOCs can be deleted in one delete request.
     ListIocSetDetails:
       type: object
       properties:
@@ -814,6 +751,69 @@ components:
           type: integer
           example: 35
           description: Total number of IOCs in the IOC set.
+    DeleteIocSetResponse:
+      type: object
+    UpdateIocSetRequestBody:
+      description: UpdateIocSetRequestBody is the request structure to handle IOC set create request
+      type: object
+      properties:
+        description:
+          type: string
+          example: IOC set decription
+          description: IOC Set description.
+        iocs:
+          type: array
+          items:
+            type: string
+            example: 077eb3024604928da9a5c70c0efefd805819e7da
+          description: IOCs that needs to be added in IOC set
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of the IOC Set.
+        source:
+          type: string
+          example: IOCs of black cat ramsomware
+          description: Source of IOC Set.
+    DeleteIocSetBody:
+      type: object
+      properties:
+        deleteReason:
+          type: string
+          minLength: 10
+          maxLength: 150
+          example: Outdated IOCs
+          description: Reasion for deletion.
+    IocSetForLookup:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+          description: Unique ID of the IOC set.
+        iocSetType:
+          type: string
+          example: hash
+          enum:
+          - hash
+          - ext
+          description: Type of IOC, can be either hash or extension.
+        lastModifiedOn:
+          type: string
+          example: Jan 22, 2025 09:08:42
+          description: Time at which this IOC set was last updated.
+        name:
+          type: string
+          example: Black cat IOCs
+          description: Name of IOC set.
+        publishDate:
+          type: string
+          example: Jan 07, 2025 07:08:40
+          description: Time at which this IOC set was published.
+        publishedBy:
+          type: string
+          example: Jane Doe
+          description: Name of admin who published this IOC set.
   securitySchemes:
     OAuth2:
       type: oauth2

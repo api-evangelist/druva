@@ -255,35 +255,16 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PostOrganizationsAccountsAsgroupsTagsCountResponse:
+    Error:
       properties:
-        hits:
-          properties:
-            hits:
-              items:
-                type: string
-              type: array
-            total:
-              type: integer
-          type: object
+        message:
+          type: string
       type: object
-    GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse:
+    GetOrganizationsAccountsAsgroupsTagsKeysResponse:
       properties:
         values:
           items:
             type: string
-          type: array
-      type: object
-    PostOrganizationsAccountsAsgroupsTagsCountRequest:
-      properties:
-        Tags:
-          items:
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-            type: object
           type: array
       type: object
     GetOrganizationsAccountsAsgroupsIdsResponse:
@@ -297,20 +278,39 @@ components:
         Type:
           type: string
       type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsAccountsAsgroupsTagsKeysResponse:
+    GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse:
       properties:
         values:
           items:
             type: string
           type: array
       type: object
+    PostOrganizationsAccountsAsgroupsTagsCountResponse:
+      properties:
+        hits:
+          properties:
+            hits:
+              items:
+                type: string
+              type: array
+            total:
+              type: integer
+          type: object
+      type: object
     empty:
       properties: {}
+      type: object
+    PostOrganizationsAccountsAsgroupsTagsCountRequest:
+      properties:
+        Tags:
+          items:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+          type: array
       type: object
   securitySchemes:
     API_Authorizer:

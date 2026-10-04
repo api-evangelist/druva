@@ -1170,6 +1170,26 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    GetCloudCacheReportDataResponse:
+      title: GetCloudCacheReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudCacheReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     GetStorageStatisticsReportDataResponse:
       title: GetStorageStatisticsReportDataResponse
       type: object
@@ -1190,110 +1210,6 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetEPRestoreActivityReportDataResponse:
-      title: GetEPRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EPRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    CloudCacheReportData:
-      title: CloudCacheReportData
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
-          type: string
-          example: Druva
-        customerName:
-          description: Customer name defined for the customer
-          type: string
-          example: Druva
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-01T13:30:41.951Z'
-        cloudCacheName:
-          description: Name of the cloud cache
-          type: string
-          example: cache--cloud
-        totalUsers:
-          type: integer
-          description: Total number of users.
-          example: 25
-        usersForRestore:
-          type: integer
-          description: Total number of users for restore.
-          example: 2
-        totalCacheSizeMB:
-          type: integer
-          description: Total cache size in MB.
-          example: 500
-        'cacheUsageMB ':
-          type: integer
-          description: Total cache usage in MB.
-          example: 345
-    AlertReportData:
-      title: AlertReportData
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
-          type: string
-          example: Druva
-        customerName:
-          description: 'Customer name defined for the customer '
-          type: string
-          example: Druva
-        entity:
-          type: string
-          description: The username and device of the user.
-          example: user_iobvl:DESKTOP-514PMN2
-        alertDetails:
-          type: string
-          description: The details about the alert generated.
-          example: Misconfigured Backup Folder
-        firstOccurrence:
-          type: string
-          description: The date and time when the alert was generated for the first time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2022-12-01T13:50:35.369Z'
-        lastOccurrence:
-          type: string
-          description: The date and time when the alert was generated for the last time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-01-01T13:50:35.369Z'
-        active:
-          type: string
-          description: Displays information whether the alert generated is active or not.
-          example: 'No'
-        severity:
-          type: string
-          description: Displays the severity type of the alert. Example:- critical, high, warning.
-          example: Warning
     GetLastBackupStatusReportDataResponse:
       title: GetLastBackupStatusReportDataResponse
       type: object
@@ -1314,95 +1230,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    LastBackupStatusReportData:
-      title: LastBackupStatusReportData
+    APIError:
+      description: APIError defines an application error result format
       type: object
       properties:
-        customerGlobalId:
+        code:
           type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
+        message:
           type: string
-          example: Druva
-        customerName:
-          description: 'Customer name defined for the customer '
-          type: string
-          example: Druva
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-01T13:30:41.951Z'
-        userName:
-          type: string
-          description: The name of the user.
-          example: user1
-        userEmailID:
-          type: string
-          description: The email address of the user.
-          example: user1@d.in
-        device:
-          type: string
-          description: The name of the device registered for the user.
-          example: DESKTOP-SM857S52
-        profile:
-          type: string
-          description: The profile that is assigned to the user.
-          example: profileC
-        clientVersion:
-          type: string
-          description: The version of inSync client installed on the user's device.
-          example: 6.2.0
-        osPlatform:
-          type: string
-          description: The name, version, and platform details of the operating system running on the user's device.
-          example: Windows
-        deviceStatus:
-          type: string
-          description: The backup status of the device. For example, Enabled.
-          example: Enabled
-        startTime:
-          type: string
-          description: The date and time on which the backup started. Example - 2019-10-25T00:00:00Z
-          example: '2023-06-01T13:30:41.951Z'
-        endTime:
-          type: string
-          description: The date and time on which the backup was completed. Example - 2019-10-25T00:00:00Z
-          example: '2023-06-01T16:30:41.951Z'
-        filesBackedUp:
-          type: integer
-          description: The number of files and folders that are backed up.
-          example: 105
-        filesMissed:
-          type: integer
-          description: The number of files and folders that Endpoints was not able to back up.
-          example: 2
-        isDeleted:
-          type: integer
-          description: 'Indicates the status of the device.
-
-            1- The device is deleted
-
-            0- The device is active'
-          example: 0
-        status:
-          type: string
-          description: The status of the backup operation. A device can have the following backup statuses-Backup Failed, Never Backed Up, Backed Up With Errors, Backed Up Successfully.
-          example: Success
-        bytesTransferredMB:
-          type: integer
-          description: The number of bytes transferred during backup.
-          example: 12778
-        deviceConnectivity:
-          type: string
-          description: Displays information about the device connectivity status - active or inactive.
-          example: Active
-        timeTakenMinutes:
-          type: integer
-          description: Displays the total time taken for the backup.
-          example: 18
     EPPreservedUsersDataSourcesReportData:
       title: EPPreservedUsersDataSourcesReportData
       type: object
@@ -1458,57 +1293,8 @@ components:
           description: The system calculated date on which the user will be deleted if endpoints are configured to auto-delete preserved users.
           format: date-time
           example: '2023-06-03T15:03:30.412Z'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    GetAlertReportDataResponse:
-      title: GetAlertReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AlertReportData'
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetUsersReportDataResponse:
-      title: GetUsersReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsersReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    UsersReportData:
-      title: UsersReportData
+    LicenseUsageReportData:
+      title: LicenseUsageReportData
       type: object
       properties:
         customerGlobalId:
@@ -1533,26 +1319,51 @@ components:
           description: For Weekly report- The end date of the weekly report. For the Monthly report- The end date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
           format: date-time
           example: '2023-09-03T14:34:11.532Z'
-        totalUsers:
-          type: integer
-          description: The total number of users available in Endpoints for a given week or month.
-          example: 7
-        totalPreservedUsers:
-          type: integer
-          description: The total number of users that are preserved in Endpoints to date for a given week or month.
-          example: 3
         usersAdded:
           type: integer
-          description: The number of users that are added to Endpoints for a given week or month.
+          description: For Weekly report- The total number of users added for a given week. For the Monthly report- The total number of users added to Endpoints for a given month.
           example: 10
         usersDeleted:
           type: integer
-          description: The number of users that are deleted from Endpoints for a given week or month.
+          description: For Weekly report- The total number of users deleted for a given week. For the Monthly report- The total number of users deleted from Endpoints for a given month.
           example: 3
-        usersPreserved:
+        totalActiveLicense:
           type: integer
-          description: The number of users that are preserved in Endpoints for a given week or month.
-          example: 3
+          description: For Weekly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given month.
+          example: 2
+        activeLicenseUsed:
+          type: integer
+          description: For Weekly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given month.
+          example: 1
+        totalPreservedLicense:
+          type: integer
+          description: For Weekly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given month.
+          example: 1
+        preservedLicenseUsed:
+          type: integer
+          description: For Weekly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given month.
+          example: 1
+    GetUsersReportDataResponse:
+      title: GetUsersReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     GetLicenseUsageReportDataResponse:
       title: GetLicenseUsageReportDataResponse
       type: object
@@ -1644,84 +1455,14 @@ components:
           type: string
           description: The operating system of the device.
           example: win32
-    LicenseUsageReportData:
-      title: LicenseUsageReportData
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
-          type: string
-          example: Druva
-        customerName:
-          description: 'Customer name defined for the customer '
-          type: string
-          example: Druva
-        fromDate:
-          type: string
-          description: For Weekly report- The start date of the weekly report. For the Monthly report- The start date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
-          format: date-time
-          example: '2022-06-03T14:34:11.532Z'
-        toDate:
-          type: string
-          description: For Weekly report- The end date of the weekly report. For the Monthly report- The end date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
-          format: date-time
-          example: '2023-09-03T14:34:11.532Z'
-        usersAdded:
-          type: integer
-          description: For Weekly report- The total number of users added for a given week. For the Monthly report- The total number of users added to Endpoints for a given month.
-          example: 10
-        usersDeleted:
-          type: integer
-          description: For Weekly report- The total number of users deleted for a given week. For the Monthly report- The total number of users deleted from Endpoints for a given month.
-          example: 3
-        totalActiveLicense:
-          type: integer
-          description: For Weekly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are allocated in Endpoints to date for a given month.
-          example: 2
-        activeLicenseUsed:
-          type: integer
-          description: For Weekly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints active licenses that are consumed in Endpoints to date for a given month.
-          example: 1
-        totalPreservedLicense:
-          type: integer
-          description: For Weekly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are allocated in Endpoints to date for a given month.
-          example: 1
-        preservedLicenseUsed:
-          type: integer
-          description: For Weekly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given week. For the Monthly report- The total number of Endpoints preserved licenses that are consumed in Endpoints to date for a given month.
-          example: 1
-    GetCloudCacheReportDataResponse:
-      title: GetCloudCacheReportDataResponse
+    GetEPRestoreActivityReportDataResponse:
+      title: GetEPRestoreActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/CloudCacheReportData'
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetEPPreservedUsersDataSourcesReportDataResponse:
-      title: GetEPPreservedUsersDataSourcesReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EPPreservedUsersDataSourcesReportData'
+            $ref: '#/components/schemas/EPRestoreActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1755,83 +1496,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    UserProvisioningReportData:
-      title: UserProvisioningReportData
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
-          type: string
-          example: Druva
-        customerName:
-          description: 'Customer name defined for the customer '
-          type: string
-          example: Druva
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-        userName:
-          type: string
-          description: Displays the user name of the Endpoints user provisioned using the IdP.
-          example: user1
-        userEmail:
-          type: string
-          description: Displays the email address of the user.
-          example: user1@d.in
-        profile:
-          type: string
-          description: Displays the name of the profile the user is associated with in Endpoints.
-          example: Default
-        userStatus:
-          type: string
-          description: Displays the user status in Endpoints.
-          example: Active
-        endpointsLicense:
-          type: string
-          description: Displays the Endpoints license status. For example, active, preserved or -, wherein - represents the unlicensed state.
-          example: Active
-        endpointsUsageMB:
-          type: integer
-          description: The amount of data backed up by the user.
-          example: 30520
-        isDeleted:
-          type: integer
-          description: 'Indicates the current status of the user account.
-
-            1- The user account is deleted.
-
-            0- The user account is active.'
-          example: 0
-        createdOn:
-          type: string
-          description: Displays the user account creation date in Endpoints. The time is in the UTC time zone.
-          format: date-time
-          example: '2022-08-03T13:21:27.960Z'
-        managedBy:
-          type: string
-          description: Displays the name of IdP which is managing the user in Endpoints.
-          example: Manually
-        customAttributeValue:
-          type: string
-          description: The value of the attribute in the AD server.
-          example: attributeVal
-        customAttributeName:
-          type: string
-          description: Name of the attribute in the AD server.
-          example: attributeName
-    GetUserRolloutReportDataResponse:
-      title: GetUserRolloutReportDataResponse
+    GetUserProvisioningReportDataResponse:
+      title: GetUserProvisioningReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/UserRolloutReportData'
+            $ref: '#/components/schemas/UserProvisioningReportData'
         lastSyncTimestamp:
           type: string
           description: The time stamp until which the report data was returned. The time is in the UTC time zone.
@@ -1885,69 +1557,6 @@ components:
           type: integer
           description: Total backed up files size in MB.
           example: 50
-    StorageAlertReportData:
-      title: StorageAlertReportData
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        accountName:
-          description: Account name defined for the customer
-          type: string
-          example: Druva
-        customerName:
-          description: Customer name defined for the customer
-          type: string
-          example: Druva
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-01T13:30:41.951Z'
-        entity:
-          description: Name of the entity
-          type: string
-          example: Administrator
-        alertDetails:
-          type: string
-          description: Details of the alert.
-          example: Low Storage Space Available
-        firstOccurrence:
-          type: string
-          description: First occurrence date of the alert.
-          format: date-time
-          example: '2023-06-01T13:30:41.951Z'
-        latestOccurrence:
-          type: string
-          description: Last occurrence date of the alert.
-          format: date-time
-          example: '2023-06-01T13:30:41.951Z'
-        active:
-          type: string
-          description: Defines alert is active or not.
-          example: 'Yes'
-    GetUserProvisioningReportDataResponse:
-      title: GetUserProvisioningReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserProvisioningReportData'
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     UserRolloutReportData:
       title: UserRolloutReportData
       type: object
@@ -2062,6 +1671,397 @@ components:
           type: string
           description: The operating system platform on the user device.
           example: Win 10
+    GetEPPreservedUsersDataSourcesReportDataResponse:
+      title: GetEPPreservedUsersDataSourcesReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EPPreservedUsersDataSourcesReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetAlertReportDataResponse:
+      title: GetAlertReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetUserRolloutReportDataResponse:
+      title: GetUserRolloutReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRolloutReportData'
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    StorageAlertReportData:
+      title: StorageAlertReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        entity:
+          description: Name of the entity
+          type: string
+          example: Administrator
+        alertDetails:
+          type: string
+          description: Details of the alert.
+          example: Low Storage Space Available
+        firstOccurrence:
+          type: string
+          description: First occurrence date of the alert.
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        latestOccurrence:
+          type: string
+          description: Last occurrence date of the alert.
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        active:
+          type: string
+          description: Defines alert is active or not.
+          example: 'Yes'
+    AlertReportData:
+      title: AlertReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        entity:
+          type: string
+          description: The username and device of the user.
+          example: user_iobvl:DESKTOP-514PMN2
+        alertDetails:
+          type: string
+          description: The details about the alert generated.
+          example: Misconfigured Backup Folder
+        firstOccurrence:
+          type: string
+          description: The date and time when the alert was generated for the first time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2022-12-01T13:50:35.369Z'
+        lastOccurrence:
+          type: string
+          description: The date and time when the alert was generated for the last time. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-01-01T13:50:35.369Z'
+        active:
+          type: string
+          description: Displays information whether the alert generated is active or not.
+          example: 'No'
+        severity:
+          type: string
+          description: Displays the severity type of the alert. Example:- critical, high, warning.
+          example: Warning
+    LastBackupStatusReportData:
+      title: LastBackupStatusReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        userName:
+          type: string
+          description: The name of the user.
+          example: user1
+        userEmailID:
+          type: string
+          description: The email address of the user.
+          example: user1@d.in
+        device:
+          type: string
+          description: The name of the device registered for the user.
+          example: DESKTOP-SM857S52
+        profile:
+          type: string
+          description: The profile that is assigned to the user.
+          example: profileC
+        clientVersion:
+          type: string
+          description: The version of inSync client installed on the user's device.
+          example: 6.2.0
+        osPlatform:
+          type: string
+          description: The name, version, and platform details of the operating system running on the user's device.
+          example: Windows
+        deviceStatus:
+          type: string
+          description: The backup status of the device. For example, Enabled.
+          example: Enabled
+        startTime:
+          type: string
+          description: The date and time on which the backup started. Example - 2019-10-25T00:00:00Z
+          example: '2023-06-01T13:30:41.951Z'
+        endTime:
+          type: string
+          description: The date and time on which the backup was completed. Example - 2019-10-25T00:00:00Z
+          example: '2023-06-01T16:30:41.951Z'
+        filesBackedUp:
+          type: integer
+          description: The number of files and folders that are backed up.
+          example: 105
+        filesMissed:
+          type: integer
+          description: The number of files and folders that Endpoints was not able to back up.
+          example: 2
+        isDeleted:
+          type: integer
+          description: 'Indicates the status of the device.
+
+            1- The device is deleted
+
+            0- The device is active'
+          example: 0
+        status:
+          type: string
+          description: The status of the backup operation. A device can have the following backup statuses-Backup Failed, Never Backed Up, Backed Up With Errors, Backed Up Successfully.
+          example: Success
+        bytesTransferredMB:
+          type: integer
+          description: The number of bytes transferred during backup.
+          example: 12778
+        deviceConnectivity:
+          type: string
+          description: Displays information about the device connectivity status - active or inactive.
+          example: Active
+        timeTakenMinutes:
+          type: integer
+          description: Displays the total time taken for the backup.
+          example: 18
+    UserProvisioningReportData:
+      title: UserProvisioningReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+        userName:
+          type: string
+          description: Displays the user name of the Endpoints user provisioned using the IdP.
+          example: user1
+        userEmail:
+          type: string
+          description: Displays the email address of the user.
+          example: user1@d.in
+        profile:
+          type: string
+          description: Displays the name of the profile the user is associated with in Endpoints.
+          example: Default
+        userStatus:
+          type: string
+          description: Displays the user status in Endpoints.
+          example: Active
+        endpointsLicense:
+          type: string
+          description: Displays the Endpoints license status. For example, active, preserved or -, wherein - represents the unlicensed state.
+          example: Active
+        endpointsUsageMB:
+          type: integer
+          description: The amount of data backed up by the user.
+          example: 30520
+        isDeleted:
+          type: integer
+          description: 'Indicates the current status of the user account.
+
+            1- The user account is deleted.
+
+            0- The user account is active.'
+          example: 0
+        createdOn:
+          type: string
+          description: Displays the user account creation date in Endpoints. The time is in the UTC time zone.
+          format: date-time
+          example: '2022-08-03T13:21:27.960Z'
+        managedBy:
+          type: string
+          description: Displays the name of IdP which is managing the user in Endpoints.
+          example: Manually
+        customAttributeValue:
+          type: string
+          description: The value of the attribute in the AD server.
+          example: attributeVal
+        customAttributeName:
+          type: string
+          description: Name of the attribute in the AD server.
+          example: attributeName
+    UsersReportData:
+      title: UsersReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: 'Customer name defined for the customer '
+          type: string
+          example: Druva
+        fromDate:
+          type: string
+          description: For Weekly report- The start date of the weekly report. For the Monthly report- The start date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2022-06-03T14:34:11.532Z'
+        toDate:
+          type: string
+          description: For Weekly report- The end date of the weekly report. For the Monthly report- The end date of the monthly report. The time is in the UTC time zone. Example- 2019-10-25T00:00:00Z00:00
+          format: date-time
+          example: '2023-09-03T14:34:11.532Z'
+        totalUsers:
+          type: integer
+          description: The total number of users available in Endpoints for a given week or month.
+          example: 7
+        totalPreservedUsers:
+          type: integer
+          description: The total number of users that are preserved in Endpoints to date for a given week or month.
+          example: 3
+        usersAdded:
+          type: integer
+          description: The number of users that are added to Endpoints for a given week or month.
+          example: 10
+        usersDeleted:
+          type: integer
+          description: The number of users that are deleted from Endpoints for a given week or month.
+          example: 3
+        usersPreserved:
+          type: integer
+          description: The number of users that are preserved in Endpoints for a given week or month.
+          example: 3
+    CloudCacheReportData:
+      title: CloudCacheReportData
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        accountName:
+          description: Account name defined for the customer
+          type: string
+          example: Druva
+        customerName:
+          description: Customer name defined for the customer
+          type: string
+          example: Druva
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-01T13:30:41.951Z'
+        cloudCacheName:
+          description: Name of the cloud cache
+          type: string
+          example: cache--cloud
+        totalUsers:
+          type: integer
+          description: Total number of users.
+          example: 25
+        usersForRestore:
+          type: integer
+          description: Total number of users for restore.
+          example: 2
+        totalCacheSizeMB:
+          type: integer
+          description: Total cache size in MB.
+          example: 500
+        'cacheUsageMB ':
+          type: integer
+          description: Total cache usage in MB.
+          example: 345
   securitySchemes:
     OAuth2:
       flows:

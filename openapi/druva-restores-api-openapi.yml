@@ -259,46 +259,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsRestoresByIdResponse:
-      properties:
-        account_id:
-          type: string
-        artifact:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        deleted_at:
-          type: string
-        end:
-          format: date-time
-          type: string
-        error:
-          type: string
-        id:
-          type: integer
-        organization_id:
-          type: string
-        origin:
-          type: string
-        start:
-          format: date-time
-          type: string
-        status:
-          type: string
-        type_restore:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    GetOrganizationsAccountsRestoresDownloadResponse:
-      properties:
-        signedUrl:
-          type: string
-      type: object
-    DeleteOrganizationsAccountsRestoresByIdResponse:
-      type: object
     GetOrganizationsAccountsRestoresResponse:
       properties:
         hits:
@@ -340,6 +300,46 @@ components:
     Error:
       properties:
         message:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsRestoresByIdResponse:
+      type: object
+    GetOrganizationsAccountsRestoresByIdResponse:
+      properties:
+        account_id:
+          type: string
+        artifact:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        deleted_at:
+          type: string
+        end:
+          format: date-time
+          type: string
+        error:
+          type: string
+        id:
+          type: integer
+        organization_id:
+          type: string
+        origin:
+          type: string
+        start:
+          format: date-time
+          type: string
+        status:
+          type: string
+        type_restore:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsRestoresDownloadResponse:
+      properties:
+        signedUrl:
           type: string
       type: object
     empty:

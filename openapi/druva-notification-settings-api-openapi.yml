@@ -103,13 +103,13 @@ components:
             type: string
         type: object
       type: array
+    empty:
+      properties: {}
+      type: object
     Error:
       properties:
         message:
           type: string
-      type: object
-    empty:
-      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

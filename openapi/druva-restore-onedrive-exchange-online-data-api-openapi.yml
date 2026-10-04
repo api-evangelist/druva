@@ -638,208 +638,7 @@ paths:
                 NotImplemented:
                   $ref: '#/components/examples/NotImplemented'
 components:
-  examples:
-    GARError:
-      summary: Authorization Error
-      description: Client does not have access rights or permissions to the requested content.
-      value:
-        code: InsyncCappmaster-1221
-        message: You do not have permission to access this workload.
-        retryable: false
-        data: null
-    Forbidden:
-      summary: Forbidden
-      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
-      value:
-        code: InsyncCappmaster-1009
-        message: Auth session expired
-        retryable: false
-        data: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
-    InternalServerError:
-      summary: Internal Server Error
-      description: The request was not processed due to an internal error on server.
-      value:
-        code: InsyncCappmaster-1006
-        message: Internal server error.
-        retryable: false
-        data:
-          status: 1
-          message: Failed to get Customer License
-    NotFound:
-      summary: Resource Not Found
-      description: The requested resource could not be found on server.
-      value: null
-    NotImplemented:
-      summary: Method Not Implemented
-      description: Requested HTTP method is not implemented.
-      value:
-        code: InsyncCappmaster-1007
-        message: Method Not implemented.
-        retryable: false
-        data: null
   schemas:
-    200_list_users:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          description: The total number of users fetched based on applied filters.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              userName:
-                type: string
-                description: The username of the user in inSync. Example - Ernie Carter
-              emailID:
-                type: string
-                description: The email address of the user. Example - ernie.carter@druva.com
-              userID:
-                type: integer
-                description: The unique id of the user in inSync. Example - 1
-              status:
-                type: string
-                description: The status of the user account. Example - active/preserved
-              profileID:
-                type: integer
-                description: The profile ID of the profile associated with the user. Example - 1
-              storageID:
-                type: integer
-                description: The storage ID of the storage associated with the user. Example - 1
-              quota:
-                type: integer
-                description: The storage quota assigned to the user in inSync. Example - 10 GB
-              quotaInBytes:
-                type: integer
-                description: The storage quota assigned to the user (in bytes) in inSync. Example - 10737418240
-              cacheID:
-                type: integer
-                description: The CloudCache Server ID associated with the user. Example - 1
-              addedOn:
-                type: string
-                description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
-              ldapGUID:
-                type: string
-                description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
-              privacySettingsEnabled:
-                type: boolean
-                description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
-              additionalProperties:
-                type: object
-                description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
-    200_list_restore_points:
-      type: array
-      items:
-        type: object
-        properties:
-          anomalous:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is anomalous.
-          created:
-            type: string
-            example: 20/02/2024 11:58
-            description: Datetime of snapshot creation in human readable format
-          timestamp:
-            type: integer
-            example: 1710424684
-            description: Datetime of snapshot creation
-          filesMissed:
-            type: integer
-            example: 0
-            description: Number of files missed in snapshot backup
-          displayName:
-            type: string
-            example: Wed Mar  6 11:54:00 2024
-            description: Snapshot display name
-          filesSynced:
-            type: integer
-            example: 0
-            description: Number files backed up in snapshot
-          storageId:
-            type: integer
-            example: 1000002
-            description: Storage id of snapshot
-          latestUnquarantined:
-            type: boolean
-            example: true
-            description: Flag indicating if the snapshot is latest unquarantined snapshot
-          isQuarantined:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is quarantined snapshot
-          anomalousStats:
-            type: object
-            example: {}
-            description: Object containing detailed stats of anomalous snapshot.
-          ignFilesMissed:
-            type: integer
-            description: Number of ignored files missed.
-            example: 0
-          bmr:
-            type: boolean
-            example: false
-            description: Flag indicating if the meeting recordings are backed up in snapshot
-          lsCver:
-            type: integer
-            example: 17
-            description: Snapshot version number
-          size:
-            type: integer
-            example: 23903222
-            description: Total size of snapshot in bytes
-          name:
-            type: string
-            example: Thu Mar 14 13:58:04 2024
-            description: Snapshot name
-          activityLogsDownloadable:
-            type: boolean
-            example: false
-            description: Flag indicating if the activity logs of snapshot are downloadable
-          isLockedByVirtual:
-            type: boolean
-            example: false
-            description: Flag indicating of the snapshot is locked by virtual snapshot
-          anomalousUda:
-            type: boolean
-            example: false
-            description: Flag indicating if snapshot is anomalous
-          isVirtual:
-            type: boolean
-            example: false
-            description: Flag indicating if the snapshot is virtual snapshot on storage
-          isLocked:
-            type: boolean
-            example: false
-            description: Flag indicating of the snapshot is locked
-          totalFiles:
-            type: integer
-            example: 639
-            description: Total number of files in the snapshot. Applicable for M365 OneDrive
-          sizeInBytes:
-            type: integer
-            example: 1024000
-            description: Total size of the snapshot in bytes
     200_DeviceList:
       required:
       - devices
@@ -941,12 +740,213 @@ components:
           - true
           - false
           example: false
+    200_list_restore_points:
+      type: array
+      items:
+        type: object
+        properties:
+          anomalous:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is anomalous.
+          created:
+            type: string
+            example: 20/02/2024 11:58
+            description: Datetime of snapshot creation in human readable format
+          timestamp:
+            type: integer
+            example: 1710424684
+            description: Datetime of snapshot creation
+          filesMissed:
+            type: integer
+            example: 0
+            description: Number of files missed in snapshot backup
+          displayName:
+            type: string
+            example: Wed Mar  6 11:54:00 2024
+            description: Snapshot display name
+          filesSynced:
+            type: integer
+            example: 0
+            description: Number files backed up in snapshot
+          storageId:
+            type: integer
+            example: 1000002
+            description: Storage id of snapshot
+          latestUnquarantined:
+            type: boolean
+            example: true
+            description: Flag indicating if the snapshot is latest unquarantined snapshot
+          isQuarantined:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is quarantined snapshot
+          anomalousStats:
+            type: object
+            example: {}
+            description: Object containing detailed stats of anomalous snapshot.
+          ignFilesMissed:
+            type: integer
+            description: Number of ignored files missed.
+            example: 0
+          bmr:
+            type: boolean
+            example: false
+            description: Flag indicating if the meeting recordings are backed up in snapshot
+          lsCver:
+            type: integer
+            example: 17
+            description: Snapshot version number
+          size:
+            type: integer
+            example: 23903222
+            description: Total size of snapshot in bytes
+          name:
+            type: string
+            example: Thu Mar 14 13:58:04 2024
+            description: Snapshot name
+          activityLogsDownloadable:
+            type: boolean
+            example: false
+            description: Flag indicating if the activity logs of snapshot are downloadable
+          isLockedByVirtual:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked by virtual snapshot
+          anomalousUda:
+            type: boolean
+            example: false
+            description: Flag indicating if snapshot is anomalous
+          isVirtual:
+            type: boolean
+            example: false
+            description: Flag indicating if the snapshot is virtual snapshot on storage
+          isLocked:
+            type: boolean
+            example: false
+            description: Flag indicating of the snapshot is locked
+          totalFiles:
+            type: integer
+            example: 639
+            description: Total number of files in the snapshot. Applicable for M365 OneDrive
+          sizeInBytes:
+            type: integer
+            example: 1024000
+            description: Total size of the snapshot in bytes
+    200_list_users:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          description: The total number of users fetched based on applied filters.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              userName:
+                type: string
+                description: The username of the user in inSync. Example - Ernie Carter
+              emailID:
+                type: string
+                description: The email address of the user. Example - ernie.carter@druva.com
+              userID:
+                type: integer
+                description: The unique id of the user in inSync. Example - 1
+              status:
+                type: string
+                description: The status of the user account. Example - active/preserved
+              profileID:
+                type: integer
+                description: The profile ID of the profile associated with the user. Example - 1
+              storageID:
+                type: integer
+                description: The storage ID of the storage associated with the user. Example - 1
+              quota:
+                type: integer
+                description: The storage quota assigned to the user in inSync. Example - 10 GB
+              quotaInBytes:
+                type: integer
+                description: The storage quota assigned to the user (in bytes) in inSync. Example - 10737418240
+              cacheID:
+                type: integer
+                description: The CloudCache Server ID associated with the user. Example - 1
+              addedOn:
+                type: string
+                description: The date on which the user was added in inSync. Example - 2019-10-25T00:00:00Z
+              ldapGUID:
+                type: string
+                description: 'The AD or LDAP object GUID of the user in a hex string format. Example: B1C47201C67910458867BA19982E353E. The ldapGUID displays objectGUID if the user is imported from AD and displays entryUUID if imported from LDAP.'
+              privacySettingsEnabled:
+                type: boolean
+                description: Displays the status of the privacy setting of the user. If the value returned is True, privacy setting is enabled by the user. If the value returned is False, privacy settings is not set or user has allowed admin access to their data.
+              additionalProperties:
+                type: object
+                description: Contains the two keys of userIdentifierCustomAttribute and userIdentifierCustomAttributeValue if the User-Identifier Custom Attribute feature is enabled for the account and the administrator has opted to display it on the inSync UI. This field remains empty if the administrator has opted to hide the User-Identifier Custom Attribute.
     200_trigger_restore_resp:
       type: object
       properties:
         status:
           type: string
           example: OK
+  examples:
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
+        data:
+          status: 1
+          message: Failed to get Customer License
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
   securitySchemes:
     bearerAuth:
       type: apiKey

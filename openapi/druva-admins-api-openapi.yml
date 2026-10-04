@@ -91,6 +91,14 @@ paths:
       description: Returns the list of admins with their details.
 components:
   schemas:
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     ListAdminsV2Response:
       type: object
       properties:
@@ -100,14 +108,6 @@ components:
           items:
             $ref: '#/components/schemas/AdminV2Response'
         nextPageToken:
-          type: string
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
           type: string
     AdminV2Response:
       description: Contains details about an MSP admin.

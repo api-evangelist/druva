@@ -59,6 +59,21 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    EventList:
+      type: object
+      properties:
+        tracker:
+          type: string
+          description: "Tracker is valid for the next 48 hours after a response is generated. \n > ℹ️ **Info** \n > If you do not specify the Tracker in the successive request, inSync returns the same list of events in response that you received in the first Event API request. <br /><br /> **Ensure that you encode the tracker when you pass it as a query param**."
+          example: MTExMQ==
+        nextPageExists:
+          type: boolean
+          description: The flag to know if next page of result exists.
+          example: true
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
     Event:
       type: object
       properties:
@@ -135,21 +150,6 @@ components:
           type: string
           description: The facility number as defined in inSync Management Console Events API settings. Default value is 23.
           example: 23
-    EventList:
-      type: object
-      properties:
-        tracker:
-          type: string
-          description: "Tracker is valid for the next 48 hours after a response is generated. \n > ℹ️ **Info** \n > If you do not specify the Tracker in the successive request, inSync returns the same list of events in response that you received in the first Event API request. <br /><br /> **Ensure that you encode the tracker when you pass it as a query param**."
-          example: MTExMQ==
-        nextPageExists:
-          type: boolean
-          description: The flag to know if next page of result exists.
-          example: true
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/Event'
     HTTP_403:
       type: object
       properties:

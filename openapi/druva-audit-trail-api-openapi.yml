@@ -236,6 +236,20 @@ components:
           type: string
           description: Application specific error message
       x-go-package: vendor/druva.com/godevkit/errortype
+    ListAuditTrailResponse:
+      description: ListAuditTrailResponse is the response schema for ListAuditTrail
+      type: object
+      properties:
+        audits:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditResponse'
+          x-go-name: Audits
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+      x-go-package: phoenix/audittrail/report/spec
     AuditResponse:
       description: AuditResponse struct holds the response for ListAuditTrail api
       type: object
@@ -268,20 +282,6 @@ components:
           description: Type of the resource.
           type: string
           x-go-name: ResourceType
-      x-go-package: phoenix/audittrail/report/spec
-    ListAuditTrailResponse:
-      description: ListAuditTrailResponse is the response schema for ListAuditTrail
-      type: object
-      properties:
-        audits:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditResponse'
-          x-go-name: Audits
-        nextPageToken:
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          type: string
-          x-go-name: OutToken
       x-go-package: phoenix/audittrail/report/spec
   securitySchemes:
     OAuth2:

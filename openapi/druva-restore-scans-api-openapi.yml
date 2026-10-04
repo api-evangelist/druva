@@ -335,6 +335,109 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    RWC_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1000
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    jobListModel:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              scanJobID:
+                type: integer
+                description: Restore scans Job ID.
+                example: 831
+              globalCustomerID:
+                type: string
+                description: Global Customer ID.
+                example: '10293'
+              orgID:
+                type: integer
+                description: Phoenix Organization ID in case of Phoenix Servers.
+                example: 123
+              orgName:
+                type: string
+                description: Phoenix Organization name in case of Phoenix Servers.
+                example: Default Organization
+              productID:
+                type: integer
+                description: inSync or Phoenix Product ID.
+                example: 12289
+              productJobType:
+                type: string
+                description: Type of restore job created in inSync or Phoenix.
+                example: Restore
+              resourceType:
+                type: string
+                description: Type of resource for which restore job is created in inSync or Phoenix.
+                example: Endpoint
+              resourceID:
+                type: integer
+                description: ID of resource for which restore job is created in inSync or Phoenix.
+                example: 1234
+              resourceName:
+                type: string
+                description: Name of resource for which restore job is created in inSync or Phoenix.
+                example: Ernie Carter Macbook
+              addTime:
+                type: string
+                description: Creation time of Restore scans job.
+                example: '2021-04-12T09:33:55Z'
+              endTime:
+                type: string
+                description: The time when the scan job was completed.
+                example: '2021-04-12T09:33:55Z'
+              jobType:
+                type: string
+                description: Type of Restore scans job.
+                example: Restore Scan
+              statusCode:
+                type: integer
+                description: Status code for Restore scans job.
+                example: 2
+              status:
+                type: string
+                description: Status for Restore scans job.
+                example: Successful
+              deviceName:
+                type: string
+                description: Resource Name for which Restore scans job is executed.
+                example: Ernie Carter's Macbook.
+              ResourceURL:
+                type: string
+                description: Link to resource for which Restore scans job is executed.
+                example: ''
+              RestoreJobURL:
+                type: string
+                description: Link to product Restore Job corresponding to Restore scans job.
+                example: ''
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
+        totalItems:
+          type: integer
+          description: Total jobs present in the response.
+          example: 38
     jobDetailsModel:
       type: object
       properties:
@@ -531,129 +634,6 @@ components:
               type: integer
               description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
               example: 30
-    RWC_HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: string
-          enum:
-          - RWCMaster-1000
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    jobListModel:
-      type: object
-      properties:
-        jobs:
-          type: array
-          items:
-            type: object
-            properties:
-              scanJobID:
-                type: integer
-                description: Restore scans Job ID.
-                example: 831
-              globalCustomerID:
-                type: string
-                description: Global Customer ID.
-                example: '10293'
-              orgID:
-                type: integer
-                description: Phoenix Organization ID in case of Phoenix Servers.
-                example: 123
-              orgName:
-                type: string
-                description: Phoenix Organization name in case of Phoenix Servers.
-                example: Default Organization
-              productID:
-                type: integer
-                description: inSync or Phoenix Product ID.
-                example: 12289
-              productJobType:
-                type: string
-                description: Type of restore job created in inSync or Phoenix.
-                example: Restore
-              resourceType:
-                type: string
-                description: Type of resource for which restore job is created in inSync or Phoenix.
-                example: Endpoint
-              resourceID:
-                type: integer
-                description: ID of resource for which restore job is created in inSync or Phoenix.
-                example: 1234
-              resourceName:
-                type: string
-                description: Name of resource for which restore job is created in inSync or Phoenix.
-                example: Ernie Carter Macbook
-              addTime:
-                type: string
-                description: Creation time of Restore scans job.
-                example: '2021-04-12T09:33:55Z'
-              endTime:
-                type: string
-                description: The time when the scan job was completed.
-                example: '2021-04-12T09:33:55Z'
-              jobType:
-                type: string
-                description: Type of Restore scans job.
-                example: Restore Scan
-              statusCode:
-                type: integer
-                description: Status code for Restore scans job.
-                example: 2
-              status:
-                type: string
-                description: Status for Restore scans job.
-                example: Successful
-              deviceName:
-                type: string
-                description: Resource Name for which Restore scans job is executed.
-                example: Ernie Carter's Macbook.
-              ResourceURL:
-                type: string
-                description: Link to resource for which Restore scans job is executed.
-                example: ''
-              RestoreJobURL:
-                type: string
-                description: Link to product Restore Job corresponding to Restore scans job.
-                example: ''
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
-          example: eyJpZCI6NTY1NX0=
-        totalItems:
-          type: integer
-          description: Total jobs present in the response.
-          example: 38
-    RWC_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - RWCMaster-1002
-          - RWCMaster-1102
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-          - Invalid Resource Type
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
     SettingsRequest:
       type: object
       properties:
@@ -677,84 +657,6 @@ components:
           type: boolean
           description: Boolean denoting if inSync Client User is allowed to enable or disable Restore scans for Endpoints.
           example: 'True'
-        skipScanForDeviceReplace:
-          type: boolean
-          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
-          example: 'False'
-        useDruvaCuratedIOCs:
-          type: boolean
-          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
-          example: 'True'
-        useLightScan:
-          type: boolean
-          description: Boolean denoting if Quick Scan is enabled.
-          example: 'True'
-        excludeExtensionsFromScan:
-          type: array
-          items:
-            type: string
-          description: Array of Strings(File Extensions)skipped from the scan.
-          example:
-          - .exe
-          - .dll
-          - .tmp
-        maxFileSizeToScanInMB:
-          type: integer
-          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
-          example: 200
-        daysBeyondWhichToSkipScan:
-          type: integer
-          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
-          example: 30
-    getJobCount:
-      type: object
-      properties:
-        totalJobs:
-          type: integer
-          description: The total count of restore scan jobs. Example - 50
-          example: 5
-        countByResourceType:
-          type: object
-          properties:
-            Endpoint:
-              type: integer
-              description: The total count of restore scan jobs for Endpoints. Example - 20
-              example: '2'
-            File Server:
-              type: integer
-              description: The total count of restore scan jobs for File Server. Example - 20
-              example: '1'
-            NAS:
-              type: integer
-              description: The total count of restore scan jobs for NAS. Example - 30
-              example: '1'
-            VMware:
-              type: integer
-              description: The total count of restore scan jobs for VMware. Example - 25
-              example: '1'
-    SettingsResponse:
-      type: object
-      properties:
-        AVScanEnabled:
-          type: boolean
-          description: Boolean denoting if Anti Virus (AV) scan is enabled.
-          example: 'True'
-        fileHashScanEnabled:
-          type: boolean
-          description: Boolean denoting if scan for File Hash is enabled.
-          example: 'False'
-        allowAdminToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
-          example: 'True'
-        allowAdminToSkipScanServers:
-          type: boolean
-          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
-          example: 'True'
-        allowUserToSkipScanEndpoints:
-          type: boolean
-          description: Boolean denoting if inSync Client user is allowed to enable or disable Restore scans for Endpoints.
-          example: 'False'
         skipScanForDeviceReplace:
           type: boolean
           description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
@@ -852,6 +754,104 @@ components:
         ContentType:
           type: string
           example: application/json
+    getJobCount:
+      type: object
+      properties:
+        totalJobs:
+          type: integer
+          description: The total count of restore scan jobs. Example - 50
+          example: 5
+        countByResourceType:
+          type: object
+          properties:
+            Endpoint:
+              type: integer
+              description: The total count of restore scan jobs for Endpoints. Example - 20
+              example: '2'
+            File Server:
+              type: integer
+              description: The total count of restore scan jobs for File Server. Example - 20
+              example: '1'
+            NAS:
+              type: integer
+              description: The total count of restore scan jobs for NAS. Example - 30
+              example: '1'
+            VMware:
+              type: integer
+              description: The total count of restore scan jobs for VMware. Example - 25
+              example: '1'
+    RWC_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1002
+          - RWCMaster-1102
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+          - Invalid Resource Type
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    SettingsResponse:
+      type: object
+      properties:
+        AVScanEnabled:
+          type: boolean
+          description: Boolean denoting if Anti Virus (AV) scan is enabled.
+          example: 'True'
+        fileHashScanEnabled:
+          type: boolean
+          description: Boolean denoting if scan for File Hash is enabled.
+          example: 'False'
+        allowAdminToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync administrator is allowed to enable or disable Restore scans for Endpoints.
+          example: 'True'
+        allowAdminToSkipScanServers:
+          type: boolean
+          description: Boolean denoting if Phoenix administrator is allowed to enable or disable Restore scans for Phoenix Servers.
+          example: 'True'
+        allowUserToSkipScanEndpoints:
+          type: boolean
+          description: Boolean denoting if inSync Client user is allowed to enable or disable Restore scans for Endpoints.
+          example: 'False'
+        skipScanForDeviceReplace:
+          type: boolean
+          description: Boolean denoting if the Anti Virus Scan should be skipped for endpoint's device replace restore scenario.
+          example: 'False'
+        useDruvaCuratedIOCs:
+          type: boolean
+          description: Boolean denoting if Druva-published IOC libraries are used for scanning.
+          example: 'True'
+        useLightScan:
+          type: boolean
+          description: Boolean denoting if Quick Scan is enabled.
+          example: 'True'
+        excludeExtensionsFromScan:
+          type: array
+          items:
+            type: string
+          description: Array of Strings(File Extensions)skipped from the scan.
+          example:
+          - .exe
+          - .dll
+          - .tmp
+        maxFileSizeToScanInMB:
+          type: integer
+          description: Integer denoting maximum file size (between 100 and 1024) in MBs that should be scanned.
+          example: 200
+        daysBeyondWhichToSkipScan:
+          type: integer
+          description: Integer denoting the number of days (value can be 0, 30, 60, or 90) within which the last modified date of a file should be for it to be scanned. Enter 0 if you want to scan all the files.
+          example: 30
   securitySchemes:
     OAuth2:
       type: oauth2

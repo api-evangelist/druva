@@ -337,66 +337,25 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Policy:
+    EmailViolationsResponse:
       type: object
       properties:
-        id:
-          type: integer
-          description: The unique ID of the Sensitive Data Governance (SDG) policy.
-        name:
-          type: string
-          description: The name of the SDG policy.
-        createdBy:
-          type: integer
-          description: The unique ID of the administrator who created the SDG policy.
-        description:
-          type: string
-          description: The description of the SDG policy.
-        endUserAccess:
-          type: boolean
-          description: Flag describing whether end user access is enabled to the policy.
-        lastUpdated:
-          format: date-time
-          example: '2019-10-12T07:20:50Z'
-          description: The date and time when the SDG policy was last updated.
-        attachedPolicyTemplate:
-          type: integer
-          description: The unique ID of the SDG policy template associated with the policy.
-    Datatype:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique ID of the sensitive data type.
-        name:
-          type: string
-          description: Name of the sensitive data type.
-        category:
-          type: string
-          description: Category of the sensitive data type.
-        description:
-          type: string
-          description: Description of the sensitive data type.
-        expressionType:
-          type: string
-          example: Keyword And
-          enum:
-          - Keyword And
-          - Keyword Or
-          - RegEx
-          description: Expression type of the Sensitive data type. Example - 'Keyword And', 'Keyword Or', 'RegEx'.
-        region:
-          type: string
-          example: Global
-          description: Region in which the data type is declared sensitive.
-        isCustom:
-          type: boolean
-          description: Flag to determine if it is a custom data type.
-        query:
+        violations:
           type: array
           items:
-            type: string
-          description: Query run to identify the sensitive data type.
+            $ref: '#/components/schemas/EmailViolation'
+          description: List of email violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    PolicyListResponse:
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+          description: List of policies.
     EmailViolation:
       type: object
       properties:
@@ -452,97 +411,31 @@ components:
           type: string
           example: Critical
           description: The severity of the email violation, whether it critical or non-critical.
-    PolicyTemplate:
+    Policy:
       type: object
       properties:
         id:
           type: integer
-          description: The unique ID of the policy template.
+          description: The unique ID of the Sensitive Data Governance (SDG) policy.
         name:
           type: string
-          description: The name of the policy template.
+          description: The name of the SDG policy.
         createdBy:
           type: integer
-          description: The unique ID of the administrator who created the policy template.
+          description: The unique ID of the administrator who created the SDG policy.
         description:
           type: string
-          description: The description of the policy template.
-        includedMimetypes:
-          type: array
-          items:
-            type: string
-          description: The list of MIME type categories in the SDG policy template.
-        region:
-          type: string
-          description: The region associated with the SDG policy template.
-        isCustom:
+          description: The description of the SDG policy.
+        endUserAccess:
           type: boolean
-          description: Flag that determines whether SDG policy template is custom or not.
+          description: Flag describing whether end user access is enabled to the policy.
         lastUpdated:
-          type: string
           format: date-time
           example: '2019-10-12T07:20:50Z'
-          description: The date and time when the policy template was last updated.
-        attachedDatatype:
-          type: array
-          items:
-            type: integer
-          description: The unique IDs of the attached sensitive data types in the policy template.
-    WhitelistKeywordsResponse:
-      type: object
-      properties:
-        whitelistKeywords:
-          type: array
-          items:
-            type: object
-            properties:
-              keyword:
-                type: string
-                description: The whitelisted keyword/regular expression.
-              isRegex:
-                type: boolean
-                description: Indicates if it is a whitelisted keyword or a regular expression.
-          description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
-    PolicyTemplateListResponse:
-      type: object
-      properties:
-        policyTemplates:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyTemplate'
-          description: List of policy templates.
-    EmailViolationsResponse:
-      type: object
-      properties:
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailViolation'
-          description: List of email violations.
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
-    GetSetingsResponse:
-      type: object
-      properties:
-        isAutoResolveViolations:
-          type: boolean
-          description: Flag describing whether auto resolution of violations is enabled or not.
-        daysToResolveNonCriticalViolations:
+          description: The date and time when the SDG policy was last updated.
+        attachedPolicyTemplate:
           type: integer
-          description: The number of days after which non critical violations will be auto resolved.
-        daysToResolveCriticalViolations:
-          type: integer
-          description: The number of days after which critical violations will be auto resolved.
-        isArchiveScan:
-          type: boolean
-          description: Flag describing whether archive files will be scanned for generating violations.
-        isAutoArchiveResolvedViolations:
-          type: boolean
-          description: Flag describing whether resolved violations will be automatically archived or not.
-        daysToResolveArchivedViolations:
-          type: integer
-          description: The number of days after which archived violations will be automatically resolved.
+          description: The unique ID of the SDG policy template associated with the policy.
     FileViolation:
       type: object
       properties:
@@ -653,6 +546,42 @@ components:
           type: string
           example: '2019-10-12T07:20:50Z'
           description: The date and time when the violation is resolved.
+    PolicyTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the policy template.
+        name:
+          type: string
+          description: The name of the policy template.
+        createdBy:
+          type: integer
+          description: The unique ID of the administrator who created the policy template.
+        description:
+          type: string
+          description: The description of the policy template.
+        includedMimetypes:
+          type: array
+          items:
+            type: string
+          description: The list of MIME type categories in the SDG policy template.
+        region:
+          type: string
+          description: The region associated with the SDG policy template.
+        isCustom:
+          type: boolean
+          description: Flag that determines whether SDG policy template is custom or not.
+        lastUpdated:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the policy template was last updated.
+        attachedDatatype:
+          type: array
+          items:
+            type: integer
+          description: The unique IDs of the attached sensitive data types in the policy template.
     HTTP_403_SDG:
       type: object
       properties:
@@ -674,14 +603,72 @@ components:
           example: false
         data:
           type: object
-    PolicyListResponse:
+    DatatypeListResponse:
       type: object
       properties:
-        policies:
+        datatypes:
           type: array
           items:
-            $ref: '#/components/schemas/Policy'
-          description: List of policies.
+            $ref: '#/components/schemas/Datatype'
+          description: List of sensitive data types.
+    Datatype:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the sensitive data type.
+        name:
+          type: string
+          description: Name of the sensitive data type.
+        category:
+          type: string
+          description: Category of the sensitive data type.
+        description:
+          type: string
+          description: Description of the sensitive data type.
+        expressionType:
+          type: string
+          example: Keyword And
+          enum:
+          - Keyword And
+          - Keyword Or
+          - RegEx
+          description: Expression type of the Sensitive data type. Example - 'Keyword And', 'Keyword Or', 'RegEx'.
+        region:
+          type: string
+          example: Global
+          description: Region in which the data type is declared sensitive.
+        isCustom:
+          type: boolean
+          description: Flag to determine if it is a custom data type.
+        query:
+          type: array
+          items:
+            type: string
+          description: Query run to identify the sensitive data type.
+    WhitelistKeywordsResponse:
+      type: object
+      properties:
+        whitelistKeywords:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: The whitelisted keyword/regular expression.
+              isRegex:
+                type: boolean
+                description: Indicates if it is a whitelisted keyword or a regular expression.
+          description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
+    PolicyTemplateListResponse:
+      type: object
+      properties:
+        policyTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTemplate'
+          description: List of policy templates.
     HttpError:
       type: object
       properties:
@@ -710,14 +697,27 @@ components:
         pageToken:
           type: string
           description: The token to access the next page of results.
-    DatatypeListResponse:
+    GetSetingsResponse:
       type: object
       properties:
-        datatypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Datatype'
-          description: List of sensitive data types.
+        isAutoResolveViolations:
+          type: boolean
+          description: Flag describing whether auto resolution of violations is enabled or not.
+        daysToResolveNonCriticalViolations:
+          type: integer
+          description: The number of days after which non critical violations will be auto resolved.
+        daysToResolveCriticalViolations:
+          type: integer
+          description: The number of days after which critical violations will be auto resolved.
+        isArchiveScan:
+          type: boolean
+          description: Flag describing whether archive files will be scanned for generating violations.
+        isAutoArchiveResolvedViolations:
+          type: boolean
+          description: Flag describing whether resolved violations will be automatically archived or not.
+        daysToResolveArchivedViolations:
+          type: integer
+          description: The number of days after which archived violations will be automatically resolved.
   securitySchemes:
     OAuth2:
       type: oauth2

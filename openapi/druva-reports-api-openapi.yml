@@ -702,13 +702,6 @@ paths:
     - url: https://apis.druva.com/platform
 components:
   schemas:
-    GetOrganizationsReportsDownloadResponse:
-      properties:
-        fileUuid:
-          type: string
-        signedUrl:
-          type: string
-      type: object
     PostOrganizationsReportsRequest:
       properties:
         accounts:
@@ -787,6 +780,11 @@ components:
         status:
           type: string
         timezone:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
           type: string
       type: object
     GetOrganizationsReportsByIdResponse:
@@ -912,11 +910,6 @@ components:
         timezone:
           type: string
       type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
     PostOrganizationsReportsResponse:
       properties:
         accounts:
@@ -981,534 +974,15 @@ components:
     empty:
       properties: {}
       type: object
-    MspCommitAndBalanceItem:
-      type: object
+    GetOrganizationsReportsDownloadResponse:
       properties:
-        cuCommit:
-          type:
-          - number
-          - 'null'
-          description: The consumption unit commitment for the period.
-          format: double
-          example: 1000
-        cuConsumption:
-          type: number
-          description: The consumption units consumed during the period.
-          format: double
-          example: 1.10326
-        cuEndingBalance:
-          type: number
-          description: The ending balance of consumption units.
-          format: double
-          example: 653.28342
-        cuStartingBalance:
-          type: number
-          description: The starting balance of consumption units.
-          format: double
-          example: 654.1408
-        date:
+        fileUuid:
           type: string
-          description: The date for this record.
-          format: date-time
-          example: '2024-12-22T00:00:00.000Z'
-        dcpUniqueKey:
+        signedUrl:
           type: string
-          description: The unique key identifier of the record.
-          example: 380cee0972ed3f2286c03749ffc235d0cc52250121c2d3fac6c6b4f0b14d7875
-      description: MSP commit and balance item details.
-    GetGlobalUsageRequest:
-      description: Specify the details for getting global usage report.
       type: object
-      properties:
-        pageToken:
-          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
-
-            - Keep this field blank in the first request.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FilterTypeForGlobalUsage'
-    GetTenantItemizedReportV2Request:
-      description: Specify the details for getting itemized report details.
+    GlobalUsageItem:
       type: object
-      properties:
-        pageToken:
-          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
-
-            - Keep this field blank in the first request.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FilterType'
-    GetTenantItemizedReportV2Response:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The list contains itemized details about consumption units usage.
-          example:
-          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-            accountName: Example customer
-            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
-            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba4
-            productId: 2
-            productName: SaaS Apps and Endpoints
-            productModuleId: 3
-            productModuleName: Endpoints
-            editionName: Elite
-            tenantType: Commercial
-            date: '2023-01-11T00:00:00.000Z'
-            servicePlanId: 2
-            servicePlanName: Example service plan
-            usageDescription: Sensitive Data Governance
-            usageAmount: 1
-            usageUnit: Users
-            cuConsumed: 1.5
-          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-            accountName: Example customer
-            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
-            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba3
-            productId: 1
-            productName: Enterprise Workloads
-            productModuleId: 1
-            productModule: Enterprise Workloads
-            editionName: Elite
-            tenantType: Commercial
-            date: '2023-01-11T00:00:00.000Z'
-            servicePlanName: Example service plan
-            usageDescription: Accelerated Ransomware Recovery
-            usageAmount: 178
-            usageUnit: Bytes
-            cuConsumed: 94
-          items:
-            $ref: '#/components/schemas/TenantDataItemizedV2'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          description: All filters passed in request are returned in response
-          type: object
-          properties:
-            pageSize:
-              description: Maximum number of records that can be returned in the response.
-              type: integer
-              example: 10
-            filterBy:
-              description: Filters applied in the request.
-              type: array
-              items:
-                $ref: '#/components/schemas/FilterAttribute'
-        lastSyncTimestamp:
-          type: string
-          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
-          format: date
-          example: '2023-01-11T00:00:00.000Z'
-    GetGlobalUsageRequestV3:
-      description: Specify the details required to retrieve the global usage report.
-      type: object
-      properties:
-        pageToken:
-          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
-
-            - Keep this field blank in the first request.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FilterTypeForGlobalUsageV3'
-    GetTenantItemizedReportV3Request:
-      description: Specify the details for getting itemized report details.
-      type: object
-      properties:
-        pageToken:
-          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
-
-            - Keep this field blank in the first request.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FilterTypeV3'
-    FilterAttributeForGlobalUsage:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - accountName
-          - cuConsumption
-          - customerName
-          - edition
-          - productModule
-          - servicePlan
-          - tenantType
-          example: accountName
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: Customer_51
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    FilterTypeForGlobalUsage:
-      type: object
-      properties:
-        pageSize:
-          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForGlobalUsage'
-    FilterAttributeV3:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - customerGlobalId
-          - accountName
-          - tenantId
-          - productId
-          - productModuleId
-          - date
-          - editionName
-          - servicePlanId
-          - usageDescription
-          - mspGlobalId
-          - mspName
-          example: customerGlobalId
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    FilterTypeForGlobalUsageV3:
-      type: object
-      properties:
-        pageSize:
-          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
-    FilterAttribute:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - customerGlobalId
-          - accountName
-          - tenantId
-          - productId
-          - productModuleId
-          - date
-          - editionName
-          - servicePlanId
-          - usageDescription
-          example: customerGlobalId
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    GetTenantItemizedReportV3Response:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The list contains itemized details about consumption units usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
-          items:
-            $ref: '#/components/schemas/TenantDataItemizedV3'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          description: All filters passed in request are returned in response
-          type: object
-          properties:
-            pageSize:
-              description: Maximum number of records that can be returned in the response.
-              type: integer
-              example: 10
-            filterBy:
-              description: Filters applied in the request.
-              type: array
-              items:
-                $ref: '#/components/schemas/FilterAttributeV3'
-        lastSyncTimestamp:
-          type: string
-          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
-          format: date
-          example: '2023-01-11T00:00:00.000Z'
-    FilterAttributeForGlobalUsageV3:
-      type: object
-      properties:
-        fieldName:
-          description: Specify the name of the filter attribute.
-          type: string
-          enum:
-          - accountName
-          - cuConsumption
-          - customerName
-          - edition
-          - mspGlobalId
-          - mspName
-          - productModule
-          - servicePlan
-          - tenantType
-          example: accountName
-        value:
-          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
-          example: Customer_51
-        operator:
-          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
-          type: string
-          enum:
-          - EQUAL
-          - NOTEQUAL
-          - CONTAINS
-          - LT
-          - GT
-          - LTE
-          - GTE
-          example: EQUAL
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    GetMspCommitAndBalanceRequest:
-      description: Specify the details for getting MSP commit and balance report.
-      type: object
-      properties:
-        pageToken:
-          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
-
-            - Keep this field blank in the first request.
-
-            '
-          type: string
-          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
-        filters:
-          $ref: '#/components/schemas/FilterTypeForMspCommitAndBalance'
-    TenantDataItemizedV2:
-      type: object
-      properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        mspGlobalId:
-          type: string
-          description: Unique ID of the MSP.
-          example: MSP:968cf837-0e5e-4645-a510-82b8d4b9e98d
-        accountName:
-          type: string
-          description: The name of the customer.
-          example: Example customer
-        tenantId:
-          type: string
-          description: Unique id of the tenant. This is the 'id' field defined in GET Tenant API.
-          example: 0001f138-0c37-4980-b3f2-a3342f201ba3
-        productId:
-          type: integer
-          enum:
-          - 1
-          - 2
-          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-          example: 1
-        productName:
-          type: string
-          enum:
-          - Enterprise Workloads
-          - SaaS Apps and Endpoints
-          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
-          example: Enterprise Workloads
-        productModuleId:
-          type: integer
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          description: "The ID of the product module. This field will be updated in the future for addition of new product modules as and when applicable.\n 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace"
-          example: 1
-        productModuleName:
-          type: string
-          enum:
-          - Enterprise Workloads
-          - Microsoft 365
-          - Endpoints
-          - Google Workspace
-          description: 'The name of the product module.
-
-            This field will be updated in the future for addition of new product modules as and when applicable.'
-          example: Enterprise Workloads
-        editionName:
-          type: string
-          enum:
-          - Business
-          - Enterprise
-          - Elite
-          description: The name of the edition.
-          example: Business
-        tenantType:
-          type: string
-          enum:
-          - Commercial
-          - Evaluation
-          description: Type of the tenant. Right now stats for only commercial customers are reported.
-          example: Commercial
-        date:
-          type: string
-          description: Date indicates the date of usage. Date is specified in 'RFC3339' format.
-          format: date
-          example: '2022-01-11T00:00:00.000Z'
-        servicePlanId:
-          type: integer
-          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
-
-            Use Get service plan API to get details about a service plan.'
-          example: 1
-        servicePlanName:
-          type: string
-          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
-          example: Example service plan
-        usageDescription:
-          type: string
-          description: "Usage description indicates the type of consumption e.g. 'Active Users', 'Sensitive Data Governance', 'Accelerated Ransomware Recovery' etc.\n New values may be added for this field when new feature support is added."
-          example: Accelerated Ransomware Recovery
-        usageAmount:
-          type: number
-          format: double
-          description: Usage amount indicates usage for the usage type mentioned in 'usageDescription' field.
-          example: 1
-        usageUnit:
-          type: string
-          enum:
-          - Users
-          - Bytes
-          description: Usage unit defines unit of usage. It will be 'Bytes' for productId 1 and 'Users' for productId 2.
-          example: Bytes
-        cuConsumed:
-          type: number
-          description: The amount of consumption units consumed by tenant on given day.
-          format: double
-          example: 1.5
-    FilterTypeForMspCommitAndBalance:
-      type: object
-      properties:
-        pageSize:
-          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
-    FilterTypeV3:
-      type: object
-      properties:
-        pageSize:
-          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
-          type: integer
-          maximum: 500
-          default: 100
-          example: 10
-        filterBy:
-          description: Filters if needs to be applied.
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterAttributeV3'
-    GetGlobalUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The list contains global usage details about consumption units usage across all customers and products.
-          items:
-            $ref: '#/components/schemas/GlobalUsageItem'
-        filters:
-          type: object
-          description: All filters passed in request are returned in response.
-          properties:
-            pageSize:
-              type: integer
-              description: Maximum number of records that can be returned in the response.
-              example: 5
-            filterBy:
-              type: array
-              description: Filters applied in the request.
-              items:
-                $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
-        lastSyncTimestamp:
-          type: string
-          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
-          format: date-time
-          example: '2025-10-20T04:53:06Z'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: OTdjOGM1NTYtMWYyMC00ODBhLWIxNzUtODFmOWY5YzY0MGM3
-    GlobalUsageItemV3:
-      type: object
-      description: Global usage item details.
       properties:
         accountName:
           type: string
@@ -1529,58 +1003,21 @@ components:
           example: 8ab1417529fa5a5c8d244db4554a163b05418b0bc8564abd47612332a9fd2d66
         edition:
           type: string
-          description: The product edition.
+          description: The edition of the product.
           example: enterprise
-        mspGlobalId:
-          type: string
-          description: The global ID of the Managed Service Provider (MSP).
-          example: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
-        mspName:
-          type: string
-          description: The organization name of the Managed Service Provider (MSP).
-          example: Example MSP Organization
         productModule:
           type: string
-          description: The name of the product module.
+          description: The product module name.
           example: Google Workspace
         servicePlan:
           type: string
-          description: The name of the service plan.
+          description: The service plan name.
           example: ins_ent_plain
         tenantType:
           type: string
           description: The type of tenant (Commercial/Evaluation).
           example: Commercial
-    GetMspCommitAndBalanceResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          description: The list contains details about MSP consumption unit commitment, consumption, and balance.
-          items:
-            $ref: '#/components/schemas/MspCommitAndBalanceItem'
-        filters:
-          type: object
-          description: All filters passed in request are returned in response.
-          properties:
-            pageSize:
-              type: integer
-              description: Maximum number of records that can be returned in the response.
-              example: 5
-            filterBy:
-              type: array
-              description: Filters applied in the request.
-              items:
-                $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
-        lastSyncTimestamp:
-          type: string
-          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
-          format: date-time
-          example: '2025-10-20T04:53:06Z'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          example: NjEzZGJiYTctNmU4Ni00OTc0LTkzNjUtYjE4ZWNmNjFkYTRk
+      description: Global usage item details.
     GetGlobalUsageResponseV3:
       type: object
       properties:
@@ -1611,6 +1048,64 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of results.
           example: OTdjOGM1NTYtMWYyMC00ODBhLWIxNzUtODFmOWY5YzY0MGM3
+    GetTenantQuotaItemizedReportV3Response:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains itemized details about quota usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV3'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeV3'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    GetGlobalUsageRequestV3:
+      description: Specify the details required to retrieve the global usage report.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForGlobalUsageV3'
+    FilterType:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttribute'
     TenantDataItemizedV3:
       type: object
       description: Tenant consumption itemized records.
@@ -1720,7 +1215,154 @@ components:
           type: string
           description: The unique key identifier of the record.
           example: 380cee0972ed3f2286c03749ffc235d0cc52250121c2d3fac6c6b4f0b14d7875
-    FilterType:
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    TenantDataItemizedV2:
+      type: object
+      properties:
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        mspGlobalId:
+          type: string
+          description: Unique ID of the MSP.
+          example: MSP:968cf837-0e5e-4645-a510-82b8d4b9e98d
+        accountName:
+          type: string
+          description: The name of the customer.
+          example: Example customer
+        tenantId:
+          type: string
+          description: Unique id of the tenant. This is the 'id' field defined in GET Tenant API.
+          example: 0001f138-0c37-4980-b3f2-a3342f201ba3
+        productId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: "The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints. This field will be updated in the future for addition of new products as and when applicable.\n For valid products and their Product Features, see - https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          example: 1
+        productName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - SaaS Apps and Endpoints
+          description: The name of the product. This field will be updated in the future for addition of new products as and when applicable.
+          example: Enterprise Workloads
+        productModuleId:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          description: "The ID of the product module. This field will be updated in the future for addition of new product modules as and when applicable.\n 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace"
+          example: 1
+        productModuleName:
+          type: string
+          enum:
+          - Enterprise Workloads
+          - Microsoft 365
+          - Endpoints
+          - Google Workspace
+          description: 'The name of the product module.
+
+            This field will be updated in the future for addition of new product modules as and when applicable.'
+          example: Enterprise Workloads
+        editionName:
+          type: string
+          enum:
+          - Business
+          - Enterprise
+          - Elite
+          description: The name of the edition.
+          example: Business
+        tenantType:
+          type: string
+          enum:
+          - Commercial
+          - Evaluation
+          description: Type of the tenant. Right now stats for only commercial customers are reported.
+          example: Commercial
+        date:
+          type: string
+          description: Date indicates the date of usage. Date is specified in 'RFC3339' format.
+          format: date
+          example: '2022-01-11T00:00:00.000Z'
+        servicePlanId:
+          type: integer
+          description: 'The unique ID of the MSP service plan assigned to the tenant. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+
+            Use Get service plan API to get details about a service plan.'
+          example: 1
+        servicePlanName:
+          type: string
+          description: The name of the MSP service plan assigned to the tenant for the date indicated by column 'date'. If updateTenant operation is performed multiple times in a day to change the service plan associated with that tenant, the last updated value of the day will be returned for that day.
+          example: Example service plan
+        usageDescription:
+          type: string
+          description: "Usage description indicates the type of consumption e.g. 'Active Users', 'Sensitive Data Governance', 'Accelerated Ransomware Recovery' etc.\n New values may be added for this field when new feature support is added."
+          example: Accelerated Ransomware Recovery
+        usageAmount:
+          type: number
+          format: double
+          description: Usage amount indicates usage for the usage type mentioned in 'usageDescription' field.
+          example: 1
+        usageUnit:
+          type: string
+          enum:
+          - Users
+          - Bytes
+          description: Usage unit defines unit of usage. It will be 'Bytes' for productId 1 and 'Users' for productId 2.
+          example: Bytes
+        cuConsumed:
+          type: number
+          description: The amount of consumption units consumed by tenant on given day.
+          format: double
+          example: 1.5
+    MspCommitAndBalanceItem:
+      type: object
+      properties:
+        cuCommit:
+          type:
+          - number
+          - 'null'
+          description: The consumption unit commitment for the period.
+          format: double
+          example: 1000
+        cuConsumption:
+          type: number
+          description: The consumption units consumed during the period.
+          format: double
+          example: 1.10326
+        cuEndingBalance:
+          type: number
+          description: The ending balance of consumption units.
+          format: double
+          example: 653.28342
+        cuStartingBalance:
+          type: number
+          description: The starting balance of consumption units.
+          format: double
+          example: 654.1408
+        date:
+          type: string
+          description: The date for this record.
+          format: date-time
+          example: '2024-12-22T00:00:00.000Z'
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 380cee0972ed3f2286c03749ffc235d0cc52250121c2d3fac6c6b4f0b14d7875
+      description: MSP commit and balance item details.
+    FilterTypeV3:
       type: object
       properties:
         pageSize:
@@ -1733,37 +1375,110 @@ components:
           description: Filters if needs to be applied.
           type: array
           items:
-            $ref: '#/components/schemas/FilterAttribute'
-    GetTenantQuotaItemizedReportV3Response:
+            $ref: '#/components/schemas/FilterAttributeV3'
+    GlobalUsageItemV3:
+      type: object
+      description: Global usage item details.
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Customer_51
+        cuConsumption:
+          type: number
+          description: The consumption units consumed.
+          format: double
+          example: 279.48909
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Customer_5
+        dcpUniqueKey:
+          type: string
+          description: The unique key identifier of the record.
+          example: 8ab1417529fa5a5c8d244db4554a163b05418b0bc8564abd47612332a9fd2d66
+        edition:
+          type: string
+          description: The product edition.
+          example: enterprise
+        mspGlobalId:
+          type: string
+          description: The global ID of the Managed Service Provider (MSP).
+          example: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+        mspName:
+          type: string
+          description: The organization name of the Managed Service Provider (MSP).
+          example: Example MSP Organization
+        productModule:
+          type: string
+          description: The name of the product module.
+          example: Google Workspace
+        servicePlan:
+          type: string
+          description: The name of the service plan.
+          example: ins_ent_plain
+        tenantType:
+          type: string
+          description: The type of tenant (Commercial/Evaluation).
+          example: Commercial
+    GetMspCommitAndBalanceRequest:
+      description: Specify the details for getting MSP commit and balance report.
       type: object
       properties:
-        data:
-          type: array
-          description: The list contains itemized details about quota usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
-          items:
-            $ref: '#/components/schemas/TenantDataItemizedV3'
-        nextPageToken:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
           type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
           example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
         filters:
-          description: All filters passed in request are returned in response
-          type: object
-          properties:
-            pageSize:
-              description: Maximum number of records that can be returned in the response.
-              type: integer
-              example: 10
-            filterBy:
-              description: Filters applied in the request.
-              type: array
-              items:
-                $ref: '#/components/schemas/FilterAttributeV3'
-        lastSyncTimestamp:
+          $ref: '#/components/schemas/FilterTypeForMspCommitAndBalance'
+    FilterAttributeForGlobalUsage:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
           type: string
-          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
-          format: date
-          example: '2023-01-11T00:00:00.000Z'
+          enum:
+          - accountName
+          - cuConsumption
+          - customerName
+          - edition
+          - productModule
+          - servicePlan
+          - tenantType
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: Customer_51
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    FilterTypeForGlobalUsageV3:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
     FilterAttributeForMspCommitAndBalance:
       type: object
       properties:
@@ -1792,114 +1507,328 @@ components:
           - LTE
           - GTE
           example: EQUAL
-    GlobalUsageItem:
+    GetGlobalUsageRequest:
+      description: Specify the details for getting global usage report.
       type: object
       properties:
-        accountName:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
           type: string
-          description: Account name defined for the customer
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeForGlobalUsage'
+    GetTenantItemizedReportV2Response:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains itemized details about consumption units usage.
+          example:
+          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            accountName: Example customer
+            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba4
+            productId: 2
+            productName: SaaS Apps and Endpoints
+            productModuleId: 3
+            productModuleName: Endpoints
+            editionName: Elite
+            tenantType: Commercial
+            date: '2023-01-11T00:00:00.000Z'
+            servicePlanId: 2
+            servicePlanName: Example service plan
+            usageDescription: Sensitive Data Governance
+            usageAmount: 1
+            usageUnit: Users
+            cuConsumed: 1.5
+          - customerGlobalId: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+            accountName: Example customer
+            mspGlobalId: MSP:00864ec2-f925-4552-91bd-89101f9a32c6
+            tenantId: 0001f138-0c37-4980-b3f2-a3342f201ba3
+            productId: 1
+            productName: Enterprise Workloads
+            productModuleId: 1
+            productModule: Enterprise Workloads
+            editionName: Elite
+            tenantType: Commercial
+            date: '2023-01-11T00:00:00.000Z'
+            servicePlanName: Example service plan
+            usageDescription: Accelerated Ransomware Recovery
+            usageAmount: 178
+            usageUnit: Bytes
+            cuConsumed: 94
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV2'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttribute'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    FilterAttribute:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - customerGlobalId
+          - accountName
+          - tenantId
+          - productId
+          - productModuleId
+          - date
+          - editionName
+          - servicePlanId
+          - usageDescription
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    FilterAttributeForGlobalUsageV3:
+      type: object
+      properties:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - accountName
+          - cuConsumption
+          - customerName
+          - edition
+          - mspGlobalId
+          - mspName
+          - productModule
+          - servicePlan
+          - tenantType
+          example: accountName
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
           example: Customer_51
-        cuConsumption:
-          type: number
-          description: The consumption units consumed.
-          format: double
-          example: 279.48909
-        customerName:
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
           type: string
-          description: Customer name defined for the customer
-          example: Customer_5
-        dcpUniqueKey:
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    GetMspCommitAndBalanceResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains details about MSP consumption unit commitment, consumption, and balance.
+          items:
+            $ref: '#/components/schemas/MspCommitAndBalanceItem'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 5
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
+        lastSyncTimestamp:
           type: string
-          description: The unique key identifier of the record.
-          example: 8ab1417529fa5a5c8d244db4554a163b05418b0bc8564abd47612332a9fd2d66
-        edition:
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date-time
+          example: '2025-10-20T04:53:06Z'
+        nextPageToken:
           type: string
-          description: The edition of the product.
-          example: enterprise
-        productModule:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: NjEzZGJiYTctNmU4Ni00OTc0LTkzNjUtYjE4ZWNmNjFkYTRk
+    GetGlobalUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: The list contains global usage details about consumption units usage across all customers and products.
+          items:
+            $ref: '#/components/schemas/GlobalUsageItem'
+        filters:
+          type: object
+          description: All filters passed in request are returned in response.
+          properties:
+            pageSize:
+              type: integer
+              description: Maximum number of records that can be returned in the response.
+              example: 5
+            filterBy:
+              type: array
+              description: Filters applied in the request.
+              items:
+                $ref: '#/components/schemas/FilterAttributeForGlobalUsageV3'
+        lastSyncTimestamp:
           type: string
-          description: The product module name.
-          example: Google Workspace
-        servicePlan:
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date-time
+          example: '2025-10-20T04:53:06Z'
+        nextPageToken:
           type: string
-          description: The service plan name.
-          example: ins_ent_plain
-        tenantType:
-          type: string
-          description: The type of tenant (Commercial/Evaluation).
-          example: Commercial
-      description: Global usage item details.
-    reportingversionreportsreportID_filters:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: OTdjOGM1NTYtMWYyMC00ODBhLWIxNzUtODFmOWY5YzY0MGM3
+    FilterTypeForMspCommitAndBalance:
       type: object
       properties:
         pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
           type: integer
-          description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+          maximum: 500
           default: 100
+          example: 10
         filterBy:
+          description: Filters if needs to be applied.
           type: array
-          description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
           items:
-            $ref: '#/components/schemas/reportingversionreportsreportID_filters_filterBy'
-    APIError_2:
+            $ref: '#/components/schemas/FilterAttributeForMspCommitAndBalance'
+    GetTenantItemizedReportV3Response:
       type: object
       properties:
-        code:
-          type: string
-          x-go-name: Code
         data:
-          type: object
-          additionalProperties:
-            type: object
-          x-go-name: Data
-        message:
+          type: array
+          description: The list contains itemized details about consumption units usage. Includes mspGlobalId and mspName for parent-child hierarchy visibility.
+          items:
+            $ref: '#/components/schemas/TenantDataItemizedV3'
+        nextPageToken:
           type: string
-          x-go-name: Message
-        retryable:
-          type: boolean
-          x-go-name: Retry
-      description: APIError defines an application error result format
-      x-go-package: druva.com/godevkit/errortype
-    GetReportsListResponse:
-      title: GetReportsListResponse ...
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          description: All filters passed in request are returned in response
+          type: object
+          properties:
+            pageSize:
+              description: Maximum number of records that can be returned in the response.
+              type: integer
+              example: 10
+            filterBy:
+              description: Filters applied in the request.
+              type: array
+              items:
+                $ref: '#/components/schemas/FilterAttributeV3'
+        lastSyncTimestamp:
+          type: string
+          description: Last time sync up timestamp date. Sync up time does not guarantee that consumption stats till this time are included in reported stats. Reported consumption stats may be stale upto 48 hours.
+          format: date
+          example: '2023-01-11T00:00:00.000Z'
+    FilterAttributeV3:
       type: object
       properties:
-        reports:
+        fieldName:
+          description: Specify the name of the filter attribute.
+          type: string
+          enum:
+          - customerGlobalId
+          - accountName
+          - tenantId
+          - productId
+          - productModuleId
+          - date
+          - editionName
+          - servicePlanId
+          - usageDescription
+          - mspGlobalId
+          - mspName
+          example: customerGlobalId
+        value:
+          description: "Specify value of column that needs to be filtered. For CONTAINS operator - this can be array of either int or string. For other operators, depending on the datatype of fieldName attribute this can be either int / string / RFC3339 date format. \n This is case sensitive."
+          example: b825cee3-5780-45ca-bc1d-83a9ccec5d7b
+        operator:
+          description: "Operator for specified filters.\n All string comparisons will be case sensitive. \nSupported filters are: \n - EQUAL: This will return the data with exact match for given field name.\n - NOTEQUAL: This will return the data not matching with given values.\n - CONTAINS: Value for this operator will be an array. This will return data which matches with any value mentioned in array.\n - LT: This is the 'LESS THAN' comparison operator.\n - LTE: This is the 'LESS THAN OR EQUAL TO' comparison operator.\n - GT: This is the 'GREATER THAN' comparison operator.\n - GTE: This is the 'GREATER THAN OR EQUAL TO' comparison operator. \nFor a particular field name an operator can be used once at max. \nFor columns having string data type 'LT', 'LTE', 'GT', 'GTE' operators will work lexicographically."
+          type: string
+          enum:
+          - EQUAL
+          - NOTEQUAL
+          - CONTAINS
+          - LT
+          - GT
+          - LTE
+          - GTE
+          example: EQUAL
+    GetTenantItemizedReportV3Request:
+      description: Specify the details for getting itemized report details.
+      type: object
+      properties:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
+          type: string
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterTypeV3'
+    FilterTypeForGlobalUsage:
+      type: object
+      properties:
+        pageSize:
+          description: "Specify the maximum number of records that should returned in a response. The default page size is 100 records. The maximum limit is 500 records. \n :fa-info-circle: If you specify the pageSize, value from the first API call will be used for the subsequent calls, even if you change the pageSize later on."
+          type: integer
+          maximum: 500
+          default: 100
+          example: 10
+        filterBy:
+          description: Filters if needs to be applied.
           type: array
           items:
-            $ref: '#/components/schemas/Report'
-          x-go-name: Report
-      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
-    Report:
-      title: Report ...
+            $ref: '#/components/schemas/FilterAttributeForGlobalUsage'
+    GetTenantItemizedReportV2Request:
+      description: Specify the details for getting itemized report details.
       type: object
       properties:
-        reportID:
+        pageToken:
+          description: 'The token to access the next page of results. Use the token value received in the previous response''s parameter ''nextPageToken''.
+
+            - Keep this field blank in the first request.
+
+            '
           type: string
-          description: The unique ID given for the report.
-          example: dgRollbackActions
-          x-go-name: ReportID
-        reportName:
-          type: string
-          description: The name of the report.
-          example: Rollback Actions Report
-          x-go-name: ReportName
-        reportDescription:
-          type: string
-          description: The description of the report.
-          example: Details of deleted, rolled back, and permanently deleted entities.
-          x-go-name: ReportDescription
-        productName:
-          type: string
-          description: The name of the associated product.
-          example: Cyber Resilience
-          x-go-name: ProductName
-        version:
-          type: string
-          description: The version supported for the report. Example - v1
-          example: v1
-          x-g-name: Version
-      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+          example: eyJwYWdlTnVtYmVyIjoyLCJwYWdlU2l6ZSI6NTAwLCAiZmlsdGVycyI6bnVsbH0=
+        filters:
+          $ref: '#/components/schemas/FilterType'
     reportingversionreportsreportID_filters_filterBy:
       type: object
       properties:
@@ -1944,6 +1873,77 @@ components:
           type: string
           description: Specify the token to access the results on the next page. Keep this field blank for the first request. To view the results on the next page, use the value received in the 'nextPageToken' parameter of the previous response.
           example: ''
+    Report:
+      title: Report ...
+      type: object
+      properties:
+        reportID:
+          type: string
+          description: The unique ID given for the report.
+          example: dgRollbackActions
+          x-go-name: ReportID
+        reportName:
+          type: string
+          description: The name of the report.
+          example: Rollback Actions Report
+          x-go-name: ReportName
+        reportDescription:
+          type: string
+          description: The description of the report.
+          example: Details of deleted, rolled back, and permanently deleted entities.
+          x-go-name: ReportDescription
+        productName:
+          type: string
+          description: The name of the associated product.
+          example: Cyber Resilience
+          x-go-name: ProductName
+        version:
+          type: string
+          description: The version supported for the report. Example - v1
+          example: v1
+          x-g-name: Version
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+    reportingversionreportsreportID_filters:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          description: Specify the maximum number of records that should returned in a response. Maximum limit is 500 records. Default pageSize is 100.
+          default: 100
+        filterBy:
+          type: array
+          description: Select the filters to be applied to the report. If you do not specify a date filter, the lastUpdatedTime filter is set to 1 day by default.
+          items:
+            $ref: '#/components/schemas/reportingversionreportsreportID_filters_filterBy'
+    GetReportsListResponse:
+      title: GetReportsListResponse ...
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+          x-go-name: Report
+      x-go-package: git.druva.org/druva.com/dcp-reporting-service/spec/api
+    APIError_2:
+      type: object
+      properties:
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      description: APIError defines an application error result format
+      x-go-package: druva.com/godevkit/errortype
     ReportData:
       title: ReportData ...
       type: object

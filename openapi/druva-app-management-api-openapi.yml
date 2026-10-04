@@ -87,38 +87,6 @@ paths:
                   $ref: '#/components/examples/NotImplemented'
 components:
   examples:
-    GARError:
-      summary: Authorization Error
-      description: Client does not have access rights or permissions to the requested content.
-      value:
-        code: InsyncCappmaster-1221
-        message: You do not have permission to access this workload.
-        retryable: false
-        data: null
-    Forbidden:
-      summary: Forbidden
-      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
-      value:
-        code: InsyncCappmaster-1009
-        message: Auth session expired
-        retryable: false
-        data: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
     InternalServerError:
       summary: Internal Server Error
       description: The request was not processed due to an internal error on server.
@@ -133,14 +101,6 @@ components:
       summary: Resource Not Found
       description: The requested resource could not be found on server.
       value: null
-    NotImplemented:
-      summary: Method Not Implemented
-      description: Requested HTTP method is not implemented.
-      value:
-        code: InsyncCappmaster-1007
-        message: Method Not implemented.
-        retryable: false
-        data: null
     CloudAppStatus:
       summary: M365 Response
       description: Example of success response from get CloudApp Status API for M365 tenant type in request.
@@ -157,18 +117,65 @@ components:
           status: 4
           lastConfigured: 2020-09-18T11:50:41+00:00Z
           clientid: r5949668-853d-485t-vlo5-28df7cd0d7c8
-  parameters:
-    tenantType:
-      name: tenantType
-      in: query
-      description: The name of the App for which the status is required.
-      required: true
-      schema:
-        type: string
-        enum:
-        - M365
-        example: M365
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
     CloudAppStatus:
       type: object
       properties:
@@ -217,24 +224,17 @@ components:
                 example: r5949668-853d-485t-vlo5-28df7cd0d7c8
                 description: The Application or Client ID of the App. Example - r5942009-853d-485t-vlo5-28df7cd0d7c8
           description: Array of dictionary containing app information for specific tenant type
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Invalid API syntax.
-        code:
-          type: string
-          example: InsyncCappmaster-1001
-        data:
-          type: object
-          example: null
-        retryable:
-          type: boolean
-          enum:
-          - true
-          - false
-          example: false
+  parameters:
+    tenantType:
+      name: tenantType
+      in: query
+      description: The name of the App for which the status is required.
+      required: true
+      schema:
+        type: string
+        enum:
+        - M365
+        example: M365
   securitySchemes:
     bearerAuth:
       type: apiKey

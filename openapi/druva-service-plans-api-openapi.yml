@@ -106,6 +106,42 @@ paths:
       description: Returns information about a particular service plan using provided service plan ID.
 components:
   schemas:
+    ServicePlanV3:
+      type: object
+      properties:
+        id:
+          format: int64
+          description: The ID of the service plan. Example - 1
+          type: integer
+          example: 1
+        name:
+          description: The name of the service plan. Example - 'Default service plan'
+          type: string
+          example: Default service plan
+        status:
+          format: int64
+          description: "- The status of the Service Plan.\n    - 0 - Updating\n    - 1 - Ready \n"
+          type: integer
+          example: 1
+        products:
+          description: The list containing service plan details for specific products. Example - []
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
+    ServicePlanV3Attrs:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          description: '- Name of the attribute as per Service Plan Feature
+
+            - The Storage feature will have ''unlimited storage'' as an attribute'
+          type: string
+        value:
+          description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
+          type: object
     ListServicePlansV3Response:
       type: object
       properties:
@@ -118,6 +154,21 @@ components:
           description: The token to access the next page of results. This is empty if there are no more results. Example - 'eyJwYWdlU2l6ZSI6IDEwMH0='
           type: string
           example: eyJwYWdlU2l6ZSI6IDEwMH0=
+    ServicePlanProductFeaturesV3:
+      required:
+      - name
+      - isEnabled
+      type: object
+      properties:
+        name:
+          description: "Name of the feature as per Service Plan. The feature names can have the following values - \n- 1: Enterprise Workloads\n- 2: M365\n- 3: Endpoints\n- 4: Google Workspace\n- 5: D365\n- 6: Salesforce\n- 7: Entra ID\n- 8: Okta\n- 9: Active Directory\n- 10: Storage\n- 11: sensitiveDataGovernance\n"
+          type: string
+        isEnabled:
+          type: boolean
+        attrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicePlanV3Attrs'
     ServicePlanProductDetailsV3Response:
       description: Contains service plan details for a specific product.
       type: object
@@ -144,57 +195,6 @@ components:
           type: string
         message:
           type: string
-    ServicePlanV3:
-      type: object
-      properties:
-        id:
-          format: int64
-          description: The ID of the service plan. Example - 1
-          type: integer
-          example: 1
-        name:
-          description: The name of the service plan. Example - 'Default service plan'
-          type: string
-          example: Default service plan
-        status:
-          format: int64
-          description: "- The status of the Service Plan.\n    - 0 - Updating\n    - 1 - Ready \n"
-          type: integer
-          example: 1
-        products:
-          description: The list containing service plan details for specific products. Example - []
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlanProductDetailsV3Response'
-    ServicePlanProductFeaturesV3:
-      required:
-      - name
-      - isEnabled
-      type: object
-      properties:
-        name:
-          description: "Name of the feature as per Service Plan. The feature names can have the following values - \n- 1: Enterprise Workloads\n- 2: M365\n- 3: Endpoints\n- 4: Google Workspace\n- 5: D365\n- 6: Salesforce\n- 7: Entra ID\n- 8: Okta\n- 9: Active Directory\n- 10: Storage\n- 11: sensitiveDataGovernance\n"
-          type: string
-        isEnabled:
-          type: boolean
-        attrs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePlanV3Attrs'
-    ServicePlanV3Attrs:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          description: '- Name of the attribute as per Service Plan Feature
-
-            - The Storage feature will have ''unlimited storage'' as an attribute'
-          type: string
-        value:
-          description: "- Type of value will vary for different attributes. \n- For valid products and their values, see -  https://developer.druva.com/docs/msp-product-and-attribute-values\n"
-          type: object
   securitySchemes:
     OAuth2:
       flows:

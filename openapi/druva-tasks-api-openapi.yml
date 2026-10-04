@@ -343,6 +343,277 @@ paths:
     - url: https://apis.druva.com/
 components:
   schemas:
+    PostOrganizationsTasksStopRequest:
+      properties:
+        copies:
+          properties:
+            cross_account_id:
+              type: string
+            cross_account_region:
+              type: string
+            first_region:
+              type: string
+            interval:
+              type: integer
+            retention_amount:
+              type: integer
+            retention_type:
+              type: string
+            retention_unit:
+              type: string
+            second_region:
+              type: string
+          type: object
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        encryption_mappings:
+          items:
+            type: string
+          type: array
+        fls_index_freq:
+          type: string
+        inherit_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        is_fls_indexed:
+          type: boolean
+        name:
+          type: string
+        organization_id:
+          type: string
+        resource_options:
+          properties:
+            ami_reboot:
+              type: boolean
+            ec2_amis:
+              type: boolean
+            scripts:
+              type: boolean
+            vss:
+              type: boolean
+          type: object
+        retention:
+          properties:
+            backups_count:
+              type: string
+            tiered_amount:
+              type: integer
+            tiered_monthly_amount:
+              type: integer
+            tiered_monthly_enabled:
+              type: boolean
+            tiered_unit:
+              type: string
+            tiered_weekly_amount:
+              type: integer
+            tiered_weekly_enabled:
+              type: boolean
+            tiered_yearly_amount:
+              type: integer
+            tiered_yearly_enabled:
+              type: boolean
+            type:
+              type: string
+          type: object
+        rules:
+          items:
+            properties:
+              accounts:
+                items:
+                  properties:
+                    account_id:
+                      type: string
+                  type: object
+                type: array
+              all_accounts:
+                type: boolean
+              all_regions:
+                type: boolean
+              all_resource_types:
+                type: boolean
+              created_at:
+                type: string
+              exclude:
+                type: boolean
+              policy_id:
+                type: integer
+              regions:
+                items:
+                  type: string
+                type: array
+              resource_types:
+                items:
+                  type: string
+                type: array
+              resources:
+                items:
+                  type: string
+                type: array
+              rule_type:
+                type: string
+              tags:
+                items:
+                  properties:
+                    key:
+                      type: string
+                    rule_id:
+                      type: integer
+                    value:
+                      type: string
+                  type: object
+                type: array
+              updated_at:
+                type: string
+            type: object
+          type: array
+        s3_archive:
+          properties:
+            monthly_enabled:
+              type: boolean
+            monthly_storage_class:
+              type: string
+            weekly_enabled:
+              type: boolean
+            weekly_storage_class:
+              type: string
+            yearly_enabled:
+              type: boolean
+            yearly_storage_class:
+              type: string
+          type: object
+        schedule_cron:
+          type: string
+        tag_with:
+          items:
+            type: string
+          type: array
+        timezone_location:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsTasksResponse:
+      properties:
+        hits:
+          properties:
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            halt:
+              type: boolean
+            id:
+              type: string
+            is_success:
+              type: boolean
+            job:
+              properties:
+                account:
+                  properties:
+                    avatar_image:
+                      type: string
+                    color:
+                      type: string
+                    created_at:
+                      format: date-time
+                      type: string
+                    default_timezone_location:
+                      type: string
+                    deleted_at:
+                      type: string
+                    id:
+                      type: string
+                    initials:
+                      type: string
+                    is_active:
+                      type: boolean
+                    is_legal_hold_account:
+                      type: boolean
+                    name:
+                      type: string
+                    organization_id:
+                      type: string
+                    type:
+                      type: string
+                    updated_at:
+                      format: date-time
+                      type: string
+                  type: object
+                account_id:
+                  type: string
+                action:
+                  type: string
+                backup_policy:
+                  properties:
+                    name:
+                      type: string
+                  type: object
+                created_at:
+                  format: date-time
+                  type: string
+                cron:
+                  type: string
+                cron_location:
+                  type: string
+                event_at:
+                  format: date-time
+                  type: string
+                event_type:
+                  type: string
+                halt:
+                  type: string
+                id:
+                  type: string
+                object_id:
+                  type: integer
+                organization_id:
+                  type: string
+                seq:
+                  type: integer
+                total_fail:
+                  type: integer
+                total_success:
+                  type: integer
+                total_tasks:
+                  type: integer
+                type:
+                  type: string
+                updated_at:
+                  format: date-time
+                  type: string
+              type: object
+            job_id:
+              type: string
+            region:
+              type: string
+            resource_id:
+              type: string
+            resource_name:
+              type: string
+            resource_type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        total:
+          type: integer
+      type: object
     GetOrganizationsTasksByIdResponse:
       properties:
         action:
@@ -512,164 +783,6 @@ components:
           format: date-time
           type: string
       type: object
-    PostOrganizationsTasksStopRequest:
-      properties:
-        copies:
-          properties:
-            cross_account_id:
-              type: string
-            cross_account_region:
-              type: string
-            first_region:
-              type: string
-            interval:
-              type: integer
-            retention_amount:
-              type: integer
-            retention_type:
-              type: string
-            retention_unit:
-              type: string
-            second_region:
-              type: string
-          type: object
-        created_at:
-          format: date-time
-          type: string
-        created_by:
-          type: string
-        deleted_at:
-          type: string
-        description:
-          type: string
-        encryption_mappings:
-          items:
-            type: string
-          type: array
-        fls_index_freq:
-          type: string
-        inherit_tags:
-          type: boolean
-        is_active:
-          type: boolean
-        is_fls_indexed:
-          type: boolean
-        name:
-          type: string
-        organization_id:
-          type: string
-        resource_options:
-          properties:
-            ami_reboot:
-              type: boolean
-            ec2_amis:
-              type: boolean
-            scripts:
-              type: boolean
-            vss:
-              type: boolean
-          type: object
-        retention:
-          properties:
-            backups_count:
-              type: string
-            tiered_amount:
-              type: integer
-            tiered_monthly_amount:
-              type: integer
-            tiered_monthly_enabled:
-              type: boolean
-            tiered_unit:
-              type: string
-            tiered_weekly_amount:
-              type: integer
-            tiered_weekly_enabled:
-              type: boolean
-            tiered_yearly_amount:
-              type: integer
-            tiered_yearly_enabled:
-              type: boolean
-            type:
-              type: string
-          type: object
-        rules:
-          items:
-            properties:
-              accounts:
-                items:
-                  properties:
-                    account_id:
-                      type: string
-                  type: object
-                type: array
-              all_accounts:
-                type: boolean
-              all_regions:
-                type: boolean
-              all_resource_types:
-                type: boolean
-              created_at:
-                type: string
-              exclude:
-                type: boolean
-              policy_id:
-                type: integer
-              regions:
-                items:
-                  type: string
-                type: array
-              resource_types:
-                items:
-                  type: string
-                type: array
-              resources:
-                items:
-                  type: string
-                type: array
-              rule_type:
-                type: string
-              tags:
-                items:
-                  properties:
-                    key:
-                      type: string
-                    rule_id:
-                      type: integer
-                    value:
-                      type: string
-                  type: object
-                type: array
-              updated_at:
-                type: string
-            type: object
-          type: array
-        s3_archive:
-          properties:
-            monthly_enabled:
-              type: boolean
-            monthly_storage_class:
-              type: string
-            weekly_enabled:
-              type: boolean
-            weekly_storage_class:
-              type: string
-            yearly_enabled:
-              type: boolean
-            yearly_storage_class:
-              type: string
-          type: object
-        schedule_cron:
-          type: string
-        tag_with:
-          items:
-            type: string
-          type: array
-        timezone_location:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
     PostOrganizationsAccountsTasksStopRequest:
       properties:
         copies:
@@ -828,6 +941,9 @@ components:
           format: date-time
           type: string
       type: object
+    empty:
+      properties: {}
+      type: object
     PostOrganizationsTasksStopResponse:
       properties:
         action:
@@ -894,122 +1010,6 @@ components:
         updated_at:
           format: date-time
           type: string
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsTasksResponse:
-      properties:
-        hits:
-          properties:
-            action:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            halt:
-              type: boolean
-            id:
-              type: string
-            is_success:
-              type: boolean
-            job:
-              properties:
-                account:
-                  properties:
-                    avatar_image:
-                      type: string
-                    color:
-                      type: string
-                    created_at:
-                      format: date-time
-                      type: string
-                    default_timezone_location:
-                      type: string
-                    deleted_at:
-                      type: string
-                    id:
-                      type: string
-                    initials:
-                      type: string
-                    is_active:
-                      type: boolean
-                    is_legal_hold_account:
-                      type: boolean
-                    name:
-                      type: string
-                    organization_id:
-                      type: string
-                    type:
-                      type: string
-                    updated_at:
-                      format: date-time
-                      type: string
-                  type: object
-                account_id:
-                  type: string
-                action:
-                  type: string
-                backup_policy:
-                  properties:
-                    name:
-                      type: string
-                  type: object
-                created_at:
-                  format: date-time
-                  type: string
-                cron:
-                  type: string
-                cron_location:
-                  type: string
-                event_at:
-                  format: date-time
-                  type: string
-                event_type:
-                  type: string
-                halt:
-                  type: string
-                id:
-                  type: string
-                object_id:
-                  type: integer
-                organization_id:
-                  type: string
-                seq:
-                  type: integer
-                total_fail:
-                  type: integer
-                total_success:
-                  type: integer
-                total_tasks:
-                  type: integer
-                type:
-                  type: string
-                updated_at:
-                  format: date-time
-                  type: string
-              type: object
-            job_id:
-              type: string
-            region:
-              type: string
-            resource_id:
-              type: string
-            resource_name:
-              type: string
-            resource_type:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        total:
-          type: integer
-      type: object
-    empty:
-      properties: {}
       type: object
     APIError:
       description: APIError defines an application error result format

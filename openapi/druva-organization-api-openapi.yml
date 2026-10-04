@@ -600,10 +600,25 @@ paths:
     - url: //apis.druva.com/phoenix
 components:
   schemas:
-    PutOrganizationsMembersByIdRequest:
+    PostOrganizationsMembersRequest:
       properties:
         account_access:
+          enum:
+          - admin
+          - view
           type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+      type: object
+    DeleteOrganizationsMembersByIdResponse:
       type: object
     GetOrganizationsByIdResponse:
       properties:
@@ -802,52 +817,14 @@ components:
           format: date-time
           type: string
       type: object
-    PutOrganizationsMembersByIdResponse:
+    PostOrganizationsAwsConnectionTestResponse:
       properties:
-        account_access:
+        state:
           type: string
-        created_at:
-          format: date-time
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
+      type: object
+    PostOrganizationsCredentialRequest:
+      properties:
         id:
-          type: integer
-        invited_at:
-          type: string
-        last_name:
-          type: string
-        organization_id:
-          type: string
-        status:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsMembersRequest:
-      properties:
-        account_access:
-          enum:
-          - admin
-          - view
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        organization_id:
-          type: string
-        status:
-          type: string
-      type: object
-    PutOrganizationsByIdRequest:
-      properties:
-        avatar_url:
           type: string
         name:
           type: string
@@ -878,8 +855,41 @@ components:
           format: date-time
           type: string
       type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PostOrganizationsMembersResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
     GetOrganizationsAccessible_accountsResponse:
       type: string
+    PutOrganizationsByIdResponse:
+      type: object
     PostOrganizationsAccountsCredentialResponse:
       properties:
         access_role_arn:
@@ -898,6 +908,55 @@ components:
         state:
           type: string
         state_reason:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    PutOrganizationsMembersByIdRequest:
+      properties:
+        account_access:
+          type: string
+      type: object
+    PutOrganizationsByIdRequest:
+      properties:
+        avatar_url:
+          type: string
+        name:
+          type: string
+      type: object
+    PostOrganizationsAwsConnectionTestRequest:
+      properties:
+        access_role_arn:
+          type: string
+        external_id:
+          type: string
+        organization_id:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PutOrganizationsMembersByIdResponse:
+      properties:
+        account_access:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        invited_at:
+          type: string
+        last_name:
+          type: string
+        organization_id:
+          type: string
+        status:
           type: string
         updated_at:
           format: date-time
@@ -929,79 +988,6 @@ components:
           format: date-time
           type: string
       type: object
-    PutOrganizationsByIdResponse:
-      type: object
-    DeleteOrganizationsMembersByIdResponse:
-      type: object
-    PostOrganizationsAwsConnectionTestResponse:
-      properties:
-        state:
-          type: string
-      type: object
-    PostOrganizationsMembersResponse:
-      properties:
-        account_access:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        id:
-          type: integer
-        invited_at:
-          format: date-time
-          type: string
-        last_name:
-          type: string
-        organization_id:
-          type: string
-        status:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsCredentialRequest:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsAwsConnectionTestRequest:
-      properties:
-        access_role_arn:
-          type: string
-        external_id:
-          type: string
-        organization_id:
-          type: string
-      type: object
-    empty:
-      properties: {}
-      type: object
-    ListOrgResponse:
-      description: ListOrgResponse is the response schema for ListOrg
-      type: object
-      properties:
-        nextPageToken:
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          type: string
-          x-go-name: OutToken
-        orgs:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrgResponse'
-          x-go-name: Orgs
-      x-go-package: phoenix/customerconfig/report/spec/site
     ServiceError:
       description: Service Error
       type: object
@@ -1016,6 +1002,20 @@ components:
           type: string
           description: Application specific error message
       x-go-package: vendor/druva.com/godevkit/errortype
+    ListOrgResponse:
+      description: ListOrgResponse is the response schema for ListOrg
+      type: object
+      properties:
+        nextPageToken:
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          type: string
+          x-go-name: OutToken
+        orgs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgResponse'
+          x-go-name: Orgs
+      x-go-package: phoenix/customerconfig/report/spec/site
     OrgResponse:
       description: OrgResponse is the response schema for ListOrg
       type: object

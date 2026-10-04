@@ -140,6 +140,9 @@ components:
         type:
           type: string
       type: object
+    empty:
+      properties: {}
+      type: object
     GetOrganizationsReportTemplatesResponse:
       properties:
         description:
@@ -159,9 +162,6 @@ components:
       properties:
         message:
           type: string
-      type: object
-    empty:
-      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

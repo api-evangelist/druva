@@ -530,138 +530,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsJobsResponse:
-      properties:
-        account_id:
-          type: string
-        action:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        cron:
-          type: string
-        cron_location:
-          type: string
-        event_at:
-          format: date-time
-          type: string
-        event_type:
-          type: string
-        halt:
-          type: string
-        id:
-          type: string
-        object_id:
-          type: integer
-        organization_id:
-          type: string
-        policy:
-          type: string
-        restorepolicy:
-          type: string
-        schedule:
-          type: string
-        seq:
-          type: integer
-        tasks:
-          items:
-            properties:
-              resource_name:
-                type: string
-            type: object
-          type: array
-        total_fail:
-          type: integer
-        total_success:
-          type: integer
-        total_tasks:
-          type: integer
-        type:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAccountsJobsRetryRequest:
-      type: object
-    GetOrganizationsAccountsJobsTagsResponse:
-      type: string
-    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
-      type: object
-    GetOrganizationsAccountsJobsTasksByIdResponse:
-      properties:
-        action:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        halt:
-          type: boolean
-        id:
-          type: string
-        is_success:
-          type: boolean
-        job:
-          properties:
-            account_id:
-              type: string
-            action:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            cron:
-              type: string
-            cron_location:
-              type: string
-            event_at:
-              format: date-time
-              type: string
-            event_type:
-              type: string
-            halt:
-              type: string
-            id:
-              type: string
-            object_id:
-              type: integer
-            organization_id:
-              type: string
-            seq:
-              type: integer
-            total_fail:
-              type: integer
-            total_success:
-              type: integer
-            total_tasks:
-              type: integer
-            type:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        job_id:
-          type: string
-        region:
-          type: string
-        resource_id:
-          type: string
-        resource_name:
-          type: string
-        resource_type:
-          type: string
-        steps:
-          items:
-            type: object
-          type: array
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    GetOrganizationsAccountsJob_countResponse:
-      type: integer
     GetOrganizationsAccountsJobsByIdResponse:
       properties:
         account_id:
@@ -740,12 +608,144 @@ components:
         message:
           type: string
       type: object
-    PostOrganizationsAccountsJobsRetryResponse:
+    GetOrganizationsAccountsJobsTasksByIdResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        steps:
+          items:
+            type: object
+          type: array
+        updated_at:
+          format: date-time
+          type: string
       type: object
-    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
+    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
+      type: object
+    GetOrganizationsAccountsJobsResponse:
+      properties:
+        account_id:
+          type: string
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        cron:
+          type: string
+        cron_location:
+          type: string
+        event_at:
+          format: date-time
+          type: string
+        event_type:
+          type: string
+        halt:
+          type: string
+        id:
+          type: string
+        object_id:
+          type: integer
+        organization_id:
+          type: string
+        policy:
+          type: string
+        restorepolicy:
+          type: string
+        schedule:
+          type: string
+        seq:
+          type: integer
+        tasks:
+          items:
+            properties:
+              resource_name:
+                type: string
+            type: object
+          type: array
+        total_fail:
+          type: integer
+        total_success:
+          type: integer
+        total_tasks:
+          type: integer
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
       type: object
     empty:
       properties: {}
+      type: object
+    PostOrganizationsAccountsJobsRetryResponse:
+      type: object
+    PostOrganizationsAccountsJobsRetryRequest:
+      type: object
+    GetOrganizationsAccountsJob_countResponse:
+      type: integer
+    GetOrganizationsAccountsJobsTagsResponse:
+      type: string
+    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
       type: object
   securitySchemes:
     API_Authorizer:

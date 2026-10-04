@@ -182,13 +182,6 @@ paths:
       operationId: postOrganizationsByOrganizationIdOnboardingByStackId
       x-operation-id-source: derived
 components:
-  requestBodies:
-    PostOrganizationsOnboardingByIdRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PostOrganizationsOnboardingByIdRequest'
-      required: true
   schemas:
     PostOrganizationsOnboardingByIdResponse:
       properties:
@@ -199,40 +192,6 @@ components:
         FLSBucketName:
           type: string
         Name:
-          type: string
-      type: object
-    PutOrganizationsOnboardingByIdRequest:
-      properties:
-        AccountId:
-          type: string
-        CRTemplateVersion:
-          type: integer
-        Event:
-          type: string
-        Region:
-          type: string
-        RevisionId:
-          type: string
-        StackId:
-          type: string
-        Type:
-          type: string
-      type: object
-    PostOrganizationsOnboardingByIdRequest:
-      properties:
-        AccountId:
-          type: string
-        CRTemplateVersion:
-          type: integer
-        Event:
-          type: string
-        Region:
-          type: string
-        RevisionId:
-          type: string
-        StackId:
-          type: string
-        Type:
           type: string
       type: object
     PutOrganizationsOnboardingByIdResponse:
@@ -251,9 +210,50 @@ components:
         message:
           type: string
       type: object
+    PostOrganizationsOnboardingByIdRequest:
+      properties:
+        AccountId:
+          type: string
+        CRTemplateVersion:
+          type: integer
+        Event:
+          type: string
+        Region:
+          type: string
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
+          type: string
+      type: object
     empty:
       properties: {}
       type: object
+    PutOrganizationsOnboardingByIdRequest:
+      properties:
+        AccountId:
+          type: string
+        CRTemplateVersion:
+          type: integer
+        Event:
+          type: string
+        Region:
+          type: string
+        RevisionId:
+          type: string
+        StackId:
+          type: string
+        Type:
+          type: string
+      type: object
+  requestBodies:
+    PostOrganizationsOnboardingByIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostOrganizationsOnboardingByIdRequest'
+      required: true
   securitySchemes:
     API_Authorizer:
       in: header
