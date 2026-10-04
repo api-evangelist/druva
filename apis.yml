@@ -1669,6 +1669,9 @@ apis:
   - type: GettingStarted
     url: https://developer.druva.com/docs/getting-started-with-druva-msp-api-1
 common:
+- type: CapabilityMap
+  url: capabilities/druva-capability-edges.yml
+  name: Druva Business Capability Map
 - type: OAuthScopes
   url: scopes/druva-scopes.yml
 - type: AgenticAccess

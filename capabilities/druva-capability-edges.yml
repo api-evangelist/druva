@@ -1,0 +1,315 @@
+slug: druva
+provider: Druva
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 29
+edges:
+- tag: DisasterRecoveryPlans
+  spec_file: druva-disasterrecoveryplans-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.92
+  evidence: '''Create DR Plan'', ''Execute Failback'', ''Update DR Test Schedule'', ''Verify DR Plan Servers'''
+  reason: Operations create, execute, test and fail back disaster-recovery plans for cloud servers — plainly
+    IT disaster recovery management.
+- tag: DRaaS
+  spec_file: druva-draas-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.88
+  evidence: GET /draasconfig/v2/orgs/{OrgID}/drplans  List all DR Plans; POST /draasconfig/v2/orgs/{OrgID}/jobs/failover  Execute
+    DR Failover jobs
+  reason: Operations list disaster-recovery plans and execute failover jobs — unambiguously IT disaster
+    recovery management.
+- tag: Tenants
+  spec_file: druva-tenants-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.88
+  evidence: '"Create a new tenant", "Suspend a customer tenant", "Unsuspend a customer tenant", "Patch
+    an existing tenant"'
+  reason: Explicit creation, suspension, unsuspension and modification of customer tenants in Druva's
+    multi-tenant MSP fleet — tenant provisioning and lifecycle.
+- tag: Threat Hunting
+  spec_file: druva-threat-hunting-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.83
+  evidence: '"Create a threat hunt", "List impacted snapshots for a specific threat hunt" — Cyber Resilience
+    Threat Hunting API, "perform operations on the resources managed in Druva Cloud for threat hunt"'
+  reason: Operations create and run threat hunts across backed-up resources and report impacted devices/snapshots
+    — security threat detection and investigation, i.e. SOC-style detection & response, not a business-domain
+    capability.
+- tag: Threat Watch
+  spec_file: druva-threat-watch-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.83
+  evidence: '"Threat Watch is an automated continuous monitoring feature that scans resources for threats
+    every 8 hours"; "Lists Threat Watch impacted devices"'
+  reason: Continuous threat scanning with impacted-device reporting and IOC matching is security monitoring/detection,
+    mapping to Threat Detection & Response Management.
+- tag: Threat Intel
+  spec_file: druva-threat-intel-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.82
+  evidence: '"List of APIs to view details and manage IOC Sets in the IOC library"; "Check if the specified
+    IOC exists in any of the existing IOC Sets"'
+  reason: Indicator-of-compromise set management and lookup is threat intelligence feeding detection and
+    response; maps to Threat Detection & Response Management.
+- tag: AHV
+  spec_file: druva-ahv-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.8
+  evidence: GET /ahv/v1/orgs/{OrgID}/reports/jobs/restores AHVGetAllRestoreJobsInfoRequest List all restore
+    jobs
+  reason: Backup sets, backup jobs, restore jobs, policies and backup proxies for AHV workloads are backup
+    and recovery operations for the buyer's IT estate, i.e. IT disaster recovery. Some ambiguity between
+    enterprise DR management and infrastructure operations keeps it below 0.95.
+- tag: Administrators
+  spec_file: druva-administrators-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /console/v1/admins 'Create an administrator'; PUT /console/v1/admins/{globalAdminID}/role
+    'Update administrator role'; POST /console/v1/admin/password 'Change an administrator's password'
+  reason: Full lifecycle of administrator accounts, role assignment and credential change, with schemas
+    like GetAdminResponse_accessControl and consolev1admins_productAccessControls — this is identity and
+    access administration, not a business-domain object.
+- tag: Restore OneDrive/Exchange Online data
+  spec_file: druva-restore-onedrive-exchange-online-data-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.8
+  evidence: '"List All OneDrive/Exchange Online Restore points"; "Restore a OneDrive Account or Exchange
+    Online Mailbox"'
+  reason: Operations enumerate restore points and trigger restores of protected Microsoft 365 data — direct
+    IT data recovery/backup restore capability for the buyer's IT estate.
+- tag: Restore SharePoint Online data
+  spec_file: druva-restore-sharepoint-online-data-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.8
+  evidence: '"List All SharePoint Site Restore Points"; "Restore a SharePoint Site"'
+  reason: Surface lists SharePoint restore points and executes site restores from backup, which is IT
+    disaster recovery / data restore, not content or collaboration management.
+- tag: SQLServer
+  spec_file: druva-sqlserver-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.8
+  evidence: '"List all backup jobs"; "List all restore jobs"; "On-demand backup"; SQLRetentionPolicy'
+  reason: Operations manage backupsets, backup/restore jobs, retention policies and on-demand backups
+    for SQL Server workloads — enterprise workload backup and recovery, i.e. IT disaster recovery management
+    rather than any database-business capability.
+- tag: Legal Hold
+  spec_file: druva-legal-hold-api-openapi.yml
+  capability_id: BC-150.20
+  capability_id_l1: BC-150
+  capability_name: Litigation & Dispute Management
+  confidence: 0.78
+  evidence: '''Lists the APIs to get information about the legal hold policies, manage users on legal
+    hold and new APIs for eDiscovery Download Client''; ''Add or delete users (custodians) from a legal
+    hold policy'''
+  reason: Legal hold policies with custodians plus eDiscovery download are litigation-preservation and
+    discovery support, which belongs to Litigation & Dispute Management. Slight ambiguity with records/data
+    governance framing keeps confidence below 0.8.
+- tag: NAS
+  spec_file: druva-nas-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.78
+  evidence: '''List all backup jobs'', ''List all restore jobs'', POST /haydn/v1/nas/v1/jobs/backup ''On-demand
+    backup'', ''List all snapshots'''
+  reason: Backup sets, retention policies, snapshots, on-demand backup and cancel-backup operations for
+    NAS file workloads — data protection and recovery of the customer's IT estate, mapping to IT disaster
+    recovery management.
+- tag: OracleDTC
+  spec_file: druva-oracledtc-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.78
+  evidence: '''On-demand backup'', ''Full database restore to original'', ''List all backup polices'',
+    ''List all snapshots'''
+  reason: Oracle database backup policies, snapshots, on-demand backup and full database restore — data
+    protection and recovery execution for customer IT workloads, i.e. IT disaster recovery management.
+- tag: Aws
+  spec_file: druva-aws-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '''Get AWS regions''; ''Get amazon secutiy groups''; ''Return instance types''; schemas GetOrganizationsAccountsAwsRegionsVpcsResponse,
+    GetOrganizationsAccountsAwsRegionsKmskeysResponse'
+  reason: Operations enumerate AWS cloud infrastructure constructs (regions, AZs, VPCs, subnets, security
+    groups, instance profiles, KMS keys) — cloud infrastructure management/metadata, squarely IT Infrastructure
+    Management.
+- tag: Backups
+  spec_file: druva-backups-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.75
+  evidence: Restore EC2 Instance; Restore RDS Snapshot To Instance; Restore a backup; Archive EBS snapshots
+  reason: Operations list, restore and archive backups of cloud compute and database resources — direct
+    realisation of IT backup/restore and recovery, mapped to Disaster Recovery Management.
+- tag: File Server
+  spec_file: druva-file-server-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.75
+  evidence: '''On-demand backup'', ''Create a restore job for the original server'', ''List all snapshots'',
+    schema FSRetentionPolicy'
+  reason: Operations perform backup, snapshot and restore jobs for Windows/Linux file servers — IT backup
+    and recovery operations.
+- tag: Hyper-V
+  spec_file: druva-hyper-v-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.75
+  evidence: GET /hyperv/v1/orgs/{OrgID}/reports/jobs/backups 'List all backup jobs'; 'List all restore
+    jobs'; 'List all backup policies'
+  reason: Operations report on backup sets, backup policies, backup and restore jobs for Hyper-V virtual
+    workloads — i.e. data protection / IT recovery operations for the customer's estate, which maps to
+    IT disaster recovery management rather than any product-engineering capability. Some residual ambiguity
+    with general IT operations monitoring, hence 0.75.
+- tag: Restores
+  spec_file: druva-restores-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.75
+  evidence: '"Returns all restores"; "Return download for restore"; "Delete restore"'
+  reason: CRUD over restore operations for cloud accounts — tracking and retrieving restore jobs is IT
+    data recovery management. Slightly reduced confidence as the operations are lifecycle management of
+    restore records rather than policy-level DR planning.
+- tag: Enterprise Workloads Reports
+  spec_file: druva-enterprise-workloads-reports-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.72
+  evidence: '''View Disaster Recovery Failover Activity Report''; ''View Disaster Recovery Failback Activity
+    Report''; ''View Backup Activity Report'''
+  reason: Reports explicitly cover backup, replication, failover and failback activity for enterprise
+    workloads — reporting layer over IT disaster recovery.
+- tag: PBS
+  spec_file: druva-pbs-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.72
+  evidence: '''List all backup jobs'', ''List all restore jobs'', ''List all backupstores'', PBSLastBackupDetailsStruct'
+  reason: Reporting over backup sets, backup stores and backup/restore jobs for a protected workload type
+    — data protection and recovery reporting, mapping to IT disaster recovery management. Read-only reporting
+    scope keeps confidence moderate.
+- tag: Servers
+  spec_file: druva-servers-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: '"Start Server", "Stop Server", "Create Backup", "Get Configured Servers", GetOrganizationsAccountsServersSubnetByIdResponse'
+  reason: Management of cloud compute instances (servers, subnets, security groups, SSH keys) across AWS
+    accounts — cloud infrastructure management.
+- tag: Alerts
+  spec_file: druva-alerts-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: GET /alerts/v1/orgs/{OrgID}/alerts/jobs/backupFailures  'List backup failure alerts'; schemas
+    BackupJobAlert, AlertDetails
+  reason: Operational alerting on backup job failures for protected workloads — IT operations monitoring.
+    Not financial-crime or business alerting; the schemas are backup job alerts.
+- tag: Azure
+  spec_file: druva-azure-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /pazwlConfig/v1/azure/resources/{metadataType}  'List Azure resource metadata names';
+    GET /pazwlConfig/v1/azure/subscription  'List subscriptions'
+  reason: Discovery and search of Azure resources and subscriptions (schemas Resource, Subscription, Tags)
+    — cloud infrastructure inventory. 'Subscription' here is an Azure cloud account, not a SaaS commercial
+    subscription.
+- tag: Azure SQL
+  spec_file: druva-azure-sql-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.7
+  evidence: POST /haydn/v1/azuresql/v1/jobs/backup  CreateAzureSQLBackup  On-demand backup; POST .../jobs/restore  CreateAzureSQLRestore  On-demand
+    restore
+  reason: Operations trigger and cancel backup and restore jobs for Azure SQL workloads — i.e. data protection
+    / IT disaster recovery execution for the customer's workloads, not a generic technical utility. Mapped
+    to Disaster Recovery Management (IT and operational disaster recovery); some ambiguity versus general
+    IT operations keeps confidence moderate.
+- tag: Backup Policies
+  spec_file: druva-backup-policies-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.7
+  evidence: Get All Backup Policies; Update A Backup Policy; Execute Backup Policy; Create Backup Policy
+    Rule
+  reason: CRUD and execution of backup policies and their rules governs how customer workloads are protected
+    and recoverable — IT data protection/DR management. Not an authentication or plumbing tag despite
+    the generic 'policies' path.
+- tag: Microsoft 365 Reports
+  spec_file: druva-microsoft-365-reports-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.7
+  evidence: '''View Teams Backup Activity Report'', ''View User Restore Activity Report'', ''View SharePoint
+    Online Restore Activity Report'''
+  reason: Reporting surface over backup and restore activity for Microsoft 365 workloads — operational
+    reporting on data protection, i.e. IT backup/recovery management. It is reporting rather than execution,
+    so confidence is moderate.
+- tag: Resources
+  spec_file: druva-resources-api-openapi.yml
+  capability_id: BC-160.20
+  capability_id_l1: BC-160
+  capability_name: Disaster Recovery Management
+  confidence: 0.7
+  evidence: POST .../resources/{resource_id}/backup — "Create a backup"; "Get backup policies"; "Get schedules"
+  reason: Despite the generic tag name, the operations drive backup creation and backup policy/schedule
+    retrieval for cloud resources under an account, which is IT backup and disaster-recovery operation.
+    Some ambiguity because the tag also serves plain resource inventory/listing.
+- tag: Storage Management
+  spec_file: druva-storage-management-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: '"List all storages", "List all CloudCache Servers", "get information about the storages and
+    inSync CloudCache Servers configured in Druva inSync"'
+  reason: Inventory and configuration detail of backup storage targets and cache servers — storage infrastructure
+    management.
