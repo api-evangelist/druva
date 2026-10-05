@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/google-workspace.json",
+ "requested_url": "https://developer.druva.com/openapi/google-workspace.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 6031,
+ "sha256": "dc393bd121012f95532c648bf36af52147a1d40cd439eeffe6972c0b675fdbd7",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

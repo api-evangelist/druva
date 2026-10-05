@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/gov-cloud-authorization-cyber-resilience.json",
+ "requested_url": "https://developer.druva.com/openapi/gov-cloud-authorization-cyber-resilience.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 651,
+ "sha256": "1061f5aafa678d0fe07ee4b1df69422bd52ebcad9b736c1451ade422c9f72c4f",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

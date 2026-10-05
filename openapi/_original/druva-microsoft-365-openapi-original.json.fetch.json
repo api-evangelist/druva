@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/microsoft-365.json",
+ "requested_url": "https://developer.druva.com/openapi/microsoft-365.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 64406,
+ "sha256": "3e8d6e34aa6ea6b32afbbe519015314f91e14a59c2d1553fef13045ebf73b0da",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

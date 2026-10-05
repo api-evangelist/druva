@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/hybrid-workload-govcloud-authentication.json",
+ "requested_url": "https://developer.druva.com/openapi/hybrid-workload-govcloud-authentication.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 2645,
+ "sha256": "4727f208572e6607159996e859851dffa33e72620b050a7e2a602166d11ffed0",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}

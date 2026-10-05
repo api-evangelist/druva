@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/govcloud-authentication.json",
+ "requested_url": "https://developer.druva.com/openapi/govcloud-authentication.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 3241,
+ "sha256": "753910be07959475b5f1c0884041402b10cbbf8c809a3a11d6a774186c9e8c1a",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

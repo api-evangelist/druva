@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/enterprise-workloads-govcloud.json",
+ "requested_url": "https://developer.druva.com/openapi/enterprise-workloads-govcloud.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 561935,
+ "sha256": "375ccb3a837f9465a120ea8d278a0c57351bf48a16f2af20169ea1ed2c0ac1c5",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

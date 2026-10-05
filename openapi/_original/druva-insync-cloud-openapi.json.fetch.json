@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/insync-cloud.json",
+ "requested_url": "https://developer.druva.com/openapi/insync-cloud.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 208740,
+ "sha256": "040928215dfcd4d1017467984e49c7e93b696bc64a57dcaff33f5c1cbbc95a58",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

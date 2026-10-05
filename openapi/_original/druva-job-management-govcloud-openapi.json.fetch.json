@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/unity-1.json",
+ "requested_url": "https://developer.druva.com/openapi/unity-1.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 16620,
+ "sha256": "2b95af706e705757fba8cf31b750c7834f7f0c8af82a3b5a8e2368e46b6cddd0",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
