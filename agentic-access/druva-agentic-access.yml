@@ -1,4 +1,4 @@
-generated: '2026-09-16'
+generated: '2026-09-23'
 method: generated
 source: openapi/druva-accounts-api-openapi.yml, openapi/druva-ad-ldap-management-api-openapi.yml,
   openapi/druva-admin-roles-api-openapi.yml, openapi/druva-administration-api-openapi.yml, openapi/druva-administrators-api-openapi.yml,
@@ -40,12 +40,12 @@ description: Recommended x-agentic-access execution contracts, classified heuris
 summary:
   operations: 581
   by_action_class:
-    connected: 324
-    acting: 257
+    connected: 409
+    acting: 172
   by_consequence:
-    read: 324
-    write: 244
-    physical: 7
+    read: 409
+    write: 164
+    physical: 2
     safety-critical: 6
   human_in_the_loop_required: 6
 operations:
@@ -599,18 +599,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsTagsCount
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/asgroups/tags/keys
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdAsgroupsTagsKeys
@@ -847,18 +841,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAwsAccountalias
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/onboarding/cloudformation
   method: post
   operationId: postOrganizationsByOrganizationIdOnboardingCloudformation
@@ -889,18 +877,12 @@ operations:
   method: post
   operationId: SearchRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /pazwlConfig/v1/azure/subscription
   method: get
   operationId: ListSubscriptionsRequest
@@ -1121,34 +1103,22 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdPoliciesRulesCount
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/policies/rules/kmskeys
   method: post
   operationId: postOrganizationsByOrganizationIdPoliciesRulesKmskeys
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/tasks/policies
   method: get
   operationId: getOrganizationsByOrganizationIdTasksPolicies
@@ -1439,38 +1409,22 @@ operations:
   method: post
   operationId: GetMSPChargebackTenantConsumptionReport
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspChargebackTenantConsumptionMonthlyReport
   method: post
   operationId: GetMSPChargebackTenantConsumptionMonthlyReport
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /cloudcache/v1/orgs/{OrgID}/reports/config
   method: get
   operationId: GetAllCloudCacheConfigRequest
@@ -1651,34 +1605,22 @@ operations:
   method: post
   operationId: GetRollbackActionsReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspDGDataProtectionRisk
   method: post
   operationId: GetDataProtectionRiskReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /uda/v1/stats/{workload}/resources/{resourceID}
   method: get
   operationId: getUdaV1StatsByWorkloadResourcesByResourceID
@@ -2199,308 +2141,192 @@ operations:
   method: post
   operationId: GetAlertReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPUsers
   method: post
   operationId: GetUsersReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPLicenseUsage
   method: post
   operationId: GetLicenseUsageReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPUserProvisioning
   method: post
   operationId: GetUserProvisioningReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPUserRollout
   method: post
   operationId: GetUserRolloutReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPLastBackupStatus
   method: post
   operationId: GetLastBackupStatusReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPStorageStatistics
   method: post
   operationId: GetStorageStatisticsDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPStorageAlert
   method: post
   operationId: GetStorageAlertsDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPCloudCacheStatistics
   method: post
   operationId: GetCloudCacheDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPRestoreActivity
   method: post
   operationId: GetEPRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEPPreservedUsersDataSources
   method: post
   operationId: GetEPPreservedUsersDataSourcesReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWAlertHistory
   method: post
   operationId: GetAlertHistoryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWBackupActivity
   method: post
   operationId: GetBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWResourceStatus
   method: post
   operationId: GetResourceStatusReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWStorageConsumptionbyBackupSets
   method: post
   operationId: GetStorageConsumptionbyBackupSetsReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWDisasterRecoveryReplicationActivity
   method: post
   operationId: GetDisasterRecoveryReplicationActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWDisasterRecoveryFailbackActivity
   method: post
   operationId: GetDisasterRecoveryFailbackActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWDisasterRecoveryFailoverActivity
   method: post
   operationId: GetDisasterRecoveryFailoverActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspEWRestoreActivity
   method: post
   operationId: GetEWRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/environments
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdEnvironments
@@ -2629,18 +2455,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdEnvironmentsByEnvironmentIdServersTagsValues
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/environments/clones
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdEnvironmentsClones
@@ -2967,18 +2787,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchIndexes
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/filelevelsearch/networksettings
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdFilelevelsearchNetworksettings
@@ -3045,116 +2859,72 @@ operations:
   method: post
   operationId: GetGoogleUserRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleSharedDriveRestoreActivity
   method: post
   operationId: GetGoogleSharedDriveRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGooglePreservedUsersDatasources
   method: post
   operationId: GetGooglePreservedUsersDataSourcesReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleStorageConsumption
   method: post
   operationId: GetGoogleStorageConsumptionReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleSharedDriveBackupActivity
   method: post
   operationId: GetGoogleSharedDriveBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleUserProvisioning
   method: post
   operationId: GetGoogleUserProvisioningReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleUserLastBackupStatus
   method: post
   operationId: GetGoogleUserLastBackupStatusReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleUserCountAndStatus
   method: post
   operationId: GetGoogleUserCountAndStatusReportDataRequest
@@ -3175,50 +2945,32 @@ operations:
   method: post
   operationId: GetGoogleUserWorkloadReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleLicenseUsage
   method: post
   operationId: GetGoogleLicenseUsageReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGoogleAlerts
   method: post
   operationId: GetGoogleAlertHistoryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /hyperv/v1/orgs/{OrgID}/reports/backupsets
   method: get
   operationId: HVGetBackupSetReportRequest
@@ -3473,18 +3225,12 @@ operations:
   method: post
   operationId: postLegalholdsV3UsersPolicies
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /legalholds/v4/policies
   method: get
   operationId: PoliciesGet
@@ -3649,244 +3395,152 @@ operations:
   method: post
   operationId: GetM365GroupsRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspTeamsRestoreActivity
   method: post
   operationId: GetM365TeamsRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspPublicFolderRestoreActivity
   method: post
   operationId: GetM365PFRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspSharePointRestoreActivity
   method: post
   operationId: GetM365SharePointRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365UserRestoreActivity
   method: post
   operationId: GetM365UserRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspSharePointBackupActivity
   method: post
   operationId: GetM365SharePointBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspTeamsBackupActivity
   method: post
   operationId: GetM365TeamsBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365GroupsDiscovery
   method: post
   operationId: GetM365GroupsDiscoveryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365TeamsDiscovery
   method: post
   operationId: GetM365TeamsDiscoveryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365PreservedUsersDatasources
   method: post
   operationId: GetM365PreservedUsersReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365SharePointSiteDiscovery
   method: post
   operationId: GetM365SharePointSiteDiscoveryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365UserProvisioning
   method: post
   operationId: GetM365UserProvisioningsReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspGroupsBackupActivity
   method: post
   operationId: GetM365GroupsBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365UserLastBackupStatus
   method: post
   operationId: GetM365UserLastBackupStatusDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspPublicFolderBackupActivity
   method: post
   operationId: GetM365PFBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365UserCountAndStatus
   method: post
   operationId: GetM365UserCountAndStatusReportDataRequest
@@ -3907,66 +3561,42 @@ operations:
   method: post
   operationId: GetM365UserWorkloadReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365StorageConsumption
   method: post
   operationId: GetM365StorageConsumptionReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365LicenseUsage
   method: post
   operationId: GetM365LicenseUsageReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v1/reports/mspM365Alerts
   method: post
   operationId: GetM365AlertHistoryReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /storageconfig/v2/csets/{csetID}/snapshots
   method: get
   operationId: ListSnapshots
@@ -5005,98 +4635,62 @@ operations:
   method: post
   operationId: GetGlobalUsageReport
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/consumptionItemized
   method: post
   operationId: GetTenantConsumptionV2ItemizedV2
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/quotaItemized
   method: post
   operationId: GetTenantQuotaV2ItemizedV2
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v3/reports/mspGlobalUsage
   method: post
   operationId: GetGlobalUsageReportV3
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v3/reports/consumptionItemized
   method: post
   operationId: GetTenantConsumptionV3Itemized
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v3/reports/quotaItemized
   method: post
   operationId: GetTenantQuotaV3Itemized
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /reporting/v1/reports
   method: get
   operationId: GetReportsListRequest
@@ -5111,18 +4705,12 @@ operations:
   method: post
   operationId: GetReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/resources
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdResources
@@ -5199,34 +4787,22 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdRulesResources
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/rules/resources/count
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdRulesResourcesCount
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/resources
   method: get
   operationId: getOrganizationsByOrganizationIdResources
@@ -5445,82 +5021,52 @@ operations:
   method: post
   operationId: GetSfdcBackupActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspSfdcDataRestoreActivity
   method: post
   operationId: GetSfdcDataRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspSfdcArchivalActivity
   method: post
   operationId: GetSfdcArchivalActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspSfdcArchivalRestoreActivity
   method: post
   operationId: GetSfdcArchivalRestoreActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspSfdcSandboxSeedingActivity
   method: post
   operationId: GetSfdcSandboxSeedingActivityReportDataRequest
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/schedules
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedules
@@ -5661,18 +5207,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdSchedulesSearch
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/schedules/tags/keys
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdSchedulesTagsKeys
@@ -5875,18 +5415,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServers
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/servers_configured
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersConfigured
@@ -6071,18 +5605,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersSshkeys
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/servers/stats
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersStats
@@ -6107,18 +5635,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdServersTagsCount
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/servers/tags/keys
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdServersTagsKeys
@@ -6163,66 +5685,42 @@ operations:
   method: post
   operationId: GetMSPServiceMonitoringDataProtectionViolationsReport
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspservicemonitoringDataProtectionCustomerCoverageReport
   method: post
   operationId: GetMSPServiceMonitoringDataProtectionCustomerCoverageReport
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspServiceMonitoringQuotaManagement
   method: post
   operationId: GetMSPServiceMonitoringQuotaManagementReport
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/reporting/v2/reports/mspServiceMonitoringQuotaViolations
   method: post
   operationId: GetMSPServiceMonitoringQuotaViolationsReport
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /msp/v3/servicePlans
   method: get
   operationId: ListServicePlansV3
@@ -6627,18 +6125,12 @@ operations:
   method: post
   operationId: postThreathuntingV1SearchBackupset
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /threathunting/v1/threathunts
   method: post
   operationId: postThreathuntingV1Threathunts
@@ -6801,18 +6293,12 @@ operations:
   method: post
   operationId: postCommonV1SearchAwsResources
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /threatintel/v1/ioc-sets
   method: get
   operationId: ListIocSetRequest
@@ -7363,18 +6849,12 @@ operations:
   method: post
   operationId: postOrganizationsByOrganizationIdAccountsByAccountIdVolumesTagsCount
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /organizations/{organization_id}/accounts/{account_id}/volumes/tags/keys
   method: get
   operationId: getOrganizationsByOrganizationIdAccountsByAccountIdVolumesTagsKeys
