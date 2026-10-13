@@ -1,0 +1,57 @@
+generated: '2026-10-13'
+method: searched
+checked:
+- https://aws.amazon.com/marketplace/
+- https://azuremarketplace.microsoft.com/
+marketplace_apps: []
+edges:
+- partner_name: AWS Marketplace
+  partner: amazon-web-services
+  partner_match: aggregator
+  type: marketplace
+  marketplace: aws-marketplace
+  channel: distribution
+  relationship: platform-app
+  direction: provider-built
+  evidence: https://aws.amazon.com/marketplace/seller-profile?id=ac11e461-e722-4d35-af98-9128a760bb88
+  listing_count: 3
+  apps:
+  - 'Druva: Backup & Recovery for Cloud, Data Centers & Remote Sites'
+  - Druva Data Security Cloud - Backup and Recovery [Private Offer Only]
+  - 'Druva Hybrid Workloads (Elite - Contract): Server Backup for Global Org'
+  seller_name: Druva
+  detected_by: sweep-cloud-marketplaces.py
+  detected: '2026-10-13'
+- partner_name: Microsoft Azure Marketplace
+  partner: microsoft-azure
+  partner_match: aggregator
+  type: marketplace
+  marketplace: azure-marketplace
+  channel: distribution
+  relationship: platform-app
+  direction: provider-built
+  evidence: https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=Druva%20Inc.
+  listing_count: 1
+  apps:
+  - Druva Integration with Microsoft Sentinel
+  seller_name: Druva Inc.
+  detected_by: sweep-cloud-marketplaces.py
+  detected: '2026-10-13'
+- partner_name: Microsoft Azure Marketplace
+  partner: microsoft-azure
+  partner_match: aggregator
+  type: marketplace
+  marketplace: azure-marketplace
+  channel: distribution
+  relationship: platform-app
+  direction: provider-built
+  evidence: https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=Druva%20Inc.
+  listing_count: 4
+  apps:
+  - Druva Integration for Microsoft 365 Backup Storage
+  - Druva for Enterprise Workloads
+  - Druva Essentials Pack
+  - Druva Data Security Cloud
+  seller_name: Druva Inc.
+  detected_by: sweep-cloud-marketplaces.py
+  detected: '2026-10-13'
