@@ -2,21 +2,21 @@
   "repo": "druva",
   "feeds": [
     {
-      "source": "https://developer.druva.com/llms.txt",
-      "feed_url": "https://developer.druva.com/llms.txt",
-      "title": "",
-      "saved": 0,
-      "method": "none"
-    },
-    {
       "source": "https://www.druva.com/blog",
       "feed_url": "https://www.druva.com/blog",
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://developer.druva.com/llms.txt",
+      "feed_url": "https://developer.druva.com/llms.txt",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "post_count": 12,
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
