@@ -1154,8 +1154,29 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
-    GoogleSharedDriveBackupActivityReportData:
-      title: GoogleSharedDriveBackupActivityReportData
+    GetGoogleStorageConsumptionReportDataResponse:
+      title: GetGoogleStorageConsumptionReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleStorageConsumptionReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleUserWorkloadReportData:
+      title: GoogleUserWorkloadReportData
       type: object
       properties:
         accountName:
@@ -1170,41 +1191,62 @@ components:
           type: string
           description: Unique ID of the customer.
           example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: vishal
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: vishal10@qagtest.drtst.org
+        addedOn:
+          type: string
+          description: 'The timestamp when the user was added to the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:15:57.000Z'
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Google Drive
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Gsuite
+        storageName:
+          type: string
+          description: The name of the storage associated with the user.
+          example: org_reports_ap1
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Enabled
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 8476886
+        lastSuccessfulBackup:
+          type: string
+          description: 'The timestamp of the last successful backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:24:28.000Z'
+        lastAttemptedBackup:
+          type: string
+          description: 'The timestamp of the last attempted backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:24:28.000Z'
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backup Failed
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: EINTERNAL
         lastUpdatedTime:
           type: string
           description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
           format: date-time
           example: '2023-06-04T10:05:18.493Z'
-        driveName:
-          type: string
-          description: The name of the drive associated with the activity.
-          example: 05Oct2023
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-04T10:51:03.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-04T10:52:48.000Z'
-        snapshotSize:
-          type: integer
-          description: The total amount of data backed up during the activity, in bytes.
-          example: 45330357
-        backupStatus:
-          type: string
-          description: The backup status of the activity.
-          example: Backed Up Successfully
-        appStatus:
-          type: string
-          description: The status of the drive associated with the activity.
-          example: Disabled
     GoogleLicenseUsageReportData:
       title: GoogleLicenseUsageReportData
       type: object
@@ -1259,6 +1301,99 @@ components:
           type: integer
           description: The total number of preserved licenses used within the specified period.
           example: 0
+    GoogleSharedDriveBackupActivityReportData:
+      title: GoogleSharedDriveBackupActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        driveName:
+          type: string
+          description: The name of the drive associated with the activity.
+          example: 05Oct2023
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-04T10:51:03.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-04T10:52:48.000Z'
+        snapshotSize:
+          type: integer
+          description: The total amount of data backed up during the activity, in bytes.
+          example: 45330357
+        backupStatus:
+          type: string
+          description: The backup status of the activity.
+          example: Backed Up Successfully
+        appStatus:
+          type: string
+          description: The status of the drive associated with the activity.
+          example: Disabled
+    GetGooglePreservedUsersDataSourcesReportDataResponse:
+      title: GetGooglePreservedUsersDataSourcesReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GooglePreservedUsersDataSourcesReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GetGoogleUserLastBackupStatusReportDataResponse:
+      title: GetGoogleUserLastBackupStatusReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleUserLastBackupStatusReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
     GetGoogleAlertHistoryReportDataResponse:
       title: GetGoogleAlertHistoryReportDataResponse
       type: object
@@ -1280,14 +1415,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGoogleUserWorkloadReportDataResponse:
-      title: GetGoogleUserWorkloadReportDataResponse
+    GetGoogleSharedDriveRestoreActivityReportDataResponse:
+      title: GetGoogleSharedDriveRestoreActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GoogleUserWorkloadReportData'
+            $ref: '#/components/schemas/GoogleSharedDriveRestoreActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1301,6 +1436,145 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GoogleSharedDriveRestoreActivityReportData:
+      title: GoogleSharedDriveRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+        accountTitle:
+          type: string
+          description: The name of the drive associated with the activity.
+          example: 05Oct2023
+        administrator:
+          type: string
+          description: The name of the administrator who triggered the activity.
+          example: Rohit Patil
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-08T06:09:17.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-08T06:12:51.000Z'
+        restoreSize:
+          type: integer
+          description: The total amount of data restored, in bytes.
+          example: 45330357
+        snapshotTimestamp:
+          type: string
+          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-03-06T09:56:26.000Z'
+        restoreStatus:
+          type: string
+          description: The status of the restore activity.
+          example: Restore Successful
+        jobId:
+          type: integer
+          description: The unique identifier of the activity stored in the database.
+          example: 2180
+    GoogleUserLastBackupStatusReportData:
+      title: GoogleUserLastBackupStatusReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: vishal
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: vishal10@qagtest.drtst.org
+        workloadType:
+          type: string
+          description: The workload associated with the user.
+          example: Google Drive
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Gsuite
+        appStatus:
+          type: string
+          description: The status of the workload, indicating whether it is `Enabled` or `Disabled`.
+          example: Enabled
+        startTime:
+          type: string
+          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:23:09.000Z'
+        endTime:
+          type: string
+          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2025-01-17T07:23:24.000Z'
+        itemsBackedUp:
+          type: integer
+          description: The total number of items successfully backed up in the last backup activity.
+          example: 56
+        itemsMissed:
+          type: integer
+          description: The total number of items that failed to back up in the last backup activity.
+          example: 8
+        lastBackupData:
+          type: integer
+          description: The total amount of backup data recorded in the last backup activity, in bytes.
+          example: 4241647
+        totalBackupData:
+          type: integer
+          description: The total backup data of the user to date.
+          example: 24332
+        lastBackupStatus:
+          type: string
+          description: The status of the last backup attempt.
+          example: Backed Up Successfully
+        statusDetails:
+          type: string
+          description: Error details for the last backup attempt, if any.
+          example: '-'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     GoogleUserRestoreActivityReportData:
       title: GoogleUserRestoreActivityReportData
       type: object
@@ -1376,14 +1650,6 @@ components:
           description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
           format: date-time
           example: '2025-01-17T07:22:40.000Z'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
     GoogleUserCountAndStatusReportData:
       title: GoogleUserCountAndStatusReportData
       type: object
@@ -1434,106 +1700,6 @@ components:
           type: integer
           description: The number of users marked as preserved within the specified period.
           example: 0
-    GoogleUserWorkloadReportData:
-      title: GoogleUserWorkloadReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: vishal
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: vishal10@qagtest.drtst.org
-        addedOn:
-          type: string
-          description: 'The timestamp when the user was added to the system. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2025-01-17T07:15:57.000Z'
-        workloadType:
-          type: string
-          description: The workload associated with the user.
-          example: Google Drive
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Gsuite
-        storageName:
-          type: string
-          description: The name of the storage associated with the user.
-          example: org_reports_ap1
-        appStatus:
-          type: string
-          description: The status of the drive associated with the activity.
-          example: Enabled
-        totalBackupData:
-          type: integer
-          description: The total backup data of the user to date.
-          example: 8476886
-        lastSuccessfulBackup:
-          type: string
-          description: 'The timestamp of the last successful backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2025-01-17T07:24:28.000Z'
-        lastAttemptedBackup:
-          type: string
-          description: 'The timestamp of the last attempted backup. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2025-01-17T07:24:28.000Z'
-        lastBackupStatus:
-          type: string
-          description: The status of the last backup attempt.
-          example: Backup Failed
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
-          example: EINTERNAL
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    GoogleStorageConsumptionReportData:
-      title: GoogleStorageConsumptionReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        workloadName:
-          type: string
-          description: The name of the workload for which storage consumption is displayed.
-          example: Google Drive
-        resourceCount:
-          type: integer
-          description: The total number of resources associated with the workload.
-          example: 14
-        totalBackupData:
-          type: integer
-          description: The total backup data of all resources associated with the workload.
-          example: 0
     GetGoogleLicenseUsageReportDataResponse:
       title: GetGoogleLicenseUsageReportDataResponse
       type: object
@@ -1555,14 +1721,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGooglePreservedUsersDataSourcesReportDataResponse:
-      title: GetGooglePreservedUsersDataSourcesReportDataResponse
+    GetGoogleUserWorkloadReportDataResponse:
+      title: GetGoogleUserWorkloadReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GooglePreservedUsersDataSourcesReportData'
+            $ref: '#/components/schemas/GoogleUserWorkloadReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1576,14 +1742,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGoogleUserRestoreActivityReportDataResponse:
-      title: GetGoogleUserRestoreActivityReportDataResponse
+    GetGoogleSharedDriveBackupActivityReportDataResponse:
+      title: GetGoogleSharedDriveBackupActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GoogleUserRestoreActivityReportData'
+            $ref: '#/components/schemas/GoogleSharedDriveBackupActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1597,86 +1763,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGoogleUserCountAndStatusReportDataResponse:
-      title: GetGoogleUserCountAndStatusReportDataResponse
+    GetGoogleUserProvisioningReportDataResponse:
+      title: GetGoogleUserProvisioningReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GoogleUserCountAndStatusReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GooglePreservedUsersDataSourcesReportData:
-      title: GooglePreservedUsersDataSourcesReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: abhi singh
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: 1234re5678@druvadatasoftware.onmicrosoft.com
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Default
-        googleLicenseState:
-          type: string
-          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
-          example: Active Licensed Users
-        preservedOn:
-          type: string
-          description: 'The timestamp when the user was marked as preserved. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-01T04:34:05.000Z'
-        mode:
-          type: string
-          description: 'The onboarding method for the user. Possible values: `Manual`, `GOOGLEDIRECTORY`, `AZUREAD`, `AD/LDAP`, `SCIM`, `Upgrade`.'
-          example: Manual
-        autoDeleteOn:
-          type: string
-          description: 'The timestamp when the user is scheduled for automatic deletion. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-08-01T04:34:05.000Z'
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    GetGoogleStorageConsumptionReportDataResponse:
-      title: GetGoogleStorageConsumptionReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoogleStorageConsumptionReportData'
+            $ref: '#/components/schemas/GoogleUserProvisioningReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1741,14 +1835,14 @@ components:
           description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
           format: date-time
           example: '2023-06-04T10:05:18.493Z'
-    GetGoogleUserLastBackupStatusReportDataResponse:
-      title: GetGoogleUserLastBackupStatusReportDataResponse
+    GetGoogleUserCountAndStatusReportDataResponse:
+      title: GetGoogleUserCountAndStatusReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GoogleUserLastBackupStatusReportData'
+            $ref: '#/components/schemas/GoogleUserCountAndStatusReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1762,14 +1856,14 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGoogleSharedDriveBackupActivityReportDataResponse:
-      title: GetGoogleSharedDriveBackupActivityReportDataResponse
+    GetGoogleUserRestoreActivityReportDataResponse:
+      title: GetGoogleUserRestoreActivityReportDataResponse
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/GoogleSharedDriveBackupActivityReportData'
+            $ref: '#/components/schemas/GoogleUserRestoreActivityReportData'
           x-go-name: Data
         lastSyncTimestamp:
           type: string
@@ -1783,6 +1877,85 @@ components:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
           example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
+    GooglePreservedUsersDataSourcesReportData:
+      title: GooglePreservedUsersDataSourcesReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        userName:
+          type: string
+          description: The name of the user associated with the workload.
+          example: abhi singh
+        userEmail:
+          type: string
+          description: The email address of the user associated with the workload.
+          example: 1234re5678@druvadatasoftware.onmicrosoft.com
+        profileName:
+          type: string
+          description: The name of the profile associated with the user.
+          example: Default
+        googleLicenseState:
+          type: string
+          description: 'The category of the user. Possible values: `Active Licensed Users`, `Preserve Licensed Users`.'
+          example: Active Licensed Users
+        preservedOn:
+          type: string
+          description: 'The timestamp when the user was marked as preserved. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        mode:
+          type: string
+          description: 'The onboarding method for the user. Possible values: `Manual`, `GOOGLEDIRECTORY`, `AZUREAD`, `AD/LDAP`, `SCIM`, `Upgrade`.'
+          example: Manual
+        autoDeleteOn:
+          type: string
+          description: 'The timestamp when the user is scheduled for automatic deletion. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
+          format: date-time
+          example: '2024-08-01T04:34:05.000Z'
+        lastUpdatedTime:
+          type: string
+          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
+          format: date-time
+          example: '2023-06-04T10:05:18.493Z'
+    GoogleStorageConsumptionReportData:
+      title: GoogleStorageConsumptionReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Account name defined for the customer
+          example: Druva
+        customerName:
+          type: string
+          description: Customer name defined for the customer
+          example: Druva
+        customerGlobalId:
+          type: string
+          description: Unique ID of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        workloadName:
+          type: string
+          description: The name of the workload for which storage consumption is displayed.
+          example: Google Drive
+        resourceCount:
+          type: integer
+          description: The total number of resources associated with the workload.
+          example: 14
+        totalBackupData:
+          type: integer
+          description: The total backup data of all resources associated with the workload.
+          example: 0
     GoogleUserProvisioningReportData:
       title: GoogleUserProvisioningReportData
       type: object
@@ -1843,179 +2016,6 @@ components:
         customAttributeValue:
           type: string
           description: The value of the custom attribute filter.
-          example: '-'
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-    GoogleSharedDriveRestoreActivityReportData:
-      title: GoogleSharedDriveRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        lastUpdatedTime:
-          type: string
-          description: The last updated time stamp for the record. The time is in the UTC time zone. Example - 2019-10-25T00:00:00Z
-          format: date-time
-          example: '2023-06-04T10:05:18.493Z'
-        accountTitle:
-          type: string
-          description: The name of the drive associated with the activity.
-          example: 05Oct2023
-        administrator:
-          type: string
-          description: The name of the administrator who triggered the activity.
-          example: Rohit Patil
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-08T06:09:17.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-08T06:12:51.000Z'
-        restoreSize:
-          type: integer
-          description: The total amount of data restored, in bytes.
-          example: 45330357
-        snapshotTimestamp:
-          type: string
-          description: 'The timestamp of the snapshot. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2024-03-06T09:56:26.000Z'
-        restoreStatus:
-          type: string
-          description: The status of the restore activity.
-          example: Restore Successful
-        jobId:
-          type: integer
-          description: The unique identifier of the activity stored in the database.
-          example: 2180
-    GetGoogleUserProvisioningReportDataResponse:
-      title: GetGoogleUserProvisioningReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoogleUserProvisioningReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GetGoogleSharedDriveRestoreActivityReportDataResponse:
-      title: GetGoogleSharedDriveRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoogleSharedDriveRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: YTBDNDk6Rjk1MmViY1FpTVpBejNFTU9lSWxzUT09OjA=
-    GoogleUserLastBackupStatusReportData:
-      title: GoogleUserLastBackupStatusReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Account name defined for the customer
-          example: Druva
-        customerName:
-          type: string
-          description: Customer name defined for the customer
-          example: Druva
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        userName:
-          type: string
-          description: The name of the user associated with the workload.
-          example: vishal
-        userEmail:
-          type: string
-          description: The email address of the user associated with the workload.
-          example: vishal10@qagtest.drtst.org
-        workloadType:
-          type: string
-          description: The workload associated with the user.
-          example: Google Drive
-        profileName:
-          type: string
-          description: The name of the profile associated with the user.
-          example: Gsuite
-        appStatus:
-          type: string
-          description: The status of the workload, indicating whether it is `Enabled` or `Disabled`.
-          example: Enabled
-        startTime:
-          type: string
-          description: 'The timestamp when the activity started. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2025-01-17T07:23:09.000Z'
-        endTime:
-          type: string
-          description: 'The timestamp when the activity ended. Format: YYYY-MM-DDTHH:MM:SSZ (UTC).'
-          format: date-time
-          example: '2025-01-17T07:23:24.000Z'
-        itemsBackedUp:
-          type: integer
-          description: The total number of items successfully backed up in the last backup activity.
-          example: 56
-        itemsMissed:
-          type: integer
-          description: The total number of items that failed to back up in the last backup activity.
-          example: 8
-        lastBackupData:
-          type: integer
-          description: The total amount of backup data recorded in the last backup activity, in bytes.
-          example: 4241647
-        totalBackupData:
-          type: integer
-          description: The total backup data of the user to date.
-          example: 24332
-        lastBackupStatus:
-          type: string
-          description: The status of the last backup attempt.
-          example: Backed Up Successfully
-        statusDetails:
-          type: string
-          description: Error details for the last backup attempt, if any.
           example: '-'
         lastUpdatedTime:
           type: string

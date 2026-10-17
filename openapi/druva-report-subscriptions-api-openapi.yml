@@ -253,7 +253,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PutOrganizationsReportsubscriptionsByIdResponse:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PutOrganizationsReportsubscriptionsByIdRequest:
       properties:
         all_accounts:
           type: boolean
@@ -265,11 +270,12 @@ components:
         deleted_at:
           type: string
         format:
+          enum:
+          - pdf
+          - csv
           type: string
         frequency:
           type: string
-        id:
-          type: integer
         name:
           type: string
         organization_id:
@@ -296,6 +302,18 @@ components:
           type: string
         updated_at:
           format: date-time
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    PostOrganizationsReportsubscriptionsRecipientsRequest:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
           type: string
       type: object
     GetOrganizationsReportsubscriptionsResponse:
@@ -562,7 +580,16 @@ components:
         message:
           type: string
       type: object
-    PutOrganizationsReportsubscriptionsByIdRequest:
+    PostOrganizationsReportsubscriptionsRecipientsResponse:
+      properties:
+        email:
+          type: string
+        external:
+          type: boolean
+        subscription_id:
+          type: string
+      type: object
+    PutOrganizationsReportsubscriptionsByIdResponse:
       properties:
         all_accounts:
           type: boolean
@@ -574,12 +601,11 @@ components:
         deleted_at:
           type: string
         format:
-          enum:
-          - pdf
-          - csv
           type: string
         frequency:
           type: string
+        id:
+          type: integer
         name:
           type: string
         organization_id:
@@ -606,32 +632,6 @@ components:
           type: string
         updated_at:
           format: date-time
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PostOrganizationsReportsubscriptionsRecipientsRequest:
-      properties:
-        email:
-          type: string
-        external:
-          type: boolean
-        subscription_id:
-          type: string
-      type: object
-    empty:
-      properties: {}
-      type: object
-    PostOrganizationsReportsubscriptionsRecipientsResponse:
-      properties:
-        email:
-          type: string
-        external:
-          type: boolean
-        subscription_id:
           type: string
       type: object
   securitySchemes:

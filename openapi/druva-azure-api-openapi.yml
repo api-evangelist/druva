@@ -202,31 +202,6 @@ paths:
                 $ref: '#/components/schemas/ServiceError'
 components:
   schemas:
-    ServiceError:
-      description: Service Error
-      type: object
-      title: ServiceError represents an error with an associated error code.
-      properties:
-        code:
-          type: integer
-          format: int64
-          x-go-name: Code
-          description: Error Code
-        message:
-          type: string
-          description: Application specific error message
-      x-go-package: vendor/druva.com/godevkit/errortype
-    Tags:
-      type: object
-      title: Tags ...
-      properties:
-        key:
-          type: string
-          x-go-name: Key
-        value:
-          type: string
-          x-go-name: Value
-      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
     ListSubscriptionsResponse:
       type: object
       description: ListSubscriptionsResponse is the response schema for ListSubscriptions API
@@ -241,6 +216,17 @@ components:
             $ref: '#/components/schemas/Subscription'
           x-go-name: Subscriptions
           description: Details of subscription present in the specified org. Returns subscription name, ID, accountIdentifier, and accountID.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    Tags:
+      type: object
+      title: Tags ...
+      properties:
+        key:
+          type: string
+          x-go-name: Key
+        value:
+          type: string
+          x-go-name: Value
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
     SearchFilters:
       type: object
@@ -330,6 +316,35 @@ components:
           type: string
           x-go-name: Name
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ListMetadataNamesByTypeResponse:
+      type: object
+      title: ListMetadataNamesByTypeResponse is the response schema for ListMetadataNamesByType API
+      properties:
+        metadataType:
+          type: string
+          x-go-name: MetadataType
+          description: Type of metadata  provided in request.
+        names:
+          type: array
+          items:
+            type: string
+          x-go-name: Names
+          description: Metadata values based on the type provided in request.
+      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
+    ServiceError:
+      description: Service Error
+      type: object
+      title: ServiceError represents an error with an associated error code.
+      properties:
+        code:
+          type: integer
+          format: int64
+          x-go-name: Code
+          description: Error Code
+        message:
+          type: string
+          description: Application specific error message
+      x-go-package: vendor/druva.com/godevkit/errortype
     Resource:
       type: object
       description: Details of the resource fetched,  such as organization, subscription, backupset, and  daintree data.
@@ -372,21 +387,6 @@ components:
         subscriptionName:
           type: string
           x-go-name: SubscriptionName
-      x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
-    ListMetadataNamesByTypeResponse:
-      type: object
-      title: ListMetadataNamesByTypeResponse is the response schema for ListMetadataNamesByType API
-      properties:
-        metadataType:
-          type: string
-          x-go-name: MetadataType
-          description: Type of metadata  provided in request.
-        names:
-          type: array
-          items:
-            type: string
-          x-go-name: Names
-          description: Metadata values based on the type provided in request.
       x-go-package: git.druva.org/enterprise-wl/azure-workload-config/azureworkloadconfigsvc/spec/azureinternal
   securitySchemes:
     OAuth2:

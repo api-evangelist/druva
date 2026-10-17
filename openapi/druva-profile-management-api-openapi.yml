@@ -107,22 +107,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ProfileList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The number of profiles listed in the result pages.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Profile'
     HTTP_403:
       type: object
       properties:
@@ -175,6 +159,22 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    ProfileList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of profiles listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Profile'
   securitySchemes:
     OAuth2:
       type: oauth2

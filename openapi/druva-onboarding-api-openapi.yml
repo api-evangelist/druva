@@ -194,23 +194,12 @@ components:
         Name:
           type: string
       type: object
-    PutOrganizationsOnboardingByIdResponse:
-      properties:
-        AccountId:
-          type: string
-        ExternalId:
-          type: string
-        FLSBucketName:
-          type: string
-        Name:
-          type: string
-      type: object
     Error:
       properties:
         message:
           type: string
       type: object
-    PostOrganizationsOnboardingByIdRequest:
+    PutOrganizationsOnboardingByIdRequest:
       properties:
         AccountId:
           type: string
@@ -230,7 +219,7 @@ components:
     empty:
       properties: {}
       type: object
-    PutOrganizationsOnboardingByIdRequest:
+    PostOrganizationsOnboardingByIdRequest:
       properties:
         AccountId:
           type: string
@@ -245,6 +234,17 @@ components:
         StackId:
           type: string
         Type:
+          type: string
+      type: object
+    PutOrganizationsOnboardingByIdResponse:
+      properties:
+        AccountId:
+          type: string
+        ExternalId:
+          type: string
+        FLSBucketName:
+          type: string
+        Name:
           type: string
       type: object
   requestBodies:

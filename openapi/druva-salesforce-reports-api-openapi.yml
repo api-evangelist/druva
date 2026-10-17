@@ -570,6 +570,106 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    GetSfdcArchivalActivityReportDataResponse:
+      title: GetSfdcArchivalActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcArchivalActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    SfdcArchivalActivityReportData:
+      title: SfdcArchivalActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the archival activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        archivalSetName:
+          type: string
+          description: The name of the archival definition set to which the activity belongs
+          example: source001 archival_set_2024_08_27_00_59_59
+        endTime:
+          type: string
+          description: 'End Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025, 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        fileSize:
+          type: integer
+          description: Total size(in KB) of all archived object files of the activity.
+          example: 0
+        organizationID:
+          type: string
+          description: Salesforce organization ID
+          example: 00D1100000C9ysvEAB
+        organizationName:
+          type: string
+          description: The name of the salesforce organization to which the activity belongs
+          example: source001
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: My First Project
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who has initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        startTime:
+          type: string
+          description: 'Start Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        status:
+          type: string
+          description: Archival status of the activity
+          example: Completed
+        statusDetails:
+          type:
+          - string
+          - 'null'
+          description: Error details if any
+          example: Archival completed.
+        totalRecords:
+          type: integer
+          description: Count of records archived as part of the activity
+          example: 100
+        totalDataArchivedInMB:
+          type: integer
+          description: Total logical data archived, in megabytes.
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
     GetSfdcArchivalRestoreActivityReportDataResponse:
       title: GetSfdcArchivalRestoreActivityReportDataResponse
       type: object
@@ -590,6 +690,157 @@ components:
         nextPageToken:
           type: string
           description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    SfdcArchivalRestoreActivityReportData:
+      title: SfdcArchivalRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name for the archival restore activity row.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        archivalSetName:
+          type: string
+          description: The name of the archival definition set to which the activity belongs
+          example: source001 archival_set_2024_06_11_14_53_02
+        dataTemplateName:
+          type: string
+          description: Data template used for the archival restore.
+          example: archival_restore_templatedhr5kuv0ao
+        destinationOrganization:
+          type: string
+          description: Target Salesforce organization name for the restore.
+          example: source001
+        endTime:
+          type: string
+          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
+          format: date-time
+          example: '2025-01-29T22:00:00Z'
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: My First Project
+        recordsRestored:
+          type: integer
+          description: Number of records restored from the archival set.
+          example: 100
+        restoreState:
+          type: string
+          description: Backup job status of the activity
+          example: Completed
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        startTime:
+          type: string
+          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type:
+          - string
+          - 'null'
+          description: Error details if any
+          example: Restore completed.
+        totalRecordCount:
+          type: integer
+          description: Total record count reported for the restore scope.
+          example: 100
+        restoreSize:
+          type: integer
+          description: Total backup data size of the activity in bytes
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    SfdcDataRestoreActivityReportData:
+      title: SfdcDataRestoreActivityReportData
+      type: object
+      properties:
+        accountName:
+          type: string
+          description: Customer account name associated with the restore activity.
+          example: Customer Account Name
+        globalCustomerId:
+          type: string
+          description: The unique identifier of the customer.
+          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
+        customerName:
+          type: string
+          description: The name of the customer.
+          example: Acme Corporation
+        backupDefinitionName:
+          type: string
+          description: The name of the backup definition to which the activity belongs
+          example: DR_TC06_Backup
+        dataTemplateName:
+          type: string
+          description: Data template applied for the restore operation.
+          example: DR_TC06_Template
+        destinationOrganization:
+          type: string
+          description: Target Salesforce organization name for the restore.
+          example: source001
+        endTime:
+          type: string
+          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
+          format: date-time
+          example: '2025-01-29T22:00:00Z'
+        isDeleted:
+          type: integer
+          description: Flag to filter out deleted data template
+          example: 0
+        projectName:
+          type: string
+          description: The name of the project to which the activity belongs
+          example: DataRestoreRegression
+        recordsRestored:
+          type: integer
+          description: Number of records restored in this activity.
+          example: 10
+        restoreState:
+          type: string
+          description: Backup job status of the activity
+          example: Completed
+        salesforceUser:
+          type: string
+          description: The name of the salesforce user who initiated the activity
+          example: sfdc2_sanity sfdc2_sanity
+        snapshotTimestamp:
+          type: string
+          description: 'Backup job completion time. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        startTime:
+          type: string
+          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
+          format: date-time
+          example: '2025-01-28T22:00:00Z'
+        statusDetails:
+          type: string
+          description: Error details if any
+          example: ''
+        totalRecordCount:
+          type: integer
+          description: Total record count reported for the restore scope.
+          example: 10
+        restoreSizeInMB:
+          type: integer
+          description: Total backup data size of the activity in bytes
+          example: 0
+        dcpUniqueKey:
+          type: string
+          description: The key which is used to uniquely identify each record in the report.
+          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
     SfdcBackupActivityReportData:
       title: SfdcBackupActivityReportData
       type: object
@@ -673,6 +924,67 @@ components:
           type: string
           description: The key which is used to uniquely identify each record in the report.
           example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
+    GetSfdcBackupActivityReportDataResponse:
+      title: GetSfdcBackupActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcBackupActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report.
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+          example: ZGE4ZWYwYzctNDEwZi00MTVjLWJhNzgtMTFiYzQzMzA2ODMy
+    GetSfdcSandboxSeedingActivityReportDataResponse:
+      title: GetSfdcSandboxSeedingActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcSandboxSeedingActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          format: date-time
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied to the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
+    GetSfdcDataRestoreActivityReportDataResponse:
+      title: GetSfdcDataRestoreActivityReportDataResponse
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SfdcDataRestoreActivityReportData'
+          x-go-name: Data
+        lastSyncTimestamp:
+          type: string
+          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
+          format: date-time
+        filters:
+          type: object
+          properties: {}
+          description: Filters applied on the report
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
     SfdcSandboxSeedingActivityReportData:
       title: SfdcSandboxSeedingActivityReportData
       type: object
@@ -738,318 +1050,6 @@ components:
         totalDataCopiedInMB:
           type: integer
           description: Total logical data copied, in megabytes.
-          example: 0
-        dcpUniqueKey:
-          type: string
-          description: The key which is used to uniquely identify each record in the report.
-          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcDataRestoreActivityReportDataResponse:
-      title: GetSfdcDataRestoreActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcDataRestoreActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-    SfdcDataRestoreActivityReportData:
-      title: SfdcDataRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Customer account name associated with the restore activity.
-          example: Customer Account Name
-        globalCustomerId:
-          type: string
-          description: The unique identifier of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        customerName:
-          type: string
-          description: The name of the customer.
-          example: Acme Corporation
-        backupDefinitionName:
-          type: string
-          description: The name of the backup definition to which the activity belongs
-          example: DR_TC06_Backup
-        dataTemplateName:
-          type: string
-          description: Data template applied for the restore operation.
-          example: DR_TC06_Template
-        destinationOrganization:
-          type: string
-          description: Target Salesforce organization name for the restore.
-          example: source001
-        endTime:
-          type: string
-          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
-          format: date-time
-          example: '2025-01-29T22:00:00Z'
-        isDeleted:
-          type: integer
-          description: Flag to filter out deleted data template
-          example: 0
-        projectName:
-          type: string
-          description: The name of the project to which the activity belongs
-          example: DataRestoreRegression
-        recordsRestored:
-          type: integer
-          description: Number of records restored in this activity.
-          example: 10
-        restoreState:
-          type: string
-          description: Backup job status of the activity
-          example: Completed
-        salesforceUser:
-          type: string
-          description: The name of the salesforce user who initiated the activity
-          example: sfdc2_sanity sfdc2_sanity
-        snapshotTimestamp:
-          type: string
-          description: 'Backup job completion time. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        startTime:
-          type: string
-          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        statusDetails:
-          type: string
-          description: Error details if any
-          example: ''
-        totalRecordCount:
-          type: integer
-          description: Total record count reported for the restore scope.
-          example: 10
-        restoreSizeInMB:
-          type: integer
-          description: Total backup data size of the activity in bytes
-          example: 0
-        dcpUniqueKey:
-          type: string
-          description: The key which is used to uniquely identify each record in the report.
-          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    SfdcArchivalRestoreActivityReportData:
-      title: SfdcArchivalRestoreActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Customer account name for the archival restore activity row.
-          example: Customer Account Name
-        globalCustomerId:
-          type: string
-          description: The unique identifier of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        customerName:
-          type: string
-          description: The name of the customer.
-          example: Acme Corporation
-        archivalSetName:
-          type: string
-          description: The name of the archival definition set to which the activity belongs
-          example: source001 archival_set_2024_06_11_14_53_02
-        dataTemplateName:
-          type: string
-          description: Data template used for the archival restore.
-          example: archival_restore_templatedhr5kuv0ao
-        destinationOrganization:
-          type: string
-          description: Target Salesforce organization name for the restore.
-          example: source001
-        endTime:
-          type: string
-          description: 'End time in UTC format until record changes captured in each backup job must be identified. Example: For Jan 29, 2025 10 PM: 2025-01-29T22:00:00Z'
-          format: date-time
-          example: '2025-01-29T22:00:00Z'
-        projectName:
-          type: string
-          description: The name of the project to which the activity belongs
-          example: My First Project
-        recordsRestored:
-          type: integer
-          description: Number of records restored from the archival set.
-          example: 100
-        restoreState:
-          type: string
-          description: Backup job status of the activity
-          example: Completed
-        salesforceUser:
-          type: string
-          description: The name of the salesforce user who initiated the activity
-          example: sfdc2_sanity sfdc2_sanity
-        startTime:
-          type: string
-          description: 'Start time in UTC format from where record changes captured in each backup job needs to be identified. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        statusDetails:
-          type:
-          - string
-          - 'null'
-          description: Error details if any
-          example: Restore completed.
-        totalRecordCount:
-          type: integer
-          description: Total record count reported for the restore scope.
-          example: 100
-        restoreSize:
-          type: integer
-          description: Total backup data size of the activity in bytes
-          example: 0
-        dcpUniqueKey:
-          type: string
-          description: The key which is used to uniquely identify each record in the report.
-          example: 60d66ec60c0e061e88db0448a1bfc609c1db4cbe336b9b64bb5b0cd1113694e3
-    GetSfdcArchivalActivityReportDataResponse:
-      title: GetSfdcArchivalActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcArchivalActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          format: date-time
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-    GetSfdcSandboxSeedingActivityReportDataResponse:
-      title: GetSfdcSandboxSeedingActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcSandboxSeedingActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          format: date-time
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied to the report
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-    GetSfdcBackupActivityReportDataResponse:
-      title: GetSfdcBackupActivityReportDataResponse
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SfdcBackupActivityReportData'
-          x-go-name: Data
-        lastSyncTimestamp:
-          type: string
-          description: The time stamp until which the report data was returned. The time is in the UTC time zone.
-          format: date-time
-        filters:
-          type: object
-          properties: {}
-          description: Filters applied on the report.
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. This token is valid for 5 minutes.
-          example: ZGE4ZWYwYzctNDEwZi00MTVjLWJhNzgtMTFiYzQzMzA2ODMy
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    SfdcArchivalActivityReportData:
-      title: SfdcArchivalActivityReportData
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: Customer account name for the archival activity row.
-          example: Customer Account Name
-        globalCustomerId:
-          type: string
-          description: The unique identifier of the customer.
-          example: bde7f8c2-d063-4a4a-9a8f-c2ea5aff42f3-198
-        customerName:
-          type: string
-          description: The name of the customer.
-          example: Acme Corporation
-        archivalSetName:
-          type: string
-          description: The name of the archival definition set to which the activity belongs
-          example: source001 archival_set_2024_08_27_00_59_59
-        endTime:
-          type: string
-          description: 'End Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025, 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        fileSize:
-          type: integer
-          description: Total size(in KB) of all archived object files of the activity.
-          example: 0
-        organizationID:
-          type: string
-          description: Salesforce organization ID
-          example: 00D1100000C9ysvEAB
-        organizationName:
-          type: string
-          description: The name of the salesforce organization to which the activity belongs
-          example: source001
-        projectName:
-          type: string
-          description: The name of the project to which the activity belongs
-          example: My First Project
-        salesforceUser:
-          type: string
-          description: The name of the salesforce user who has initiated the activity
-          example: sfdc2_sanity sfdc2_sanity
-        startTime:
-          type: string
-          description: 'Start Time of the archival task. The time is in the UTC zone. Example: For Jan 28, 2025 10 PM: 2025-01-28T22:00:00Z'
-          format: date-time
-          example: '2025-01-28T22:00:00Z'
-        status:
-          type: string
-          description: Archival status of the activity
-          example: Completed
-        statusDetails:
-          type:
-          - string
-          - 'null'
-          description: Error details if any
-          example: Archival completed.
-        totalRecords:
-          type: integer
-          description: Count of records archived as part of the activity
-          example: 100
-        totalDataArchivedInMB:
-          type: integer
-          description: Total logical data archived, in megabytes.
           example: 0
         dcpUniqueKey:
           type: string

@@ -530,6 +530,89 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    PostOrganizationsAccountsJobsRetryResponse:
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsJobsTasksByIdResponse:
+      properties:
+        action:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        halt:
+          type: boolean
+        id:
+          type: string
+        is_success:
+          type: boolean
+        job:
+          properties:
+            account_id:
+              type: string
+            action:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            cron:
+              type: string
+            cron_location:
+              type: string
+            event_at:
+              format: date-time
+              type: string
+            event_type:
+              type: string
+            halt:
+              type: string
+            id:
+              type: string
+            object_id:
+              type: integer
+            organization_id:
+              type: string
+            seq:
+              type: integer
+            total_fail:
+              type: integer
+            total_success:
+              type: integer
+            total_tasks:
+              type: integer
+            type:
+              type: string
+            updated_at:
+              format: date-time
+              type: string
+          type: object
+        job_id:
+          type: string
+        region:
+          type: string
+        resource_id:
+          type: string
+        resource_name:
+          type: string
+        resource_type:
+          type: string
+        steps:
+          items:
+            type: object
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      type: object
+    GetOrganizationsAccountsJobsTagsResponse:
+      type: string
     GetOrganizationsAccountsJobsByIdResponse:
       properties:
         account_id:
@@ -603,83 +686,7 @@ components:
           format: date-time
           type: string
       type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsAccountsJobsTasksByIdResponse:
-      properties:
-        action:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        halt:
-          type: boolean
-        id:
-          type: string
-        is_success:
-          type: boolean
-        job:
-          properties:
-            account_id:
-              type: string
-            action:
-              type: string
-            created_at:
-              format: date-time
-              type: string
-            cron:
-              type: string
-            cron_location:
-              type: string
-            event_at:
-              format: date-time
-              type: string
-            event_type:
-              type: string
-            halt:
-              type: string
-            id:
-              type: string
-            object_id:
-              type: integer
-            organization_id:
-              type: string
-            seq:
-              type: integer
-            total_fail:
-              type: integer
-            total_success:
-              type: integer
-            total_tasks:
-              type: integer
-            type:
-              type: string
-            updated_at:
-              format: date-time
-              type: string
-          type: object
-        job_id:
-          type: string
-        region:
-          type: string
-        resource_id:
-          type: string
-        resource_name:
-          type: string
-        resource_type:
-          type: string
-        steps:
-          items:
-            type: object
-          type: array
-        updated_at:
-          format: date-time
-          type: string
-      type: object
-    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
+    PostOrganizationsAccountsJobsRetryRequest:
       type: object
     GetOrganizationsAccountsJobsResponse:
       properties:
@@ -734,18 +741,11 @@ components:
           format: date-time
           type: string
       type: object
-    empty:
-      properties: {}
-      type: object
-    PostOrganizationsAccountsJobsRetryResponse:
-      type: object
-    PostOrganizationsAccountsJobsRetryRequest:
+    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
       type: object
     GetOrganizationsAccountsJob_countResponse:
       type: integer
-    GetOrganizationsAccountsJobsTagsResponse:
-      type: string
-    PostOrganizationsAccountsJobsTasksStepsRetryResponse:
+    PostOrganizationsAccountsJobsTasksStepsRetryRequest:
       type: object
   securitySchemes:
     API_Authorizer:

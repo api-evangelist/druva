@@ -255,18 +255,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    GetOrganizationsAccountsAsgroupsTagsKeysResponse:
-      properties:
-        values:
-          items:
-            type: string
-          type: array
-      type: object
     GetOrganizationsAccountsAsgroupsIdsResponse:
       properties:
         Id:
@@ -278,12 +266,10 @@ components:
         Type:
           type: string
       type: object
-    GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse:
+    Error:
       properties:
-        values:
-          items:
-            type: string
-          type: array
+        message:
+          type: string
       type: object
     PostOrganizationsAccountsAsgroupsTagsCountResponse:
       properties:
@@ -300,6 +286,13 @@ components:
     empty:
       properties: {}
       type: object
+    GetOrganizationsAccountsAsgroupsTagsKeysResponse:
+      properties:
+        values:
+          items:
+            type: string
+          type: array
+      type: object
     PostOrganizationsAccountsAsgroupsTagsCountRequest:
       properties:
         Tags:
@@ -310,6 +303,13 @@ components:
               value:
                 type: string
             type: object
+          type: array
+      type: object
+    GetOrganizationsAccountsAsgroupsTagsKeysValuesResponse:
+      properties:
+        values:
+          items:
+            type: string
           type: array
       type: object
   securitySchemes:

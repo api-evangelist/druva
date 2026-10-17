@@ -82,6 +82,11 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
     empty:
       properties: {}
       type: object
@@ -197,11 +202,6 @@ components:
             type: string
           type: array
         Type:
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
           type: string
       type: object
   securitySchemes:

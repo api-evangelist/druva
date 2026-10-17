@@ -125,7 +125,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsReporttemplatesByIdResponse:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    GetOrganizationsReportTemplatesResponse:
       properties:
         description:
           type: string
@@ -143,7 +148,7 @@ components:
     empty:
       properties: {}
       type: object
-    GetOrganizationsReportTemplatesResponse:
+    GetOrganizationsReporttemplatesByIdResponse:
       properties:
         description:
           type: string
@@ -156,11 +161,6 @@ components:
         name:
           type: string
         type:
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
           type: string
       type: object
   securitySchemes:

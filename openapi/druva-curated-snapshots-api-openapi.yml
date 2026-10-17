@@ -488,26 +488,92 @@ components:
           enum:
           - false
           - true
-    CSExpireSnapshotsResponse:
+    CSJobCreationResponse:
       type: object
       properties:
-        expiredSnapshots:
+        jobIDs:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: The jobs started for Curated Snapshot creation.
+          example:
+          - 1
+          - 2
+        errorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobCreationError'
+          description: List of resources for which an error was encountered during job creation.
+    CSReportResponse:
+      type: object
+      properties:
+        details:
           type: array
           items:
             type: object
             properties:
-              virtualSnapshotID:
+              fileName:
                 type: string
-                description: Base-64 encoded name of Curated Snapshot created by the job.
-                example: dmlydHVhbF9Nb24gQXVnIDMwIDA2OjQxOjE3IDIwMjE=
-              isSucessful:
+                description: Name of the file scanned.
+                example: file1.csv
+              fileType:
+                type: string
+                example: File
+                description: Type of file or folder scanned.
+                enum:
+                - File
+                - Folder
+              mTime:
+                type: string
+                format: date-time
+                description: File Modified Time.
+                example: ''
+              fileCver:
+                type: integer
+                format: int32
+                description: Version of file scanned.
+                example: 17
+              path:
+                type: string
+                example: D:/a/b/a.txt
+                description: The path of the scanned file.
+              ssName:
+                type: string
+                description: Name of Curated Snapshot for which files were scanned.
+                example: Fri Sep  3 17:42:47 2021
+              isSkipped:
                 type: boolean
                 example: true
-                description: Curated Snapshot deletion is successful.
-              reason:
+                description: Boolean depicting if version of the file scanned is skipped.
+              reasonToSkip:
                 type: string
-                description: Reason for failure in Curated Snapshot deletion.
-                example: Internal Error
+                description: Reason with which the file version scanned is skipped.
+                example: Encrypted file found
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+        ContentType:
+          type: string
+          example: '*/*'
+    CS_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
     CSGetJobResponse:
       type: object
       properties:
@@ -708,155 +774,6 @@ components:
               type: integer
               description: Integer value used to denote the maximum file size limit in MB (between 100 to 1024) for Curated Snapshot creation.
               example: 100
-    CSJobCancelParams:
-      type: object
-      properties:
-        jobIDs:
-          type: array
-          items:
-            type: integer
-          example:
-          - 1
-    CS_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - RWCMaster-1006
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    CSDeleteParams:
-      type: object
-      required:
-      - virtualSnapshotIDs
-      properties:
-        virtualSnapshotIDs:
-          type: string
-          description: "Specify the virtualSnapshotID of Curated Snapshot that you want to delete. \nGet the virtualSnapshotID using the 'List all the Curated Snapshots.' API."
-          example:
-          - dmlydHVhbF9UaHUgSnVsIDIyIDA4OjQxOjMzIDIwMjE=
-        deleteReason:
-          type: string
-          description: The reason for deletion.
-          example: Restored Data from Curated Snapshot
-          minLength: 10
-          maxLength: 150
-    JobModelError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: Error code seen when Curated Snapshot job could not be created.
-        errorMessage:
-          type: string
-          description: Error message seen when Curated Snapshot job could not be created.
-        errorDescription:
-          type: string
-          description: Detailed error description explaining the error when Curated Snapshot job could not be created.
-    CS_HTTP_404:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - RWCMaster-1003
-        message:
-          type: string
-          enum:
-          - The requested resource was not found.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    CSJobCreationResponse:
-      type: object
-      properties:
-        jobIDs:
-          type: array
-          items:
-            type: integer
-            format: int64
-          description: The jobs started for Curated Snapshot creation.
-          example:
-          - 1
-          - 2
-        errorList:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobCreationError'
-          description: List of resources for which an error was encountered during job creation.
-    CSJobCancelResponse:
-      type: object
-      properties:
-        jobs:
-          type: array
-          items:
-            type: object
-            properties:
-              jobID:
-                type: integer
-                example: 1
-                description: Curated Snapshot job ID.
-              isSucessful:
-                type: boolean
-                example: true
-                description: Success status of cancelling running Curated Snapshot job.
-              reason:
-                type: string
-                example: Internal Error
-                description: Failure reason to cancel the running Curated Snapshot job.
-    Resource:
-      type: object
-      properties:
-        orgID:
-          type: integer
-          description: Phoenix Organization ID in case of Phoenix Servers.
-          example: -1
-        workload:
-          type: string
-          enum:
-          - fileserver
-          - nas
-          - endpoints
-          - onedrive
-          - sharepoint
-          description: Specify the workload for which you want to create the Curated Snapshot
-          example: endpoints
-        resourceType:
-          type: string
-          enum:
-          - Endpoint
-          - File Server
-          - NAS
-          - OneDrive
-          - SharePoint
-          description: Specify the resource type for which you want to create the Curated Snapshot
-          example: endpoints
-        resourceID:
-          type: integer
-          description: ID of resource for which restore job is created in inSync or Phoenix.
-          example: 1234
-        resourceName:
-          type: string
-          description: Name of the resource for which the restore job is created in inSync or Phoenix. Ensure that you have entered the correct resource name associated with the resource ID mentioned in the above parameter. For example, enter Ernie Carter's MacBook if the resource ID 1234 is associated with Ernie Carter's MacBook.
-          example: Ernie Carter's Macbook
-        resourceParentName:
-          type: string
-          description: Name of the user's device, in case of a device, or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
-          example: Ernie Carter
     CSListSnapshotsResponse:
       type: object
       properties:
@@ -985,57 +902,26 @@ components:
           type: integer
           description: Total snapshots present in the response.
           example: 87
-    CSReportResponse:
+    CSExpireSnapshotsResponse:
       type: object
       properties:
-        details:
+        expiredSnapshots:
           type: array
           items:
             type: object
             properties:
-              fileName:
+              virtualSnapshotID:
                 type: string
-                description: Name of the file scanned.
-                example: file1.csv
-              fileType:
-                type: string
-                example: File
-                description: Type of file or folder scanned.
-                enum:
-                - File
-                - Folder
-              mTime:
-                type: string
-                format: date-time
-                description: File Modified Time.
-                example: ''
-              fileCver:
-                type: integer
-                format: int32
-                description: Version of file scanned.
-                example: 17
-              path:
-                type: string
-                example: D:/a/b/a.txt
-                description: The path of the scanned file.
-              ssName:
-                type: string
-                description: Name of Curated Snapshot for which files were scanned.
-                example: Fri Sep  3 17:42:47 2021
-              isSkipped:
+                description: Base-64 encoded name of Curated Snapshot created by the job.
+                example: dmlydHVhbF9Nb24gQXVnIDMwIDA2OjQxOjE3IDIwMjE=
+              isSucessful:
                 type: boolean
                 example: true
-                description: Boolean depicting if version of the file scanned is skipped.
-              reasonToSkip:
+                description: Curated Snapshot deletion is successful.
+              reason:
                 type: string
-                description: Reason with which the file version scanned is skipped.
-                example: Encrypted file found
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
-        ContentType:
-          type: string
-          example: '*/*'
+                description: Reason for failure in Curated Snapshot deletion.
+                example: Internal Error
     CSListJobResponse:
       type: object
       properties:
@@ -1147,6 +1033,88 @@ components:
           type: integer
           description: Total jobs present in the response.
           example: 38
+    CS_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - RWCMaster-1006
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    JobModelError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: Error code seen when Curated Snapshot job could not be created.
+        errorMessage:
+          type: string
+          description: Error message seen when Curated Snapshot job could not be created.
+        errorDescription:
+          type: string
+          description: Detailed error description explaining the error when Curated Snapshot job could not be created.
+    JobCreationError:
+      type: object
+      properties:
+        resource:
+          $ref: '#/components/schemas/Resource'
+        error:
+          $ref: '#/components/schemas/JobModelError'
+    CSJobCancelParams:
+      type: object
+      properties:
+        jobIDs:
+          type: array
+          items:
+            type: integer
+          example:
+          - 1
+    CSDeleteParams:
+      type: object
+      required:
+      - virtualSnapshotIDs
+      properties:
+        virtualSnapshotIDs:
+          type: string
+          description: "Specify the virtualSnapshotID of Curated Snapshot that you want to delete. \nGet the virtualSnapshotID using the 'List all the Curated Snapshots.' API."
+          example:
+          - dmlydHVhbF9UaHUgSnVsIDIyIDA4OjQxOjMzIDIwMjE=
+        deleteReason:
+          type: string
+          description: The reason for deletion.
+          example: Restored Data from Curated Snapshot
+          minLength: 10
+          maxLength: 150
+    CSJobCancelResponse:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              jobID:
+                type: integer
+                example: 1
+                description: Curated Snapshot job ID.
+              isSucessful:
+                type: boolean
+                example: true
+                description: Success status of cancelling running Curated Snapshot job.
+              reason:
+                type: string
+                example: Internal Error
+                description: Failure reason to cancel the running Curated Snapshot job.
     CSJobCreationParams:
       type: object
       required:
@@ -1200,13 +1168,45 @@ components:
           type: integer
           example: 100
           description: Maximum file size limit in MB (between 100 to 1024) for Curated Snapshot creation.
-    JobCreationError:
+    Resource:
       type: object
       properties:
-        resource:
-          $ref: '#/components/schemas/Resource'
-        error:
-          $ref: '#/components/schemas/JobModelError'
+        orgID:
+          type: integer
+          description: Phoenix Organization ID in case of Phoenix Servers.
+          example: -1
+        workload:
+          type: string
+          enum:
+          - fileserver
+          - nas
+          - endpoints
+          - onedrive
+          - sharepoint
+          description: Specify the workload for which you want to create the Curated Snapshot
+          example: endpoints
+        resourceType:
+          type: string
+          enum:
+          - Endpoint
+          - File Server
+          - NAS
+          - OneDrive
+          - SharePoint
+          description: Specify the resource type for which you want to create the Curated Snapshot
+          example: endpoints
+        resourceID:
+          type: integer
+          description: ID of resource for which restore job is created in inSync or Phoenix.
+          example: 1234
+        resourceName:
+          type: string
+          description: Name of the resource for which the restore job is created in inSync or Phoenix. Ensure that you have entered the correct resource name associated with the resource ID mentioned in the above parameter. For example, enter Ernie Carter's MacBook if the resource ID 1234 is associated with Ernie Carter's MacBook.
+          example: Ernie Carter's Macbook
+        resourceParentName:
+          type: string
+          description: Name of the user's device, in case of a device, or Server Name in case of a backup set which is quarantined. Example - Ernie Carter
+          example: Ernie Carter
   securitySchemes:
     OAuth2:
       type: oauth2

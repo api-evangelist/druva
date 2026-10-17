@@ -59,6 +59,42 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    HTTP_403:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncAdmanagement-1221
+          description: Application specific error code
+        message:
+          type: string
+          example: Access restricted due to insufficient permissions.
+          description: Application specific error message
+        retryable:
+          type: boolean
+          example: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     EventList:
       type: object
       properties:
@@ -150,42 +186,6 @@ components:
           type: string
           description: The facility number as defined in inSync Management Console Events API settings. Default value is 23.
           example: 23
-    HTTP_403:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncAdmanagement-1221
-          description: Application specific error code
-        message:
-          type: string
-          example: Access restricted due to insufficient permissions.
-          description: Application specific error message
-        retryable:
-          type: boolean
-          example: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
   securitySchemes:
     OAuth2:
       type: oauth2

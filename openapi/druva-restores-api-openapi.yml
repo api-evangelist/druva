@@ -259,6 +259,16 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    DeleteOrganizationsAccountsRestoresByIdResponse:
+      type: object
+    empty:
+      properties: {}
+      type: object
     GetOrganizationsAccountsRestoresResponse:
       properties:
         hits:
@@ -297,12 +307,10 @@ components:
         total:
           type: integer
       type: object
-    Error:
+    GetOrganizationsAccountsRestoresDownloadResponse:
       properties:
-        message:
+        signedUrl:
           type: string
-      type: object
-    DeleteOrganizationsAccountsRestoresByIdResponse:
       type: object
     GetOrganizationsAccountsRestoresByIdResponse:
       properties:
@@ -336,14 +344,6 @@ components:
         updated_at:
           format: date-time
           type: string
-      type: object
-    GetOrganizationsAccountsRestoresDownloadResponse:
-      properties:
-        signedUrl:
-          type: string
-      type: object
-    empty:
-      properties: {}
       type: object
   securitySchemes:
     API_Authorizer:

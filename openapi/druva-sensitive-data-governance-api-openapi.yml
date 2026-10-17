@@ -337,105 +337,27 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    EmailViolationsResponse:
+    GetSetingsResponse:
       type: object
       properties:
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailViolation'
-          description: List of email violations.
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
-    PolicyListResponse:
-      type: object
-      properties:
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/Policy'
-          description: List of policies.
-    EmailViolation:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique ID of the email violation.
-        emailReceivedFrom:
-          type: string
-          description: The sender of the email for which violation was reported.
-        mailTime:
-          type: string
-          format: date-time
-          example: '2019-10-12T07:20:50Z'
-          description: The date and time of the violated email.
-        emailSubject:
-          type: string
-          description: The subject of the email for which the violation was reported.
-        resourceParentID:
-          type: integer
-          description: The unique ID of the user associated with the violated email.
-        violatedPolicies:
-          type: array
-          items:
-            type: integer
-          description: List of ID(s) of the Sensitive Data Governance policy(s) using which the violation was reported.
-        violatedDatatypes:
-          type: array
-          items:
-            type: integer
-          description: List of ID(s) of the sensitive data type(s) using which the violation was reported.
-        versionCount:
-          type: integer
-          description: The total version count of the email for which the violation was reported.
-        lastUpdated:
-          type: string
-          format: date-time
-          example: '2019-10-12T07:20:50Z'
-          description: The date and time when the email violation was last reported.
-        datatypeCount:
-          type: integer
-          description: The total count of the sensitive data type(s) using which the violation was reported.
-        version:
-          type: integer
-          description: The exact version of the email for which the violation was reported.
-        resourceID:
-          type: integer
-          description: The unique ID of the device associated with the email for which violation was reported.
-        violationStatus:
-          type: string
-          example: Pending on user
-          description: The current violation status of the email, that is whether it is Pending on User or Pending on Admin.
-        severity:
-          type: string
-          example: Critical
-          description: The severity of the email violation, whether it critical or non-critical.
-    Policy:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique ID of the Sensitive Data Governance (SDG) policy.
-        name:
-          type: string
-          description: The name of the SDG policy.
-        createdBy:
-          type: integer
-          description: The unique ID of the administrator who created the SDG policy.
-        description:
-          type: string
-          description: The description of the SDG policy.
-        endUserAccess:
+        isAutoResolveViolations:
           type: boolean
-          description: Flag describing whether end user access is enabled to the policy.
-        lastUpdated:
-          format: date-time
-          example: '2019-10-12T07:20:50Z'
-          description: The date and time when the SDG policy was last updated.
-        attachedPolicyTemplate:
+          description: Flag describing whether auto resolution of violations is enabled or not.
+        daysToResolveNonCriticalViolations:
           type: integer
-          description: The unique ID of the SDG policy template associated with the policy.
+          description: The number of days after which non critical violations will be auto resolved.
+        daysToResolveCriticalViolations:
+          type: integer
+          description: The number of days after which critical violations will be auto resolved.
+        isArchiveScan:
+          type: boolean
+          description: Flag describing whether archive files will be scanned for generating violations.
+        isAutoArchiveResolvedViolations:
+          type: boolean
+          description: Flag describing whether resolved violations will be automatically archived or not.
+        daysToResolveArchivedViolations:
+          type: integer
+          description: The number of days after which archived violations will be automatically resolved.
     FileViolation:
       type: object
       properties:
@@ -546,6 +468,177 @@ components:
           type: string
           example: '2019-10-12T07:20:50Z'
           description: The date and time when the violation is resolved.
+    PolicyListResponse:
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+          description: List of policies.
+    FileViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileViolation'
+          description: List of file violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    Policy:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the Sensitive Data Governance (SDG) policy.
+        name:
+          type: string
+          description: The name of the SDG policy.
+        createdBy:
+          type: integer
+          description: The unique ID of the administrator who created the SDG policy.
+        description:
+          type: string
+          description: The description of the SDG policy.
+        endUserAccess:
+          type: boolean
+          description: Flag describing whether end user access is enabled to the policy.
+        lastUpdated:
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the SDG policy was last updated.
+        attachedPolicyTemplate:
+          type: integer
+          description: The unique ID of the SDG policy template associated with the policy.
+    HTTP_403_SDG:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - InsyncSdg-1027
+          example: InsyncSdg-1027
+        message:
+          type: string
+          enum:
+          - You do not have permissions for the action.
+          example: You do not have permissions for the action.
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+        data:
+          type: object
+    EmailViolationsResponse:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailViolation'
+          description: List of email violations.
+        pageToken:
+          type: string
+          description: The token to access the next page of results.
+    HttpError:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum:
+          - sdg-1001
+        message:
+          type: string
+          example: Error Description
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    WhitelistKeywordsResponse:
+      type: object
+      properties:
+        whitelistKeywords:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: The whitelisted keyword/regular expression.
+              isRegex:
+                type: boolean
+                description: Indicates if it is a whitelisted keyword or a regular expression.
+          description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
+    PolicyTemplateListResponse:
+      type: object
+      properties:
+        policyTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTemplate'
+          description: List of policy templates.
+    EmailViolation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the email violation.
+        emailReceivedFrom:
+          type: string
+          description: The sender of the email for which violation was reported.
+        mailTime:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time of the violated email.
+        emailSubject:
+          type: string
+          description: The subject of the email for which the violation was reported.
+        resourceParentID:
+          type: integer
+          description: The unique ID of the user associated with the violated email.
+        violatedPolicies:
+          type: array
+          items:
+            type: integer
+          description: List of ID(s) of the Sensitive Data Governance policy(s) using which the violation was reported.
+        violatedDatatypes:
+          type: array
+          items:
+            type: integer
+          description: List of ID(s) of the sensitive data type(s) using which the violation was reported.
+        versionCount:
+          type: integer
+          description: The total version count of the email for which the violation was reported.
+        lastUpdated:
+          type: string
+          format: date-time
+          example: '2019-10-12T07:20:50Z'
+          description: The date and time when the email violation was last reported.
+        datatypeCount:
+          type: integer
+          description: The total count of the sensitive data type(s) using which the violation was reported.
+        version:
+          type: integer
+          description: The exact version of the email for which the violation was reported.
+        resourceID:
+          type: integer
+          description: The unique ID of the device associated with the email for which violation was reported.
+        violationStatus:
+          type: string
+          example: Pending on user
+          description: The current violation status of the email, that is whether it is Pending on User or Pending on Admin.
+        severity:
+          type: string
+          example: Critical
+          description: The severity of the email violation, whether it critical or non-critical.
     PolicyTemplate:
       type: object
       properties:
@@ -582,27 +675,6 @@ components:
           items:
             type: integer
           description: The unique IDs of the attached sensitive data types in the policy template.
-    HTTP_403_SDG:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - InsyncSdg-1027
-          example: InsyncSdg-1027
-        message:
-          type: string
-          enum:
-          - You do not have permissions for the action.
-          example: You do not have permissions for the action.
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-          example: false
-        data:
-          type: object
     DatatypeListResponse:
       type: object
       properties:
@@ -646,78 +718,6 @@ components:
           items:
             type: string
           description: Query run to identify the sensitive data type.
-    WhitelistKeywordsResponse:
-      type: object
-      properties:
-        whitelistKeywords:
-          type: array
-          items:
-            type: object
-            properties:
-              keyword:
-                type: string
-                description: The whitelisted keyword/regular expression.
-              isRegex:
-                type: boolean
-                description: Indicates if it is a whitelisted keyword or a regular expression.
-          description: Displays a list of whitelisted keywords with either a keyword or is_regex properties.
-    PolicyTemplateListResponse:
-      type: object
-      properties:
-        policyTemplates:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyTemplate'
-          description: List of policy templates.
-    HttpError:
-      type: object
-      properties:
-        code:
-          type: integer
-          enum:
-          - sdg-1001
-        message:
-          type: string
-          example: Error Description
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    FileViolationsResponse:
-      type: object
-      properties:
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/FileViolation'
-          description: List of file violations.
-        pageToken:
-          type: string
-          description: The token to access the next page of results.
-    GetSetingsResponse:
-      type: object
-      properties:
-        isAutoResolveViolations:
-          type: boolean
-          description: Flag describing whether auto resolution of violations is enabled or not.
-        daysToResolveNonCriticalViolations:
-          type: integer
-          description: The number of days after which non critical violations will be auto resolved.
-        daysToResolveCriticalViolations:
-          type: integer
-          description: The number of days after which critical violations will be auto resolved.
-        isArchiveScan:
-          type: boolean
-          description: Flag describing whether archive files will be scanned for generating violations.
-        isAutoArchiveResolvedViolations:
-          type: boolean
-          description: Flag describing whether resolved violations will be automatically archived or not.
-        daysToResolveArchivedViolations:
-          type: integer
-          description: The number of days after which archived violations will be automatically resolved.
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -506,6 +506,52 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    ThreatWatchDeviceDetailsResponse:
+      type: object
+      properties:
+        deviceID:
+          type: integer
+          description: Device identifier.
+        resourceIDs:
+          type: array
+          items:
+            type: integer
+          description: List of resource IDs.
+        resourceName:
+          type: string
+          description: Resource name.
+        resourceURL:
+          type: string
+          description: URL to resource in console.
+        resourceType:
+          type: string
+          description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
+        orgID:
+          type: integer
+          description: Organization ID.
+        orgName:
+          type: string
+          description: Organization name.
+        resourceParentID:
+          type: integer
+          description: Parent resource ID (e.g., vCenter, AWS Account).
+        resourceParentName:
+          type: string
+          description: Parent resource name.
+        payload:
+          type: object
+          description: Additional resource metadata.
+    ThreatWatchConfigUpdateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message indicating the result of the configuration update.
+        validationFailures:
+          type: array
+          items:
+            type: string
+          description: List of validation failures, if any.
     ThreatWatchDevicesResponse:
       type: object
       properties:
@@ -558,58 +604,20 @@ components:
         totalImpactedDevices:
           type: integer
           description: Total number of impacted devices.
+    ThreatWatchConfigUpdateParams:
+      type: object
+      required:
+      - autoQuarantineEnabled
+      properties:
+        autoQuarantineEnabled:
+          type: boolean
+          description: Enable or disable auto-quarantine for Threat Watch. Requires Premium SKU license and admin privileges.
     ThreatWatchReportResponse:
       type: object
       properties:
         downloadLink:
           type: string
           description: Download the Threat Watch snapshot report using this URL.
-    ThreatWatchDeviceDetailsResponse:
-      type: object
-      properties:
-        deviceID:
-          type: integer
-          description: Device identifier.
-        resourceIDs:
-          type: array
-          items:
-            type: integer
-          description: List of resource IDs.
-        resourceName:
-          type: string
-          description: Resource name.
-        resourceURL:
-          type: string
-          description: URL to resource in console.
-        resourceType:
-          type: string
-          description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
-        orgID:
-          type: integer
-          description: Organization ID.
-        orgName:
-          type: string
-          description: Organization name.
-        resourceParentID:
-          type: integer
-          description: Parent resource ID (e.g., vCenter, AWS Account).
-        resourceParentName:
-          type: string
-          description: Parent resource name.
-        payload:
-          type: object
-          description: Additional resource metadata.
-    ThreatWatchConfigUpdateResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Response message indicating the result of the configuration update.
-        validationFailures:
-          type: array
-          items:
-            type: string
-          description: List of validation failures, if any.
     ThreatWatchIOCsResponse:
       type: object
       properties:
@@ -701,50 +709,6 @@ components:
         totalImpactedIOCSets:
           type: integer
           description: The total count of affected IOC sets.
-    ThreatWatchConfigUpdateParams:
-      type: object
-      required:
-      - autoQuarantineEnabled
-      properties:
-        autoQuarantineEnabled:
-          type: boolean
-          description: Enable or disable auto-quarantine for Threat Watch. Requires Premium SKU license and admin privileges.
-    ThreatWatchImpactedDevicesStatsResponse:
-      type: object
-      properties:
-        totalImpactedResources:
-          type: integer
-          description: Total number of impacted resources.
-        totalFileMatches:
-          type: integer
-          description: Total number of file matches across all impacted devices.
-        impactByResourceType:
-          type: array
-          items:
-            type: object
-            properties:
-              resourceType:
-                type: string
-                description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
-              impactedDevices:
-                type: integer
-                description: Number of impacted devices for this resource type.
-          description: Breakdown by resource type.
-        impactByIoC:
-          type: array
-          items:
-            type: object
-            properties:
-              iocSetID:
-                type: integer
-                description: IOC set identifier.
-              iocSetName:
-                type: string
-                description: IOC set name.
-              impactedDevices:
-                type: integer
-                description: Number of devices impacted by this IOC set.
-          description: Breakdown by IOC set (sorted by impact count in descending order).
     ThreatWatchScansResponse:
       type: object
       properties:
@@ -784,6 +748,107 @@ components:
                 type: string
                 description: 'Status of the scan: ''Running'', ''Completed'', or ''Failed''.'
           description: List of scan records.
+    ThreatWatch_HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1006
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatWatchImpactedDevicesStatsResponse:
+      type: object
+      properties:
+        totalImpactedResources:
+          type: integer
+          description: Total number of impacted resources.
+        totalFileMatches:
+          type: integer
+          description: Total number of file matches across all impacted devices.
+        impactByResourceType:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceType:
+                type: string
+                description: Resource type (VMware, EC2, AzureVM, OneDrive, SharePoint, ExchangeOnline).
+              impactedDevices:
+                type: integer
+                description: Number of impacted devices for this resource type.
+          description: Breakdown by resource type.
+        impactByIoC:
+          type: array
+          items:
+            type: object
+            properties:
+              iocSetID:
+                type: integer
+                description: IOC set identifier.
+              iocSetName:
+                type: string
+                description: IOC set name.
+              impactedDevices:
+                type: integer
+                description: Number of devices impacted by this IOC set.
+          description: Breakdown by IOC set (sorted by impact count in descending order).
+    ThreatWatch_HTTP_404:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1003
+        message:
+          type: string
+          enum:
+          - The requested resource was not found.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
+    ThreatWatchConfigResponse:
+      type: object
+      properties:
+        autoQuarantineEnabled:
+          type: boolean
+          description: Indicates whether auto-quarantine is enabled for Threat Watch.
+        lastUpdated:
+          type: string
+          description: Timestamp of the last configuration update. Format - YYYY-MM-DDTHH:MM:SSZ
+          example: '2024-01-02T15:04:05Z'
+    ThreatWatch_HTTP_400:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - THMaster-1002
+        message:
+          type: string
+          enum:
+          - Invalid API Syntax
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
     ThreatWatchDeviceStatsResponse:
       type: object
       properties:
@@ -822,71 +887,6 @@ components:
                 type: string
                 description: IOC set name.
           description: List of IOC sets that matched on the device.
-    ThreatWatch_HTTP_400:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - THMaster-1002
-        message:
-          type: string
-          enum:
-          - Invalid API Syntax
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    ThreatWatch_HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: string
-          enum:
-          - THMaster-1006
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    ThreatWatch_HTTP_404:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - THMaster-1003
-        message:
-          type: string
-          enum:
-          - The requested resource was not found.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    ThreatWatchConfigResponse:
-      type: object
-      properties:
-        autoQuarantineEnabled:
-          type: boolean
-          description: Indicates whether auto-quarantine is enabled for Threat Watch.
-        lastUpdated:
-          type: string
-          description: Timestamp of the last configuration update. Format - YYYY-MM-DDTHH:MM:SSZ
-          example: '2024-01-02T15:04:05Z'
   securitySchemes:
     OAuth2:
       type: oauth2

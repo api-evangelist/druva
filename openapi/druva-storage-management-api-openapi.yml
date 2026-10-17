@@ -203,40 +203,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          example: InsyncEndpoints-1006
-          description: Application specific error code
-        message:
-          type: string
-          example: Internal server error
-          description: Application specific error message
-        retryable:
-          type: boolean
-          default: false
-          description: If true, retry using exponential backoff
-        data:
-          type: object
-          description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    StorageList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The number of storage listed in the result pages.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        storages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Storage'
     CloudCache:
       type: object
       properties:
@@ -265,6 +231,24 @@ components:
           type: string
           description: The total disk space available for cache data.
           example: 1 TB
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: InsyncEndpoints-1006
+          description: Application specific error code
+        message:
+          type: string
+          example: Internal server error
+          description: Application specific error message
+        retryable:
+          type: boolean
+          default: false
+          description: If true, retry using exponential backoff
+        data:
+          type: object
+          description: Dictionary of values present in the error message for localization. Currently, no values are available.
     HTTP_403:
       type: object
       properties:
@@ -283,22 +267,6 @@ components:
         data:
           type: object
           description: Dictionary of values present in the error message for localization. Currently, no values are available.
-    CloudCacheList:
-      type: object
-      properties:
-        totalSize:
-          type: integer
-          format: int64
-          description: The number of CloudCache Servers listed on the result pages.
-          example: 1
-        nextPageToken:
-          type: string
-          description: The token to access next page of results. This parameter will be empty for the last page of results.
-          example: MTExMQ==
-        cloudcaches:
-          type: array
-          items:
-            $ref: '#/components/schemas/CloudCache'
     Storage:
       type: object
       properties:
@@ -319,6 +287,38 @@ components:
           type: string
           description: The total size of the files backed up on this storage.
           example: 1.29 GB
+    StorageList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of storage listed in the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        storages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Storage'
+    CloudCacheList:
+      type: object
+      properties:
+        totalSize:
+          type: integer
+          format: int64
+          description: The number of CloudCache Servers listed on the result pages.
+          example: 1
+        nextPageToken:
+          type: string
+          description: The token to access next page of results. This parameter will be empty for the last page of results.
+          example: MTExMQ==
+        cloudcaches:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloudCache'
   securitySchemes:
     OAuth2:
       type: oauth2

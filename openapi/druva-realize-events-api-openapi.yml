@@ -111,94 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTP_500'
 components:
   schemas:
-    HTTP_500:
-      type: object
-      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-      properties:
-        code:
-          type: integer
-          enum:
-          - ransomware-1004
-          - RealizeUda-1004
-        message:
-          type: string
-          enum:
-          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
-        data:
-          type: object
-        retryable:
-          type: boolean
-          enum:
-          - false
-          - true
-    ListEventsResponse:
-      type: object
-      required:
-      - events
-      - nextPageToken
-      properties:
-        events:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                description: The unique id of the event in Druva Realize. For example - 20
-                example: 20
-              area:
-                type: string
-                description: The part of the product from where the event generated. For example - Platform.
-                example: Platform
-              category:
-                type: string
-                description: The category of the product area from where the event generated. For example - Admin Event.
-                example: Admin Event
-              type:
-                type: string
-                description: The type of the generated event. This is usually an action that took place for that event category. For example - Admin Login.
-                example: Admin Login
-              occurenceTime:
-                type: integer
-                description: The epoch time when the event was generated. For example - 1610707530.
-                example: 1610707530
-              syslogSeverity:
-                type: integer
-                description: The severity level mentioned in the Sys Log. For example - 6.
-                example: 6
-              syslogFacility:
-                type: integer
-                description: The facility code mentioned in the Sys Log. For example - 23.
-                example: 23
-              details:
-                type: object
-                description: Specific details of the event and the source from where the event generated. These are generic.
-                properties:
-                  location:
-                    type: string
-                    example: Pune, India
-                  adminName:
-                    type: string
-                    example: Druva Cloud Admin
-                  adminEmail:
-                    type: string
-                    example: cloud.admin@druva.com
-                  loginResult:
-                    type: string
-                    example: Success
-                  adminActivity:
-                    type: string
-                    example: Admin Login Event
-                  adminIPAddress:
-                    type: string
-                    example: 192.168.0.100
-                  adminLoginTime:
-                    type: string
-                    example: '2021-07-27T05:46:55Z'
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
-          example: eyJpZCI6NTY1NX0=
     ListEventsByTrackerResponse:
       type: object
       required:
@@ -286,6 +198,26 @@ components:
           enum:
           - false
           - true
+    HTTP_500:
+      type: object
+      description: The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+      properties:
+        code:
+          type: integer
+          enum:
+          - ransomware-1004
+          - RealizeUda-1004
+        message:
+          type: string
+          enum:
+          - The request was not processed due to an internal error in Druva Cloud. Kindly try again after some time.
+        data:
+          type: object
+        retryable:
+          type: boolean
+          enum:
+          - false
+          - true
     HTTP_404:
       type: object
       properties:
@@ -305,6 +237,74 @@ components:
           enum:
           - false
           - true
+    ListEventsResponse:
+      type: object
+      required:
+      - events
+      - nextPageToken
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The unique id of the event in Druva Realize. For example - 20
+                example: 20
+              area:
+                type: string
+                description: The part of the product from where the event generated. For example - Platform.
+                example: Platform
+              category:
+                type: string
+                description: The category of the product area from where the event generated. For example - Admin Event.
+                example: Admin Event
+              type:
+                type: string
+                description: The type of the generated event. This is usually an action that took place for that event category. For example - Admin Login.
+                example: Admin Login
+              occurenceTime:
+                type: integer
+                description: The epoch time when the event was generated. For example - 1610707530.
+                example: 1610707530
+              syslogSeverity:
+                type: integer
+                description: The severity level mentioned in the Sys Log. For example - 6.
+                example: 6
+              syslogFacility:
+                type: integer
+                description: The facility code mentioned in the Sys Log. For example - 23.
+                example: 23
+              details:
+                type: object
+                description: Specific details of the event and the source from where the event generated. These are generic.
+                properties:
+                  location:
+                    type: string
+                    example: Pune, India
+                  adminName:
+                    type: string
+                    example: Druva Cloud Admin
+                  adminEmail:
+                    type: string
+                    example: cloud.admin@druva.com
+                  loginResult:
+                    type: string
+                    example: Success
+                  adminActivity:
+                    type: string
+                    example: Admin Login Event
+                  adminIPAddress:
+                    type: string
+                    example: 192.168.0.100
+                  adminLoginTime:
+                    type: string
+                    example: '2021-07-27T05:46:55Z'
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of the results. For example - eyJpZCI6NTY1NX0=
+          example: eyJpZCI6NTY1NX0=
   securitySchemes:
     OAuth2:
       type: oauth2

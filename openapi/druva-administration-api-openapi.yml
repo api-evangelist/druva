@@ -130,25 +130,6 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
-    CreateSafeModeActivationSettingsResponse:
-      title: CreateSafeModeActivationSettingsResponse
-      type: object
-      description: Response returned after safe mode activation request
-      properties:
-        operationId:
-          type: string
-          description: A unique identifier for this specific Safe Mode activation operation. Used by Support to track the request internally if a case is raised.
-        status:
-          type: string
-          enum:
-          - SUCCESS
-          description: Status of the safe mode activation operation.
-        warning:
-          type: string
-          description: An optional warning message indicating any non-critical issues encountered during activation. For example, some specified allowedAdminIds or allowedClientCredentialIds may be disabled or deleted, but the activation proceeded successfully for the valid entries.
-      required:
-      - operationId
-      - status
     APIError:
       type: object
       properties:
@@ -168,6 +149,25 @@ components:
           x-go-name: Retry
       description: APIError defines an application error result format
       x-go-package: druva.com/godevkit/errortype
+    CreateSafeModeActivationSettingsResponse:
+      title: CreateSafeModeActivationSettingsResponse
+      type: object
+      description: Response returned after safe mode activation request
+      properties:
+        operationId:
+          type: string
+          description: A unique identifier for this specific Safe Mode activation operation. Used by Support to track the request internally if a case is raised.
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          description: Status of the safe mode activation operation.
+        warning:
+          type: string
+          description: An optional warning message indicating any non-critical issues encountered during activation. For example, some specified allowedAdminIds or allowedClientCredentialIds may be disabled or deleted, but the activation proceeded successfully for the valid entries.
+      required:
+      - operationId
+      - status
   securitySchemes:
     BearerAuth:
       type: oauth2

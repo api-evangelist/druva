@@ -545,47 +545,205 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    GetOrganizationsAccountsFilelevelsearchSearchesByIdResponse:
+    PostOrganizationsAccountsFilelevelsearchIndexesResponse:
+      properties:
+        files:
+          items:
+            type: string
+          type: array
+        snapshots_searched:
+          type: integer
+        total:
+          type: integer
+      type: object
+    PostOrganizationsAccountsFilelevelsearchDownloadFilesRequest:
+      properties:
+        files:
+          items:
+            properties:
+              bucketName:
+                type: string
+              fileName:
+                type: string
+              filePath:
+                type: string
+              fileRestoreData:
+                type: integer
+              region:
+                type: string
+              snapshot:
+                properties:
+                  backupTime:
+                    format: date-time
+                    type: string
+                  id:
+                    type: string
+                  region:
+                    type: string
+                type: object
+            type: object
+          type: array
+        fls_bucket:
+          type: string
+      type: object
+    Error:
+      properties:
+        message:
+          type: string
+      type: object
+    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdResponse:
       properties:
         account_id:
           type: string
         created_at:
           format: date-time
           type: string
-        files_found:
-          type: integer
-        number_complete:
-          type: integer
-        number_parts:
-          type: integer
-        owner:
+        organization_id:
           type: string
-        search_id:
+        region:
           type: string
-        state:
+        subnet_id:
           type: string
         updated_at:
           format: date-time
           type: string
       type: object
-    PostOrganizationsAccountsFilelevelsearchSearchesResponse:
+    empty:
+      properties: {}
+      type: object
+    GetOrganizationsAccountsFilelevelsearchSearchesFilesResponse:
       properties:
-        account_id:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        number_parts:
+        _shards:
+          properties:
+            failed:
+              type: integer
+            successful:
+              type: integer
+            total:
+              type: integer
+          type: object
+        hits:
+          properties:
+            hits:
+              items:
+                properties:
+                  _id:
+                    type: string
+                  _index:
+                    type: string
+                  _routing:
+                    type: string
+                  _score:
+                    type: string
+                  _source:
+                    type: object
+                  _type:
+                    type: string
+                  sort:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              type: array
+            max_score:
+              type: string
+            total:
+              type: integer
+          type: object
+        timed_out:
+          type: boolean
+        took:
           type: integer
-        owner:
+      type: object
+    PostOrganizationsAccountsFilelevelsearchDownloadFilesResponse:
+      type: object
+    GetOrganizationsAccountsFilelevelsearchBackupsFile_treeResponse:
+      properties:
+        fileTreeUrl:
           type: string
-        search_id:
+      type: object
+    PostOrganizationsAccountsFilelevelsearchSearchesRequest:
+      properties:
+        backupIds:
+          items:
+            type: string
+          type: array
+        backupTags:
+          items:
+            type: string
+          type: array
+        dateModified:
           type: string
-        state:
+        email:
           type: string
-        updated_at:
-          format: date-time
+        exactMatch:
+          type: boolean
+        filename:
           type: string
+        filetypesList:
+          items:
+            type: string
+          type: array
+        maxDateModified:
+          type: string
+        maxFileSize:
+          type: integer
+        maxFileSizeUnits:
+          type: string
+        minDateModified:
+          type: string
+        minFileSize:
+          type: integer
+        minFileSizeUnits:
+          type: string
+        serverIds:
+          items:
+            type: string
+          type: array
+        serverTags:
+          items:
+            type: string
+          type: array
+        snapshotInfo:
+          items:
+            properties:
+              account_id:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              id:
+                type: integer
+              indexer_instance_id:
+                type: string
+              instance_id:
+                type: string
+              organization_id:
+                type: string
+              policy_id:
+                type: string
+              snapshot_created_at:
+                format: date-time
+                type: string
+              snapshot_files_count:
+                type: integer
+              snapshot_filesystem:
+                type: string
+              snapshot_id:
+                type: string
+              snapshot_region:
+                type: string
+              snapshot_size:
+                type: integer
+              state:
+                type: string
+              updated_at:
+                format: date-time
+                type: string
+              volume_id:
+                type: string
+            type: object
+          type: array
       type: object
     GetOrganizationsAccountsFilelevelsearchNetworksettingsResponse:
       properties:
@@ -5070,103 +5228,6 @@ components:
               type: object
           type: object
       type: object
-    PostOrganizationsAccountsFilelevelsearchDownloadFilesRequest:
-      properties:
-        files:
-          items:
-            properties:
-              bucketName:
-                type: string
-              fileName:
-                type: string
-              filePath:
-                type: string
-              fileRestoreData:
-                type: integer
-              region:
-                type: string
-              snapshot:
-                properties:
-                  backupTime:
-                    format: date-time
-                    type: string
-                  id:
-                    type: string
-                  region:
-                    type: string
-                type: object
-            type: object
-          type: array
-        fls_bucket:
-          type: string
-      type: object
-    GetOrganizationsAccountsFilelevelsearchSearchesFilesResponse:
-      properties:
-        _shards:
-          properties:
-            failed:
-              type: integer
-            successful:
-              type: integer
-            total:
-              type: integer
-          type: object
-        hits:
-          properties:
-            hits:
-              items:
-                properties:
-                  _id:
-                    type: string
-                  _index:
-                    type: string
-                  _routing:
-                    type: string
-                  _score:
-                    type: string
-                  _source:
-                    type: object
-                  _type:
-                    type: string
-                  sort:
-                    items:
-                      type: string
-                    type: array
-                type: object
-              type: array
-            max_score:
-              type: string
-            total:
-              type: integer
-          type: object
-        timed_out:
-          type: boolean
-        took:
-          type: integer
-      type: object
-    GetOrganizationsAccountsFilelevelsearchBackupsFile_treeResponse:
-      properties:
-        fileTreeUrl:
-          type: string
-      type: object
-    Error:
-      properties:
-        message:
-          type: string
-      type: object
-    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdRequest:
-      properties:
-        newAddition:
-          type: boolean
-        noAvailableSubnets:
-          type: boolean
-        region:
-          type: string
-        s3Access:
-          type: string
-        subnet_id:
-          type: string
-      type: object
     PostOrganizationsAccountsFilelevelsearchIndexesRequest:
       properties:
         backupIds:
@@ -5198,121 +5259,60 @@ components:
         minFileSizeUnits:
           type: string
       type: object
-    PostOrganizationsAccountsFilelevelsearchDownloadFilesResponse:
-      type: object
-    empty:
-      properties: {}
-      type: object
-    PostOrganizationsAccountsFilelevelsearchSearchesRequest:
+    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdRequest:
       properties:
-        backupIds:
-          items:
-            type: string
-          type: array
-        backupTags:
-          items:
-            type: string
-          type: array
-        dateModified:
-          type: string
-        email:
-          type: string
-        exactMatch:
+        newAddition:
           type: boolean
-        filename:
+        noAvailableSubnets:
+          type: boolean
+        region:
           type: string
-        filetypesList:
-          items:
-            type: string
-          type: array
-        maxDateModified:
+        s3Access:
           type: string
-        maxFileSize:
-          type: integer
-        maxFileSizeUnits:
+        subnet_id:
           type: string
-        minDateModified:
-          type: string
-        minFileSize:
-          type: integer
-        minFileSizeUnits:
-          type: string
-        serverIds:
-          items:
-            type: string
-          type: array
-        serverTags:
-          items:
-            type: string
-          type: array
-        snapshotInfo:
-          items:
-            properties:
-              account_id:
-                type: string
-              created_at:
-                format: date-time
-                type: string
-              id:
-                type: integer
-              indexer_instance_id:
-                type: string
-              instance_id:
-                type: string
-              organization_id:
-                type: string
-              policy_id:
-                type: string
-              snapshot_created_at:
-                format: date-time
-                type: string
-              snapshot_files_count:
-                type: integer
-              snapshot_filesystem:
-                type: string
-              snapshot_id:
-                type: string
-              snapshot_region:
-                type: string
-              snapshot_size:
-                type: integer
-              state:
-                type: string
-              updated_at:
-                format: date-time
-                type: string
-              volume_id:
-                type: string
-            type: object
-          type: array
       type: object
-    PutOrganizationsAccountsFilelevelsearchNetworksettingsByIdResponse:
+    PostOrganizationsAccountsFilelevelsearchSearchesResponse:
       properties:
         account_id:
           type: string
         created_at:
           format: date-time
           type: string
-        organization_id:
+        number_parts:
+          type: integer
+        owner:
           type: string
-        region:
+        search_id:
           type: string
-        subnet_id:
+        state:
           type: string
         updated_at:
           format: date-time
           type: string
       type: object
-    PostOrganizationsAccountsFilelevelsearchIndexesResponse:
+    GetOrganizationsAccountsFilelevelsearchSearchesByIdResponse:
       properties:
-        files:
-          items:
-            type: string
-          type: array
-        snapshots_searched:
+        account_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        files_found:
           type: integer
-        total:
+        number_complete:
           type: integer
+        number_parts:
+          type: integer
+        owner:
+          type: string
+        search_id:
+          type: string
+        state:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
       type: object
   securitySchemes:
     API_Authorizer:

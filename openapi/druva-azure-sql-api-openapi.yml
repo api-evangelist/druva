@@ -199,6 +199,42 @@ paths:
                 $ref: '#/components/schemas/APIError'
 components:
   schemas:
+    CreateRestoreResponseAzureSQL:
+      description: CreateResponse is response schema for Create Request
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/JobAzureSQL'
+      x-go-name: CreateResponse
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
+    CreateRestoreTriggerArgsAzureSQL:
+      description: CreateRestoreTriggerArgs bundles all job creation params in single data type.
+      type: object
+      required:
+      - backupsetID
+      - snapshotID
+      properties:
+        backupsetID:
+          description: Specify the ID of the backup set. Get the ID using the 'List backup sets' API.
+          type: integer
+          format: int32
+          x-go-name: BackupsetID
+        jobParams:
+          $ref: '#/components/schemas/JobParamsAzureSQL'
+        restoreType:
+          description: Specify "RegularRestore" as the restore type.
+          type: string
+          x-go-name: RestoreType
+        snapshotID:
+          description: Specify the ID of the snapshot. Get the ID using the "List Snapshots" API.
+          type: string
+          x-go-name: SnapshotID
+        snapshotName:
+          description: Specify the name of the snapshot. Get the name using "List Snapshots" API.
+          type: string
+          x-go-name: SnapshotName
+      x-go-name: TriggerArgs
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
     AzureSQLParams:
       description: Specify Azure SQL specific parameters for database restore operations.
       type: object
@@ -258,19 +294,25 @@ components:
             type: string
           x-go-name: SnapshotIDs
       x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    CreateBackupTriggerArgsAzureSQL:
-      description: CreateBackupTriggerArgs bundles all job creation params in single data type.
+    APIError:
+      description: APIError defines an application error result format
       type: object
-      required:
-      - backupsetID
       properties:
-        backupsetID:
-          description: Specify the ID of the backup set. Get the ID using the 'List backup sets' API.
-          type: integer
-          format: int64
-          x-go-name: BackupsetID
-      x-go-name: TriggerArgs
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
+        code:
+          type: string
+          x-go-name: Code
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          x-go-name: Data
+        message:
+          type: string
+          x-go-name: Message
+        retryable:
+          type: boolean
+          x-go-name: Retry
+      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
     JobParamsAzureSQL:
       description: Specify job parameters needed for restoring snapshot.
       type: object
@@ -292,48 +334,33 @@ components:
         azsqlParams:
           $ref: '#/components/schemas/AzureSQLParams'
       x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    CreateRestoreTriggerArgsAzureSQL:
-      description: CreateRestoreTriggerArgs bundles all job creation params in single data type.
+    CreateBackupTriggerArgsAzureSQL:
+      description: CreateBackupTriggerArgs bundles all job creation params in single data type.
       type: object
       required:
       - backupsetID
-      - snapshotID
       properties:
         backupsetID:
           description: Specify the ID of the backup set. Get the ID using the 'List backup sets' API.
           type: integer
-          format: int32
+          format: int64
           x-go-name: BackupsetID
-        jobParams:
-          $ref: '#/components/schemas/JobParamsAzureSQL'
-        restoreType:
-          description: Specify "RegularRestore" as the restore type.
-          type: string
-          x-go-name: RestoreType
-        snapshotID:
-          description: Specify the ID of the snapshot. Get the ID using the "List Snapshots" API.
-          type: string
-          x-go-name: SnapshotID
-        snapshotName:
-          description: Specify the name of the snapshot. Get the name using "List Snapshots" API.
-          type: string
-          x-go-name: SnapshotName
       x-go-name: TriggerArgs
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
-    JSONMap:
-      description: Returns the data for the current job.
-      type: object
-      additionalProperties:
-        type: object
-      x-go-package: phoenix/pkg/dlutil
-    CreateRestoreResponseAzureSQL:
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
+    CreateBackupResponseAzureSQL:
       description: CreateResponse is response schema for Create Request
       type: object
       properties:
         job:
           $ref: '#/components/schemas/JobAzureSQL'
       x-go-name: CreateResponse
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/restore/base
+      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
+    JSONMap:
+      description: Returns the data for the current job.
+      type: object
+      additionalProperties:
+        type: object
+      x-go-package: phoenix/pkg/dlutil
     JobAzureSQL:
       description: Job parameters.
       type: object
@@ -520,33 +547,6 @@ components:
           type: string
           x-go-name: WorkloadName
       x-go-package: git.druva.org/foundation/jobmgmt/job/spec
-    CreateBackupResponseAzureSQL:
-      description: CreateResponse is response schema for Create Request
-      type: object
-      properties:
-        job:
-          $ref: '#/components/schemas/JobAzureSQL'
-      x-go-name: CreateResponse
-      x-go-package: git.druva.org/foundation/jobmgmt/haydn/spec/enterpriseworkload/backup/base
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-          x-go-name: Code
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          x-go-name: Data
-        message:
-          type: string
-          x-go-name: Message
-        retryable:
-          type: boolean
-          x-go-name: Retry
-      x-go-package: phoenix/vendor/druva.com/godevkit/errortype
   securitySchemes:
     Bearer:
       type: apiKey

@@ -530,139 +530,10 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PostOrganizationsScriptsRulesResponse:
+    Error:
       properties:
-        accounts:
-          items:
-            properties:
-              account_id:
-                type: string
-              model:
-                properties:
-                  account_id:
-                    type: string
-                  rule_id:
-                    type: integer
-                  ruleId:
-                    type: integer
-                type: object
-              rule_id:
-                type: integer
-            type: object
-          type: array
-        all_accounts:
-          type: boolean
-        all_regions:
-          type: boolean
-        execution_type:
+        message:
           type: string
-        id:
-          type: integer
-        model:
-          properties:
-            accounts:
-              items:
-                properties:
-                  account_id:
-                    type: string
-                  rule_id:
-                    type: integer
-                  ruleId:
-                    type: integer
-                type: object
-              type: array
-            all_accounts:
-              type: boolean
-            all_regions:
-              type: boolean
-            createdAt:
-              format: date-time
-              type: string
-            execution_type:
-              type: string
-            id:
-              type: integer
-            regions:
-              items:
-                type: string
-              type: array
-            resources:
-              items:
-                properties:
-                  account_id:
-                    type: string
-                  region:
-                    type: string
-                  resource_id:
-                    type: string
-                  resource_name:
-                    type: string
-                  rule_id:
-                    type: integer
-                  ruleId:
-                    type: integer
-                  type:
-                    type: string
-                type: object
-              type: array
-            rule_type:
-              type: string
-            script_id:
-              type: integer
-            tags:
-              items:
-                type: string
-              type: array
-            updatedAt:
-              format: date-time
-              type: string
-          type: object
-        regions:
-          items:
-            type: string
-          type: array
-        resources:
-          items:
-            properties:
-              account_id:
-                type: string
-              model:
-                properties:
-                  account_id:
-                    type: string
-                  region:
-                    type: string
-                  resource_id:
-                    type: string
-                  resource_name:
-                    type: string
-                  rule_id:
-                    type: integer
-                  ruleId:
-                    type: integer
-                  type:
-                    type: string
-                type: object
-              region:
-                type: string
-              resource_id:
-                type: string
-              resource_name:
-                type: string
-              rule_id:
-                type: integer
-              type:
-                type: string
-            type: object
-          type: array
-        rule_type:
-          type: string
-        script_id:
-          type: integer
-        tags:
-          items:
-            type: string
-          type: array
       type: object
     GetOrganizationsScriptsResponse:
       properties:
@@ -949,12 +820,10 @@ components:
         total:
           type: integer
       type: object
-    Error:
-      properties:
-        message:
-          type: string
+    empty:
+      properties: {}
       type: object
-    GetOrganizationsScriptsTagKeysResponse:
+    GetOrganizationsScriptsTagsKeysValuesResponse:
       properties:
         values:
           items:
@@ -966,15 +835,146 @@ components:
         message:
           type: string
       type: object
-    GetOrganizationsScriptsTagsKeysValuesResponse:
+    PostOrganizationsScriptsRulesResponse:
+      properties:
+        accounts:
+          items:
+            properties:
+              account_id:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                type: object
+              rule_id:
+                type: integer
+            type: object
+          type: array
+        all_accounts:
+          type: boolean
+        all_regions:
+          type: boolean
+        execution_type:
+          type: string
+        id:
+          type: integer
+        model:
+          properties:
+            accounts:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                type: object
+              type: array
+            all_accounts:
+              type: boolean
+            all_regions:
+              type: boolean
+            createdAt:
+              format: date-time
+              type: string
+            execution_type:
+              type: string
+            id:
+              type: integer
+            regions:
+              items:
+                type: string
+              type: array
+            resources:
+              items:
+                properties:
+                  account_id:
+                    type: string
+                  region:
+                    type: string
+                  resource_id:
+                    type: string
+                  resource_name:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                  type:
+                    type: string
+                type: object
+              type: array
+            rule_type:
+              type: string
+            script_id:
+              type: integer
+            tags:
+              items:
+                type: string
+              type: array
+            updatedAt:
+              format: date-time
+              type: string
+          type: object
+        regions:
+          items:
+            type: string
+          type: array
+        resources:
+          items:
+            properties:
+              account_id:
+                type: string
+              model:
+                properties:
+                  account_id:
+                    type: string
+                  region:
+                    type: string
+                  resource_id:
+                    type: string
+                  resource_name:
+                    type: string
+                  rule_id:
+                    type: integer
+                  ruleId:
+                    type: integer
+                  type:
+                    type: string
+                type: object
+              region:
+                type: string
+              resource_id:
+                type: string
+              resource_name:
+                type: string
+              rule_id:
+                type: integer
+              type:
+                type: string
+            type: object
+          type: array
+        rule_type:
+          type: string
+        script_id:
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    GetOrganizationsScriptsTagKeysResponse:
       properties:
         values:
           items:
             type: string
           type: array
-      type: object
-    empty:
-      properties: {}
       type: object
     GetOrganizationsScriptscacheResponse:
       properties:

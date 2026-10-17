@@ -476,62 +476,44 @@ paths:
                 NotImplemented:
                   $ref: '#/components/examples/NotImplemented'
 components:
-  examples:
-    InternalServerError:
-      summary: Internal Server Error
-      description: The request was not processed due to an internal error on server.
-      value:
-        code: InsyncCappmaster-1006
-        message: Internal server error.
-        retryable: false
-        data:
-          status: 1
-          message: Failed to get Customer License
-    NotFound:
-      summary: Resource Not Found
-      description: The requested resource could not be found on server.
-      value: null
-    BadRequest:
-      summary: Bad Request
-      description: This response means that the server could not understand the request due to invalid syntax.
-      value:
-        code: InsyncCappmaster-1001
-        message: Invalid API syntax.
-        retryable: false
-        data: null
-    Forbidden:
-      summary: Forbidden
-      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
-      value:
-        code: InsyncCappmaster-1009
-        message: Auth session expired
-        retryable: false
-        data: null
-    GARError:
-      summary: Authorization Error
-      description: Client does not have access rights or permissions to the requested content.
-      value:
-        code: InsyncCappmaster-1221
-        message: You do not have permission to access this workload.
-        retryable: false
-        data: null
-    NotImplemented:
-      summary: Method Not Implemented
-      description: Requested HTTP method is not implemented.
-      value:
-        code: InsyncCappmaster-1007
-        message: Method Not implemented.
-        retryable: false
-        data: null
-    Unauthorized:
-      summary: Unauthorized
-      description: Authentication is needed to get the requested response.
-      value:
-        code: InsyncCappmaster-1002
-        message: Invalid API credentials.
-        retryable: false
-        data: null
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid API syntax.
+        code:
+          type: string
+          example: InsyncCappmaster-1001
+        data:
+          type: object
+          example: null
+        retryable:
+          type: boolean
+          enum:
+          - true
+          - false
+          example: false
+    200_trigger_spo_restore_resp:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Restore triggered successfully.
+          description: Message indicating the restore trigger status if restore is triggered successfully or restore trigger failed.
+        restore_status:
+          type: integer
+          example: 0
+          description: Restore status code. Eg. 0-Success, 1-Failure
+        restore_task:
+          type: boolean
+          example: true
+          description: flag indicating if restore task was created successfuly. Eg. True-Success, False-Failure
+        task_id:
+          type: integer
+          example: '3458'
+          description: A unique identifier for the restore task.
     200_list_sites:
       type: object
       properties:
@@ -705,24 +687,6 @@ components:
                 example: SC_V_Main
                 description: System-defined title of the SharePoint site collection, primarily used for backend processes such as restore.
           description: List of SharePoint Site Collections
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Invalid API syntax.
-        code:
-          type: string
-          example: InsyncCappmaster-1001
-        data:
-          type: object
-          example: null
-        retryable:
-          type: boolean
-          enum:
-          - true
-          - false
-          example: false
     200_list_spo_restore_points:
       type: array
       items:
@@ -860,25 +824,61 @@ components:
             type: integer
             example: 5
             description: Snapshot sequence number
-    200_trigger_spo_restore_resp:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Restore triggered successfully.
-          description: Message indicating the restore trigger status if restore is triggered successfully or restore trigger failed.
-        restore_status:
-          type: integer
-          example: 0
-          description: Restore status code. Eg. 0-Success, 1-Failure
-        restore_task:
-          type: boolean
-          example: true
-          description: flag indicating if restore task was created successfuly. Eg. True-Success, False-Failure
-        task_id:
-          type: integer
-          example: '3458'
-          description: A unique identifier for the restore task.
+  examples:
+    Unauthorized:
+      summary: Unauthorized
+      description: Authentication is needed to get the requested response.
+      value:
+        code: InsyncCappmaster-1002
+        message: Invalid API credentials.
+        retryable: false
+        data: null
+    GARError:
+      summary: Authorization Error
+      description: Client does not have access rights or permissions to the requested content.
+      value:
+        code: InsyncCappmaster-1221
+        message: You do not have permission to access this workload.
+        retryable: false
+        data: null
+    BadRequest:
+      summary: Bad Request
+      description: This response means that the server could not understand the request due to invalid syntax.
+      value:
+        code: InsyncCappmaster-1001
+        message: Invalid API syntax.
+        retryable: false
+        data: null
+    InternalServerError:
+      summary: Internal Server Error
+      description: The request was not processed due to an internal error on server.
+      value:
+        code: InsyncCappmaster-1006
+        message: Internal server error.
+        retryable: false
+        data:
+          status: 1
+          message: Failed to get Customer License
+    NotFound:
+      summary: Resource Not Found
+      description: The requested resource could not be found on server.
+      value: null
+    Forbidden:
+      summary: Forbidden
+      description: The request was a legal request, but the server is refusing to respond to it due to insufficient access rights to the content.
+      value:
+        code: InsyncCappmaster-1009
+        message: Auth session expired
+        retryable: false
+        data: null
+    NotImplemented:
+      summary: Method Not Implemented
+      description: Requested HTTP method is not implemented.
+      value:
+        code: InsyncCappmaster-1007
+        message: Method Not implemented.
+        retryable: false
+        data: null
   securitySchemes:
     bearerAuth:
       type: apiKey

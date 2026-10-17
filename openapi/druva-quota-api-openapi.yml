@@ -228,6 +228,70 @@ paths:
         - Existing warning-severity alerts may expire when the threshold is lowered or removed.'
 components:
   schemas:
+    QuotaListQuotaConfigResponse:
+      description: Paginated quota configurations.
+      type: object
+      properties:
+        quotaConfigList:
+          type: array
+          description: Quota configurations grouped by customer.
+          items:
+            $ref: '#/components/schemas/QuotaConfigurationList'
+          x-go-name: QuotaConfigList
+        nextPageToken:
+          type: string
+          description: The token to access the next page of results. This parameter will be empty for the last page of results.
+          x-go-name: NextPageToken
+    QuotaSetWarningThresholdRequest:
+      description: Body for setting the warning threshold. Send null for thresholdPercentage to clear a previously set value.
+      type: object
+      properties:
+        thresholdPercentage:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          minimum: 50
+          maximum: 99
+          description: Warning threshold percentage (50–99). Send null to clear a previously set value.
+          x-go-name: ThresholdPercentage
+    QuotaConfigurationResponse:
+      description: A quota configuration entry in the list response.
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int32
+          description: The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints.
+          x-go-name: ProductID
+        productModuleId:
+          type: integer
+          format: int32
+          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace.
+          x-go-name: ProductModuleID
+        consumptionParameter:
+          type: string
+          description: 'Consumption parameter identifier for the module. Refer this page for supported parameters: <Docs team to provide the URL>'
+          x-go-name: ConsumptionParameter
+        quotaLimit:
+          type: number
+          format: double
+          description: 'Configured quota limit. Must be a whole number if unit is Count with allowed range 1 <= value <= 999999. If unit is TB, allowed range : 0.01 <= value < 1000000.'
+          x-go-name: QuotaLimit
+        unit:
+          type: string
+          description: Unit of the quota value. TB or Count.
+          x-go-name: Unit
+        incrementSettings:
+          $ref: '#/components/schemas/QuotaIncrementSettingsResponse'
+    APIError:
+      description: APIError defines an application error result format
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     QuotaIncrementSettingsResponse:
       description: Increment settings in the list response.
       type: object
@@ -256,96 +320,20 @@ components:
           type: boolean
           description: If true, the next scheduled increment is skipped.
           x-go-name: SkipNextIncrement
-    QuotaSaveQuotaConfigRequestBody:
-      description: Request body for setting quota configurations. Path parameters carry customer and product; the body is the config array.
-      type: object
-      required:
-      - config
-      properties:
-        config:
-          type: array
-          description: Quota configuration entries to create or replace for the customer and product.
-          items:
-            $ref: '#/components/schemas/QuotaConfigEntry'
-          x-go-name: Config
-    QuotaSetWarningThresholdRequest:
-      description: Body for setting the warning threshold. Send null for thresholdPercentage to clear a previously set value.
+    QuotaConfigurationList:
+      description: Quota configurations for a single customer.
       type: object
       properties:
-        thresholdPercentage:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          minimum: 50
-          maximum: 99
-          description: Warning threshold percentage (50–99). Send null to clear a previously set value.
-          x-go-name: ThresholdPercentage
-    QuotaGetWarningThresholdResponse:
-      description: Response for getting the warning threshold.
-      type: object
-      properties:
-        thresholdPercentage:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Warning threshold percentage (50–99) when set; null if not configured.
-          x-go-name: ThresholdPercentage
-    QuotaIncrementSettings:
-      description: 'Optional increment policy. Frequency: 1=Monthly, 2=Quarterly, 3=Half-yearly, 4=Yearly.'
-      type: object
-      required:
-      - incrementBy
-      - frequency
-      - incrementTill
-      properties:
-        incrementBy:
-          type: number
-          format: double
-          description: Amount to add each period. Uses the same range rules as quota for the entry unit.
-          x-go-name: IncrementBy
-        frequency:
-          type: integer
-          format: int32
-          description: 'Increment cadence.
-
-            - 1 - Monthly
-
-            - 2 - Quarterly
-
-            - 3 - Half-yearly
-
-            - 4 - Yearly'
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          x-go-name: Frequency
-        incrementTill:
+        customerGlobalId:
           type: string
-          format: date-time
-          description: End of the increment window (RFC3339).
-          x-go-name: IncrementTill
-        skipNextIncrement:
-          type: boolean
-          description: If true, the next scheduled increment is skipped.
-          x-go-name: SkipNextIncrement
-    QuotaListQuotaConfigResponse:
-      description: Paginated quota configurations.
-      type: object
-      properties:
-        quotaConfigList:
+          description: Unique ID of the customer.
+          x-go-name: CustomerGlobalID
+        quotaConfig:
           type: array
-          description: Quota configurations grouped by customer.
+          description: Quota configuration entries for the customer.
           items:
-            $ref: '#/components/schemas/QuotaConfigurationList'
-          x-go-name: QuotaConfigList
-        nextPageToken:
-          type: string
-          description: The token to access the next page of results. This parameter will be empty for the last page of results.
-          x-go-name: NextPageToken
+            $ref: '#/components/schemas/QuotaConfigurationResponse'
+          x-go-name: QuotaConfig
     QuotaConfigEntry:
       description: A single quota configuration entry in a save request.
       type: object
@@ -400,57 +388,69 @@ components:
         incrementSettings:
           description: Optional automatic increment policy.
           $ref: '#/components/schemas/QuotaIncrementSettings'
-    QuotaConfigurationList:
-      description: Quota configurations for a single customer.
+    QuotaGetWarningThresholdResponse:
+      description: Response for getting the warning threshold.
       type: object
       properties:
-        customerGlobalId:
-          type: string
-          description: Unique ID of the customer.
-          x-go-name: CustomerGlobalID
-        quotaConfig:
+        thresholdPercentage:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Warning threshold percentage (50–99) when set; null if not configured.
+          x-go-name: ThresholdPercentage
+    QuotaSaveQuotaConfigRequestBody:
+      description: Request body for setting quota configurations. Path parameters carry customer and product; the body is the config array.
+      type: object
+      required:
+      - config
+      properties:
+        config:
           type: array
-          description: Quota configuration entries for the customer.
+          description: Quota configuration entries to create or replace for the customer and product.
           items:
-            $ref: '#/components/schemas/QuotaConfigurationResponse'
-          x-go-name: QuotaConfig
-    QuotaConfigurationResponse:
-      description: A quota configuration entry in the list response.
+            $ref: '#/components/schemas/QuotaConfigEntry'
+          x-go-name: Config
+    QuotaIncrementSettings:
+      description: 'Optional increment policy. Frequency: 1=Monthly, 2=Quarterly, 3=Half-yearly, 4=Yearly.'
       type: object
+      required:
+      - incrementBy
+      - frequency
+      - incrementTill
       properties:
-        productId:
-          type: integer
-          format: int32
-          description: The ID of the product. 1 - Enterprise Workloads, 2 - SaaS Apps and Endpoints.
-          x-go-name: ProductID
-        productModuleId:
-          type: integer
-          format: int32
-          description: The ID of the product module. 1 - Enterprise Workloads, 2 - Microsoft 365, 3 - Endpoints, 4 - Google Workspace.
-          x-go-name: ProductModuleID
-        consumptionParameter:
-          type: string
-          description: 'Consumption parameter identifier for the module. Refer this page for supported parameters: <Docs team to provide the URL>'
-          x-go-name: ConsumptionParameter
-        quotaLimit:
+        incrementBy:
           type: number
           format: double
-          description: 'Configured quota limit. Must be a whole number if unit is Count with allowed range 1 <= value <= 999999. If unit is TB, allowed range : 0.01 <= value < 1000000.'
-          x-go-name: QuotaLimit
-        unit:
+          description: Amount to add each period. Uses the same range rules as quota for the entry unit.
+          x-go-name: IncrementBy
+        frequency:
+          type: integer
+          format: int32
+          description: 'Increment cadence.
+
+            - 1 - Monthly
+
+            - 2 - Quarterly
+
+            - 3 - Half-yearly
+
+            - 4 - Yearly'
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          x-go-name: Frequency
+        incrementTill:
           type: string
-          description: Unit of the quota value. TB or Count.
-          x-go-name: Unit
-        incrementSettings:
-          $ref: '#/components/schemas/QuotaIncrementSettingsResponse'
-    APIError:
-      description: APIError defines an application error result format
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
+          format: date-time
+          description: End of the increment window (RFC3339).
+          x-go-name: IncrementTill
+        skipNextIncrement:
+          type: boolean
+          description: If true, the next scheduled increment is skipped.
+          x-go-name: SkipNextIncrement
   securitySchemes:
     OAuth2:
       flows:
