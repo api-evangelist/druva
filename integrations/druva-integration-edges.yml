@@ -2,6 +2,7 @@ generated: '2026-10-13'
 method: searched
 checked:
 - crowdstrike/integrations/crowdstrike-integration-edges.yml
+- google-workspace/integrations/google-workspace-integration-edges.yml
 - https://aws.amazon.com/marketplace/
 - https://azuremarketplace.microsoft.com/
 - https://govramp.org/program-participants
@@ -257,6 +258,23 @@ edges:
       latest_authorization: '2023-03-26'
   detected_by: sweep-gov-cloud.py
   first_seen: '2026-10-15'
+- partner_name: Google Workspace (own)
+  partner: google-workspace
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://workspace.google.com/marketplace/app/druva_insync_for_google_workspace/957935124900
+  mirror_of: google-workspace/integrations/google-workspace-integration-edges.yml
+  apps:
+  - Druva inSync for Google Workspace
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Google Workspace app
 source:
 - crowdstrike/integrations/crowdstrike-integration-edges.yml
 - microsoft-sentinel/integrations/microsoft-sentinel-integration-edges.yml

@@ -151,3 +151,16 @@
       latest_authorization: '2023-03-26'
   status: not-a-workflow
   arazzo: null
+- slug: druva-google-workspace-own
+  label: Google Workspace (own)
+  partner: google-workspace
+  partner_name: Google Workspace (own)
+  category: Google Workspace app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://workspace.google.com/marketplace/app/druva_insync_for_google_workspace/957935124900
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
