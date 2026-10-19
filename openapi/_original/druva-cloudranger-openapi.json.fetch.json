@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.druva.com/openapi/cloudranger.json",
+ "requested_url": "https://developer.druva.com/openapi/cloudranger.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 750361,
+ "sha256": "0b87602807dadb50674055197f6718265f6b2ea3bb4a8b0d344d402ff40cc81d",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
