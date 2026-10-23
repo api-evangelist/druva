@@ -1891,3 +1891,9 @@ components:
       name: Authorization
       in: header
 x-explorer-enabled: true
+x-provenance:
+  method: harvested
+  publisher: Druva
+  source: https://developer.druva.com/openapi/enterprise-workloads-govcloud.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

@@ -560,3 +560,9 @@ components:
           scopes:
             read: Grants read access
 x-explorer-enabled: true
+x-provenance:
+  method: harvested
+  publisher: Druva
+  source: https://developer.druva.com/openapi/unity.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
