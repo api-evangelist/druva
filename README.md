@@ -1,4 +1,4 @@
-# Druva (druva)
+# Druva
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,546 +66,243 @@
 
 Druva is a cloud data protection and management company running the Druva Resilience Cloud, a fully managed SaaS platform for backup, disaster recovery, cyber resilience and data governance across endpoints, data centres, AWS and Azure workloads, and SaaS applications including Microsoft 365, Google Workspace, Salesforce, Dynamics 365, Entra ID and Okta. Druva publishes 19 first-party OpenAPI and Swagger definitions covering roughly 970 operations from its developer portal, advertised in an RFC 9727 API catalog document, spanning Endpoints and Data Governance, Enterprise Workloads, Cyber Resilience, AWS Native Workloads and CloudRanger, MSP tenant management, Platform administration and job management - each with a separate GovCloud contract where one exists. Authentication is OAuth 2.0 client credentials against a per-cloud token endpoint, and Druva also runs a first-party hosted MCP server at mcp.druva.com for AI agents.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/druva/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/druva/refs/heads/main/apis.yml)
+**Areas:** Backup · Cyber Resilience · Data Protection · Disaster Recovery · SaaS Backup · Ransomware Recovery · Data Governance · Enterprise Workloads · MSP · Legal Hold · GovCloud · MCP
+
+## Druva on APIs.io
+
+Everything profiled for Druva is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/druva/](https://apis.io/providers/druva/)** — or go straight to one of the APIs or properties below.
+
+### APIs (86)
+
+- [Druva MCP Server](https://apis.io/apis/druva/mcp/) — Druva's first-party hosted Model Context Protocol server. MCP-compatible AI clients connect to a single global endpoint over streamable HTTP, authenticate…
+- [Druva Accounts API](https://apis.io/apis/druva/druva-accounts-api/) — Accounts in your CloudRanger Organization
+- [Druva AD/LDAP Management API](https://apis.io/apis/druva/druva-ad-ldap-management-api/) — Lists the APIs to get information about the AD/LDAP Connectors configured for Endpoints & SaaS Apps.
+- [Druva Admin Roles API](https://apis.io/apis/druva/druva-admin-roles-api/) — The Admin Roles API from Druva — 1 operation(s) for admin roles.
+- [Druva Administration API](https://apis.io/apis/druva/druva-administration-api/) — The Administration API from Druva — 1 operation(s) for administration.
+- [Druva Administrators API](https://apis.io/apis/druva/druva-administrators-api/) — The Administrators API from Druva — 4 operation(s) for administrators.
+- [Druva Admins API](https://apis.io/apis/druva/druva-admins-api/) — Lists the APIs to get information about admins managed.
+- [Druva AHV API](https://apis.io/apis/druva/druva-ahv-api/) — The AHV API from Druva — 7 operation(s) for ahv.
+- [Druva Alerts API](https://apis.io/apis/druva/druva-alerts-api/) — The Alerts API from Druva — 3 operation(s) for alerts.
+- [Druva App Management API](https://apis.io/apis/druva/druva-app-management-api/) — Lists the APIs to get information and perform operations on M365 Apps managed in Druva SaaS Apps.
+- [Druva Audit API](https://apis.io/apis/druva/druva-audit-api/) — Audit specific API functions
+- [Druva Audit Trail API](https://apis.io/apis/druva/druva-audit-trail-api/) — The Audit Trail API from Druva — 1 operation(s) for audit trail.
+- [Druva Audit Trail Management API](https://apis.io/apis/druva/druva-audit-trail-management-api/) — Lists the APIs to get information about the Audit Trails generated in the Druva Console.
+- [Druva Auth API](https://apis.io/apis/druva/druva-auth-api/) — The Auth API from Druva — 1 operation(s) for auth.
+- [Druva Auto Scaling Groups API](https://apis.io/apis/druva/druva-autoscalinggroups-api/) — AutoScalingGroups specific API functions
+- [Druva Aws API](https://apis.io/apis/druva/druva-aws-api/) — AWS Account specific functions
+- [Druva Azure API](https://apis.io/apis/druva/druva-azure-api/) — The Azure API from Druva — 3 operation(s) for azure.
+- [Druva Azure SQL API](https://apis.io/apis/druva/druva-azure-sql-api/) — The Azure SQL API from Druva — 4 operation(s) for azure sql.
+- [Druva Backups API](https://apis.io/apis/druva/druva-backups-api/) — Backups in your CloudRanger Account
+- [Druva Buckets API](https://apis.io/apis/druva/druva-buckets-api/) — The Buckets API from Druva — 1 operation(s) for buckets.
+- [Druva Chargeback and Telemetry Reports API](https://apis.io/apis/druva/druva-chargeback-and-telemetry-reports-api/) — Lists the APIs to get reports for Chargeback and Telemetry.
+- [Druva Cloud Cache API](https://apis.io/apis/druva/druva-cloudcache-api/) — The CloudCache API from Druva — 1 operation(s) for cloudcache.
+- [Druva Credential API](https://apis.io/apis/druva/druva-credential-api/) — The Credential API from Druva — 1 operation(s) for credential.
+- [Druva Curated Snapshots API](https://apis.io/apis/druva/druva-curated-snapshots-api/) — List of APIs to get information of and manage the Curated Snapshots for the resources managed in Druva Cloud.
+- [Druva Customers API](https://apis.io/apis/druva/druva-customers-api/) — Lists the APIs to get information and perform operations on customers managed.
+- [Druva Cyber Resilience Reports API](https://apis.io/apis/druva/druva-cyber-resilience-reports-api/) — Lists the APIs to get MSP Cyber Resilience reports data.
+- [Druva Data Anomalies API](https://apis.io/apis/druva/druva-data-anomalies-api/) — View a list of the resources managed in Druva Cloud detected with Data Anomalies.
+- [Druva Data Protection API](https://apis.io/apis/druva/druva-data-protection-api/) — The Data Protection API from Druva — 8 operation(s) for data protection.
+- [Druva Disaster Recovery Plans API](https://apis.io/apis/druva/druva-disasterrecoveryplans-api/) — Disaster Recovery Plan specific API functions
+- [Druva D Raa S API](https://apis.io/apis/druva/druva-draas-api/) — The DRaaS API from Druva — 2 operation(s) for draas.
+- [Druva Endpoints API](https://apis.io/apis/druva/druva-endpoints-api/) — Lists the APIs to get information about devices managed in Druva inSync.
+- [Druva Endpoints Reports API](https://apis.io/apis/druva/druva-endpoints-reports-api/) — Lists the APIs to get MSP Endpoints reports data.
+- [Druva Enterprise Workloads Reports API](https://apis.io/apis/druva/druva-enterprise-workloads-reports-api/) — Lists the APIs to get MSP Enterprise Workload reports data.
+- [Druva Environments API](https://apis.io/apis/druva/druva-environments-api/) — Environments specific API functions
+- [Druva Event Management API](https://apis.io/apis/druva/druva-event-management-api/) — Lists the APIs to get information about the events generated in Druva inSync.
+- [Druva Events API](https://apis.io/apis/druva/druva-events-api/) — Lists the APIs to get events for MSP and Customer.
+- [Druva Federated Search API](https://apis.io/apis/druva/druva-federated-search-api/) — Quickly find backed-up files and emails of end-users using metadata attributes.
+- [Druva File Server API](https://apis.io/apis/druva/druva-file-server-api/) — The File Server API from Druva — 13 operation(s) for file server.
+- [Druva File Level Search API](https://apis.io/apis/druva/druva-filelevelsearch-api/) — File Level Search specific API functions
+- [Druva Google Workspace Reports API](https://apis.io/apis/druva/druva-google-workspace-reports-api/) — Lists the APIs to get MSP Google Workspace reports data.
+- [Druva Hyper V API](https://apis.io/apis/druva/druva-hyper-v-api/) — The Hyper-V API from Druva — 8 operation(s) for hyper-v.
+- [Druva Jobs API](https://apis.io/apis/druva/druva-jobs-api/) — Jobs in your CloudRanger Account
+- [Druva Legal Hold API](https://apis.io/apis/druva/druva-legal-hold-api/) — Lists the APIs to get information about the legal hold policies, manage users on legal hold and new APIs for eDiscovery Download Client.
+- [Druva Microsoft 365 Reports API](https://apis.io/apis/druva/druva-microsoft-365-reports-api/) — Lists the APIs to get MSP Microsoft 365 reports data.
+- [Druva NAS API](https://apis.io/apis/druva/druva-nas-api/) — The NAS API from Druva — 18 operation(s) for nas.
+- [Druva New Endpoint API](https://apis.io/apis/druva/druva-new-endpoint-api/) — The New Endpoint API from Druva — 1 operation(s) for new endpoint.
+- [Druva Onboarding API](https://apis.io/apis/druva/druva-onboarding-api/) — The Onboarding API from Druva — 2 operation(s) for onboarding.
+- [Druva Oracle DTC API](https://apis.io/apis/druva/druva-oracledtc-api/) — The OracleDTC API from Druva — 12 operation(s) for oracledtc.
+- [Druva Organization API](https://apis.io/apis/druva/druva-organization-api/) — Your CloudRanger Organization and how to authenticate API Calls
+- [Druva PBS API](https://apis.io/apis/druva/druva-pbs-api/) — The PBS API from Druva — 6 operation(s) for pbs.
+- [Druva Profile Management API](https://apis.io/apis/druva/druva-profile-management-api/) — Lists the APIs to get information about the profiles configured in Druva inSync.
+- [Druva Quota API](https://apis.io/apis/druva/druva-quota-api/) — Lists the APIs to get and manage quota configurations and warning thresholds.
+- [Druva Ransomware Recovery API](https://apis.io/apis/druva/druva-ransomware-recovery-api/) — List of APIs to get information and perform operations on ransomware affected resources managed in Druva Cloud.
+- [Druva Realize Events API](https://apis.io/apis/druva/druva-realize-events-api/) — List of APIs to get information of Events of Realize product in Druva Cloud.
+- [Druva Reports API](https://apis.io/apis/druva/druva-reports-api/) — The Reports API from Druva — 12 operation(s) for reports.
+- [Druva Resources API](https://apis.io/apis/druva/druva-resources-api/) — Resource specific API functions
+- [Druva Restore OneDrive/Exchange Online data API](https://apis.io/apis/druva/druva-restore-onedrive-exchange-online-data-api/) — The Restore OneDrive/Exchange Online data API from Druva — 4 operation(s) for restore onedrive/exchange online data.
+- [Druva Restore scans API](https://apis.io/apis/druva/druva-restore-scans-api/) — List of APIs to get information and perform operations of Restore scans on the resources managed in Druva Cloud.
+- [Druva Restore SharePoint Online data API](https://apis.io/apis/druva/druva-restore-sharepoint-online-data-api/) — The Restore SharePoint Online data API from Druva — 3 operation(s) for restore sharepoint online data.
+- [Druva Restores API](https://apis.io/apis/druva/druva-restores-api/) — Restores in your CloudRanger Account
+- [Druva Salesforce Reports API](https://apis.io/apis/druva/druva-salesforce-reports-api/) — Lists the APIs to get MSP Salesforce reports data.
+- [Druva Schedules API](https://apis.io/apis/druva/druva-schedules-api/) — Schedules in your CloudRanger Account
+- [Druva Scripts API](https://apis.io/apis/druva/druva-scripts-api/) — The Scripts API from Druva — 7 operation(s) for scripts.
+- [Druva Sensitive Data Governance API](https://apis.io/apis/druva/druva-sensitive-data-governance-api/) — Lists of APIs to get information and perform operations on Sensitive Data Governance.
+- [Druva Servers API](https://apis.io/apis/druva/druva-servers-api/) — Servers in your CloudRanger Account
+- [Druva Service Monitoring Reports API](https://apis.io/apis/druva/druva-service-monitoring-reports-api/) — Lists the APIs to get MSP Service Monitoring reports data.
+- [Druva Service Plans API](https://apis.io/apis/druva/druva-service-plans-api/) — Lists the APIs to get information about service plans managed.
+- [Druva SQL Server API](https://apis.io/apis/druva/druva-sqlserver-api/) — The SQLServer API from Druva — 15 operation(s) for sqlserver.
+- [Druva Storage API](https://apis.io/apis/druva/druva-storage-api/) — The Storage API from Druva — 1 operation(s) for storage.
+- [Druva Storage Management API](https://apis.io/apis/druva/druva-storage-management-api/) — Lists the APIs to get information about the storages and inSync CloudCache Servers configured in Druva inSync.
+- [Druva Storage Regions API](https://apis.io/apis/druva/druva-storage-regions-api/) — Lists the APIs to get information about Storage Regions.
+- [Druva Tasks API](https://apis.io/apis/druva/druva-tasks-api/) — Task specific API functions
+- [Druva Tenants API](https://apis.io/apis/druva/druva-tenants-api/) — Lists the APIs to get information and perform operations on tenants managed.
+- [Druva Threat Hunting API](https://apis.io/apis/druva/druva-threat-hunting-api/) — List of APIs to get information and perform operations on the resources managed in Druva Cloud for threat hunt.
+- [Druva Threat Intel API](https://apis.io/apis/druva/druva-threat-intel-api/) — List of APIs to view details and manage IOC Sets in the IOC library.
+- [Druva Threat Watch API](https://apis.io/apis/druva/druva-threat-watch-api/) — List of APIs that helps to retrieve information and perform operations on Threat Watch. Threat Watch is an automated continuous monitoring feature that…
+- [Druva Token API](https://apis.io/apis/druva/druva-token-api/) — The Token API from Druva — 1 operation(s) for token.
+- [Druva User API](https://apis.io/apis/druva/druva-user-api/) — User specific API functions
+- [Druva User Management API](https://apis.io/apis/druva/druva-user-management-api/) — Lists the APIs to get information and perform operations on users managed in Druva inSync.
+- [Druva V Mware API](https://apis.io/apis/druva/druva-vmware-api/) — The VMware API from Druva — 11 operation(s) for vmware.
+- [Druva Volumes API](https://apis.io/apis/druva/druva-volumes-api/) — AWS Volume specific API functions
+- [Druva VP Cs API](https://apis.io/apis/druva/druva-vpcs-api/) — VPC specific API functions
+- [Druva Backup Policies API](https://apis.io/apis/druva/druva-backup-policies-api/) — Backup Policies specific API functions
+- [Druva Notification Settings API](https://apis.io/apis/druva/druva-notification-settings-api/) — The Notification Settings API from Druva — 1 operation(s) for notification settings.
+- [Druva Report Subscriptions API](https://apis.io/apis/druva/druva-report-subscriptions-api/) — The Report Subscriptions API from Druva — 4 operation(s) for report subscriptions.
+- [Druva Report Templates API](https://apis.io/apis/druva/druva-report-templates-api/) — The Report Templates API from Druva — 2 operation(s) for report templates.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
 
-## Scope
+- [Druva MCP Server](https://apis.io/servers/druva/druva-mcp-server/)
 
-- **Type:** Index
-- **Position:** Producing
+#### Agentic access (1)
 
-## Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Backup
-- Cyber Resilience
-- Data Protection
-- Disaster Recovery
-- SaaS Backup
-- Ransomware Recovery
-- Data Governance
-- Enterprise Workloads
-- MSP
-- Legal Hold
-- Endpoints
-- GovCloud
-- MCP
+- [Druva Agentic Access](https://apis.io/agentic-access/druva/druva-agentic-access/)
 
-## Timestamps
+#### Collections (9)
 
-- **Created:** 2026-03-27
-- **Modified:** 2026-09-06
+Postman and Open Collection request collections.
 
-## APIs
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-accounts-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-authentication-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-backups-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-cyber-resilience-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-policies-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-reports-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-schedules-api/)
+- [Moved to /providers/druva/](https://apis.io/collections/druva/open-druva-servers-api/)
 
-### Druva Authentication API
+#### Overlays (7)
 
-Token endpoint for the Druva Cloud Platform. Exchanges a base64-encoded Client ID and Secret Key for an OAuth 2.0 client-credentials bearer token used by every other Druva product API on the public cloud.
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com`
-- **Operations:** 1
+- [Druva Aws Native Overlay](https://apis.io/overlays/druva/druva-aws-native-overlay/)
+- [Druva Cloudranger Overlay](https://apis.io/overlays/druva/druva-cloudranger-overlay/)
+- [Druva Cyber Resilience Govcloud Overlay](https://apis.io/overlays/druva/druva-cyber-resilience-govcloud-overlay/)
+- [Druva Cyber Resilience Overlay](https://apis.io/overlays/druva/druva-cyber-resilience-overlay/)
+- [Druva Insync Cloud Overlay](https://apis.io/overlays/druva/druva-insync-cloud-overlay/)
+- [Druva Insync Govcloud Overlay](https://apis.io/overlays/druva/druva-insync-govcloud-overlay/)
+- [Druva Microsoft 365 Overlay](https://apis.io/overlays/druva/druva-microsoft-365-overlay/)
 
-#### Tags
+#### Security (3)
 
-- Authentication
-- OAuth
-- Token
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Druva Authentication](https://apis.io/security/druva/druva-authentication/)
+- [Druva Domain Security](https://apis.io/security/druva/druva-domain-security/)
+- [Druva Trust Center](https://apis.io/security/druva/druva-trust-center/)
 
-- [OpenAPI](openapi/druva-authentication-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-- [Authentication](https://developer.druva.com/docs/authentication)
+#### OAuth scopes (1)
 
-### Druva MSP Authentication API
+The permissions the API asks for.
 
-Token endpoint for the Druva Managed Service Provider surface. MSP integrations authenticate here rather than at the common Druva token endpoint.
+- [Druva Scopes](https://apis.io/scopes/druva/druva-scopes/)
 
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/msp`
-- **Operations:** 1
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
-- Authentication
-- MSP
-- OAuth
+- [Druva Plans Pricing](https://apis.io/plans/druva/druva-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [OpenAPI](openapi/druva-msp-authentication-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
+Published request limits.
 
-### Druva GovCloud Authentication API
+- [Druva Rate Limits](https://apis.io/rate-limits/druva/druva-rate-limits/)
 
-Token endpoint for Druva Endpoints and Data Governance GovCloud. Tokens minted here are valid for 15 minutes and cannot be used against any other Druva cloud.
+#### FinOps (1)
 
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govcloudapis.druva.com`
-- **Operations:** 2
+What the API costs to run, by operation.
 
-#### Tags
+- [Druva Finops](https://apis.io/finops/druva/druva-finops/)
 
-- Authentication
-- GovCloud
-- OAuth
+## Where to find this API
 
-#### Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- [OpenAPI](openapi/druva-govcloud-authentication-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
+- [Website](https://www.druva.com)
+- [Documentation](https://docs.druva.com/)
+- [Getting started](https://developer.druva.com/docs/introduction)
+- [API reference](https://developer.druva.com/reference)
+- [Pricing](https://www.druva.com/pricing)
+- [Sign up](https://login.druva.com/)
+- [Support](https://support.druva.com)
+- [Blog](https://www.druva.com/blog)
+- [Terms of service](https://www.druva.com/terms-of-use)
+- [Privacy policy](https://www.druva.com/privacy-policy)
+- [GitHub](https://github.com/druvainc)
+- [Status](https://support.druva.com/s/druvacloudstatus)
 
-### Druva Hybrid Workloads GovCloud Authentication API
+## API Evangelist rating
 
-Token endpoint for Druva Hybrid / Enterprise Workloads GovCloud. Separate from the Endpoints GovCloud token endpoint; tokens are not interchangeable between Druva clouds.
+**Kin Score 53.7** — developing · rubric 0.25.0 · scored 2026-10-23
 
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govapis.druva.com`
-- **Operations:** 1
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 52.1 |
+| Contract governance | 4.5 |
+| Operational transparency | 42.1 |
+| Developer ergonomics | 57.7 |
+| Access clarity | 47.4 |
 
-#### Tags
+**Agent readiness 56.2** — agent-ready (gated down from agent-native)
 
-- Authentication
-- GovCloud
-- OAuth
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | mostly |
 
-#### Properties
+**Regulatory alignment 39.2** — Horizontal (data, software, accessibility, platform)
 
-- [OpenAPI](openapi/druva-hybrid-workload-govcloud-authentication-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/druva/](https://apis.io/providers/druva/).
 
-### Druva Endpoints and Data Governance API
+## How this profile is made
 
-The inSync Cloud API for Druva Endpoints and Data Governance. Covers device and user management, backup and restore of endpoint data, profiles, AD/LDAP synchronisation, federated search, legal hold, sensitive data governance, audit trail and the Events API used to export inSync events to a SIEM in JSON, CEF or Syslog form.
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/insync`
-- **Operations:** 63
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Druva: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
 
-#### Tags
+## Open an issue
 
-- Endpoints
-- Data Governance
-- Legal Hold
-- Event
-- Sensitive Data Governance
-- Backup
-
-#### Properties
-
-- [OpenAPI](openapi/druva-insync-cloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Endpoints and Data Governance GovCloud API
-
-The inSync GovCloud API - the FedRAMP-boundary equivalent of the Endpoints and Data Governance surface, served from govcloudapis.druva.com with its own token endpoint and a 15-minute access token.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govcloudapis.druva.com/insync`
-- **Operations:** 53
-
-#### Tags
-
-- Endpoints
-- Data Governance
-- GovCloud
-- Legal Hold
-- Event
-
-#### Properties
-
-- [OpenAPI](openapi/druva-insync-govcloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Enterprise Workloads API
-
-The Phoenix API for Druva Enterprise Workloads. Job management, on-demand backup, restore to original or alternate location, snapshots, backup policies and reporting across File Server, NAS, VMware, Hyper-V, Nutanix AHV, SQL Server, Oracle SBT, Azure, PBS and DRaaS workloads, plus alerts, audit trail and cloud cache.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/phoenix`
-- **Operations:** 94
-
-#### Tags
-
-- Enterprise Workloads
-- Backup
-- Restore
-- VMware
-- SQL Server
-- Jobs
-
-#### Properties
-
-- [OpenAPI](openapi/druva-enterprise-workloads-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Enterprise Workloads GovCloud API
-
-The Enterprise Workloads API inside the Druva GovCloud boundary, served from govapis.druva.com. Same workload coverage as the public-cloud contract with the Azure family omitted.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govapis.druva.com/phoenix`
-- **Operations:** 91
-
-#### Tags
-
-- Enterprise Workloads
-- GovCloud
-- Backup
-- Restore
-- Jobs
-
-#### Properties
-
-- [OpenAPI](openapi/druva-enterprise-workloads-govcloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Cyber Resilience API
-
-The Realize API for Druva Cyber Resilience. Accelerated Ransomware Recovery quarantine ranges and snapshots, curated snapshot jobs, threat hunting, threat intel IOC sets and lookup, threat watch, unusual data activity anomaly detection, restore scans and the Realize event stream.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/realize`
-- **Operations:** 62
-
-#### Tags
-
-- Cyber Resilience
-- Ransomware Recovery
-- Threat Hunting
-- Threat Intel
-- Curated Snapshots
-- Event
-
-#### Properties
-
-- [OpenAPI](openapi/druva-cyber-resilience-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Cyber Resilience GovCloud API
-
-The Cyber Resilience surface inside the Druva GovCloud boundary. Ransomware recovery, curated snapshots, threat hunting, threat intel, data anomalies and restore scans, served from govapis.druva.com/realize.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govapis.druva.com/realize`
-- **Operations:** 50
-
-#### Tags
-
-- Cyber Resilience
-- GovCloud
-- Ransomware Recovery
-- Threat Hunting
-- Threat Intel
-
-#### Properties
-
-- [OpenAPI](openapi/druva-cyber-resilience-govcloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva GovCloud Cyber Resilience Authorization API
-
-Authorization endpoints for the Druva GovCloud Cyber Resilience surface, published as a separate contract from the Cyber Resilience API itself.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govapis.druva.com`
-- **Operations:** 2
-
-#### Tags
-
-- Authentication
-- GovCloud
-- Cyber Resilience
-
-#### Properties
-
-- [OpenAPI](openapi/druva-cyber-resilience-govcloud-authorization-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva CloudRanger Native Workloads API
-
-The CloudRanger API for Druva Native Workloads on AWS. Backup, disaster recovery and lifecycle management for EC2, EBS, RDS, Redshift, DynamoDB, S3 buckets and auto-scaling groups, with policies, schedules, DR plans and file-level restore. Served from api.cloudranger.com, the domain Druva acquired with CloudRanger in 2018 and still documents as the Native Workloads base URL.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://api.cloudranger.com/202004`
-- **Operations:** 223
-
-#### Tags
-
-- CloudRanger
-- AWS
-- Native Workloads
-- Backup
-- Disaster Recovery
-
-#### Properties
-
-- [OpenAPI](openapi/druva-cloudranger-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-- [GettingStarted](https://developer.druva.com/docs/getting-started-with-cloudranger-api-trial)
-
-### Druva AWS Native Workloads API
-
-The AWS Native Workloads API served from the common Druva gateway at apis.druva.com/awsnative. The CloudRanger capability set - accounts, backups, restores, policies, schedules, environments and DR plans - reached through Druva Cloud Platform credentials rather than CloudRanger keys.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/awsnative`
-- **Operations:** 191
-
-#### Tags
-
-- AWS
-- Native Workloads
-- Backup
-- Disaster Recovery
-
-#### Properties
-
-- [OpenAPI](openapi/druva-aws-native-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva MSP API
-
-The Managed Service Provider API. Customer and tenant provisioning, suspension and patching, per-customer API token generation, asynchronous task tracking, quota configuration and consumption metering, customer events, and the chargeback, telemetry and service-monitoring report family used to bill managed customers.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/msp`
-- **Operations:** 103
-
-#### Tags
-
-- MSP
-- Managed Service Providers
-- Multi-Tenant
-- Reports
-- Quota
-
-#### Properties
-
-- [OpenAPI](openapi/druva-msp-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-- [GettingStarted](https://developer.druva.com/docs/getting-started-with-druva-msp-api-1)
-
-### Druva Platform API
-
-The Druva Cloud Platform administration API. Administrators, administrator roles, platform-level reports and the platform event stream shared across Druva products.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/platform`
-- **Operations:** 12
-
-#### Tags
-
-- Platform
-- Administration
-- Reports
-- Event
-
-#### Properties
-
-- [OpenAPI](openapi/druva-platform-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Microsoft 365 API
-
-App management and restore operations for Druva-protected Microsoft 365 data - OneDrive and Exchange Online restores, and SharePoint Online restores.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com`
-- **Operations:** 8
-
-#### Tags
-
-- Microsoft 365
-- SaaS Backup
-- Restore
-- SharePoint
-
-#### Properties
-
-- [OpenAPI](openapi/druva-microsoft-365-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Google Workspace API
-
-App management for Druva-protected Google Workspace data.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com`
-- **Operations:** 1
-
-#### Tags
-
-- Google Workspace
-- SaaS Backup
-
-#### Properties
-
-- [OpenAPI](openapi/druva-google-workspace-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Job Management API for Cloud Workloads
-
-The Unity job-management surface for cloud workloads - create and cancel backup and restore jobs for Azure SQL and NAS from a single contract.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/unity`
-- **Operations:** 8
-
-#### Tags
-
-- Jobs
-- Azure SQL
-- NAS
-- Backup
-
-#### Properties
-
-- [OpenAPI](openapi/druva-job-management-cloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Job Management API for GovCloud Workloads
-
-The Unity job-management surface inside the Druva GovCloud boundary, covering NAS backup and restore jobs.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://govapis.druva.com/unity`
-- **Operations:** 4
-
-#### Tags
-
-- Jobs
-- GovCloud
-- NAS
-- Backup
-
-#### Properties
-
-- [OpenAPI](openapi/druva-job-management-govcloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva Legal Hold Targeted Download API
-
-Legal hold and targeted download operations for legal and compliance teams preserving and extracting data from devices under hold. Druva publishes these operations inside the Endpoints and Data Governance (inSync) contract under the Legal Hold tag rather than as a standalone specification.
-
-- **Human URL:** [https://developer.druva.com](https://developer.druva.com)
-- **Base URL:** `https://apis.druva.com/insync`
-- **Operations:** 63
-
-#### Tags
-
-- Legal Hold
-- Compliance
-- eDiscovery
-
-#### Properties
-
-- [OpenAPI](openapi/druva-insync-cloud-openapi.json)
-- [Documentation](https://developer.druva.com/reference)
-
-### Druva MCP Server
-
-Druva's first-party hosted Model Context Protocol server. MCP-compatible AI clients connect to a single global endpoint over streamable HTTP, authenticate with 3-legged OAuth 2.1 and PKCE, and reach the Druva Resilience Cloud through five tools that discover and execute cloud-delivered skills across endpoint health, SaaS apps, cyber resilience and data governance. Destructive deletes are blocked server-side and every call is bounded by the caller's Druva RBAC.
-
-- **Human URL:** [https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server](https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server)
-- **Base URL:** `https://mcp.druva.com/mcp`
-
-#### Tags
-
-- MCP
-- Agents
-- AI
-- Cyber Resilience
-
-#### Properties
-
-- [MCPServer](mcp/druva-mcp.yml)
-- [ToolCrosswalk](mcp/druva-tool-crosswalk.yml)
-- [Documentation](https://help.druva.com/en/articles/15654265-getting-started-with-the-druva-mcp-server)
-
-## Repository artifacts
-
-- **OAuthScopes** — [scopes/druva-scopes.yml](scopes/druva-scopes.yml)
-- **AgenticAccess** — [agentic-access/druva-agentic-access.yml](agentic-access/druva-agentic-access.yml)
-- **TrustCenter** — [security/druva-trust-center.yml](security/druva-trust-center.yml)
-- **DomainSecurity** — [security/druva-domain-security.yml](security/druva-domain-security.yml)
-- **Authentication** — [authentication/druva-authentication.yml](authentication/druva-authentication.yml)
-- **WellKnown** — [well-known/druva-well-known.yml](well-known/druva-well-known.yml)
-- **APICatalog** — [well-known/druva-api-catalog.json](well-known/druva-api-catalog.json)
-- **MCPServer** — [mcp/druva-mcp.yml](mcp/druva-mcp.yml)
-- **ToolCrosswalk** — [mcp/druva-tool-crosswalk.yml](mcp/druva-tool-crosswalk.yml)
-- **Packages** — [packages/druva-packages.yml](packages/druva-packages.yml)
-- **LLMsTxt** — [llms/druva-llms.txt](llms/druva-llms.txt)
-- **Conformance** — [conformance/druva-conformance.yml](conformance/druva-conformance.yml)
-- **Compliance** — [security/druva-trust-center.yml](security/druva-trust-center.yml)
-- **ErrorCatalog** — [errors/druva-problem-types.yml](errors/druva-problem-types.yml)
-- **Lifecycle** — [lifecycle/druva-lifecycle.yml](lifecycle/druva-lifecycle.yml)
-- **ChangeLog** — [changelog/druva-changelog.yml](changelog/druva-changelog.yml)
-- **Conventions** — [conventions/druva-conventions.yml](conventions/druva-conventions.yml)
-- **DataModel** — [data-model/druva-data-model.yml](data-model/druva-data-model.yml)
-- **Plans** — [plans/druva-plans-pricing.yml](plans/druva-plans-pricing.yml)
-- **RateLimits** — [rate-limits/druva-rate-limits.yml](rate-limits/druva-rate-limits.yml)
-- **AgentSkill** — [skills/_index.yml](skills/_index.yml)
-- **FinOps** — [finops/druva-finops.yml](finops/druva-finops.yml)
-- **Overlay** — [overlays/druva-aws-native-overlay.yaml](overlays/druva-aws-native-overlay.yaml)
-- **Overlay** — [overlays/druva-cloudranger-overlay.yaml](overlays/druva-cloudranger-overlay.yaml)
-- **Overlay** — [overlays/druva-cyber-resilience-govcloud-overlay.yaml](overlays/druva-cyber-resilience-govcloud-overlay.yaml)
-- **Overlay** — [overlays/druva-cyber-resilience-overlay.yaml](overlays/druva-cyber-resilience-overlay.yaml)
-- **Overlay** — [overlays/druva-insync-cloud-overlay.yaml](overlays/druva-insync-cloud-overlay.yaml)
-- **Overlay** — [overlays/druva-insync-govcloud-overlay.yaml](overlays/druva-insync-govcloud-overlay.yaml)
-- **Overlay** — [overlays/druva-microsoft-365-overlay.yaml](overlays/druva-microsoft-365-overlay.yaml)
-- **SDKs** — [packages/druva-packages.yml](packages/druva-packages.yml)
-
-## Links
-
-- **LinkedIn** — [https://www.linkedin.com/company/druva](https://www.linkedin.com/company/druva)
-- **Website** — [https://www.druva.com](https://www.druva.com)
-- **Documentation** — [https://docs.druva.com/](https://docs.druva.com/)
-- **DeveloperPortal** — [https://developer.druva.com](https://developer.druva.com)
-- **APIReference** — [https://developer.druva.com/reference](https://developer.druva.com/reference)
-- **Support** — [https://support.druva.com](https://support.druva.com)
-- **GitHub** — [https://github.com/druvainc](https://github.com/druvainc)
-- **Integrations** — [https://www.druva.com/partners/ecosystem/technology-alliance-program](https://www.druva.com/partners/ecosystem/technology-alliance-program)
-- **LlmsText** — [https://developer.druva.com/llms.txt](https://developer.druva.com/llms.txt)
-- **Blog** — [https://www.druva.com/blog](https://www.druva.com/blog)
-- **StatusPage** — [https://support.druva.com/s/druvacloudstatus](https://support.druva.com/s/druvacloudstatus)
-- **Deprecation** — [https://developer.druva.com/docs/migration-process](https://developer.druva.com/docs/migration-process)
-- **Pricing** — [https://www.druva.com/pricing](https://www.druva.com/pricing)
-- **SignUp** — [https://login.druva.com/](https://login.druva.com/)
-- **TermsOfService** — [https://www.druva.com/terms-of-use](https://www.druva.com/terms-of-use)
-- **PrivacyPolicy** — [https://www.druva.com/privacy-policy](https://www.druva.com/privacy-policy)
-- **GettingStarted** — [https://developer.druva.com/docs/introduction](https://developer.druva.com/docs/introduction)
-- **GitHubOrganization** — [https://github.com/druvainc](https://github.com/druvainc)
-- **Console** — [https://login.druva.com/](https://login.druva.com/)
-
-## Not published by Druva
-
-Kept here so absence reads as deliberate rather than unchecked:
-
-- **No agent card.** `/.well-known/agent-card.json` and `/.well-known/agent.json` were probed on
-  every Druva host and returned 404, or a soft-404 HTML shell. Nothing was authored on Druva's
-  behalf — an agent card asserts that the provider serves the document, so deriving one would be
-  a false claim.
-- **No idempotency.** No `Idempotency-Key` header, parameter, or replay-safety statement exists in
-  any of the 19 published specifications or in the developer documentation.
-- **No published rate limits** and no rate-limit response headers. `429` is declared on 2 of 970
-  operations with no `Retry-After`.
-- **No published prices.** Every Druva pricing tier page renders a `$` placeholder and a
-  contact-sales path. `plans/druva-plans-pricing.yml` records that as `plan_count: 0`.
-- **No AsyncAPI, webhooks or event push.** The Events API is polled, not pushed.
-- **No RFC 9457 problem+json**, no gRPC `.proto`, no SOAP WSDL, no GraphQL.
-- **No first-party SDK in any package registry.** The official Python SDK installs from a git
-  subdirectory; the Go helper library was last released in 2023.
-
-### A correction to this profile, 2026-09-06
-
-An earlier round of this profile stored an API Evangelist–authored *model* of the Druva API in
-`openapi/_original/` — the directory reserved for verbatim provider harvests — where it was
-credited to Druva. That file said so in its own description ("Best-effort OpenAPI…") and carried
-an API Evangelist contact address. It has been moved to `openapi/_scaffold/`, stamped, and
-excluded from the record; the eight per-tag splits and the Postman/OpenCollection files derived
-from it went with it, to `collections/_scaffold/`.
-
-It is superseded by Druva's own contracts: **19 first-party OpenAPI and Swagger definitions,
-roughly 970 operations**, downloaded from `https://developer.druva.com/openapi/<name>.json` and
-enumerated by Druva's own RFC 9727 catalog at
-`https://developer.druva.com/.well-known/api-catalog`.
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/druva/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
